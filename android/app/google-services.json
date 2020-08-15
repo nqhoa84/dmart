@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "351448752366",
+    "firebase_url": "https://dmart-3d5e9.firebaseio.com",
+    "project_id": "dmart-3d5e9",
+    "storage_bucket": "dmart-3d5e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351448752366:android:9c34e4f0766d3f6e4ed3ff",
+        "android_client_info": {
+          "package_name": "kh.com.dmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351448752366-tds7er1mc4qo5akbla28vc40gv7v35vu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5xHoju_tqgYhLoTf_FRQEDfagX4zoXhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351448752366-tds7er1mc4qo5akbla28vc40gv7v35vu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "351448752366-kmlpu9tn9fe7s8in4n9khhamqbgvu0ei.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "xyz.khmermedia.ecm"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351448752366:android:8295982adcb4c36f4ed3ff",
+        "android_client_info": {
+          "package_name": "xyz.khmermedia.ecm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351448752366-tds7er1mc4qo5akbla28vc40gv7v35vu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5xHoju_tqgYhLoTf_FRQEDfagX4zoXhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351448752366-tds7er1mc4qo5akbla28vc40gv7v35vu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "351448752366-kmlpu9tn9fe7s8in4n9khhamqbgvu0ei.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "xyz.khmermedia.ecm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

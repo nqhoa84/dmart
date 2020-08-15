@@ -1,0 +1,60 @@
+import '../helpers/ui_icons.dart';
+import 'package:flutter/material.dart';
+
+class DmBottomNavigationBar extends StatelessWidget {
+  int currentIndex;
+  Function(int i) onTap;
+  DmBottomNavigationBar({this.currentIndex, this.onTap,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double size = 40.0;
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+//        selectedItemColor: Theme.of(context).accentColor,
+//      unselectedItemColor: Colors.transparent,
+      selectedFontSize: 0,
+      unselectedFontSize: 0,
+      iconSize: 22,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+//      selectedIconTheme: IconThemeData(size: 25),
+//        unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
+      currentIndex: currentIndex,
+      onTap: onTap,
+      // this will be set when a new tab is tapped
+      items: [
+        BottomNavigationBarItem(
+//          icon: currentIndex == 0 ? ImageIcon( new AssetImage("assets/img/F_Home_01.png")) :
+//          ImageIcon( new AssetImage("assets/img/F_Home.png")),
+          icon: currentIndex == 0 ? Image.asset('assets/img/F_Home_01.png', width: size, fit: BoxFit.scaleDown) :
+          Image.asset('assets/img/F_Home.png', width: size, fit: BoxFit.scaleDown),
+          title: new Container(height: 0.0),
+        ),
+        BottomNavigationBarItem(
+          icon: currentIndex == 1 ? Image.asset("assets/img/F_Categories_01.png", width: size, fit: BoxFit.scaleDown) :
+          Image.asset("assets/img/F_Categories.png", width: size, fit: BoxFit.scaleDown),
+          title: new Container(height: 0.0),
+        ),
+
+        BottomNavigationBarItem(
+          icon: currentIndex == 2 ? Image.asset("assets/img/F_Promotion_01.png", width: size*1.15, fit: BoxFit.scaleDown) :
+    Image.asset("assets/img/F_Promotion.png", width: size*1.15, fit: BoxFit.scaleDown),
+          title: new Container(height: 0.0),
+        ),
+        BottomNavigationBarItem(
+          icon: currentIndex == 3 ? Image.asset("assets/img/F_Notificaiton_01.png", width: size, fit: BoxFit.scaleDown) :
+    Image.asset("assets/img/F_Notificaiton.png", width: size, fit: BoxFit.scaleDown),
+          title: new Container(height: 0.0),
+        ),
+        BottomNavigationBarItem(
+          icon: currentIndex == 4 ? Image.asset("assets/img/F_Menu_01.png", width: size, fit: BoxFit.scaleDown) :
+    Image.asset("assets/img/F_Menu.png", width: size, fit: BoxFit.scaleDown),
+          title: new Container(height: 0.0),
+        ),
+      ],
+    );
+  }
+}

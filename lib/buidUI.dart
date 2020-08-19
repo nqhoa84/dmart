@@ -3,6 +3,11 @@ import 'package:dmart/src/helpers/ui_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'generated/l10n.dart';
+import 'src/models/user.dart';
+import 'src/repository/user_repository.dart';
+import 'src/widgets/SearchBarWidget.dart';
+
 Widget createNetworkImage({String url, double width, double height, BoxFit fit = BoxFit.cover}) {
 //  return CachedNetworkImage(
 //    height: 80,
@@ -44,4 +49,107 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
 //      fit: BoxFit.scaleDown);
     return isFav ? Icon(Icons.favorite, color: DmConst.colorFavorite)
         : Icon(Icons.favorite_border, color: DmConst.colorFavorite);
+}
+
+PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey){
+  User user = currentUser.value;
+  return PreferredSize(
+    preferredSize: Size.fromHeight(110),
+    child: AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+        bottom: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: _createUserInfoRowOnTopBar(context, user),
+                ),
+                Container(
+                  child: Image.asset(
+                    'assets/img/H_Logo_Dmart.png',
+                    width: 46,
+                    height: 46,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      padding: EdgeInsets.only(right: 30),
+                      height: 40,
+                      child: Image.asset('assets/img/H_Cart.png',
+                          fit: BoxFit.scaleDown),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Divider(height: 4, thickness: 2, color: DmConst.primaryColor),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
+              child: SearchBarWidget(onClickFilter: (event) {
+                scaffoldKey.currentState.openEndDrawer();
+              }),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _createUserInfoRowOnTopBar(BuildContext context, User user){
+  if(user.isLogin) {
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.transparent,
+          child: Image.network(user.image?.thumb,
+            loadingBuilder: (ctx, wid, event) {
+              return Center(child: CircularProgressIndicator());
+            },
+            errorBuilder: (ctx, obj, trace) {
+              return Image.asset('assets/img/H_User_Icon.png',
+                  width: 40, height: 40, fit: BoxFit.scaleDown);
+            },
+          ),
+//            Image.asset('assets/img/H_User_Icon.png',
+//                width: 40, height: 40, fit: BoxFit.scaleDown),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(user.name?? S.of(context).unknown),
+            Text('${S.of(context).topBar_credit}: ${currentUser.value.credit}',
+                style: TextStyle(color: DmConst.textColorForTopBarCredit)),
+          ],
+        ),
+      ],
+    );
+  } else {
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.transparent,
+          child: Image.asset('assets/img/H_User_Icon.png',
+              width: 40, height: 40, fit: BoxFit.scaleDown),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(S.of(context).guest),
+            Text('${S.of(context).topBar_credit}:'),
+          ],
+        ),
+      ],
+    );
+  }
 }

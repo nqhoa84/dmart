@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
@@ -5,7 +6,7 @@ import '../helpers/app_config.dart' as config;
 
 class PermissionDeniedWidget extends StatefulWidget {
   PermissionDeniedWidget({
-    Key key,
+    Key key
   }) : super(key: key);
 
   @override
@@ -39,48 +40,39 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
                       Theme.of(context).focusColor.withOpacity(0.7),
                       Theme.of(context).focusColor.withOpacity(0.05),
                     ])),
-                child: Icon(
-                  Icons.https,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  size: 70,
-                ),
+                child: Icon(Icons.https, color: Theme.of(context).scaffoldBackgroundColor, size: 70),
               ),
               Positioned(
-                right: -30,
-                bottom: -50,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(150),
-                  ),
-                ),
-              ),
+                  right: -30,
+                  bottom: -50,
+                  child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
+//                        color: DmConst.productShadowColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(150),
+                      ))),
               Positioned(
                 left: -20,
                 top: -50,
                 child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(150),
-                  ),
-                ),
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(150),
+                    )),
               )
             ],
           ),
           SizedBox(height: 15),
           Opacity(
             opacity: 0.4,
-            child: Text(
-              S.of(context).you_must_signin_to_access_to_this_section,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.display2.merge(TextStyle(fontWeight: FontWeight.w300)),
-            ),
+            child: Text(S.of(context).you_must_signin_to_access_to_this_section,
+                textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           FlatButton(
             onPressed: () {
               Navigator.of(context).pushNamed('/Login');
@@ -88,24 +80,19 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 70),
             color: Theme.of(context).accentColor.withOpacity(1),
             shape: StadiumBorder(),
-            child: Text(
-              S.of(context).login,
-              style:
-                  Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-            ),
+            child: Text(S.of(context).login, style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
           FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/SignUp');
-            },
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
-            shape: StadiumBorder(),
-            child: Text(
-              S.of(context).i_dont_have_an_account,
-              style: TextStyle(color: Theme.of(context).focusColor),
-            ),
-          ),
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed('/SignUp');
+              },
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
+              shape: StadiumBorder(),
+              child: Text(
+                S.of(context).i_dont_have_an_account,
+                style: TextStyle(color: Theme.of(context).focusColor),
+              )),
         ],
       ),
     );

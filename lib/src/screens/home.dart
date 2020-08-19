@@ -34,8 +34,7 @@ class HomeWidget extends StatefulWidget {
   _HomeWidgetState createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends StateMVC<HomeWidget>
-    with SingleTickerProviderStateMixin {
+class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderStateMixin {
   Animation animationOpacity;
   AnimationController animationController;
   HomeController _con;
@@ -49,10 +48,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
     _con.listenForTrendingProducts();
     _con.listenForCategories();
     _con.listenForBrands();
-    animationController =
-        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    CurvedAnimation curve =
-        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    animationController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
@@ -96,9 +93,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
               ),
               _con.categorySelected == null
                   ? ProductsGridLoadingWidget()
-                  : DmCategorizedProductsWidget(
-                  animationOpacity: animationOpacity,
-                  category: _con.categorySelected),
+                  : DmCategorizedProductsWidget(animationOpacity: animationOpacity, category: _con.categorySelected),
               // Heading (Brands)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -106,9 +101,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
               ),
               _con.brandSelected == null
                   ? ProductsGridLoadingWidget()
-                  : BrandedProductsWidget(
-                  animationOpacity: animationOpacity,
-                  brand: _con.brandSelected),
+                  : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected),
             ],
           ),
         ),
@@ -128,15 +121,14 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
               color: DmConst.homePromotionColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('$title',
-                    textAlign: TextAlign.right),
+                child: Text('$title', textAlign: TextAlign.right),
               )),
         ),
       ],
     );
   }
 
-  PreferredSize createAppBar(){
+  PreferredSize createAppBar() {
     User user = currentUser.value;
     return PreferredSize(
       preferredSize: Size.fromHeight(110),
@@ -226,8 +218,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
                       child: Container(
                         padding: EdgeInsets.only(right: 30),
                         height: 40,
-                        child: Image.asset('assets/img/H_Cart.png',
-                            fit: BoxFit.scaleDown),
+                        child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
                       ),
                     ),
                   ),
@@ -247,19 +238,19 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
     );
   }
 
-  Widget _createUserInfoRowOnTopBar(User user){
-    if(user.isLogin) {
+  Widget _createUserInfoRowOnTopBar(User user) {
+    if (user.isLogin) {
       return Row(
         children: <Widget>[
           CircleAvatar(
             backgroundColor: Colors.transparent,
-            child: Image.network(user.image?.thumb,
-            loadingBuilder: (ctx, wid, event) {
-              return Center(child: CircularProgressIndicator());
-            },
+            child: Image.network(
+              user.image?.thumb,
+              loadingBuilder: (ctx, wid, event) {
+                return Center(child: CircularProgressIndicator());
+              },
               errorBuilder: (ctx, obj, trace) {
-                return Image.asset('assets/img/H_User_Icon.png',
-                width: 40, height: 40, fit: BoxFit.scaleDown);
+                return Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown);
               },
             ),
 //            Image.asset('assets/img/H_User_Icon.png',
@@ -269,7 +260,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(user.name?? S.of(context).unknown),
+              Text(user.name ?? S.of(context).unknown),
               Text('${S.of(context).topBar_credit}: ${currentUser.value.credit}',
                   style: TextStyle(color: DmConst.textColorForTopBarCredit)),
             ],
@@ -281,8 +272,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
         children: <Widget>[
           CircleAvatar(
             backgroundColor: Colors.transparent,
-            child: Image.asset('assets/img/H_User_Icon.png',
-                width: 40, height: 40, fit: BoxFit.scaleDown),
+            child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -296,6 +286,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
       );
     }
   }
+
   _createLocationButton() {
     return Container(
       width: 30,
@@ -307,14 +298,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget>
           if (currentUser.value.apiToken == null) {
             _con.requestForCurrentLocation(context);
           } else {
-            var bottomSheetController =
-                widget.parentScaffoldKey.currentState.showBottomSheet(
-              (context) => DeliveryAddressBottomSheetWidget(
-                  scaffoldKey: widget.parentScaffoldKey),
+            var bottomSheetController = widget.parentScaffoldKey.currentState.showBottomSheet(
+              (context) => DeliveryAddressBottomSheetWidget(scaffoldKey: widget.parentScaffoldKey),
               shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
+                borderRadius: new BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
               ),
             );
             bottomSheetController.closed.then((value) {

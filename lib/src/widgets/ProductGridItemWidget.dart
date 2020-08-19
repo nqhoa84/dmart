@@ -1,22 +1,18 @@
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
+import 'package:flutter/material.dart';
 
+import '../../constant.dart';
 import '../../src/helpers/helper.dart';
-
 import '../../src/models/product.dart';
 import '../../src/models/route_argument.dart';
-import 'package:flutter/material.dart';
-import '../../generated/l10n.dart';
 
 class ProductGridItemWidget extends StatelessWidget {
-  const ProductGridItemWidget({
-    Key key,
-    @required this.product,
-    @required this.heroTag,
-  }) : super(key: key);
-
+  const ProductGridItemWidget({Key key, @required this.product, @required this.heroTag,
+  this.amountInCart = 2}) : super(key: key);
   final Product product;
   final String heroTag;
+  final int amountInCart;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +25,7 @@ class ProductGridItemWidget extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: [
-            BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
-          ],
-        ),
+        decoration: _createDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -52,16 +42,13 @@ class ProductGridItemWidget extends StatelessWidget {
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                  child: createNetworkImage(url: product.image.thumb),
+                child: createNetworkImage(url: product.image.thumb),
               ),
             ),
             SizedBox(height: 12),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              child: Text(
-                product.name,
-                style: Theme.of(context).textTheme.body2,
-              ),
+              child: Text(product.name, style: Theme.of(context).textTheme.bodyText1),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -69,25 +56,14 @@ class ProductGridItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Expanded(
-                      child: Helper.getPrice(
-                        product.price,
-                        context,
-                        style: Theme.of(context).textTheme.display1,
-                      ),
+                    child: Helper.getPrice(product.price, context, style: Theme.of(context).textTheme.headline5),
                   ),
                   Row(
-                      children: <Widget>[
-                        Text(
-                          product.rate,
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 16,
-                        ),
-                      ],
-                    ),
+                    children: <Widget>[
+                      Text(product.rate, style: Theme.of(context).textTheme.bodyText1),
+                      Icon(Icons.star, color: Colors.amber, size: 16)
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -95,6 +71,25 @@ class ProductGridItemWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+  BoxDecoration _createDecoration() {
+    return this.amountInCart > 0
+        ? BoxDecoration(
+      border: Border.all(color: DmConst.primaryColor),
+      color: DmConst.primaryColor,
+      borderRadius: BorderRadius.circular(6),
+      boxShadow: [
+        BoxShadow(
+            color: DmConst.productShadowColor,
+            blurRadius: 7,
+            offset: Offset(6, 6))
+      ],
+    )
+        : BoxDecoration(
+      border: Border.all(color: DmConst.primaryColor),
+      borderRadius: BorderRadius.circular(6),
+      color: DmConst.primaryColor,
     );
   }
 }

@@ -5,7 +5,7 @@ class Notification {
   bool read;
   DateTime createdAt;
 
-  Notification();
+  Notification({this.id='', this.type='', this.read=false});
 
   Notification.fromJSON(Map<String, dynamic> jsonMap) {
     try {

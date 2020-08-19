@@ -6,8 +6,10 @@ import 'package:dmart/src/repository/user_repository.dart';
 import 'package:dmart/src/widgets/CategoryGridWidget.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DmCategoriesWidget.dart';
+import 'package:dmart/src/widgets/DmPromotionGroupsWidget.dart';
 import 'package:dmart/src/widgets/SearchBarWidget.dart';
 import 'package:flutter/material.dart';
+import '../../buidUI.dart';
 import '../../constant.dart';
 import '../Widgets/DrawerWidget.dart';
 import '../widgets/FilterWidget.dart';
@@ -75,8 +77,8 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = DmCategoriesWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 2:
-          //TODO must be promotions Widget
-          widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
+//          widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = DmPromotionGroupsWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 3:
           widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
@@ -97,7 +99,7 @@ class _PagesWidgetState extends State<PagesWidget> {
       onWillPop: () async => false,
       child: Scaffold(
         key: widget.scaffoldKey,
-        appBar: createAppBar(),
+        appBar: createAppBar(context, widget.scaffoldKey),
         drawer: DrawerWidget(),
 
         endDrawer: FilterWidget(onFilter: (filter) {
@@ -132,166 +134,9 @@ class _PagesWidgetState extends State<PagesWidget> {
     );
   }
 
-  PreferredSize createAppBar(){
-    User user = currentUser.value;
-    return PreferredSize(
-      preferredSize: Size.fromHeight(110),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
 
-//          centerTitle: true,
-//          title: Column(
-//            children: <Widget>[
-//              Row(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                children: <Widget>[
-//
-//                Expanded(
-//                  child: Row(
-//                    children: <Widget>[
-//                      CircleAvatar(
-//                        backgroundColor: Colors.transparent,
-//                        backgroundImage: AssetImage('assets/img/H_User_Icon.png'),
-////                child: Image.asset('assets/img/H_User_Icon.png',
-////                    width: 80,
-////                    fit: BoxFit.scaleDown),
-//                      ),
-//                      Column(
-//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                        crossAxisAlignment: CrossAxisAlignment.start,
-//                        children: <Widget>[
-//                        Text('Username'),
-//                        Text('Credit'),
-//                      ],),
-//                    ],
-//                  ),
-//                ),
-//                Container(
-//                  child: Image.asset(
-//                    'assets/img/H_Logo_Dmart.png',
-//                    width: 44, height: 44,
-//                    fit: BoxFit.scaleDown,
-//                  ),
-//                ),
-//                  Expanded(
-//                    child: Align(
-//                      alignment: Alignment.centerRight,
-//                      child: Container(
-//                        padding: EdgeInsets.only(right: 30),
-//                        height: 40,
-//                        child: Image.asset('assets/img/H_Cart.png',
-//                            fit: BoxFit.scaleDown),
-//                      ),
-//                    ),
-//                  ),
-//              ],),
-////              Divider(thickness: 2, color: DmConst.primaryColor)
-//            ],
-//          ),
-//          bottom: PreferredSize(
-//              child: Padding(
-//                padding: const EdgeInsets.all(8.0),
-//                child: SearchBarWidget( onClickFilter: (event) {
-//                  widget.parentScaffoldKey.currentState.openEndDrawer();
-//                }),
-//              ),
-//              preferredSize: Size.fromHeight(40)),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(40),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: this._createUserInfoRowOnTopBar(user),
-                  ),
-                  Container(
-                    child: Image.asset(
-                      'assets/img/H_Logo_Dmart.png',
-                      width: 46,
-                      height: 46,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 30),
-                        height: 40,
-                        child: Image.asset('assets/img/H_Cart.png',
-                            fit: BoxFit.scaleDown),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Divider(height: 4, thickness: 2, color: DmConst.primaryColor),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-                child: SearchBarWidget(onClickFilter: (event) {
-                  widget.scaffoldKey.currentState.openEndDrawer();
-                }),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _createUserInfoRowOnTopBar(User user){
-    if(user.isLogin) {
-      return Row(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: Image.network(user.image?.thumb,
-              loadingBuilder: (ctx, wid, event) {
-                return Center(child: CircularProgressIndicator());
-              },
-              errorBuilder: (ctx, obj, trace) {
-                return Image.asset('assets/img/H_User_Icon.png',
-                    width: 40, height: 40, fit: BoxFit.scaleDown);
-              },
-            ),
-//            Image.asset('assets/img/H_User_Icon.png',
-//                width: 40, height: 40, fit: BoxFit.scaleDown),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(user.name?? S.of(context).unknown),
-              Text('${S.of(context).topBar_credit}: ${currentUser.value.credit}',
-                  style: TextStyle(color: DmConst.textColorForTopBarCredit)),
-            ],
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: Image.asset('assets/img/H_User_Icon.png',
-                width: 40, height: 40, fit: BoxFit.scaleDown),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(S.of(context).guest),
-              Text('${S.of(context).topBar_credit}:'),
-            ],
-          ),
-        ],
-      );
-    }
-  }
+
 
   Widget _bottomBar() {
     return BottomNavigationBar(

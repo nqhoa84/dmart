@@ -25,39 +25,23 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
   NotificationController _con;
 
   _NotificationsWidgetState() : super(NotificationController()){
-    _con =controller;
+    _con = controller;
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _con.listenForNotifications(onDone: (){
+      setState(() { });
+      print('Now noti count = ${_con.notifications.length}');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key:_con.scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-          onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: ValueListenableBuilder(
-          valueListenable: settingsRepo.setting,
-          builder: (context, value, child) {
-            return Text(
-              S.of(context).notifications,
-              style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
-            );
-          },
-        ),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor
-          ),
-        ],
-      ),
-        body: currentUser.value.apiToken == null
+        body: currentUser.value.isLogin == true
         ? PermissionDeniedWidget()
         : RefreshIndicator(
             onRefresh: _con.refreshNotifications,
@@ -65,14 +49,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
               padding: EdgeInsets.symmetric(vertical: 7),
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SearchBarWidget(
-                      onClickFilter: (event) {
-                        widget.parentScaffoldKey.currentState.openEndDrawer();
-                      },
-                    ),
-                  ),
+                  //ListView of empty
                   Offstage(
                     offstage: _con.notifications.isEmpty,
                     child: ListView.separated(
@@ -84,20 +61,24 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
                         return SizedBox(height: 7);
                       },
                       itemBuilder: (context, index) {
+                        var noti = _con.notifications.elementAt(index);
+//                        return Text('${noti?.id} - ${noti?.type}');
                         return NotificationItemWidget(
-                          notification: _con.notifications.elementAt(index),
+                          notification: noti,
                           onDismissed: (notification) {
                             setState(() {
-                              _con.removeFromNotification(_con.notifications.elementAt(index));
+//                              _con.removeFromNotification(_con.notifications.elementAt(index));
+                                _con.notifications.removeAt(index);
                             });
                           },
                         );
                       },
-                    ),
+                    )
                   ),
+                  //EmptyNotificationWidget
                   Offstage(
                     offstage: _con.notifications.isNotEmpty,
-                    child: EmptyNotificationsWidget(),
+                    child: EmptyNotificationsWidget()
                   )
               ],
             ),

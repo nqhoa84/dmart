@@ -14,36 +14,27 @@ class DmProductItem extends StatefulWidget {
   int amountInCart;
   bool isFavorite;
 
-  DmProductItem(
-      {Key key,
-      this.product,
-      this.heroTag,
-      this.amountInCart = 2,
-      this.isFavorite = true})
-      : super(key: key);
+  DmProductItem({Key key, this.product, this.heroTag, this.amountInCart = 2, this.isFavorite = true}) : super(key: key);
 
   @override
   _DmProductItemState createState() => _DmProductItemState();
 }
 
 class _DmProductItemState extends State<DmProductItem> {
-
   static const double _width = 550.0, _height = 192.0;
   static const double _tagSize = 50.0 / 550 * _width,
       _photoWid = 200.0 / 550 * _width,
       _icFavWSize = 34.0 / 550 * _width;
+
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       splashColor: Theme.of(context).accentColor,
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
         Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(
-                id: widget.product.id,
-                param: [widget.product, widget.heroTag]));
+            arguments: new RouteArgument(id: widget.product.id, param: [widget.product, widget.heroTag]));
       },
       child: Stack(
         children: <Widget>[
@@ -60,23 +51,24 @@ class _DmProductItemState extends State<DmProductItem> {
                       Hero(
                         tag: widget.heroTag + widget.product.id,
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 8, top: 8, bottom: 8),
+                          padding: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child:
-                            createNetworkImage(url: widget.product.image.thumb),
+                            child: createNetworkImage(url: widget.product.image.thumb),
                           ),
                         ),
                       ),
-                      Align( alignment: Alignment.topLeft,
+                      Align(
+                        alignment: Alignment.topLeft,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Expanded(flex: 1,
+                            Expanded(
+                              flex: 1,
                               child: Image.asset('assets/img/Tag_Best_Sale.png', fit: BoxFit.scaleDown),
                             ),
-                            Expanded(flex: 3,
+                            Expanded(
+                              flex: 3,
                               child: Container(),
                             ),
                           ],
@@ -98,7 +90,8 @@ class _DmProductItemState extends State<DmProductItem> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Expanded( flex: 6,
+                              Expanded(
+                                flex: 6,
                                 child: Text(
                                   widget.product?.name,
                                   overflow: TextOverflow.ellipsis,
@@ -106,19 +99,20 @@ class _DmProductItemState extends State<DmProductItem> {
                                   style: Theme.of(context).textTheme.subtitle2,
                                 ),
                               ),
-                              Expanded( flex: 1,
+                              Expanded(
+                                flex: 1,
                                 child: createFavoriteIcon(context, widget.isFavorite),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(height: 3),
-                        Expanded(flex: 30,
+                        Expanded(
+                          flex: 30,
                           child: Center(child: _createAddToCartOrChooseAmount(context)),
                         ),
                         SizedBox(height: 3),
-                        Expanded(flex: 25,
-                            child: Center(child: this._createPriceWidget(context)))
+                        Expanded(flex: 25, child: Center(child: this._createPriceWidget(context)))
                       ],
                     ),
                   ),
@@ -151,8 +145,7 @@ class _DmProductItemState extends State<DmProductItem> {
   BoxDecoration _createDecoration() {
     return widget.amountInCart > 0
         ? BoxDecoration(
-      border: Border.all(color: DmConst.primaryColor),
-
+            border: Border.all(color: DmConst.primaryColor),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -163,12 +156,13 @@ class _DmProductItemState extends State<DmProductItem> {
             ],
           )
         : BoxDecoration(
-      border: Border.all(color: DmConst.primaryColor),
+            border: Border.all(color: DmConst.primaryColor),
             color: Colors.transparent,
           );
   }
 
   TextEditingController _textEditingCon = TextEditingController(text: '');
+
   Widget _createAddToCartOrChooseAmount(BuildContext context) {
     if (widget.amountInCart > 0) {
       _textEditingCon.text = '${widget.amountInCart}';
@@ -199,31 +193,28 @@ class _DmProductItemState extends State<DmProductItem> {
     } else {
       return FlatButton(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-            side: BorderSide(color: DmConst.primaryColor)
-        ),
-          child: Text(S.of(context).add_to_cart),
+            borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: DmConst.primaryColor)),
+        child: Text(S.of(context).add_to_cart),
         color: DmConst.primaryColor,
+        onPressed: () {},
       );
     }
   }
-  
+
   Widget _createPriceWidget(BuildContext context) {
     if (widget.product.promotionPrice != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
-              decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/img/Price_Strikethrough.png'),
-              fit: BoxFit.scaleDown
-            )
-          ),
+            decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/img/Price_Strikethrough.png'), fit: BoxFit.scaleDown)),
             child: Text('${widget.product.getDisplayOriginalPrice}'),
           ),
-          Text('${widget.product.getDisplayPromotionPrice}',
-          style: TextStyle(color: DmConst.textColorPromotionPrice),),
+          Text(
+            '${widget.product.getDisplayPromotionPrice}',
+            style: TextStyle(color: DmConst.textColorPromotionPrice),
+          ),
         ],
       );
     } else {

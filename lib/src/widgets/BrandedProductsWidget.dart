@@ -70,7 +70,6 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
               );
             },
             ),
-
         ),
       ),
     );

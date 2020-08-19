@@ -27,7 +27,7 @@ dependencies:
   html: 0.14.0+3
   shared_preferences: ^0.5.8
   flutter_html: 0.11.1
-  flutter_svg: 0.17.4
+  flutter_svg: ^0.18.0
   location: 3.0.2
   dynamic_theme: 1.0.1
   flutter_inappbrowser: 2.0.2
@@ -44,10 +44,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -60,17 +56,6 @@ flutter:
     - assets/cfg/
     - assets/img/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family:  EcommerceAppUI
       fonts:

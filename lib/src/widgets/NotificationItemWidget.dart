@@ -38,9 +38,6 @@ class _NotificationItemWidgetState extends State<NotificationItemWidget> {
         setState(() {
           widget.onDismissed(widget.notification);
         });
-
-        // Then show a snackbar.
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("${widget.notification.id} dismissed")));
       },
       child: Container(
         color: this.widget.notification.read ? Colors.transparent : Theme.of(context).focusColor.withOpacity(0.15),
@@ -62,7 +59,7 @@ class _NotificationItemWidgetState extends State<NotificationItemWidget> {
                   child: Icon(
                     Icons.notifications,
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    size: 40,
+                    size: 40
                   ),
                 ),
                 Positioned(
@@ -101,12 +98,12 @@ class _NotificationItemWidgetState extends State<NotificationItemWidget> {
                     Helper.trans(this.widget.notification.type),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: Theme.of(context).textTheme.body2.merge(
-                        TextStyle(fontWeight: this.widget.notification.read ? FontWeight.w300 : FontWeight.w600)),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        fontWeight: this.widget.notification.read ? FontWeight.w300 : FontWeight.w600),
                   ),
                   Text(
                     DateFormat('yyyy-MM-dd - HH:mm').format(this.widget.notification.createdAt),
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context).textTheme.caption
                   )
                 ],
               ),

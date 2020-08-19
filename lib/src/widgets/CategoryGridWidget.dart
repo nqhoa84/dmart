@@ -17,83 +17,64 @@ class CategoryGridWidget extends StatefulWidget {
 
   final List<Category> categories;
 
-  const CategoryGridWidget({
-    Key key,
-    this.categories,
-    this.parentScaffoldKey
-  }) : super(key: key);
+  const CategoryGridWidget({Key key, this.categories, this.parentScaffoldKey}) : super(key: key);
 
   @override
   _CategoryGridWidget createState() => _CategoryGridWidget();
 }
 
 class _CategoryGridWidget extends StateMVC<CategoryGridWidget> {
-
   @override
   Widget build(BuildContext context) {
     return GridView.count(
       primary: false,
       shrinkWrap: true,
       padding: EdgeInsets.only(top: 15),
-      childAspectRatio: 7.0/9.0,
-      crossAxisCount:
-      MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      childAspectRatio: 7.0 / 9.0,
+      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       children: List.generate(widget.categories.length, (index) {
         Category category = widget.categories.elementAt(index);
         return InkWell(
           onTap: () {
-            Navigator.of(context).pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
+            Navigator.of(context)
+                .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
           },
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 1, color: DmConst.primaryColor),
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).hintColor.withOpacity(0.10),
-                      offset: Offset(0, 4),
-                      blurRadius: 10)
-                ],
-               ),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1, color: DmConst.primaryColor),
+              boxShadow: [
+                BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
+              ],
+            ),
             child: Column(
               children: <Widget>[
                 //category image space.
-                Expanded( flex: 7,
-                  child: Hero(
-                    tag: category.id,
-                    child: category.image.url.toLowerCase().endsWith('.svg')
-                        ? Container(
-                      child: SvgPicture.network(
-                        category.image.url,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    )
-                        : ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(9),
-                        topRight: Radius.circular(9),
-                          ),
-                      child: createNetworkImage(url: category.image.thumb,
-                          fit: BoxFit.cover),
-                    ),
-                  ),
+                Expanded(
+                  flex: 7,
+                  child: category.image.url.toLowerCase().endsWith('.svg')
+                      ? Container(
+                          child: SvgPicture.network(category.image.url, color: Theme.of(context).primaryColor),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
+                          child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
+                        ),
                 ),
                 Divider(thickness: 1, height: 1, color: DmConst.primaryColor),
-                Expanded(flex: 2,
+                Expanded(
+                  flex: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: Center(
-                      child: Text(
-                        category.name,
-                        style: Theme.of(context).textTheme.headline6,
-                        maxLines: 1,
-                        softWrap: false,
-                        overflow: TextOverflow.fade,
-                      ),
+                      child: Text(category.name,
+                          style: Theme.of(context).textTheme.headline6,
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.fade),
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -104,20 +85,19 @@ class _CategoryGridWidget extends StateMVC<CategoryGridWidget> {
     );
   }
 
-
   Widget _build(BuildContext context) {
     return StaggeredGridView.countBuilder(
       primary: false,
       shrinkWrap: true,
       padding: EdgeInsets.only(top: 15),
-      crossAxisCount:
-      MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       itemCount: widget.categories.length,
       itemBuilder: (BuildContext context, int index) {
         Category category = widget.categories.elementAt(index);
         return InkWell(
           onTap: () {
-            Navigator.of(context).pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
+            Navigator.of(context)
+                .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
           },
           child: Stack(
             alignment: AlignmentDirectional.topCenter,
@@ -132,30 +112,25 @@ class _CategoryGridWidget extends StateMVC<CategoryGridWidget> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                          color: Theme.of(context).hintColor.withOpacity(0.10),
-                          offset: Offset(0, 4),
-                          blurRadius: 10)
+                          color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
                     ],
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        colors: [
-                          Theme.of(context).accentColor,
-                          Theme.of(context).accentColor.withOpacity(0.2),
-                        ])),
+                    gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
+                      Theme.of(context).accentColor,
+                      Theme.of(context).accentColor.withOpacity(0.2),
+                    ])),
                 child: Hero(
                   tag: category.id,
                   child: category.image.url.toLowerCase().endsWith('.svg')
                       ? Container(
-                    height: 80,
-                    width: 80,
-                    child: SvgPicture.network(
-                      category.image.url,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  )
+                          height: 80,
+                          width: 80,
+                          child: SvgPicture.network(
+                            category.image.url,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
                       : ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
 //                    child: CachedNetworkImage(
 //                      height: 80,
 //                      width: 80,
@@ -170,8 +145,8 @@ class _CategoryGridWidget extends StateMVC<CategoryGridWidget> {
 //                      errorWidget: (context, url, error) =>
 //                          Icon(Icons.error),
 //                    ),
-                    child: createNetworkImage(url: category.image.thumb, width: 80, height: 80),
-                  ),
+                          child: createNetworkImage(url: category.image.thumb, width: 80, height: 80),
+                        ),
                 ),
               ),
               Positioned(
@@ -208,9 +183,7 @@ class _CategoryGridWidget extends StateMVC<CategoryGridWidget> {
                     borderRadius: BorderRadius.circular(6),
                     boxShadow: [
                       BoxShadow(
-                          color: Theme.of(context).hintColor.withOpacity(0.15),
-                          offset: Offset(0, 3),
-                          blurRadius: 10)
+                          color: Theme.of(context).hintColor.withOpacity(0.15), offset: Offset(0, 3), blurRadius: 10)
                     ]),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

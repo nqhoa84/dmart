@@ -44,7 +44,7 @@ class ShoppingCartButtonWidget extends StatefulWidget
     Widget build(BuildContext context) {
       return FlatButton(
         onPressed: () {
-          if (currentUser.value.apiToken != null) {
+          if (currentUser.value.isLogin) {
             if(widget.product!=null){
               Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Product', id: widget.product.id));
 

@@ -2,7 +2,7 @@
 import 'package:dmart/src/models/product.dart';
 import 'package:flutter/material.dart';
 
-import 'DmProductItem.dart';
+import 'ProductItemWide.dart';
 import 'ProductsGridLoadingWidget.dart';
 
 class DmRelatedProductsWidget extends StatelessWidget {
@@ -34,7 +34,7 @@ class DmRelatedProductsWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: DmProductItem(
+                  child: ProductItemWide(
                     product: product,
                     heroTag: 'related_products',
 //                        amountInCart: 10,

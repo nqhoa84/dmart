@@ -1,14 +1,14 @@
 import '../../generated/l10n.dart';
 import '../../src/repository/user_repository.dart';
-import '../../src/widgets/PermissionDeniedWidget.dart';
+import '../../src/widgets/DmPermissionDenied.dart';
 import '../../src/widgets/ShoppingCartButtonWidget.dart';
 
 import '../controllers/notification_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../src/widgets/EmptyNotificationsWidget.dart';
-import '../../src/widgets/NotificationItemWidget.dart';
-import '../../src/widgets/SearchBarWidget.dart';
+import '../../src/widgets/NotificationItem.dart';
+import '../../src/widgets/SearchBar.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
     return Scaffold(
       key:_con.scaffoldKey,
         body: currentUser.value.isLogin == true
-        ? PermissionDeniedWidget()
+        ? DmPermissionDenied()
         : RefreshIndicator(
             onRefresh: _con.refreshNotifications,
             child:SingleChildScrollView(
@@ -63,7 +63,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
                       itemBuilder: (context, index) {
                         var noti = _con.notifications.elementAt(index);
 //                        return Text('${noti?.id} - ${noti?.type}');
-                        return NotificationItemWidget(
+                        return NotificationItem(
                           notification: noti,
                           onDismissed: (notification) {
                             setState(() {

@@ -6,7 +6,7 @@ import '../controllers/settings_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/PaymentSettingsDialog.dart';
 import '../widgets/ProfileSettingsDialog.dart';
-import '../widgets/SearchBarWidget.dart';
+import '../widgets/SearchBar.dart';
 import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
 import '../helpers/ui_icons.dart';
@@ -49,7 +49,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(),
+                      child: SearchBar(),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

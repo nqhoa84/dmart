@@ -4,13 +4,13 @@ import '../../src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../src/models/product.dart';
-import '../../src/widgets/ProductGridItemWidget.dart';
+import '../../src/widgets/ProductItemHigh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'CircularLoadingWidget.dart';
 import '../../src/widgets/ProductsGridLoadingWidget.dart';
-import 'DmProductItem.dart';
+import 'ProductItemWide.dart';
 
 class DmCategorizedProductsWidget extends StatefulWidget {
 
@@ -62,7 +62,7 @@ class _CategorizedProductsWidget extends StateMVC<DmCategorizedProductsWidget>{
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      child: DmProductItem(
+                      child: ProductItemWide(
                         product: product,
                         heroTag: 'categorized_products_grid',
 //                        amountInCart: 10,
@@ -101,7 +101,7 @@ class _CategorizedProductsWidget extends StateMVC<DmCategorizedProductsWidget>{
                 margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                 height: 200,
                 width: 200*2.0,
-                child: ProductGridItemWidget(
+                child: ProductItemHigh(
                   product: product,
                   heroTag: 'categorized_products_grid',
                 ),

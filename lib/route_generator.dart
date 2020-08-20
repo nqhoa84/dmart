@@ -1,34 +1,71 @@
-import 'src/screens/reviews.dart';
+import 'package:flutter/material.dart';
+import 'src/models/route_argument.dart';
+import 'src/screens/brand.dart';
+import 'src/screens/brands.dart';
 import 'src/screens/cart.dart';
+import 'src/screens/categories.dart';
+import 'src/screens/category.dart';
 import 'src/screens/checkout.dart';
 import 'src/screens/debug.dart';
 import 'src/screens/delivery_addresses.dart';
 import 'src/screens/delivery_pickup.dart';
 import 'src/screens/forget_password.dart';
+import 'src/screens/help.dart';
 import 'src/screens/order_success.dart';
+import 'src/screens/pages.dart';
 import 'src/screens/payment_methods.dart';
 import 'src/screens/paypal_payment.dart';
-import 'src/screens/tracking.dart';
-import 'src/screens/help.dart';
-import 'src/screens/languages.dart';
-import 'src/screens/brand.dart';
-import 'src/screens/categories.dart';
-import 'src/screens/category.dart';
-import 'src/models/route_argument.dart';
-import 'src/screens/pages.dart';
-import 'src/screens/product.dart';
+import 'src/screens/product_detail.dart';
+import 'src/screens/razorpay_payment.dart';
+import 'src/screens/reviews.dart';
 import 'src/screens/settings.dart';
 import 'src/screens/signin.dart';
 import 'src/screens/signup.dart';
+import 'src/screens/special_4U.dart';
 import 'src/screens/splash_screen.dart';
-import 'src/screens/brands.dart';
-import 'package:flutter/material.dart';
-import 'src/screens/razorpay_payment.dart';
-
-
-
+import 'src/screens/tracking.dart';
 
 class RouteGenerator {
+  static void gotoHome(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+  }
+
+  static void gotoCategories(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+  }
+  static void gotoPromotions(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+  }
+  static void gotoNotifications(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+  }
+  static void gotoMenu(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 4);
+  }
+  static void gotoMyFavorites(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyFavorites')
+    : Navigator.of(context).pushNamed('/MyFavorites');
+  }
+  static void gotoMyOrders(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders') : Navigator.of(context).pushNamed('/MyOrders');
+  }
+
+  static void gotoCart(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Cart', arguments: RouteArgument())
+        : Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument()) ;
+  }
+
+  static gotoSpecial4U(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Special4U', arguments: RouteArgument())
+        : Navigator.of(context).pushNamed('/Special4U', arguments: RouteArgument()) ;
+  }
+
+  static gotoHelp(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Help', arguments: RouteArgument())
+        : Navigator.of(context).pushNamed('/Help', arguments: RouteArgument()) ;
+  }
+
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
@@ -48,7 +85,7 @@ class RouteGenerator {
       case '/ForgetPassword':
         return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
       case '/Pages':
-        return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args));
+        return MaterialPageRoute(builder: (_) => PagesScreen(currentTab: args));
 
       /*case '/Details':
         return MaterialPageRoute(builder: (_) => DetailsWidget(routeArgument: args as RouteArgument));
@@ -56,7 +93,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => MenuWidget(routeArgument: args as RouteArgument));
       */
       case '/Product':
-        return MaterialPageRoute(builder: (_) => ProductWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
       case '/Brand':
         return MaterialPageRoute(builder: (_) => BrandWidget(routeArgument: args as RouteArgument));
       case '/Brands':
@@ -92,15 +129,21 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
       case '/OrderSuccess':
         return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: args as RouteArgument));
-      case '/Languages':
-        return MaterialPageRoute(builder: (_) => LanguagesWidget());
       case '/Help':
-        return MaterialPageRoute(builder: (_) => HelpWidget());
+        return MaterialPageRoute(builder: (_) => HelpScreen());
       case '/Settings':
+        return MaterialPageRoute(builder: (_) => SettingsWidget());
+
+      case '/Special4U':
+        return MaterialPageRoute(builder: (_) => Special4UScreen());
+      case '/Special4U':
         return MaterialPageRoute(builder: (_) => SettingsWidget());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => Scaffold(body: SizedBox(height: 0)));
     }
   }
+
+
+
 }

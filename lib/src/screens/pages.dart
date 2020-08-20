@@ -1,13 +1,12 @@
-
-
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/repository/user_repository.dart';
-import 'package:dmart/src/widgets/CategoryGridWidget.dart';
+import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DmCategoriesWidget.dart';
+import 'package:dmart/src/widgets/BottomRightMenu.dart';
 import 'package:dmart/src/widgets/DmPromotionGroupsWidget.dart';
-import 'package:dmart/src/widgets/SearchBarWidget.dart';
+import 'package:dmart/src/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import '../../buidUI.dart';
 import '../../constant.dart';
@@ -21,15 +20,13 @@ import '../screens/orders.dart';
 import '../screens/favorites.dart';
 import '../../src/helpers/ui_icons.dart';
 
-
-
-class PagesWidget extends StatefulWidget {
+class PagesScreen extends StatefulWidget {
   dynamic currentTab;
   RouteArgument routeArgument;
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   Widget currentPage = HomeWidget();
 
-  PagesWidget({
+  PagesScreen({
     Key key,
     this.currentTab,
   }) {
@@ -44,26 +41,25 @@ class PagesWidget extends StatefulWidget {
   }
 
   @override
-  _PagesWidgetState createState() {
-    return _PagesWidgetState();
+  _PagesScreenState createState() {
+    return _PagesScreenState();
   }
 }
 
-class _PagesWidgetState extends State<PagesWidget> {
+class _PagesScreenState extends State<PagesScreen> {
   initState() {
     super.initState();
     _selectTab(widget.currentTab);
   }
 
   @override
-  void didUpdateWidget(PagesWidget oldWidget) {
+  void didUpdateWidget(PagesScreen oldWidget) {
     _selectTab(oldWidget.currentTab);
     super.didUpdateWidget(oldWidget);
   }
 
   void _selectTab(int tabItem) {
     setState(() {
-
       widget.currentTab = tabItem;
       switch (tabItem) {
         case 0:
@@ -86,9 +82,9 @@ class _PagesWidgetState extends State<PagesWidget> {
 
         case 4:
           //TODO must be Menu(personal)Widget
-          widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = BottomRightMenu(parentScaffoldKey: widget.scaffoldKey);
+//          widget.scaffoldKey.currentState.openDrawer();
           break;
-
       }
     });
   }
@@ -103,13 +99,11 @@ class _PagesWidgetState extends State<PagesWidget> {
         drawer: DrawerWidget(),
 
         endDrawer: FilterWidget(onFilter: (filter) {
-          Navigator.of(context).pushReplacementNamed('/Pages',
-              arguments: widget.currentTab);
+          Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
         }),
         body: widget.currentPage,
 //        bottomNavigationBar: _bottomBar(),
-        bottomNavigationBar: DmBottomNavigationBar(currentIndex: widget.currentTab,
-        onTap: this._selectTab),
+        bottomNavigationBar: DmBottomNavigationBar(currentIndex: widget.currentTab, onTap: this._selectTab),
       ),
     );
   }
@@ -126,17 +120,12 @@ class _PagesWidgetState extends State<PagesWidget> {
               color: DmConst.homePromotionColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('$title',
-                    textAlign: TextAlign.right),
+                child: Text('$title', textAlign: TextAlign.right),
               )),
         ),
       ],
     );
   }
-
-
-
-
 
   Widget _bottomBar() {
     return BottomNavigationBar(
@@ -176,8 +165,7 @@ class _PagesWidgetState extends State<PagesWidget> {
                 boxShadow: [
                   BoxShadow(
                       color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 15)),
-                  BoxShadow(
-                      color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 13, offset: Offset(0, 3))
+                  BoxShadow(color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 13, offset: Offset(0, 3))
                 ],
               ),
               child: new Icon(UiIcons.home, color: Theme.of(context).primaryColor),

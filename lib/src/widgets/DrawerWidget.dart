@@ -13,7 +13,6 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends StateMVC<DrawerWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,14 +20,14 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              currentUser.value.apiToken != null ?
-              Navigator.of(context).pushNamed('/Pages',arguments: 1) :
-              Navigator.of(context).pushNamed('/Login');
+              currentUser.value.apiToken != null
+                  ? Navigator.of(context).pushNamed('/Pages', arguments: 1)
+                  : Navigator.of(context).pushNamed('/Login');
             },
             child: currentUser.value.apiToken != null
                 ? UserAccountsDrawerHeader(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).hintColor.withOpacity(0.1),
+                      color: Theme.of(context).hintColor.withOpacity(0.1)
                     ),
                     accountName: Text(
                       currentUser.value.name,
@@ -36,7 +35,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     accountEmail: Text(
                       currentUser.value.email,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.caption
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Theme.of(context).accentColor,
@@ -53,12 +52,12 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                         Icon(
                           Icons.person,
                           size: 32,
-                          color: Theme.of(context).accentColor.withOpacity(1),
+                          color: Theme.of(context).accentColor.withOpacity(1)
                         ),
                         SizedBox(width: 30),
                         Text(
                           S.of(context).guest,
-                          style: Theme.of(context).textTheme.title,
+                          style: Theme.of(context).textTheme.headline6
                         ),
                       ],
                     ),
@@ -219,7 +218,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             onTap: () {
               if (currentUser.value.apiToken != null) {
                 logout().then((value) {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
                 });
               } else {
                 Navigator.of(context).pushNamed('/Login');

@@ -6,7 +6,6 @@ import '../models/cart.dart';
 import '../repository/cart_repository.dart';
 import '../repository/user_repository.dart';
 
-
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
   double taxAmount = 0.0;
@@ -20,8 +19,8 @@ class CartController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-
   void listenForCarts({String message}) async {
+    return;
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
       if (!carts.contains(_cart)) {
@@ -78,8 +77,8 @@ class CartController extends ControllerMVC {
 
   void calculateSubtotal() async {
     subTotal = 0;
-    total=0;
-    taxAmount=0;
+    total = 0;
+    taxAmount = 0;
     carts.forEach((cart) {
       subTotal += cart.quantity * cart.product.price; //if(cart.product.store.)
       if (Helper.canDelivery(carts: carts)) {
@@ -95,7 +94,7 @@ class CartController extends ControllerMVC {
   }
 
   incrementQuantity(Cart cart) {
-    if (cart.quantity <double.parse(cart.product.itemsAvailable)){
+    if (cart.quantity < double.parse(cart.product.itemsAvailable)) {
       ++cart.quantity;
       updateCart(cart);
       calculateSubtotal();
@@ -123,7 +122,7 @@ class CartController extends ControllerMVC {
         ),
       ));
     } else {
-        Navigator.of(context).pushNamed('/DeliveryPickup');
-      }
+      Navigator.of(context).pushNamed('/DeliveryPickup');
+    }
   }
 }

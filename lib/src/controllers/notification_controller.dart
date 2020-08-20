@@ -75,8 +75,8 @@ class NotificationController extends ControllerMVC {
     setState(() {
       this.notifications.remove(_notification);
     });
-    removeNotification(_notification).then((value) {
-      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(S.of(context).this_notification_was_removed)));
-    });
+//    removeNotification(_notification).then((value) {
+//      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(S.of(context).this_notification_was_removed)));
+//    });
   }
 }

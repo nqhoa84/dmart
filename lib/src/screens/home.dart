@@ -1,27 +1,17 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/user.dart';
-import 'package:dmart/src/widgets/DmTopBar.dart';
-
-import '../../src/widgets/BrandsIconsCarouselLoadingWidget.dart';
 
 import '../../src/widgets/ProductsGridLoadingWidget.dart';
-import '../../src/widgets/CategoriesIconsCarouselLoadingWidget.dart';
 import '../widgets/BrandedProductsWidget.dart';
 import '../widgets/DeliveryAddressBottomSheetWidget.dart';
 import '../../generated/l10n.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 import '../../src/controllers/home_controller.dart';
 import '../../src/helpers/ui_icons.dart';
-import '../../src/widgets/BrandsIconsCarouselWidget.dart';
-import '../../src/widgets/CategoriesIconsCarouselWidget.dart';
 import '../../src/widgets/DmCategorizedProductsWidget.dart';
-import '../../src/widgets/FlashSalesCarouselWidget.dart';
-import '../../src/widgets/FlashSalesWidget.dart';
-import '../../src/widgets/HomeSliderWidget.dart';
-import '../../src/widgets/SearchBarWidget.dart';
+import '../../src/widgets/DmHomeSlider.dart';
+import '../../src/widgets/SearchBar.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
 
@@ -77,8 +67,8 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              _createHeader(S.of(context).homePromotion),
-              HomeSliderWidget(),
+              _createHeader(S.of(context).promotions),
+              DmHomeSlider(),
 //              FlashSalesHeaderWidget(),
 //              _createHeader(S.of(context).trending_this_week),
 //              _con.categorySelected == null
@@ -227,7 +217,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
               Divider(height: 4, thickness: 2, color: DmConst.primaryColor),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-                child: SearchBarWidget(onClickFilter: (event) {
+                child: SearchBar(onClickFilter: (event) {
                   widget.parentScaffoldKey.currentState.openEndDrawer();
                 }),
               ),
@@ -261,7 +251,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(user.name ?? S.of(context).unknown),
-              Text('${S.of(context).topBar_credit}: ${currentUser.value.credit}',
+              Text('${S.of(context).credit}: ${currentUser.value.credit}',
                   style: TextStyle(color: DmConst.textColorForTopBarCredit)),
             ],
           ),
@@ -279,7 +269,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(S.of(context).guest),
-              Text('${S.of(context).topBar_credit}:'),
+              Text('${S.of(context).credit}:'),
             ],
           ),
         ],

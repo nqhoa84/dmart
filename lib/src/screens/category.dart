@@ -7,7 +7,7 @@ import '../../src/models/category.dart';
 import '../../src/models/route_argument.dart';
 import '../../src/widgets/CategoryHomeTabWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
-import '../../src/widgets/ProductsByCategoryWidget.dart';
+import '../../src/widgets/ProductsByCategory.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
 import '../../src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class _CategoryWidgetState extends State<CategoryWidget>
         ),
         SliverList(
           delegate: SliverChildListDelegate([
-            ProductsByCategoryWidget(category: widget._category)
+            ProductsByCategory(category: widget._category)
           ]),
         )
       ]),

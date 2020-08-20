@@ -3,12 +3,12 @@ import '../../src/controllers/product_controller.dart';
 import '../../src/models/brand.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/models/product.dart';
-import '../../src/widgets/ProductGridItemWidget.dart';
+import '../../src/widgets/ProductItemHigh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'CircularLoadingWidget.dart';
-import 'DmProductItem.dart';
+import 'ProductItemWide.dart';
 import 'ProductsGridLoadingWidget.dart';
 class BrandedProductsWidget extends StatefulWidget {
 
@@ -61,7 +61,7 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
                 child: Container(
 //                  height: 100,
 //                  width: 100*550/192,
-                  child: DmProductItem(
+                  child: ProductItemWide(
                     product: product,
                     heroTag: 'branded_products_grid',
 //                        amountInCart: 10,
@@ -88,7 +88,7 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
           itemCount: _con.brandsProducts.length,
           itemBuilder: (BuildContext context, int index) {
             Product product = _con.brandsProducts.elementAt(index);
-            return ProductGridItemWidget(
+            return ProductItemHigh(
               product: product,
               heroTag: 'branded_products_grid',
             );

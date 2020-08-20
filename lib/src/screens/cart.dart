@@ -1,3 +1,7 @@
+import 'package:dmart/buidUI.dart';
+import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+
+import '../../DmState.dart';
 import '../../src/helpers/ui_icons.dart';
 import '../../src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +10,13 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../widgets/CartItemWidget.dart';
-import '../widgets/EmptyCartWidget.dart';
+import '../widgets/EmptyCart.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 
 class CartWidget extends StatefulWidget {
   final RouteArgument routeArgument;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   CartWidget({Key key, this.routeArgument}) : super(key: key);
 
   @override
@@ -37,51 +42,12 @@ class _CartWidgetState extends StateMVC<CartWidget> {
       onWillPop: () async => false,
       child: Scaffold(
         key: _con.scaffoldKey,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: new IconButton(
-            icon: new Icon(
-                UiIcons.return_icon,
-                color: Theme.of(context).hintColor),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            S.of(context).cart,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
-          ),
-          actions: <Widget>[
-            Container(
-              width: 30,
-              height: 30,
-              margin: EdgeInsetsDirectional.only(top: 12.5, bottom: 12.5, end: 20),
-              //margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(300),
-                onTap: () {
-                  currentUser.value.apiToken != null
-                      ? Navigator.of(context).pushNamed('/Pages',arguments: 1)
-                      : Navigator.of(context).pushNamed('/Login');
-                },
-                child: currentUser.value.apiToken != null
-                    ? CircleAvatar(
-                  backgroundImage: NetworkImage(currentUser.value.image.thumb),
-                )
-                    :Icon(
-                  Icons.person,
-                  size: 26,
-                  color: Theme.of(context).accentColor.withOpacity(1),
-                ),
-              ),
-            ),
-          ],
-        ),
+        appBar: createAppBar(context, widget.scaffoldKey),
+        bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
         body: RefreshIndicator(
           onRefresh: _con.refreshCarts,
           child: _con.carts.isEmpty
-              ? EmptyCartWidget()
+              ? EmptyCart()
               : Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -133,16 +99,13 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   heroTag: 'cart',
                                   taxAmount: _con.taxAmount,
                                   increment: () {
-                                    _con.incrementQuantity(
-                                        _con.carts.elementAt(index));
+                                    _con.incrementQuantity(_con.carts.elementAt(index));
                                   },
                                   decrement: () {
-                                    _con.decrementQuantity(
-                                        _con.carts.elementAt(index));
+                                    _con.decrementQuantity(_con.carts.elementAt(index));
                                   },
                                   onDismissed: () {
-                                    _con.removeFromCart(
-                                        _con.carts.elementAt(index));
+                                    _con.removeFromCart(_con.carts.elementAt(index));
                                   },
                                 );
 
@@ -173,8 +136,14 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                            boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+                            borderRadius:
+                                BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Theme.of(context).focusColor.withOpacity(0.15),
+                                  offset: Offset(0, -2),
+                                  blurRadius: 5.0)
+                            ]),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 40,
                           child: Column(
@@ -224,7 +193,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                     width: MediaQuery.of(context).size.width - 40,
                                     child: FlatButton(
                                       onPressed: () {
-                                          _con.goCheckout(context);
+                                        _con.goCheckout(context);
                                       },
                                       disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                       padding: EdgeInsets.symmetric(vertical: 14),
@@ -242,7 +211,10 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                     child: Helper.getPrice(
                                       _con.total,
                                       context,
-                                      style: Theme.of(context).textTheme.display1.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .display1
+                                          .merge(TextStyle(color: Theme.of(context).primaryColor)),
                                     ),
                                   )
                                 ],

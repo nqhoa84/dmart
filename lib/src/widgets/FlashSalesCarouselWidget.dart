@@ -2,7 +2,7 @@ import '../../src/models/product.dart';
 import '../../src/widgets/FlashSalesCarouselItemWidget.dart';
 import 'package:flutter/material.dart';
 
-import 'DmProductItem.dart';
+import 'ProductItemWide.dart';
 import 'ProductsCarouselLoaderWidget.dart';
 import 'ProductsGridLoadingWidget.dart';
 

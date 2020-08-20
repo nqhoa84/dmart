@@ -4,9 +4,9 @@ import '../../src/widgets/CircularLoadingWidget.dart';
 import '../../generated/l10n.dart';
 import '../repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../../src/widgets/CategoryGridWidget.dart';
+import '../../src/widgets/CategoriesGrid.dart';
 import '../../src/widgets/DrawerWidget.dart';
-import '../../src/widgets/SearchBarWidget.dart';
+import '../../src/widgets/SearchBar.dart';
 import '../../src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:flutter/material.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -88,13 +88,13 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SearchBarWidget(
+              child: SearchBar(
                 onClickFilter: (event) {
                   _con.scaffoldKey.currentState.openEndDrawer();
                 },
               ),
             ),
-            CategoryGridWidget(categories: _con.categories),
+            CategoriesGrid(categories: _con.categories),
           ],
         ),
       ),

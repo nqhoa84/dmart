@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../widgets/PaymentMethodListItemWidget.dart';
-import '../widgets/SearchBarWidget.dart';
+import '../widgets/SearchBar.dart';
 import '../widgets/ShoppingCartButtonWidget.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
@@ -69,7 +69,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SearchBarWidget(),
+              child: SearchBar(),
             ),
             SizedBox(height: 15),
             list.paymentsList.length > 0

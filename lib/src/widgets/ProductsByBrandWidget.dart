@@ -1,3 +1,5 @@
+import 'package:dmart/src/widgets/ProductItemWide.dart';
+
 import '../../generated/l10n.dart';
 import '../../src/controllers/brand_controller.dart';
 import '../../src/controllers/product_controller.dart';
@@ -7,12 +9,10 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../helpers/ui_icons.dart';
 import '../../src/models/brand.dart';
 import '../../src/models/product.dart';
-import '../../src/widgets/ProductGridItemWidget.dart';
-import '../../src/widgets/SearchBarWidget.dart';
+import '../../src/widgets/ProductItemHigh.dart';
+import '../../src/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import 'ProductListItemWidget.dart';
 
 class ProductsByBrandWidget extends StatefulWidget {
   Brand brand;
@@ -42,7 +42,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: SearchBarWidget(
+          child: SearchBar(
             onClickFilter: (event) {
               _con.scaffoldKey.currentState.openEndDrawer();
             },
@@ -55,7 +55,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
             contentPadding: EdgeInsets.symmetric(vertical: 0),
             leading: Icon(
               UiIcons.box,
-              color: Theme.of(context).hintColor,
+              color: Theme.of(context).hintColor
             ),
             title: Text(
               '${widget.brand.name}'+' '+S.of(context).products,
@@ -105,7 +105,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
             itemBuilder: (context, index) {
               // TODO replace with products list item
               Product product = _con.brandsProducts.elementAt(index);
-              return  ProductListItemWidget(
+              return  ProductItemWide(
                 heroTag: 'products_by_brand_list',
                 product: product,
               );
@@ -123,7 +123,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
               itemCount: _con.brandsProducts.length,
               itemBuilder: (BuildContext context, int index) {
                 Product product = _con.brandsProducts.elementAt(index);
-                return ProductGridItemWidget(
+                return ProductItemHigh(
                   product: product,
                   heroTag: 'products_by_brand_grid',
                 );

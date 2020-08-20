@@ -7,8 +7,8 @@ import '../controllers/favorite_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/FavoriteGridItemWidget.dart';
 import '../widgets/FavoriteListItemWidget.dart';
-import '../widgets/PermissionDeniedWidget.dart';
-import '../widgets/SearchBarWidget.dart';
+import '../widgets/DmPermissionDenied.dart';
+import '../widgets/SearchBar.dart';
 import '../widgets/ShoppingCartButtonWidget.dart';
 import '../repository/user_repository.dart';
 
@@ -57,7 +57,7 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
         ],
       ),
       body: currentUser.value.apiToken == null
-          ? PermissionDeniedWidget()
+          ? DmPermissionDenied()
           : RefreshIndicator(
               onRefresh: _con.refreshFavorites,
               child: SingleChildScrollView(
@@ -69,7 +69,7 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(onClickFilter: (e) {
+                      child: SearchBar(onClickFilter: (e) {
                         widget.parentScaffoldKey.currentState.openEndDrawer();
                       }),
                     ),

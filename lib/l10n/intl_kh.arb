@@ -1,4 +1,7 @@
 {
+  "socialNetwork": "Social network",
+  "hotline": "Hotline",
+  "generalErrorMessage": "Some errors occurred, sorry for your inconvenience.",
   "product": "Product",
   "products": "Products",
   "detail": "Detail",

@@ -12,16 +12,16 @@ import 'package:flutter/material.dart';
 import '../controllers/slider_controller.dart';
 import 'CardsCarouselLoaderWidget.dart';
 
-class DmHomeSlider extends StatefulWidget {
+class HomePromotionsSlider extends StatefulWidget {
   @override
-  _DmHomeSliderState createState() => _DmHomeSliderState();
+  _HomePromotionsSliderState createState() => _HomePromotionsSliderState();
 }
 
-class _DmHomeSliderState extends StateMVC<DmHomeSlider> {
+class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
   int _current = 0;
   SliderController _con;
 
-  _DmHomeSliderState() : super(SliderController()) {
+  _HomePromotionsSliderState() : super(SliderController()) {
     _con = controller;
   }
 
@@ -56,7 +56,7 @@ class _DmHomeSliderState extends StateMVC<DmHomeSlider> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(
-                                    slide.image.url,
+                                    slide.image.url
                                   ),
                                   fit: BoxFit.cover),
                               borderRadius: BorderRadius.circular(6),

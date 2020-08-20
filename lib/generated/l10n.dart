@@ -33,6 +33,36 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Social network`
+  String get socialNetwork {
+    return Intl.message(
+      'Social network',
+      name: 'socialNetwork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hotline`
+  String get hotline {
+    return Intl.message(
+      'Hotline',
+      name: 'hotline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some errors occurred, sorry for your inconvenience.`
+  String get generalErrorMessage {
+    return Intl.message(
+      'Some errors occurred, sorry for your inconvenience.',
+      name: 'generalErrorMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Product`
   String get product {
     return Intl.message(

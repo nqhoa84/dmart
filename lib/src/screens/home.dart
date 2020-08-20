@@ -9,8 +9,8 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 import '../../src/controllers/home_controller.dart';
 import '../../src/helpers/ui_icons.dart';
-import '../../src/widgets/DmCategorizedProductsWidget.dart';
-import '../../src/widgets/DmHomeSlider.dart';
+import '../../src/widgets/HomeProductsByCategory.dart';
+import '../../src/widgets/HomePromotionsSlider.dart';
 import '../../src/widgets/SearchBar.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
@@ -38,7 +38,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
     _con.listenForTrendingProducts();
     _con.listenForCategories();
     _con.listenForBrands();
-    animationController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    animationController = AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
     CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
@@ -68,7 +68,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               _createHeader(S.of(context).promotions),
-              DmHomeSlider(),
+              HomePromotionsSlider(),
 //              FlashSalesHeaderWidget(),
 //              _createHeader(S.of(context).trending_this_week),
 //              _con.categorySelected == null
@@ -83,7 +83,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
               ),
               _con.categorySelected == null
                   ? ProductsGridLoadingWidget()
-                  : DmCategorizedProductsWidget(animationOpacity: animationOpacity, category: _con.categorySelected),
+                  : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
               // Heading (Brands)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),

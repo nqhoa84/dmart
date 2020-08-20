@@ -14,28 +14,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DmPromotionGroupsWidget extends StatefulWidget {
+class PromotionGroups extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
 
 //  final List<Category> categories;
 
-  const DmPromotionGroupsWidget(
+  const PromotionGroups(
       {Key key,
 //    this.categories,
       this.parentScaffoldKey})
       : super(key: key);
 
   @override
-  _DmPromotionGroupsWidgetState createState() => _DmPromotionGroupsWidgetState();
+  _PromotionGroupsState createState() => _PromotionGroupsState();
 }
 
-class _DmPromotionGroupsWidgetState extends StateMVC<DmPromotionGroupsWidget> with SingleTickerProviderStateMixin {
+class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerProviderStateMixin {
   PromotionController _con;
 
   //Todo change to PromotionGroup class
   List<Category> promoGroups = [];
 
-  _DmPromotionGroupsWidgetState() : super(PromotionController()) {
+  _PromotionGroupsState() : super(PromotionController()) {
     _con = controller;
   }
 

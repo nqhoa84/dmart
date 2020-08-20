@@ -6,7 +6,7 @@ import '../controllers/profile_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/DrawerWidget.dart';
 import '../widgets/OrderItemWidget.dart';
-import '../widgets/DmPermissionDenied.dart';
+import '../widgets/PermissionDenied.dart';
 import '../widgets/ProfileAvatarWidget.dart';
 import '../widgets/ShoppingCartButtonWidget.dart';
 import '../repository/user_repository.dart';
@@ -63,7 +63,7 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
         ],
       ),
       body: currentUser.value.apiToken == null
-          ? DmPermissionDenied()
+          ? PermissionDenied()
           : SingleChildScrollView(
 //              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
         child: Column(

@@ -1,12 +1,11 @@
+import 'package:dmart/DmState.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/repository/user_repository.dart';
-import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/DmCategoriesWidget.dart';
+import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/BottomRightMenu.dart';
-import 'package:dmart/src/widgets/DmPromotionGroupsWidget.dart';
-import 'package:dmart/src/widgets/SearchBar.dart';
+import 'package:dmart/src/widgets/PromotionGroups.dart';
 import 'package:flutter/material.dart';
 import '../../buidUI.dart';
 import '../../constant.dart';
@@ -14,10 +13,7 @@ import '../Widgets/DrawerWidget.dart';
 import '../widgets/FilterWidget.dart';
 import '../models/route_argument.dart';
 import '../screens/home.dart';
-import '../screens/account.dart';
 import '../screens/notifications.dart';
-import '../screens/orders.dart';
-import '../screens/favorites.dart';
 import '../../src/helpers/ui_icons.dart';
 
 class PagesScreen extends StatefulWidget {
@@ -58,32 +54,30 @@ class _PagesScreenState extends State<PagesScreen> {
     super.didUpdateWidget(oldWidget);
   }
 
-  void _selectTab(int tabItem) {
+  void _selectTab(int tabIndex) {
     setState(() {
-      widget.currentTab = tabItem;
-      switch (tabItem) {
+      DmState.bottomBarSelectedIndex = tabIndex;
+      widget.currentTab = tabIndex;
+      switch (tabIndex) {
         case 0:
           widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
 
         case 1:
-          //TODO must be CategoriesWidget
 //          widget.currentPage = AccountWidget(parentScaffoldKey: widget.scaffoldKey);
 //          break;
-          widget.currentPage = DmCategoriesWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 2:
 //          widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
-          widget.currentPage = DmPromotionGroupsWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = PromotionGroups(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 3:
           widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
 
         case 4:
-          //TODO must be Menu(personal)Widget
           widget.currentPage = BottomRightMenu(parentScaffoldKey: widget.scaffoldKey);
-//          widget.scaffoldKey.currentState.openDrawer();
           break;
       }
     });

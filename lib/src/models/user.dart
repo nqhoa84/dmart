@@ -5,7 +5,8 @@ class User {
   String name;
   String email;
   String password;
-  String apiToken;
+  String apiToken = 'acmdOkB9kdh0SuFaopN7TYoSWCCTlihqU9INjumwqGjdDgbUGY88zOhG6Xkm';
+//  String apiToken;
   String deviceToken;
   String phone;
   String address;

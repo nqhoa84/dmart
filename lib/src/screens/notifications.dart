@@ -1,6 +1,6 @@
 import '../../generated/l10n.dart';
 import '../../src/repository/user_repository.dart';
-import '../../src/widgets/DmPermissionDenied.dart';
+import '../../src/widgets/PermissionDenied.dart';
 import '../../src/widgets/ShoppingCartButtonWidget.dart';
 
 import '../controllers/notification_controller.dart';
@@ -42,7 +42,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
     return Scaffold(
       key:_con.scaffoldKey,
         body: currentUser.value.isLogin == true
-        ? DmPermissionDenied()
+        ? PermissionDenied()
         : RefreshIndicator(
             onRefresh: _con.refreshNotifications,
             child:SingleChildScrollView(

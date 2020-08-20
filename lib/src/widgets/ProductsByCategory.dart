@@ -29,7 +29,6 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _con.listenForProductsByCategory(id: widget.category.id);
     super.initState();
   }
@@ -79,7 +78,7 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
           offstage: this.layout != 'list',
           child: _con.categoriesProducts.isEmpty
               ? CircularLoadingWidget(
-                  height: 200,
+                  height: 200
                 )
 //            : ListView.separated(
 //            scrollDirection: Axis.vertical,

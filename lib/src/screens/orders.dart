@@ -6,7 +6,7 @@ import '../../generated/l10n.dart';
 import '../controllers/order_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/OrderItemWidget.dart';
-import '../widgets/DmPermissionDenied.dart';
+import '../widgets/PermissionDenied.dart';
 import '../widgets/ShoppingCartButtonWidget.dart';
 import '../repository/user_repository.dart';
 

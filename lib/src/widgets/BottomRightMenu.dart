@@ -19,7 +19,7 @@ class BottomRightMenu extends StatefulWidget {
 }
 
 class _BottomRightMenuState extends StateMVC<BottomRightMenu> {
-  static const double _iconSize = 30.0;
+  static const double _iconSize = 25.0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +36,25 @@ class _BottomRightMenuState extends StateMVC<BottomRightMenu> {
             ),
           ),
           ListTile(
+//            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
             onTap: () => RouteGenerator.gotoHome(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_Shop_All_Groceries.png'), color: DmConst.primaryColor),
-            leading: Image.asset('assets/img/M_Shop_All_Groceries.png', width: _iconSize, fit: BoxFit.scaleDown),
+            leading: Image.asset('assets/img/M_Shop_All_Groceries.png', width: _iconSize, height: _iconSize,
+                fit: BoxFit.scaleDown),
             title: Text(S.of(context).shopAllGroceries),
           ),
           ListTile(
             onTap: () => RouteGenerator.gotoPromotions(context),
 //            leading: ImageIcon(AssetImage('assets/img/F_Promotion_01.png'), color: DmConst.primaryColor),
-            leading: Image.asset('assets/img/F_Promotion_01.png', width: _iconSize, fit: BoxFit.scaleDown),
+            leading: Image.asset('assets/img/F_Promotion_01.png', width: _iconSize, height: _iconSize,
+                fit: BoxFit.scaleDown),
             title: Text(S.of(context).promotions),
           ),
           ListTile(
             onTap: () => RouteGenerator.gotoMyFavorites(context),
 //            leading: Icon(UiIcons.favorites, color: DmConst.primaryColor),
-            leading: Image.asset('assets/img/Favourite.png', width: _iconSize, fit: BoxFit.scaleDown),
+            leading: Image.asset('assets/img/Favourite.png', width: _iconSize, height: _iconSize,
+                fit: BoxFit.scaleDown),
             title: Text(S.of(context).myFavorite),
           ),
           ListTile(
@@ -88,13 +92,7 @@ class _BottomRightMenuState extends StateMVC<BottomRightMenu> {
             title: Text(S.of(context).myAccount),
           ),
           ListTile(
-            onTap: () {
-              if (currentUser.value.isLogin) {
-                Navigator.of(context).pushNamed('/Settings');
-              } else {
-                Navigator.of(context).pushReplacementNamed('/Login');
-              }
-            },
+            onTap: () => RouteGenerator.gotoContactUs(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_Contact_us.png'), color: DmConst.primaryColor),
             leading: Image.asset('assets/img/M_Contact_us.png', width: _iconSize, fit: BoxFit.scaleDown),
             title: Text(S.of(context).contactUs),

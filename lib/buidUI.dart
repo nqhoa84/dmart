@@ -69,7 +69,7 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  child: _createUserInfoRowOnTopBar(context, user)
+                    child: _createUserInfoRowOnTopBar(context, user)
                 ),
                 InkWell(
                   onTap: () => RouteGenerator.gotoHome(context),
@@ -82,9 +82,9 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
                     child: InkWell(
                       onTap: () => RouteGenerator.gotoCart(context),
                       child: Container(
-                        padding: EdgeInsets.only(right: 30),
-                        height: 40,
-                        child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown)
+                          padding: EdgeInsets.only(right: 30),
+                          height: 40,
+                          child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown)
                       ),
                     ),
                   ),
@@ -112,7 +112,7 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
         CircleAvatar(
           backgroundColor: Colors.transparent,
           child: Image.network(
-            user.image?.thumb,
+            '${user.image?.thumb}',
             loadingBuilder: (ctx, wid, event) {
               return Center(child: CircularProgressIndicator());
             },
@@ -127,8 +127,12 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(user.name ?? S.of(context).unknown),
-            Text('${S.of(context).credit}: ${currentUser.value.credit}',
+            Text(user.name ?? S
+                .of(context)
+                .unknown),
+            Text('${S
+                .of(context)
+                .credit}: ${currentUser.value.credit}',
                 style: TextStyle(color: DmConst.textColorForTopBarCredit)),
           ],
         ),
@@ -145,11 +149,37 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).guest),
-            Text('${S.of(context).credit}:'),
+            Text(S
+                .of(context)
+                .guest),
+            Text('${S
+                .of(context)
+                .credit}:'),
           ],
         ),
       ],
     );
   }
+}
+
+Widget createSilverAppBar(BuildContext context, {bool haveBackIcon = true, String title = ''}) {
+  return SliverAppBar(
+    toolbarHeight: DmConst.appBarHeight * 0.7,
+    snap: true,
+    floating: true,
+    automaticallyImplyLeading: false,
+    leading: haveBackIcon ?
+    new IconButton(
+      icon: new Icon(UiIcons.return_icon),
+      onPressed: () => Navigator.of(context).pop(),
+    )
+        : Container(),
+    actions: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Center(child: Text('$title')),
+      )
+    ],
+    backgroundColor: DmConst.primaryColor,
+  );
 }

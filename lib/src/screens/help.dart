@@ -9,7 +9,7 @@ import '../../generated/l10n.dart';
 import '../controllers/faq_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/DrawerWidget.dart';
-import '../widgets/FaqItemWidget.dart';
+import '../widgets/FaqItem.dart';
 import '../widgets/SearchBar.dart';
 import '../widgets/ShoppingCartButtonWidget.dart';
 
@@ -76,7 +76,7 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
                               return SizedBox(height: 15);
                             },
                             itemBuilder: (context, indexFaq) {
-                              return FaqItemWidget(faq: _con.faqs.elementAt(index).faqs.elementAt(indexFaq));
+                              return FaqItem(faq: _con.faqs.elementAt(index).faqs.elementAt(indexFaq));
                             },
                           ),
                         ],

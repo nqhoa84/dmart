@@ -5,7 +5,7 @@ import '../../src/widgets/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/models/category.dart';
 import '../../src/widgets/FlashSalesCarouselWidget.dart';
-import '../../src/widgets/DmHomeSlider.dart';
+import '../../src/widgets/HomePromotionsSlider.dart';
 import 'package:flutter/material.dart';
 
 import 'FlashSalesWidget.dart';
@@ -43,7 +43,7 @@ class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
             ),
           ),
         ),
-        DmHomeSlider(),
+        HomePromotionsSlider(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ListTile(

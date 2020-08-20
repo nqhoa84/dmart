@@ -9,7 +9,7 @@ class Category {
   String description;
   bool selected=false;
 
-  Category();
+  Category({this.id = '', this.name = '', this.description=''});
 
   Category.fromJSON(Map<String, dynamic> jsonMap) {
     try {

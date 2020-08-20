@@ -1,4 +1,8 @@
 //import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dmart/DmState.dart';
+import 'package:dmart/constant.dart';
+import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+
 import '../../buidUI.dart';
 import '../../src/repository/user_repository.dart';
 
@@ -13,19 +17,19 @@ import '../../src/widgets/ShoppingCartButtonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CategoryWidget extends StatefulWidget {
+class CategoryScreen extends StatefulWidget {
   RouteArgument routeArgument;
   Category _category;
 
-  CategoryWidget({Key key, this.routeArgument}) {
+  CategoryScreen({Key key, this.routeArgument}) {
     _category = this.routeArgument.param[0] as Category;
   }
 
   @override
-  _CategoryWidgetState createState() => _CategoryWidgetState();
+  _CategoryScreenState createState() => _CategoryScreenState();
 }
 
-class _CategoryWidgetState extends State<CategoryWidget>
+class _CategoryScreenState extends State<CategoryScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -44,9 +48,11 @@ class _CategoryWidgetState extends State<CategoryWidget>
     return Scaffold(
       key: _scaffoldKey,
       appBar: createAppBar(context, _scaffoldKey),
+      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: CustomScrollView(slivers: <Widget>[
         SliverAppBar(
+          toolbarHeight: DmConst.appBarHeight * 0.7,
           snap: true,
           floating: true,
           automaticallyImplyLeading: false,
@@ -60,8 +66,7 @@ class _CategoryWidgetState extends State<CategoryWidget>
               child: Center(child: Text('${widget._category?.name}')),
             )
           ],
-          backgroundColor: Theme.of(context).accentColor,
-
+          backgroundColor: DmConst.primaryColor,
         ),
         SliverList(
           delegate: SliverChildListDelegate([

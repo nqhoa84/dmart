@@ -1,14 +1,17 @@
+import 'package:dmart/src/screens/contactus.dart';
+import 'package:dmart/src/screens/error.dart';
 import 'package:flutter/material.dart';
 import 'src/models/route_argument.dart';
 import 'src/screens/brand.dart';
 import 'src/screens/brands.dart';
 import 'src/screens/cart.dart';
-import 'src/screens/categories.dart';
+import 'src/screens/categories_unused.dart';
 import 'src/screens/category.dart';
 import 'src/screens/checkout.dart';
 import 'src/screens/debug.dart';
 import 'src/screens/delivery_addresses.dart';
 import 'src/screens/delivery_pickup.dart';
+import 'src/screens/favorites.dart';
 import 'src/screens/forget_password.dart';
 import 'src/screens/help.dart';
 import 'src/screens/order_success.dart';
@@ -26,6 +29,10 @@ import 'src/screens/splash_screen.dart';
 import 'src/screens/tracking.dart';
 
 class RouteGenerator {
+  static void gotoSplash(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/Splash', arguments: 0);
+  }
+
   static void gotoHome(BuildContext context) {
     Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
   }
@@ -65,6 +72,10 @@ class RouteGenerator {
         : Navigator.of(context).pushNamed('/Help', arguments: RouteArgument()) ;
   }
 
+  static gotoContactUs(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/ContactUs')
+        : Navigator.of(context).pushNamed('/ContactUs') ;
+  }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -87,11 +98,6 @@ class RouteGenerator {
       case '/Pages':
         return MaterialPageRoute(builder: (_) => PagesScreen(currentTab: args));
 
-      /*case '/Details':
-        return MaterialPageRoute(builder: (_) => DetailsWidget(routeArgument: args as RouteArgument));
-      case '/Menu':
-        return MaterialPageRoute(builder: (_) => MenuWidget(routeArgument: args as RouteArgument));
-      */
       case '/Product':
         return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
       case '/Brand':
@@ -99,7 +105,7 @@ class RouteGenerator {
       case '/Brands':
         return MaterialPageRoute(builder: (_) => BrandsWidget());
       case '/Category':
-      return MaterialPageRoute(builder: (_) => CategoryWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
       case '/Categories':
         return MaterialPageRoute(builder: (_) => CategoriesWidget());
 
@@ -136,11 +142,13 @@ class RouteGenerator {
 
       case '/Special4U':
         return MaterialPageRoute(builder: (_) => Special4UScreen());
-      case '/Special4U':
-        return MaterialPageRoute(builder: (_) => SettingsWidget());
+      case '/MyFavorites':
+        return MaterialPageRoute(builder: (_) => FavoritesScreen());
+      case '/ContactUs':
+        return MaterialPageRoute(builder: (_) => ContactUsScreen());
       default:
         // If there is no such named route in the switch statement, e.g. /third
-        return MaterialPageRoute(builder: (_) => Scaffold(body: SizedBox(height: 0)));
+        return MaterialPageRoute(builder: (_) => ErrorScreen());
     }
   }
 

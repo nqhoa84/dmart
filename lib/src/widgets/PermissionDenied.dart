@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
 import '../helpers/app_config.dart' as config;
 
-class DmPermissionDenied extends StatefulWidget {
-  DmPermissionDenied({
+class PermissionDenied extends StatefulWidget {
+  PermissionDenied({
     Key key
   }) : super(key: key);
 
   @override
-  _DmPermissionDeniedState createState() => _DmPermissionDeniedState();
+  _PermissionDeniedState createState() => _PermissionDeniedState();
 }
 
-class _DmPermissionDeniedState extends State<DmPermissionDenied> {
+class _PermissionDeniedState extends State<PermissionDenied> {
   @override
   void initState() {
     super.initState();

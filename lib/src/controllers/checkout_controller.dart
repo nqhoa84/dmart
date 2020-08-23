@@ -48,7 +48,7 @@ class CheckoutController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       calculateSubtotal();
@@ -111,7 +111,7 @@ class CheckoutController extends ControllerMVC {
     userRepo.setCreditCard(creditCard).then((value) {
       setState(() {});
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).payment_card_updated_successfully),
+        content: Text('payment_card_updated_successfully'),
       ));
     });
   }

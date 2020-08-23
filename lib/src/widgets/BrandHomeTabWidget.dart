@@ -39,7 +39,7 @@ class _BrandHomeTabWidgetState extends StateMVC<BrandHomeTabWidget> {
             ),
             title: Text(
               widget.brand.name,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),
@@ -55,7 +55,7 @@ class _BrandHomeTabWidgetState extends StateMVC<BrandHomeTabWidget> {
             ),
             title: Text(
               S.of(context).description,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),

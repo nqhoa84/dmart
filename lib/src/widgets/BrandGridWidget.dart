@@ -145,7 +145,7 @@ class _BrandGridWidget extends StateMVC<BrandGridWidget> {
                   children: <Widget>[
                     Text(
                       brand.name,
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText2,
                       maxLines: 1,
                       softWrap: false,
                       overflow: TextOverflow.fade,
@@ -157,7 +157,7 @@ class _BrandGridWidget extends StateMVC<BrandGridWidget> {
                         Expanded(
                           child: Text(
                             '${_con.products.length} Products',
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText2,
                             overflow: TextOverflow.fade,
                             softWrap: false,
                           ),
@@ -169,7 +169,7 @@ class _BrandGridWidget extends StateMVC<BrandGridWidget> {
                         ),
                         Text(
                           brand.name,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         )*/
                       ],
                       crossAxisAlignment: CrossAxisAlignment.center,

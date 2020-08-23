@@ -26,9 +26,8 @@ class _FlashSalesHeaderWidgetState extends State<FlashSalesHeaderWidget> {
           UiIcons.megaphone,
           color: Theme.of(context).hintColor,
         ),
-        title: Text(
-          S.of(context).trending_this_week,
-          style: Theme.of(context).textTheme.display1,
+        title: Text( 'trending_this_week',
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
     );

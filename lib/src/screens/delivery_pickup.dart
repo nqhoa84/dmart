@@ -50,8 +50,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          S.of(context).delivery_or_pickup,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+          S.of(context).deliveryPickup,
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -77,10 +77,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   S.of(context).pickup,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                subtitle: Text(
-                  S.of(context).pickup_your_product_from_the_store,
+                subtitle: Text('pickup_your_product_from_the_store',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.caption,
@@ -114,7 +113,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                             S.of(context).delivery,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.display1,
+                            style: Theme.of(context).textTheme.headline4,
                           ),
                           subtitle: Text(
                             S.of(context).click_to_confirm_your_address_and_pay_or_long_press,

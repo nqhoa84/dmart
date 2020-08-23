@@ -53,7 +53,7 @@ class _EmptyCartState extends State<EmptyCart> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  S.of(context).dont_have_any_item_in_your_cart,
+                  S.of(context).yourCartEmpty,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
@@ -67,10 +67,10 @@ class _EmptyCartState extends State<EmptyCart> {
                       color: Theme.of(context).accentColor.withOpacity(1),
                       shape: StadiumBorder(),
                       child: Text(
-                        S.of(context).start_exploring,
+                        S.of(context).home,
                         style: Theme.of(context)
                             .textTheme
-                            .title
+                            .headline6
                             .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
                       ),
                     )

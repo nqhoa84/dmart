@@ -50,7 +50,7 @@ class FilterController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -63,7 +63,7 @@ class FilterController extends ControllerMVC {
 
   Future<void> refreshFields() async {
     fields.clear();
-    listenForFields(message: S.of(context).addresses_refreshed_successfuly);
+    listenForFields(message: S.of(context).addressesRefreshedSuccessfully);
   }
 
   void clearFilter() {

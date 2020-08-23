@@ -52,14 +52,15 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            leading: Icon(Icons.help, color: Theme.of(context).hintColor),
-                            title: Text(S.of(context).help_supports,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline5),
-                          ),
+//                          ListTile(
+//                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                            leading: Icon(Icons.help, color: Theme.of(context).hintColor),
+//                            title: Text(S.of(context).help_supports,
+//                                maxLines: 1,
+//                                overflow: TextOverflow.ellipsis,
+//                                style: Theme.of(context).textTheme.headline5),
+//                          ),
+                          createTitleRowWithBack(context, title:S.of(context).helpAndSupports),
                           TabBar(
                             tabs: List.generate(_con.faqs.length, (index) {
                               return Tab(text: _con.faqs.elementAt(index).name ?? '');

@@ -21,14 +21,13 @@ class MobileVerification extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    S.of(context).verify_phone,
-                    style: Theme.of(context).textTheme.headline,
+                    S.of(context).verifyPhoneNo,
+                    style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    S.of(context).your_phone_and_address_book_are_used_to_connect,
-                    style: Theme.of(context).textTheme.body1,
+                  Text('your_phone_and_address_book_are_used_to_connect',
+                    style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -87,7 +86,7 @@ class MobileVerification extends StatelessWidget {
               },
               color: Theme.of(context).accentColor,
               text: Text(S.of(context).submit.toUpperCase(),
-                  style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],
         ),

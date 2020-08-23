@@ -70,22 +70,22 @@ class OrderItemWidget extends StatelessWidget {
                           productOrder.product.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
                           productOrder.product.store.name,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Text(
                           '${order.payment.method}',
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                         SizedBox(height:10),
                         Text(
                           DateFormat('yyyy-MM-dd').format(productOrder.dateTime),
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
                     ),
@@ -96,7 +96,7 @@ class OrderItemWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Helper.getPrice(Helper.getTotalOrderPrice(productOrder, order.tax, order.deliveryFee), context,
-                          style: Theme.of(context).textTheme.display1),
+                          style: Theme.of(context).textTheme.headline4),
                       //SizedBox(height:8),
                       Chip(
                         padding: EdgeInsets.symmetric(horizontal: 5),
@@ -109,7 +109,7 @@ class OrderItemWidget extends StatelessWidget {
                       ),
                       Text(
                         DateFormat('HH:mm').format(productOrder.dateTime),
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
 
                     ],

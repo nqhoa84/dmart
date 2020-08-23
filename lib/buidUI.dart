@@ -1,3 +1,5 @@
+import 'package:badges/badges.dart';
+import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/helpers/ui_icons.dart';
@@ -53,7 +55,40 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
       : Icon(Icons.favorite_border, color: DmConst.colorFavorite);
 }
 
-PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {
+Widget _shoppingCartBadge() {
+  return ValueListenableBuilder(
+      valueListenable: DmState.amountInCart,
+      builder: (context, value, child) {
+        if(value > 0) {
+          return Badge(
+              position: BadgePosition.topRight(top: 0, right: 3),
+              animationDuration: Duration(milliseconds: 300),
+              animationType: BadgeAnimationType.slide,
+              badgeContent: Text('$value', style: TextStyle(color: Colors.white)),
+              child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
+          );
+        } else {
+          return Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown);
+        }
+      }
+  );
+//  if (amountBadge > 0) {
+//    return Badge(
+//      position: BadgePosition.topRight(top: 0, right: 3),
+//      animationDuration: Duration(milliseconds: 300),
+//      animationType: BadgeAnimationType.slide,
+//      badgeContent: Text(
+//          amountBadge.toString(),
+//          style: TextStyle(color: Colors.white)
+//      ),
+//      child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
+//    );
+//  } else {
+//    return Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown);
+//  }
+}
+
+PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey, {int amountBadge = 0}) {
   User user = currentUser.value;
   return PreferredSize(
     preferredSize: Size.fromHeight(110),
@@ -84,7 +119,8 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
                       child: Container(
                           padding: EdgeInsets.only(right: 30),
                           height: 40,
-                          child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown)
+//                          child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown)
+                          child: _shoppingCartBadge(),
                       ),
                     ),
                   ),
@@ -181,5 +217,26 @@ Widget createSilverAppBar(BuildContext context, {bool haveBackIcon = true, Strin
       )
     ],
     backgroundColor: DmConst.primaryColor,
+  );
+}
+
+Widget createTitleRowWithBack(BuildContext context, {String title=''}) {
+  return Container(
+    width: double.infinity, height: DmConst.appBarHeight * 0.7,
+    color: DmConst.primaryColor,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          icon: new Icon(UiIcons.return_icon, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Center(child: Text(title,
+              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+        )
+      ],
+    ),
   );
 }

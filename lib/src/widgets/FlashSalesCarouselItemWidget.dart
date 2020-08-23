@@ -75,7 +75,7 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     product.name,
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                     maxLines: 1,
                     softWrap: false,
                     overflow: TextOverflow.fade,
@@ -88,7 +88,7 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
                             child: Helper.getPrice(
                               product.price,
                               context,
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.headline4,
                             ),
                           )
                       ),
@@ -99,7 +99,7 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               product.rate,
-                              style: Theme.of(context).textTheme.body2,
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                             Icon(
                               Icons.star,
@@ -116,12 +116,12 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
                   product.itemsAvailable.isEmpty
                       ?Text(
                         '0 Available',
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         overflow: TextOverflow.ellipsis,
                       )
                       :Text(
                         '${product.itemsAvailable} Available',
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         overflow: TextOverflow.ellipsis,
                       ),
                   /*product.itemsAvailable.isEmpty

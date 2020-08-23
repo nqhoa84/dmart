@@ -120,7 +120,7 @@
   "your_address": "عنوانك" ,
   "search":" بحث",
   "recents_search": "البحث عن المشاركات الأخيرة" ,
-  "verify_your_internet_connection": "تحقق من اتصالك بالإنترنت" ,
+  "verifyYourInternetConnection": "تحقق من اتصالك بالإنترنت" ,
   "carts_refreshed_successfuly": "تم تحديث عربات التسوق بنجاح" ,
   "the_product_was_removed_from_your_cart": "تمت إزالة $productName من سلة التسوق الخاصة بك" ,
   "the_product_was_removed_from_your_favorite": "تمت إزالة $productName من المفضلة" ,

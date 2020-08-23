@@ -67,7 +67,7 @@ class _BottomRightMenuState extends StateMVC<BottomRightMenu> {
             onTap: () => RouteGenerator.gotoMyOrders(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_My_order.png'), color: DmConst.primaryColor),
             leading: Image.asset('assets/img/M_My_order.png', width: _iconSize, fit: BoxFit.scaleDown),
-            title: Text(S.of(context).my_orders),
+            title: Text(S.of(context).myOrders),
           ),
           ListTile(
             onTap: () => RouteGenerator.gotoCart(context),

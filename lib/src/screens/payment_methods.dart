@@ -47,9 +47,8 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          S.of(context).payment_mode,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+        title: Text( 'payment_mode',
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         leading: new IconButton(
           icon: new Icon(UiIcons.return_icon,
@@ -85,9 +84,9 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                         S.of(context).payment_options,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.display1,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
-                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
+                      subtitle: Text('select_your_preferred_payment_mode'),
                     ),
                   )
                 : SizedBox(
@@ -116,12 +115,12 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                         color: Theme.of(context).hintColor,
                       ),
                       title: Text(
-                        S.of(context).cash_on_delivery,
+                        S.of(context).cashOnDelivery,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.display1,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
-                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
+                      subtitle: Text('select_your_preferred_payment_mode'),
                     ),
                   )
                 : SizedBox(

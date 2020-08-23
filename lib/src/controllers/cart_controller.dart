@@ -31,7 +31,7 @@ class CartController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (carts.isNotEmpty) {
@@ -54,13 +54,13 @@ class CartController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     });
   }
 
   Future<void> refreshCarts() async {
-    listenForCarts(message: S.of(context).carts_refreshed_successfuly);
+    listenForCarts(message: S.of(context).cartsRefreshedSuccessfully);
   }
 
   void removeFromCart(Cart _cart) async {

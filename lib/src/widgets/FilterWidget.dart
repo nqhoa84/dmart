@@ -41,7 +41,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     },
                     child: Text(
                       S.of(context).clear,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   )
                 ],
@@ -53,7 +53,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                 shrinkWrap: true,
                 children: <Widget>[
                   ExpansionTile(
-                    title: Text(S.of(context).delivery_or_pickup),
+                    title: Text(S.of(context).deliveryPickup),
                     children: [
                       CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.trailing,
@@ -89,7 +89,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     initiallyExpanded: true,
                   ),
                   ExpansionTile(
-                    title: Text(S.of(context).opened_stores),
+                    title: Text('opened_stores'),
                     children: [
                       CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.trailing,
@@ -144,7 +144,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               color: Theme.of(context).accentColor,
               shape: StadiumBorder(),
               child: Text(
-                S.of(context).apply_filters,
+                S.of(context).applyFilters,
                 textAlign: TextAlign.start,
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),

@@ -237,7 +237,7 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
 //                  children: <Widget>[
 //                    Text(
 //                      category.name,
-//                      style: Theme.of(context).textTheme.body1,
+//                      style: Theme.of(context).textTheme.bodyText2,
 //                      maxLines: 1,
 //                      softWrap: false,
 //                      overflow: TextOverflow.fade,
@@ -248,7 +248,7 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
 //                        Expanded(
 //                          child: Text(
 //                            _con.products.where((product) => product.category.id == category.id).length.toString() + ' Products',
-//                            style: Theme.of(context).textTheme.body1,
+//                            style: Theme.of(context).textTheme.bodyText2,
 //                            overflow: TextOverflow.fade,
 //                            softWrap: false,
 //                          ),
@@ -260,7 +260,7 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
 //                        ),
 //                        Text(
 //                          category.name,
-//                          style: Theme.of(context).textTheme.body2,
+//                          style: Theme.of(context).textTheme.bodyText1,
 //                        )*/
 //                      ],
 //                      crossAxisAlignment: CrossAxisAlignment.center,

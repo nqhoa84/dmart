@@ -101,7 +101,7 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                             widget.cart.product.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Wrap(
                             children: List.generate(widget.cart.options.length, (index) {
@@ -111,23 +111,23 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                               );
                             }),
                           ),
-                          Helper.getPrice(widget.cart.product.price, context, style: Theme.of(context).textTheme.display1),
+                          Helper.getPrice(widget.cart.product.price, context, style: Theme.of(context).textTheme.headline4),
                           Row(
                             children:<Widget>[
                               Text(
-                                S.of(context).delivery_fee,
-                                style: Theme.of(context).textTheme.body1,
+                                S.of(context).deliveryFee,
+                                style: Theme.of(context).textTheme.bodyText2,
                               ),
-                              Helper.getPrice(widget.cart.product.store.deliveryFee, context, style: Theme.of(context).textTheme.body1)
+                              Helper.getPrice(widget.cart.product.store.deliveryFee, context, style: Theme.of(context).textTheme.bodyText2)
                             ]
                           ),
                           Row(
                               children:<Widget>[
                                 Text(
                                   '${S.of(context).tax} (${widget.cart.product.store.defaultTax})%',
-                                   style: Theme.of(context).textTheme.body1,
+                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
-                                //Helper.getPrice(widget.taxAmount, context, style: Theme.of(context).textTheme.body1)
+                                //Helper.getPrice(widget.taxAmount, context, style: Theme.of(context).textTheme.bodyText2)
                               ]
                           ),
 
@@ -149,7 +149,7 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                           icon: Icon(Icons.add_circle_outline),
                           color: Theme.of(context).hintColor,
                         ),
-                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subhead),
+                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
                         IconButton(
                           onPressed: () {
                             setState(() {

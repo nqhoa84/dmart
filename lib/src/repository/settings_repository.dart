@@ -8,6 +8,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+//import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/l10n.dart';
@@ -19,7 +20,7 @@ import '../models/setting.dart';
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
 final navigatorKey = GlobalKey<NavigatorState>();
-//LocationData locationData;
+LocationData locationData;
 
 
 Future<Setting> initSettings() async {
@@ -84,7 +85,6 @@ Future<Address> changeCurrentLocation(Address _address) async {
 
 Future<Address> getCurrentLocation() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-//  await prefs.clear();
   if (prefs.containsKey('delivery_address')) {
     deliveryAddress.value = Address.fromJSON(json.decode(prefs.getString('delivery_address')));
     return deliveryAddress.value;

@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class BrandsWidget extends StatefulWidget {
+  const BrandsWidget({
+    Key key,
+  }) : super(key: key);
 
-  const BrandsWidget({Key key,}) : super(key: key);
   @override
   _BrandsWidgetState createState() => _BrandsWidgetState();
 }
@@ -42,17 +44,13 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
           builder: (context, value, child) {
             return Text(
               value.appName ?? S.of(context).home,
-              style: Theme.of(context)
-                  .textTheme
-                  .title
-                  .merge(TextStyle(letterSpacing: 1.3)),
+              style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             );
           },
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor,
-              labelColor: Theme.of(context).accentColor),
+              iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           Container(
             width: 30,
             height: 30,
@@ -67,8 +65,7 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
               },
               child: currentUser.value.apiToken != null
                   ? CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(currentUser.value.image.thumb),
+                      backgroundImage: NetworkImage(currentUser.value.image.thumb),
                     )
                   : Icon(
                       Icons.person,
@@ -79,24 +76,26 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
           )
         ],
       ),
-      body:
-      _con.brands.isEmpty ? CircularLoadingWidget(height: 500,):
-      SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Wrap(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SearchBar(
-                onClickFilter: (event) {
-                  _con.scaffoldKey.currentState.openEndDrawer();
-                },
+      body: _con.brands.isEmpty
+          ? CircularLoadingWidget(
+              height: 500,
+            )
+          : SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SearchBar(
+                      onClickFilter: (event) {
+                        _con.scaffoldKey.currentState.openEndDrawer();
+                      },
+                    ),
+                  ),
+                  BrandGridWidget(brands: _con.brands),
+                ],
               ),
             ),
-            BrandGridWidget(brands: _con.brands),
-          ],
-        ),
-      ),
     );
   }
 }

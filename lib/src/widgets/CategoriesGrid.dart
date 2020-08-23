@@ -1,17 +1,13 @@
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
-import 'package:dmart/src/widgets/CircularLoadingWidget.dart';
-
-import '../../src/controllers/category_controller.dart';
-import '../../src/controllers/product_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../src/controllers/category_controller.dart';
 import '../../src/models/category.dart';
 import '../../src/models/route_argument.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoriesGrid extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;

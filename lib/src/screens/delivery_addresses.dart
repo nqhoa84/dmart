@@ -52,8 +52,8 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          S.of(context).delivery_addresses,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+          S.of(context).deliveryAddresses,
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -102,10 +102,10 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                     color: Theme.of(context).hintColor,
                   ),
                   title: Text(
-                    S.of(context).delivery_addresses,
+                    S.of(context).deliveryAddresses,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   subtitle: Text(
                     S.of(context).long_press_to_edit_item_swipe_item_to_delete_it,

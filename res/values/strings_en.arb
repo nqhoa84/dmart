@@ -120,7 +120,7 @@
   "your_address": "Your Address",
   "search": "Search",
   "recents_search": "Recents Search",
-  "verify_your_internet_connection": "Verify your internet connection",
+  "verifyYourInternetConnection": "Verify your internet connection",
   "carts_refreshed_successfuly": "Carts refreshed successfully",
   "the_product_was_removed_from_your_cart": "The $productName was removed from your cart",
   "the_product_was_removed_from_your_favorite": "The $productName was removed from your favorite",

@@ -31,7 +31,7 @@ class OrderController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -44,6 +44,6 @@ class OrderController extends ControllerMVC {
 
   Future<void> refreshOrders() async {
     orders.clear();
-    listenForOrders(message: S.of(context).order_refreshed_successfuly);
+    listenForOrders(message: S.of(context).orderRefreshedSuccessfully);
   }
 }

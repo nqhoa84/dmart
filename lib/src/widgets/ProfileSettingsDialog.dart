@@ -33,8 +33,8 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                     Icon(UiIcons.user_1),
                     SizedBox(width: 10),
                     Text(
-                      S.of(context).profile_settings,
-                      style: Theme.of(context).textTheme.body2,
+                      S.of(context).profileSettings,
+                      style: Theme.of(context).textTheme.bodyText1,
                     )
                   ],
                 ),
@@ -46,17 +46,17 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'John Doe', labelText: S.of(context).full_name,),
+                          decoration: getInputDecoration(hintText: 'John Doe', labelText: S.of(context).fullName,),
                           initialValue: widget.user.name,
-                          validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_full_name : null,
+                          validator: (input) => input.trim().length < 3 ? 'invalidFullName' : null,
                           onSaved: (input) => widget.user.name = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.emailAddress,
-                          decoration: getInputDecoration(hintText: 'johndo@gmail.com', labelText: S.of(context).email_address,),
+                          decoration: getInputDecoration(hintText: 'johndo@gmail.com', labelText: S.of(context).emailAddress,),
                           initialValue: widget.user.email,
-                          validator: (input) => !input.contains('@') ? S.of(context).not_a_valid_email : null,
+                          validator: (input) => !input.contains('@') ? S.of(context).invalidEmail : null,
                           onSaved: (input) => widget.user.email = input,
                         ),
                         new TextFormField(
@@ -64,15 +64,15 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                           keyboardType: TextInputType.phone,
                           decoration: getInputDecoration(hintText: '+0000000000', labelText: S.of(context).phone,),
                           initialValue: widget.user.phone,
-                          validator: (input) => !input.contains('+') ? S.of(context).not_a_valid_phone : null,
+                          validator: (input) => !input.contains('+') ? S.of(context).invalidPhone : null,
                           onSaved: (input) => widget.user.phone = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'Stret City Stat ', labelText: S.of(context).address,),
+                          decoration: getInputDecoration(hintText: 'Street City Stat ', labelText: S.of(context).address,),
                           initialValue: widget.user.address,
-                          validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_address : null,
+                          validator: (input) => input.trim().length < 3 ? S.of(context).invalidAddress : null,
                           onSaved: (input) => widget.user.address = input,
                         ),
 
@@ -105,7 +105,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
       },
       child: Text(
         S.of(context).edit,
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText2,
       ),
     );
   }
@@ -114,13 +114,13 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
     return new InputDecoration(
       hintText: hintText,
       labelText: labelText,
-      hintStyle: Theme.of(context).textTheme.body1.merge(
+      hintStyle: Theme.of(context).textTheme.bodyText2.merge(
             TextStyle(color: Theme.of(context).focusColor),
           ),
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor)),
       hasFloatingPlaceholder: true,
-      labelStyle: Theme.of(context).textTheme.body1.merge(
+      labelStyle: Theme.of(context).textTheme.bodyText2.merge(
             TextStyle(color: Theme.of(context).hintColor),
           ),
     );

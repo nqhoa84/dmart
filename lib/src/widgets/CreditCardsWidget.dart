@@ -82,24 +82,21 @@ class CreditCardsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
-                  S.of(context).card_number,
+                Text('card_number',
                   style: Theme.of(context).textTheme.caption,
                 ),
                 Text(
                   Helper.getCreditCardNumber(creditCard.number),
-                  style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                  style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                 ),
                 SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      S.of(context).expiry_date,
+                    Text('expiry_date',
                       style: Theme.of(context).textTheme.caption,
                     ),
-                    Text(
-                      S.of(context).cvv,
+                    Text('cvv',
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],
@@ -109,11 +106,11 @@ class CreditCardsWidget extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       '${creditCard.expMonth}/${creditCard.expYear}',
-                      style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                      style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                     Text(
                       creditCard.cvc,
-                      style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                      style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                   ],
                 )

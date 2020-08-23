@@ -44,7 +44,7 @@ class DeliveryPickupController extends CartController {
       });
     }).whenComplete(() {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).new_address_added_successfully),
+        content: Text(S.of(context).newAddressAdded),
       ));
     });
   }
@@ -57,7 +57,7 @@ class DeliveryPickupController extends CartController {
       });
     }).whenComplete(() {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).the_address_updated_successfully),
+        content: Text(S.of(context).addressUpdated),
       ));
     });
   }

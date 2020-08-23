@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -32,8 +32,7 @@ class _RazorPayPaymentWidgetState extends StateMVC<RazorPayPaymentWidget> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          S.of(context).razorpayPayment,
+        title: Text( 'razorpayPayment',
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
@@ -42,7 +41,8 @@ class _RazorPayPaymentWidgetState extends StateMVC<RazorPayPaymentWidget> {
           InAppWebView(
             initialUrl: _con.url,
             initialHeaders: {},
-            initialOptions: new InAppWebViewWidgetOptions(androidInAppWebViewOptions: AndroidInAppWebViewOptions(textZoom: 120)),
+            //todo original unrem
+//            initialOptions: new InAppWebViewWidgetOptions(androidInAppWebViewOptions: AndroidInAppWebViewOptions(textZoom: 120)),
             onWebViewCreated: (InAppWebViewController controller) {
               _con.webView = controller;
             },

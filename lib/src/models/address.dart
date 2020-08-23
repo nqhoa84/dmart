@@ -1,4 +1,4 @@
-import 'package:location/location.dart';
+//import 'package:location/location.dart';
 
 import '../../generated/l10n.dart';
 
@@ -48,10 +48,10 @@ class Address {
     return map;
   }
 
-  LocationData toLocationData() {
-    return LocationData.fromMap({
-      "latitude": latitude,
-      "longitude": longitude,
-    });
-  }
+//  LocationData toLocationData() {
+//    return LocationData.fromMap({
+//      "latitude": latitude,
+//      "longitude": longitude,
+//    });
+//  }
 }

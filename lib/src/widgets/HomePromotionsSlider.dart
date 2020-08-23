@@ -34,15 +34,14 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
         _con.sliders.isEmpty
             ? CardsCarouselLoaderWidget()
             : CarouselSlider(
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 5),
-                height: 240,
-                viewportFraction: 1.0,
-                onPageChanged: (index) {
-                  setState(() {
-                    _current = index.toInt();
-                  });
-                },
+                options: CarouselOptions(
+                  autoPlay: true, autoPlayInterval: Duration(seconds: 4),
+                  //todo should make the height depend on width
+                  height: 250, viewportFraction: 1.0,
+                  onPageChanged: (idx, reason) {
+                    setState(() {_current = idx;});
+                  }
+                ),
                 items: _con.sliders.map((slide) {
                   return Builder(
                     builder: (BuildContext context) {

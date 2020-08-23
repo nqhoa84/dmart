@@ -115,7 +115,7 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
                         widget.option?.name,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.subhead,
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       Text(
                         Helper.skipHtml(widget.option.description),
@@ -127,7 +127,7 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
                   ),
                 ),
                 SizedBox(width: 8),
-                Helper.getPrice(widget.option.price, context, style: Theme.of(context).textTheme.display1),
+                Helper.getPrice(widget.option.price, context, style: Theme.of(context).textTheme.headline4),
               ],
             ),
           )

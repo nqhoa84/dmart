@@ -38,13 +38,13 @@ class UserController extends ControllerMVC {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).wrong_email_or_password),
+            content: Text(S.of(context).wrongEmailOrPassword),
           ));
         }
       }).catchError((e) {
         loader.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_account_not_exist),
+          content: Text(S.of(context).emailAccountExists),
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
@@ -62,13 +62,13 @@ class UserController extends ControllerMVC {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).wrong_email_or_password),
+            content: Text(S.of(context).wrongEmailOrPassword),
           ));
         }
       }).catchError((e) {
         loader.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_email_account_exists),
+          content: Text(S.of(context).emailAccountExists),
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
@@ -84,7 +84,7 @@ class UserController extends ControllerMVC {
       repository.resetPassword(user).then((value) {
         if (value != null && value == true) {
           scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).your_reset_link_has_been_sent_to_your_email),
+            content: Text(S.of(context).resetLinkHasBeenSentToEmail),
             action: SnackBarAction(
               label: S.of(context).login,
               onPressed: () {

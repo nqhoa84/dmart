@@ -1,4 +1,5 @@
 //import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -172,6 +173,9 @@ class _ProductItemWideState extends State<ProductItemWide> {
           IconButton(
             onPressed: () {
 //                _con.decrementQuantity();
+              setState(() {
+                DmState.amountInCart.value--;
+              });
             },
 //            iconSize: 30,
             padding: EdgeInsets.all(0),
@@ -182,6 +186,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
           IconButton(
             onPressed: () {
 //                _con.incrementQuantity();
+              DmState.amountInCart.value++;
             },
 //            iconSize: 30,
             padding: EdgeInsets.all(0),
@@ -194,7 +199,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
       return FlatButton(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: DmConst.primaryColor)),
-        child: Text(S.of(context).add_to_cart),
+        child: Text(S.of(context).addToCart),
         color: DmConst.primaryColor,
         onPressed: () {},
       );

@@ -23,7 +23,7 @@ class ProfileController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -36,6 +36,6 @@ class ProfileController extends ControllerMVC {
 
   Future<void> refreshProfile() async {
     recentOrders.clear();
-    listenForRecentOrders(message: S.of(context).orders_refreshed_successfuly);
+    listenForRecentOrders(message: S.of(context).ordersRefreshedSuccessfully);
   }
 }

@@ -50,7 +50,7 @@ class BrandController extends ControllerMVC {
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -68,7 +68,7 @@ class BrandController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -106,7 +106,7 @@ class BrandController extends ControllerMVC {
         this.loadCart = false;
       });
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.this_product_was_added_to_cart),
+        content: Text(S.current.productAdded2Cart),
       ));
     });
   }*/
@@ -129,7 +129,7 @@ class BrandController extends ControllerMVC {
         });
       }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_product_was_added_to_cart),
+          content: Text(S.of(context).productAdded2Cart),
         ));
       });
     } else {
@@ -140,7 +140,7 @@ class BrandController extends ControllerMVC {
         });
       }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_product_was_added_to_cart),
+          content: Text(S.of(context).productAdded2Cart),
         ));
       });
     }
@@ -154,7 +154,7 @@ class BrandController extends ControllerMVC {
   Future<void> refreshBrand() async {
     products.clear();
     brand = new Brand();
-    listenForProductsByBrand(message: S.of(context).brand_refreshed_successfuly);
-    listenForBrand(message: S.of(context).brand_refreshed_successfuly);
+    listenForProductsByBrand(message: S.of(context).brandRefreshedSuccessfully);
+    listenForBrand(message: S.of(context).brandRefreshedSuccessfully);
   }
 }

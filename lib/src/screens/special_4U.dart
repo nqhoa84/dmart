@@ -1,24 +1,19 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/src/helpers/ui_icons.dart';
 import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/ProductsByCategory.dart';
-
-import '../../buidUI.dart';
-import '../../constant.dart';
-import '../../src/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../buidUI.dart';
 import '../../generated/l10n.dart';
-import '../controllers/favorite_controller.dart';
+import '../../src/controllers/product_controller.dart';
+import '../repository/user_repository.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/FavoriteGridItemWidget.dart';
 import '../widgets/FavoriteListItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
 import '../widgets/SearchBar.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
-import '../repository/user_repository.dart';
 
 class Special4UScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -103,10 +98,10 @@ class _Special4UScreenState extends StateMVC<Special4UScreen> {
                     color: Theme.of(context).hintColor,
                   ),
                   title: Text(
-                    S.of(context).favorite_products,
+                    S.of(context).favoriteProducts,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,

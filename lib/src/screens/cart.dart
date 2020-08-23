@@ -17,6 +17,7 @@ import '../models/route_argument.dart';
 class CartWidget extends StatefulWidget {
   final RouteArgument routeArgument;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   CartWidget({Key key, this.routeArgument}) : super(key: key);
 
   @override
@@ -71,13 +72,13 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   color: Theme.of(context).hintColor,
                                 ),
                                 title: Text(
-                                  S.of(context).shopping_cart,
+                                  S.of(context).shoppingCart,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline4,
                                 ),
                                 subtitle: Text(
-                                  S.of(context).verify_your_quantity_and_click_checkout,
+                                  'verify_your_quantity_and_click_checkout',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.caption,
@@ -155,10 +156,10 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   Expanded(
                                     child: Text(
                                       S.of(context).subtotal,
-                                      style: Theme.of(context).textTheme.body2,
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -170,7 +171,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
 
                                     ),
                                   ),
-                                  Helper.getPrice(_con.carts[0].product.store.deliveryFeestyle: Theme.of(context).textTheme.body2,, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.carts[0].product.store.deliveryFeestyle: Theme.of(context).textTheme.bodyText1,, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
                               Row(
@@ -178,10 +179,10 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   Expanded(
                                     child: Text(
                                       '${S.of(context).tax} (${_con.carts[0].product.store.defaultTax}%)',
-                                      style: Theme.of(context).textTheme.body2,
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),*/
                               SizedBox(height: 10),
@@ -213,7 +214,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                       context,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .display1
+                                          .headline4
                                           .merge(TextStyle(color: Theme.of(context).primaryColor)),
                                     ),
                                   )

@@ -20,14 +20,14 @@ class MobileVerification2 extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    S.of(context).verify_your_account,
-                    style: Theme.of(context).textTheme.headline,
+                    S.of(context).verifyYourAccount,
+                    style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    S.of(context).we_are_sending_OTP,
-                    style: Theme.of(context).textTheme.body1,
+                    S.of(context).weAreSendingOTP,
+                    style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -35,7 +35,7 @@ class MobileVerification2 extends StatelessWidget {
             ),
             SizedBox(height: 50),
             TextField(
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
               decoration: new InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -62,7 +62,7 @@ class MobileVerification2 extends StatelessWidget {
               },
               color: Theme.of(context).accentColor,
               text: Text(S.of(context).verify.toUpperCase(),
-                  style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],
         ),

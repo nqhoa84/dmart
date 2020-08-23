@@ -26,7 +26,7 @@ class TrackingController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       listenForOrderStatus();
@@ -54,7 +54,7 @@ class TrackingController extends ControllerMVC {
         state: StepState.complete,
         title: Text(
           _orderStatus.status,
-          style: Theme.of(context).textTheme.subhead,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         subtitle: order.orderStatus.id == _orderStatus.id
             ? Text(
@@ -76,6 +76,6 @@ class TrackingController extends ControllerMVC {
 
   Future<void> refreshOrder() async {
     order = new Order();
-    listenForOrder(message: S.of(context).tracking_refreshed_successfuly);
+    listenForOrder(message: 'tracking_refreshed_successfuly');
   }
 }

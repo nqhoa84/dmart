@@ -40,7 +40,7 @@ class PromotionController extends ControllerMVC {
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {

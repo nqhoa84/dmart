@@ -30,6 +30,7 @@ class ContactUsScreen extends StatefulWidget {
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final double padingH = 10.0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,73 +40,150 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(
-          child: Column(
-          children: [
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: padingH, vertical: 10),
+            child: Column(
+            children: [
 //            createSilverAppBar(context, haveBackIcon: true, title: S.of(context).contactUs),
-          Container(
-            width: double.infinity, height: DmConst.appBarHeight * 0.7,
-            color: DmConst.primaryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: new Icon(UiIcons.return_icon, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Center(child: Text(S.of(context).contactUs,
-                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
-                )
-              ],
-            ),
-          ),
-            createTitleRow(context, title: S.of(context).hotline),
-            Card(
-              elevation: 10,
-              color: Colors.grey.shade100.withOpacity(0.5),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text('xxxxxxxxx'),
-                    leading: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
-                    ),
-                    trailing: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      child: Image.asset('assets/img/C_Smart_Mobile.png', fit: BoxFit.scaleDown)),
-                  ),
-                  Divider(thickness: 1.5, color: Colors.white, height: 2),
-                  ListTile(
-                    title: Text('xxxxxxxxx'),
-                    leading: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
-                    ),
-                    trailing: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      child: Image.asset('assets/img/C_Cellcard_Mobile.png', fit: BoxFit.scaleDown)),
-                  ),
-                  Divider(thickness: 1.5, color: Colors.white, height: 2),
-                  ListTile(
-                    title: Text('xxxxxxxxx'),
-                    leading: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
-                    ),
-                    trailing: ClipRRect(
+            createTitleRowWithBack(context, title: S.of(context).contactUs),
+              SizedBox(height: 10),
+              createTitleRow(context, title: S.of(context).hotline),
+              Card(
+                elevation: 10,
+                color: Colors.grey.shade100.withOpacity(0.5),
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text('xxxxxxxxx'),
+                      leading: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                      ),
+                      trailing: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.asset('assets/img/C_Metfone_Mobile.png', fit: BoxFit.scaleDown)),
+                        child: Image.asset('assets/img/C_Smart_Mobile.png', fit: BoxFit.scaleDown)),
+                    ),
+                    Divider(thickness: 1.5, color: Colors.white, height: 2),
+                    ListTile(
+                      title: Text('xxxxxxxxx'),
+                      leading: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                      ),
+                      trailing: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        child: Image.asset('assets/img/C_Cellcard_Mobile.png', fit: BoxFit.scaleDown)),
+                    ),
+                    Divider(thickness: 1.5, color: Colors.white, height: 2),
+                    ListTile(
+                      title: Text('xxxxxxxxx'),
+                      leading: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                      ),
+                      trailing: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          child: Image.asset('assets/img/C_Metfone_Mobile.png', fit: BoxFit.scaleDown)),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              createTitleRow(context, title: S.of(context).socialNetwork),
+              _createSocial(context)
+            ],
+        ),
+          ),
+        ),
+    );
+  }
+
+
+
+  Widget _createSocial(BuildContext context) {
+    double w = MediaQuery.of(context).size.width - 2*padingH;
+    double h = w*720.0/1024;
+    double btnSize = w * 100 / 1024;
+    return Container(
+      width: w, height: h,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/img/C_Contact_Dmart2.png'),
+          fit: BoxFit.cover
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: h *(44.0 + 20)/720),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 135.0/1024 * w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Whatup.png', width: btnSize, fit: BoxFit.scaleDown),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Wechat.png', width: btnSize, fit: BoxFit.scaleDown),
                   )
                 ],
               ),
             ),
-            createTitleRow(context, title: S.of(context).socialNetwork),
-
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 44.0/1024 * w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Viber.png', width: btnSize, fit: BoxFit.scaleDown),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Instagram.png', width: btnSize, fit: BoxFit.scaleDown),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 44.0/1024 * w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_telegram.png', width: btnSize, fit: BoxFit.scaleDown),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Facebook.png', width: btnSize, fit: BoxFit.scaleDown),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 135.0/1024 * w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Messenger.png', width: btnSize, fit: BoxFit.scaleDown),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Image.asset('assets/img/C_Line.png', width: btnSize, fit: BoxFit.scaleDown),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
-        ),
+      ),
     );
   }
 

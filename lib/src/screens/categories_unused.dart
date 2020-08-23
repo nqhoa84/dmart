@@ -16,8 +16,10 @@ import 'package:flutter/material.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class CategoriesWidget extends StatefulWidget {
+  const CategoriesWidget({
+    Key key,
+  }) : super(key: key);
 
-  const CategoriesWidget({Key key,}) : super(key: key);
   @override
   _CategoriesWidgetState createState() => _CategoriesWidgetState();
 }
@@ -45,19 +47,13 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
         title: ValueListenableBuilder(
           valueListenable: settingsRepo.setting,
           builder: (context, value, child) {
-            return Text(
-              value.appName ?? S.of(context).home,
-              style: Theme.of(context)
-                  .textTheme
-                  .title
-                  .merge(TextStyle(letterSpacing: 1.3)),
-            );
+            return Text(value.appName ?? S.of(context).home,
+                style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)));
           },
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor,
-              labelColor: Theme.of(context).accentColor),
+              iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           Container(
             width: 30,
             height: 30,
@@ -72,36 +68,37 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
               },
               child: currentUser.value.apiToken != null
                   ? CircleAvatar(
-                backgroundImage:
-                NetworkImage(currentUser.value.image.thumb),
-              )
+                      backgroundImage: NetworkImage(currentUser.value.image.thumb),
+                    )
                   : Icon(
-                Icons.person,
-                size: 26,
-                color: Theme.of(context).accentColor.withOpacity(1),
-              ),
+                      Icons.person,
+                      size: 26,
+                      color: Theme.of(context).accentColor.withOpacity(1),
+                    ),
             ),
           )
         ],
       ),
-      body:
-      _con.categories.isEmpty ? CircularLoadingWidget(height: 500,):
-      SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Wrap(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SearchBar(
-                onClickFilter: (event) {
-                  _con.scaffoldKey.currentState.openEndDrawer();
-                },
+      body: _con.categories.isEmpty
+          ? CircularLoadingWidget(
+              height: 500,
+            )
+          : SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SearchBar(
+                      onClickFilter: (event) {
+                        _con.scaffoldKey.currentState.openEndDrawer();
+                      },
+                    ),
+                  ),
+                  _createCategoriesGrid(_con.categories),
+                ],
               ),
             ),
-            _createCategoriesGrid(_con.categories),
-          ],
-        ),
-      ),
     );
   }
 
@@ -134,12 +131,12 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
                   flex: 7,
                   child: category.image.url.toLowerCase().endsWith('.svg')
                       ? Container(
-                    child: SvgPicture.network(category.image.url, color: Theme.of(context).primaryColor),
-                  )
+                          child: SvgPicture.network(category.image.url, color: Theme.of(context).primaryColor),
+                        )
                       : ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
-                    child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
-                  ),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
+                          child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
+                        ),
                 ),
                 Divider(thickness: 1, height: 1, color: DmConst.primaryColor),
                 Expanded(

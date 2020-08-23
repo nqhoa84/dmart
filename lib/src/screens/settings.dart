@@ -33,7 +33,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
           centerTitle: true,
           title: Text(
             S.of(context).settings,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           leading: new IconButton(
             icon: new Icon(UiIcons.return_icon,
@@ -61,7 +61,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 Text(
                                   currentUser.value.name,
                                   textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.display2,
+                                  style: Theme.of(context).textTheme.headline3,
                                 ),
                                 Text(
                                   currentUser.value.email,
@@ -105,8 +105,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                           ListTile(
                             leading: Icon(UiIcons.user_1),
                             title: Text(
-                              S.of(context).profile_settings,
-                              style: Theme.of(context).textTheme.body2,
+                              S.of(context).profileSettings,
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                             trailing: ButtonTheme(
                               padding: EdgeInsets.all(0),
@@ -120,8 +120,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             onTap: () {},
                             dense: true,
                             title: Text(
-                              S.of(context).full_name,
-                              style: Theme.of(context).textTheme.body1,
+                              S.of(context).fullName,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               currentUser.value.name,
@@ -133,7 +133,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).email,
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               currentUser.value.email,
@@ -145,7 +145,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).phone,
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               currentUser.value.phone,
@@ -157,7 +157,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).address,
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               Helper.limitString(currentUser.value.address),
@@ -171,7 +171,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).about,
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               Helper.limitString(currentUser.value.bio),
@@ -201,9 +201,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                         children: <Widget>[
                           ListTile(
                             leading: Icon(Icons.credit_card),
-                            title: Text(
-                              S.of(context).payments_settings,
-                              style: Theme.of(context).textTheme.body2,
+                            title: Text('payments_settings',
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                             trailing: ButtonTheme(
                               padding: EdgeInsets.all(0),
@@ -220,9 +219,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                           ),
                           ListTile(
                             dense: true,
-                            title: Text(
-                              S.of(context).default_credit_card,
-                              style: Theme.of(context).textTheme.body1,
+                            title: Text('default_credit_card',
+                              style: Theme.of(context).textTheme.bodyText2,
                             ),
                             trailing: Text(
                               _con.creditCard.number.isNotEmpty
@@ -252,9 +250,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                         children: <Widget>[
                           ListTile(
                             leading: Icon(UiIcons.settings_1),
-                            title: Text(
-                              S.of(context).app_settings,
-                              style: Theme.of(context).textTheme.body2,
+                            title: Text('app_settings',
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
                           ListTile(
@@ -272,12 +269,12 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 SizedBox(width: 10),
                                 Text(
                                   S.of(context).languages,
-                                  style: Theme.of(context).textTheme.body1,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
                               ],
                             ),
                             trailing: Text(
-                              S.of(context).english,
+                              S.of(context).langEnglish,
                               style: TextStyle(color: Theme.of(context).focusColor),
                             ),
                           ),
@@ -295,8 +292,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  S.of(context).delivery_addresses,
-                                  style: Theme.of(context).textTheme.body1,
+                                  S.of(context).deliveryAddresses,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
                               ],
                             ),
@@ -315,8 +312,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  S.of(context).help_support,
-                                  style: Theme.of(context).textTheme.body1,
+                                  S.of(context).helpAndSupports,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
                               ],
                             ),

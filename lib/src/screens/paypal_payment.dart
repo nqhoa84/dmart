@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -29,9 +29,8 @@ class _PayPalPaymentWidgetState extends StateMVC<PayPalPaymentWidget> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          S.of(context).paypal_payment,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+        title: Text( 'paypal_payment',
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         leading: new IconButton(
           icon: new Icon(UiIcons.return_icon,
@@ -45,7 +44,8 @@ class _PayPalPaymentWidgetState extends StateMVC<PayPalPaymentWidget> {
           InAppWebView(
             initialUrl: _con.url,
             initialHeaders: {},
-            initialOptions: new InAppWebViewWidgetOptions(),
+            //todo orignal unrem
+//            initialOptions: new InAppWebViewWidgetOptions(),
             onWebViewCreated: (InAppWebViewController controller) {
               _con.webView = controller;
             },

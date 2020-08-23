@@ -55,16 +55,16 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                     child: Column(
                       children: <Widget>[
                         SizedBox(height: 25),
-                        Text(S.of(context).email_to_reset_password, style: Theme.of(context).textTheme.display3.merge(TextStyle(fontSize:20,))),
+                        Text(S.of(context).emailToResetPass, style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize:20,))),
                         SizedBox(height: 60),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.emailAddress,
                           onSaved: (input) => _con.user.email = input,
-                          validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
+                          validator: (input) => !input.contains('@') ? S.of(context).shouldBeValidEmail : null,
                           decoration: new InputDecoration(
-                            hintText: S.of(context).email_address,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                            hintText: S.of(context).emailAddress,
+                            hintStyle: Theme.of(context).textTheme.bodyText2.merge(
                               TextStyle(color: Theme.of(context).accentColor),
                             ),
                             enabledBorder: UnderlineInputBorder(
@@ -84,8 +84,8 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                             _con.resetPassword();
                           },
                           child: Text(
-                            S.of(context).send_password_reset_link,
-                            style: Theme.of(context).textTheme.title.merge(
+                            S.of(context).sendLink,
+                            style: Theme.of(context).textTheme.headline6.merge(
                               TextStyle(color: Theme.of(context).primaryColor),
                             ),
                           ),
@@ -107,11 +107,11 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                     },
                     child: RichText(
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.title.merge(
+                        style: Theme.of(context).textTheme.headline6.merge(
                           TextStyle(fontSize:16,color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
                         ),
                         children: [
-                          TextSpan(text: S.of(context).i_remember_my_password_return_to_login),
+                          TextSpan(text: 'i_remember_my_password_return_to_login'),
                         ],
                       ),
                     ),
@@ -122,11 +122,11 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                     },
                     child: RichText(
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.title.merge(
+                        style: Theme.of(context).textTheme.headline6.merge(
                           TextStyle(fontSize:16,color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
                         ),
                         children: [
-                          TextSpan(text: S.of(context).i_dont_have_an_account),
+                          TextSpan(text: S.of(context).dontHaveAccount),
                         ],
                       ),
                     ),

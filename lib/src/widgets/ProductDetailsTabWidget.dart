@@ -51,7 +51,7 @@ class ProductDetailsTabWidgetState extends StateMVC<ProductDetailsTabWidget> {
             ),
             title: Text(
               S.of(context).store,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),

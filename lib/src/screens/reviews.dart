@@ -78,7 +78,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(_con.order.productOrders[0].product.store.rate,
-                                            style: Theme.of(context).textTheme.display2.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                                            style: Theme.of(context).textTheme.headline3.merge(TextStyle(color: Theme.of(context).primaryColor))),
                                         Icon(
                                           Icons.star_border,
                                           color: Theme.of(context).primaryColor,
@@ -114,7 +114,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                           softWrap: false,
                           maxLines: 2,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display2,
+                          style: Theme.of(context).textTheme.headline3,
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -129,7 +129,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              Text(S.of(context).how_would_you_rate_this_store_, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subhead),
+                              Text('how_would_you_rate_this_store_', textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1),
                               SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +155,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(12),
-                                  hintText: S.of(context).tell_us_about_this_store,
+                                  hintText: 'tell_us_about_this_store',
                                   hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
                                   border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.1))),
                                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
@@ -199,7 +199,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
-                                  Text(_con.productsOfOrder[index].name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subhead),
+                                  Text(_con.productsOfOrder[index].name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1),
                                   SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

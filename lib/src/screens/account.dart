@@ -49,11 +49,11 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
           style: currentUser.value.apiToken == null
           ?Theme.of(context)
               .textTheme
-              .title
+              .headline6
               .merge(TextStyle(letterSpacing: 1.3))
           :Theme.of(context)
               .textTheme
-              .title
+              .headline6
               .merge(TextStyle(letterSpacing: 1.3, color:Theme.of(context).primaryColor)),
         ),
         actions: <Widget>[
@@ -77,14 +77,14 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
               ),
               title: Text(
                 S.of(context).about,
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 currentUser.value?.bio ?? "",
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
             ListTile(
@@ -94,8 +94,8 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
                 color: Theme.of(context).hintColor,
               ),
               title: Text(
-                S.of(context).recent_orders,
-                style: Theme.of(context).textTheme.display1,
+                S.of(context).recentOrders,
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
             _con.recentOrders.isEmpty
@@ -114,7 +114,7 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                                '${S.of(context).order_id}: #${_con.recentOrders.elementAt(index).id}')),
+                                '${S.of(context).orderId}: #${_con.recentOrders.elementAt(index).id}')),
                         Text(
                           '${_con.recentOrders.elementAt(index).orderStatus.status}',
                           style: Theme.of(context).textTheme.caption,

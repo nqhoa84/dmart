@@ -1,15 +1,9 @@
-import '../../src/controllers/product_controller.dart';
-import '../../src/controllers/reviews_controller.dart';
-import '../../src/models/product.dart';
+import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../src/controllers/product_controller.dart';
+import '../../src/models/product.dart';
 import '../../src/widgets/ReviewItemWidget.dart';
-
-import '../../src/models/review.dart';
-
-import '../../src/widgets/ReviewItemWidget.dart';
-import 'package:flutter/material.dart';
-
 import 'CircularLoadingWidget.dart';
 
 // ignore: must_be_immutable

@@ -157,7 +157,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                                       horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.remove_circle_outline)),
                               Text(_con.quantity.toString(),
-                                  style: Theme.of(context).textTheme.subhead),
+                                  style: Theme.of(context).textTheme.subtitle1),
                               IconButton(
                                   onPressed: () {
                                     _con.incrementQuantity();
@@ -180,7 +180,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                                 vertical: 14, horizontal: 20),
                             color: DmConst.primaryColor,
                             shape: StadiumBorder(),
-                            child: Text(S.of(context).add_to_cart,
+                            child: Text(S.of(context).addToCart,
                                 textAlign: TextAlign.center),
                           ),
                   ),
@@ -387,7 +387,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                   ),
                   title: Text(
                     S.of(context).options,
-                    style: Theme.of(context).textTheme.subhead,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   subtitle: Text(
                     S.of(context)
@@ -427,7 +427,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                                 optionGroup.name,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subhead,
+                                    .subtitle1,
                               ),
                             ),
                             ListView.separated(
@@ -502,10 +502,10 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                     color: Theme.of(context).hintColor,
                   ),
                   title: Text(
-                    S.of(context).product_reviews,
+                    S.of(context).productReviews,
                     overflow: TextOverflow.fade,
                     softWrap: false,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
               ),

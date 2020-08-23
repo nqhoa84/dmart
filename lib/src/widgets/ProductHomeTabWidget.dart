@@ -40,7 +40,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                   widget.product.name,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: Theme.of(context).textTheme.display2,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
               Chip(
@@ -49,7 +49,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(S.of(context).featured,
-                        style: Theme.of(context).textTheme.body2.merge(
+                        style: Theme.of(context).textTheme.bodyText1.merge(
                             TextStyle(color: Theme.of(context).primaryColor))),
                     Icon(
                       Icons.star_border,
@@ -75,13 +75,13 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                   Helper.getPrice(
                     widget.product.price,
                     context,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   widget.product.discountPrice > 0
                       ? Helper.getPrice(widget.product.discountPrice, context,
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .bodyText2
                           .merge(TextStyle(decoration: TextDecoration.lineThrough)))
                       : SizedBox(height: 0),
                 ],
@@ -94,7 +94,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                       borderRadius: BorderRadius.circular(24)),
                   child:Text(
                         widget.product.packageItemsCount + " " + S.of(context).items,
-                        style: Theme.of(context).textTheme.body1
+                        style: Theme.of(context).textTheme.bodyText2
                   )
               ),
             ],
@@ -111,13 +111,11 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                         widget.product.deliverable ? Colors.green : Colors.orange,
                     borderRadius: BorderRadius.circular(24)),
                 child: widget.product.deliverable
-                    ? Text(
-                        S.of(context).deliverable,
+                    ? Text('deliverable',
                         style: Theme.of(context).textTheme.caption.merge(
                             TextStyle(color: Theme.of(context).primaryColor)),
                       )
-                    : Text(
-                        S.of(context).not_deliverable,
+                    : Text('not_deliverable',
                         style: Theme.of(context).textTheme.caption.merge(
                             TextStyle(color: Theme.of(context).primaryColor)),
                       ),
@@ -147,7 +145,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
             ),
             title: Text(
               S.of(context).options,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
             subtitle: Text(
               S.of(context).select_options_to_add_them_on_the_product,
@@ -177,7 +175,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                           ),
                           title: Text(
                             optionGroup.name,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ),
                         ListView.separated(

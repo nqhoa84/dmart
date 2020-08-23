@@ -94,7 +94,7 @@ class FavoriteListItemWidget extends StatefulWidget {
                             widget.favorite.product.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(
                             widget.favorite.product.store.name,
@@ -106,7 +106,7 @@ class FavoriteListItemWidget extends StatefulWidget {
                       ),
                     ),
                     SizedBox(width: 8),
-                    Helper.getPrice(widget.favorite.product.price, context, style: Theme.of(context).textTheme.display1),
+                    Helper.getPrice(widget.favorite.product.price, context, style: Theme.of(context).textTheme.headline4),
                   ],
                 ),
               )

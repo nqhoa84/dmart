@@ -1,4 +1,5 @@
-
+import 'package:dmart/buidUI.dart';
+import 'package:dmart/constant.dart';
 
 import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
@@ -33,80 +34,61 @@ class _SignInWidgetState extends StateMVC<SignInWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      backgroundColor: Theme.of(context).accentColor,
+      appBar: createAppBar(context, _con.scaffoldKey),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+//            Divider(thickness: 3, color: DmConst.primaryColor),
+          createTitleRowWithBack(context, title: S.of(context).login),
             Stack(
               children: <Widget>[
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  margin: EdgeInsets.symmetric(vertical: 65, horizontal: 40),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(width: 2, color: Colors.grey.shade300),
+//                      color: Theme.of(context).primaryColor,
+//                      boxShadow: [
+//                        BoxShadow(
+//                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 10), blurRadius: 20)
+//                      ],
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  margin: EdgeInsets.symmetric(vertical: 85, horizontal: 20),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).primaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 10), blurRadius: 20)
-                      ]),
                   child: Form(
                     key: _con.loginFormKey,
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: 25),
-                        Text(
-                            S.of(context).login,
-                            style: Theme.of(context).textTheme.display3),
-                        SizedBox(height: 20),
                         new TextFormField(
-                          style: TextStyle(color: Theme.of(context).accentColor),
-                          keyboardType: TextInputType.emailAddress,
-                          onSaved: (input) => _con.user.email = input,
-                          validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
+                          style: TextStyle(color: DmConst.primaryColor),
+                          keyboardType: TextInputType.phone,
+                          onSaved: (input) => _con.user.phone = input,
+//                          validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
                           decoration: new InputDecoration(
-                            hintText: S.of(context).email_address,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
-                                  TextStyle(color: Theme.of(context).accentColor),
-                                ),
+                            hintText: S.of(context).phone,
+                            hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.primaryColor),
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Theme.of(context).accentColor.withOpacity(0.2))),
+                                borderSide: BorderSide(color: DmConst.primaryColor.withOpacity(0.2))),
                             focusedBorder:
-                                UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                            prefixIcon: Icon(
-                              UiIcons.envelope,
-                              color: Theme.of(context).accentColor,
-                            ),
+                                UnderlineInputBorder(borderSide: BorderSide(color: DmConst.primaryColor)),
+                            prefixIcon: Icon(Icons.phone, color: DmConst.primaryColor),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         new TextFormField(
-                          style: TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(color: DmConst.primaryColor),
                           keyboardType: TextInputType.text,
                           onSaved: (input) => _con.user.password = input,
-                          validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
+                          validator: (input) => input.length < 3 ? S.of(context).shouldBeMoreThan6Chars : null,
                           obscureText: _con.hidePassword,
                           decoration: new InputDecoration(
                             hintText: S.of(context).password,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
-                                  TextStyle(color: Theme.of(context).accentColor),
-                                ),
+                            hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.primaryColor),
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Theme.of(context).accentColor.withOpacity(0.2))),
+                                borderSide: BorderSide(color: DmConst.primaryColor.withOpacity(0.2))),
                             focusedBorder:
-                                UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                            prefixIcon: Icon(
-                              UiIcons.padlock,
-                              color: Theme.of(context).accentColor,
+                                UnderlineInputBorder(borderSide: BorderSide(color: DmConst.primaryColor)),
+                            prefixIcon: Icon(UiIcons.padlock_1,  color: DmConst.primaryColor
                             ),
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -114,22 +96,22 @@ class _SignInWidgetState extends StateMVC<SignInWidget> {
                                   _con.hidePassword = !_con.hidePassword;
                                 });
                               },
-                              color: Theme.of(context).accentColor.withOpacity(0.4),
+                              color: DmConst.primaryColor.withOpacity(0.4),
                               icon: Icon(_con.hidePassword ? Icons.visibility_off : Icons.visibility),
                             ),
                           ),
                         ),
-                        SizedBox(height: 30),
+//                        SizedBox(height: 10),
                         FlatButton(
                           onPressed: () {
                             Navigator.of(context).pushReplacementNamed('/ForgetPassword');
                           },
                           child: Text(
-                            S.of(context).i_forgot_password,
-                            style: Theme.of(context).textTheme.body1,
+                            S.of(context).forgetPassword,
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                         ),
-                        SizedBox(height: 20),
+//                        SizedBox(height: 10),
                         FlatButton(
                           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 80),
                           onPressed: () {
@@ -137,11 +119,9 @@ class _SignInWidgetState extends StateMVC<SignInWidget> {
                           },
                           child: Text(
                             S.of(context).login,
-                            style: Theme.of(context).textTheme.title.merge(
-                                  TextStyle(color: Theme.of(context).primaryColor),
-                                ),
+                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)
                           ),
-                          color: Theme.of(context).accentColor,
+                          color: DmConst.primaryColor,
                           shape: StadiumBorder(),
                         ),
                         SizedBox(height: 15),
@@ -151,7 +131,7 @@ class _SignInWidgetState extends StateMVC<SignInWidget> {
                           },
                           shape: StadiumBorder(),
                           textColor: Theme.of(context).hintColor,
-                          child: Text(S.of(context).skip),
+                          child: Text(S.of(context).orSignInWith),
                           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                         ),
                         SizedBox(height: 5),
@@ -167,11 +147,11 @@ class _SignInWidgetState extends StateMVC<SignInWidget> {
               },
               child: RichText(
                 text: TextSpan(
-                  style: Theme.of(context).textTheme.title.merge(
+                  style: Theme.of(context).textTheme.headline6.merge(
                         TextStyle(color: Theme.of(context).primaryColor,fontSize: 16,fontWeight: FontWeight.w600),
                       ),
                   children: [
-                    TextSpan(text: S.of(context).i_dont_have_an_account),
+                    TextSpan(text: S.of(context).dontHaveAccount),
                   ],
                 ),
               ),

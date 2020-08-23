@@ -75,7 +75,7 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
                                 address.description,
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
-                                style: Theme.of(context).textTheme.subhead,
+                                style: Theme.of(context).textTheme.subtitle1,
                               )
                             : SizedBox(height: 0),
                         Text(
@@ -84,7 +84,7 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
                           maxLines: 2,
                           style: address?.description != null
                               ? Theme.of(context).textTheme.caption
-                              : Theme.of(context).textTheme.subhead,
+                              : Theme.of(context).textTheme.subtitle1,
                         ),
                       ],
                     ),

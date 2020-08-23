@@ -42,8 +42,8 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            S.of(context).my_orders,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+            S.of(context).myOrders,
+            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
             new ShoppingCartButtonWidget(
@@ -101,7 +101,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
                         border: Border.all(color: Theme.of(context).accentColor, width: 1)),
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text(S.of(context).on_the_way),
+                      child: Text(S.of(context).delivering),
                     ),
                   ),
                 ),

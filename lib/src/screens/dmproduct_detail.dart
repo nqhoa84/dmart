@@ -107,7 +107,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                         color: Theme.of(context).hintColor,
                       ),
                       Text(_con.quantity.toString(),
-                          style: Theme.of(context).textTheme.subhead),
+                          style: Theme.of(context).textTheme.subtitle1),
                       IconButton(
                         onPressed: () {
                           _con.incrementQuantity();
@@ -177,8 +177,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              S.of(context).add_to_cart,
+                            child: Text( S.of(context).addToCart,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
@@ -191,7 +190,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                         child: Helper.getPrice(
                           _con.total,
                           context,
-                          style: Theme.of(context).textTheme.display1.merge(
+                          style: Theme.of(context).textTheme.headline4.merge(
                               TextStyle(color: Theme.of(context).primaryColor)),
                         ),
                       )
@@ -366,7 +365,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                                           _con.product.name,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
-                                          style: Theme.of(context).textTheme.display2,
+                                          style: Theme.of(context).textTheme.headline3,
                                         ),
 
                                       ],
@@ -379,7 +378,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                                         children: <Widget>[
                                           Text(_con.product.rate,
                                               style:
-                                              Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                                              Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor))),
                                           Icon(
                                             Icons.star_border,
                                             color: Theme.of(context).primaryColor,
@@ -404,13 +403,13 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                                         Helper.getPrice(
                                           _con.product.price,
                                           context,
-                                          style: Theme.of(context).textTheme.display3,
+                                          style: Theme.of(context).textTheme.headline2,
                                         ),
                                         _con.product.discountPrice > 0
                                             ? Helper.getPrice(_con.product.discountPrice, context,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .body1
+                                                .bodyText2
                                                 .merge(TextStyle(decoration: TextDecoration.lineThrough)))
                                             : SizedBox(height: 0),
                                       ],
@@ -422,15 +421,13 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                                         color: _con.product.deliverable ? Colors.green : Colors.orange,
                                         borderRadius: BorderRadius.circular(24)),
                                     child: _con.product.deliverable
-                                        ? Text(
-                                      S.of(context).deliverable,
+                                        ? Text('deliverable',
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption
                                           .merge(TextStyle(color: Theme.of(context).primaryColor)),
                                     )
-                                        : Text(
-                                      S.of(context).not_deliverable,
+                                        : Text('not_deliverable',
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption
@@ -479,7 +476,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                             ),
                             title: Text(
                               S.of(context).options,
-                              style: Theme.of(context).textTheme.subhead,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             subtitle: Text(
                               S.of(context).select_options_to_add_them_on_the_product,
@@ -509,7 +506,7 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                                         ),
                                         title: Text(
                                           optionGroup.name,
-                                          style: Theme.of(context).textTheme.subhead,
+                                          style: Theme.of(context).textTheme.subtitle1,
                                         ),
                                       ),
                                       ListView.separated(
@@ -574,10 +571,10 @@ class _DmProductDetailState extends StateMVC<DmProductDetail> with SingleTickerP
                               color: Theme.of(context).hintColor,
                             ),
                             title: Text(
-                              S.of(context).product_reviews,
+                              S.of(context).productReviews,
                               overflow: TextOverflow.fade,
                               softWrap: false,
-                              style: Theme.of(context).textTheme.display1,
+                              style: Theme.of(context).textTheme.headline4,
                             ),
                           ),
                         ),

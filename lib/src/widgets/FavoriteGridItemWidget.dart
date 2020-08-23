@@ -56,7 +56,7 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
               SizedBox(height: 5),
               Text(
                 widget.favorite.product.name,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 2),

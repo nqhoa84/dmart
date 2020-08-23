@@ -27,7 +27,7 @@ class FaqItem extends StatelessWidget {
                 BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))),
             child: Text(
               Helper.skipHtml(this.faq.question),
-              style: Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor)),
+              style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),
             ),
           ),
           Container(
@@ -37,7 +37,7 @@ class FaqItem extends StatelessWidget {
                 color: Theme.of(context).primaryColor, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5), bottomLeft: Radius.circular(5))),
             child: Text(
               Helper.skipHtml(this.faq.answer),
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
         ],

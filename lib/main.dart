@@ -3,7 +3,6 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -14,7 +13,6 @@ import 'src/repository/user_repository.dart' as userRepo;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences.setMockInitialValues({});
   await GlobalConfiguration().loadFromAsset("configurations");
   runApp(Dmart());
 }
@@ -108,7 +106,7 @@ class _DmartState extends State<Dmart> {
   }
 
 //  @override
-  Widget build_(BuildContext context) {
+  Widget _build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: settingRepo.setting,
         builder: (context, Setting _setting, _) {
@@ -176,38 +174,38 @@ class _DmartState extends State<Dmart> {
                     hintColor: config.Colors().secondDarkColor(1),
                     focusColor: config.Colors().accentDarkColor(1),
                     textTheme: TextTheme(
-                      headline: TextStyle(
+                      headline5: TextStyle(
                           fontSize: 22.0,
                           color: config.Colors().secondDarkColor(1)),
-                      display1: TextStyle(
+                      headline4: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w700,
                           color: config.Colors().secondDarkColor(1)),
-                      display2: TextStyle(
+                      headline3: TextStyle(
                           fontSize: 22.0,
                           fontWeight: FontWeight.w700,
                           color: config.Colors().secondDarkColor(1)),
-                      display3: TextStyle(
+                      headline2: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.w700,
                           color: config.Colors().mainDarkColor(1)),
-                      display4: TextStyle(
+                      headline1: TextStyle(
                           fontSize: 26.0,
                           fontWeight: FontWeight.w300,
                           color: config.Colors().secondDarkColor(1)),
-                      subhead: TextStyle(
+                      subtitle1: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                           color: config.Colors().secondDarkColor(1)),
-                      title: TextStyle(
+                      headline6: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.w700,
                           color: config.Colors().mainDarkColor(1)),
-                      body1: TextStyle(
+                      bodyText2: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
                           color: config.Colors().secondDarkColor(1)),
-                      body2: TextStyle(
+                      bodyText1: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400,
                           color: config.Colors().secondDarkColor(1)),

@@ -41,7 +41,7 @@ class CategoryController extends ControllerMVC {
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -59,7 +59,7 @@ class CategoryController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
+        content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -97,7 +97,7 @@ class CategoryController extends ControllerMVC {
         this.loadCart = false;
       });
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.this_product_was_added_to_cart),
+        content: Text(S.current.productAdded2Cart),
       ));
     });
   }*/
@@ -120,7 +120,7 @@ class CategoryController extends ControllerMVC {
         });
       }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_product_was_added_to_cart),
+          content: Text(S.of(context).productAdded2Cart),
         ));
       });
     } else {
@@ -131,7 +131,7 @@ class CategoryController extends ControllerMVC {
         });
       }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_product_was_added_to_cart),
+          content: Text(S.of(context).productAdded2Cart),
         ));
       });
     }
@@ -144,7 +144,7 @@ class CategoryController extends ControllerMVC {
   Future<void> refreshCategory() async {
     products.clear();
     category = new Category();
-    listenForProductsByCategory(message: S.of(context).category_refreshed_successfuly);
-    listenForCategory(message: S.of(context).category_refreshed_successfuly);
+    listenForProductsByCategory(message: S.of(context).categoryRefreshedSuccessfully);
+    listenForCategory(message: S.of(context).categoryRefreshedSuccessfully);
   }
 }

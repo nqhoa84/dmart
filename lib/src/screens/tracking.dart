@@ -48,8 +48,8 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(
-            S.of(context).tracking_order,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+            S.of(context).trackingOrder,
+            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
             new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -71,7 +71,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                               initiallyExpanded: true,
                               title: Row(
                                 children: <Widget>[
-                                  Expanded(child: Text('${S.of(context).order_id}: #${_con.order.id}')),
+                                  Expanded(child: Text('${S.of(context).orderId}: #${_con.order.id}')),
                                   Text(
                                     '${_con.order.orderStatus.status}',
                                     style: Theme.of(context).textTheme.caption,
@@ -130,7 +130,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                                               _con.order.deliveryAddress?.description ?? "",
                                               overflow: TextOverflow.fade,
                                               softWrap: false,
-                                              style: Theme.of(context).textTheme.subhead,
+                                              style: Theme.of(context).textTheme.subtitle1,
                                             ),
                                             Text(
                                               _con.order.deliveryAddress?.address ?? "",
@@ -165,7 +165,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          Text(S.of(context).how_would_you_rate_this_store, style: Theme.of(context).textTheme.subhead),
+                          Text('how_would_you_rate_this_store', style: Theme.of(context).textTheme.subtitle1),
                           Text(S.of(context).click_on_the_stars_below_to_leave_comments, style: Theme.of(context).textTheme.caption),
                           SizedBox(height: 5),
                           FlatButton(

@@ -52,17 +52,17 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                     child: Column(
                       children: <Widget>[
                         SizedBox(height: 25),
-                        Text(S.of(context).register, style: Theme.of(context).textTheme.display3),
+                        Text(S.of(context).register, style: Theme.of(context).textTheme.headline2),
                         SizedBox(height: 20),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.text,
                           onSaved: (input) => _con.user.name = input,
-                          validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_letters : null,
+                          validator: (input) => input.length < 6 ? S.of(context).shouldBeMoreThan6Chars : null,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(12),
-                            hintText: S.of(context).full_name,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                            hintText: S.of(context).fullName,
+                            hintStyle: Theme.of(context).textTheme.bodyText2.merge(
                               TextStyle(color: Theme.of(context).accentColor),
                             ),
                             prefixIcon: Icon(UiIcons.user_1, color: Theme.of(context).accentColor),
@@ -77,10 +77,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           style: TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.emailAddress,
                           onSaved: (input) => _con.user.email = input,
-                          validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
+                          validator: (input) => !input.contains('@') ? S.of(context).shouldBeValidEmail : null,
                           decoration: new InputDecoration(
-                            hintText: S.of(context).email_address,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                            hintText: S.of(context).emailAddress,
+                            hintStyle: Theme.of(context).textTheme.bodyText2.merge(
                                   TextStyle(color: Theme.of(context).accentColor),
                                 ),
                             enabledBorder: UnderlineInputBorder(
@@ -99,10 +99,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           keyboardType: TextInputType.text,
                           obscureText: _con.hidePassword,
                           onSaved: (input) => _con.user.password = input,
-                          validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
+                          validator: (input) => input.length < 6 ? S.of(context).shouldBeMoreThan6Chars : null,
                           decoration: new InputDecoration(
                             hintText: S.of(context).password,
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                            hintStyle: Theme.of(context).textTheme.bodyText2.merge(
                                   TextStyle(color: Theme.of(context).accentColor),
                                 ),
                             enabledBorder: UnderlineInputBorder(
@@ -133,7 +133,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
                           decoration: new InputDecoration(
                             hintText: '••••••••••••',
-                            hintStyle: Theme.of(context).textTheme.body1.merge(
+                            hintStyle: Theme.of(context).textTheme.bodyText2.merge(
                                   TextStyle(color: Theme.of(context).accentColor),
                                 ),
                             enabledBorder: UnderlineInputBorder(
@@ -163,7 +163,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           },
                           child: Text(
                             S.of(context).register,
-                            style: Theme.of(context).textTheme.title.merge(
+                            style: Theme.of(context).textTheme.headline6.merge(
                                   TextStyle(color: Theme.of(context).primaryColor),
                                 ),
                           ),
@@ -183,11 +183,11 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               },
               child: RichText(
                 text: TextSpan(
-                  style: Theme.of(context).textTheme.title.merge(
+                  style: Theme.of(context).textTheme.headline6.merge(
                         TextStyle(color: Theme.of(context).primaryColor,fontSize: 16,fontWeight: FontWeight.w600),
                       ),
                   children: [
-                    TextSpan(text: S.of(context).i_have_account_back_to_login),
+                    TextSpan(text: 'i_have_account_back_to_login'),
                   ],
                 ),
               ),

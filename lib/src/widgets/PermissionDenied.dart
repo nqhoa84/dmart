@@ -69,7 +69,7 @@ class _PermissionDeniedState extends State<PermissionDenied> {
           SizedBox(height: 15),
           Opacity(
             opacity: 0.4,
-            child: Text(S.of(context).you_must_signin_to_access_to_this_section,
+            child: Text(S.of(context).youMustSignToSeeThisSection,
                 textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
@@ -90,7 +90,7 @@ class _PermissionDeniedState extends State<PermissionDenied> {
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
               shape: StadiumBorder(),
               child: Text(
-                S.of(context).i_dont_have_an_account,
+                S.of(context).dontHaveAccount,
                 style: TextStyle(color: Theme.of(context).focusColor),
               )),
         ],

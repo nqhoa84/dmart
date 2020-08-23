@@ -102,10 +102,10 @@ class _FavoritesScreenState extends StateMVC<FavoritesScreen> {
                     color: Theme.of(context).hintColor,
                   ),
                   title: Text(
-                    S.of(context).favorite_products,
+                    S.of(context).favoriteProducts,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,

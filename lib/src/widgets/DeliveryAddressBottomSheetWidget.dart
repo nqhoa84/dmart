@@ -88,10 +88,10 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    S.of(context).add_new_delivery_address,
+                                    S.of(context).addNewDeliveryAddress,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
-                                    style: Theme.of(context).textTheme.body1,
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
                               ),
@@ -138,10 +138,10 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    S.of(context).current_location,
+                                    S.of(context).currentLocation,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
-                                    style: Theme.of(context).textTheme.body1,
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
                               ),
@@ -219,7 +219,7 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                                         _con.addresses.elementAt(index).address,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
-                                        style: Theme.of(context).textTheme.body1,
+                                        style: Theme.of(context).textTheme.bodyText2,
                                       ),
                                     ],
                                   ),

@@ -31,7 +31,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     accountName: Text(
                       currentUser.value.name,
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     accountEmail: Text(
                       currentUser.value.email,
@@ -73,7 +73,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).home,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -86,7 +86,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).notifications,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -98,8 +98,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).my_orders,
-              style: Theme.of(context).textTheme.subhead,
+              S.of(context).myOrders,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -111,8 +111,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).favorite_products,
-              style: Theme.of(context).textTheme.subhead,
+              S.of(context).favoriteProducts,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -125,7 +125,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).categories,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -138,14 +138,13 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).brands,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
             dense: true,
-            title: Text(
-              S.of(context).application_preferences,
-              style: Theme.of(context).textTheme.body1,
+            title: Text('application_preferences',
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             trailing: Icon(
               Icons.remove,
@@ -161,8 +160,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).help__support,
-              style: Theme.of(context).textTheme.subhead,
+              S.of(context).helpAndSupports,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -179,7 +178,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).settings,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -192,7 +191,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).languages,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -210,8 +209,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode,
-              style: Theme.of(context).textTheme.subhead,
+              Theme.of(context).brightness == Brightness.dark ? 'light_mode' : 'dark_mode',
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           ListTile(
@@ -230,8 +229,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              currentUser.value.apiToken != null ? S.of(context).log_out : S.of(context).login,
-              style: Theme.of(context).textTheme.subhead,
+              currentUser.value.apiToken != null ? S.of(context).logout : S.of(context).login,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           currentUser.value.apiToken == null
@@ -245,7 +244,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                   title: Text(
                     S.of(context).register,
-                    style: Theme.of(context).textTheme.subhead,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
               : SizedBox(height: 0),
@@ -254,7 +253,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   dense: true,
                   title: Text(
                     S.of(context).version + " " + setting.value.appVersion,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Icon(
                     Icons.remove,

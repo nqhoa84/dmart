@@ -39,7 +39,7 @@ class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
             ),
             title: Text(
               widget.category.name,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),
@@ -55,7 +55,7 @@ class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
             ),
             title: Text(
               S.of(context).description,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
           ),
         ),

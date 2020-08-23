@@ -20,15 +20,14 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: new Text(S.of(context).reset_cart),
+      title: new Text(S.of(context).resetCart),
       contentPadding: EdgeInsets.symmetric(vertical: 20),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
-            child: Text(
-              S.of(context).you_must_add_products_of_the_same_stores_choose_one,
+            child: Text( 'you_must_add_products_of_the_same_stores_choose_one',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -76,11 +75,10 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                                 this.newProduct.store.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
-                                style: Theme.of(context).textTheme.subhead,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
-                              Text(
-                                S.of(context).reset_your_cart_and_order_meals_form_this_store,
+                              Text( 'reset_your_cart_and_order_meals_form_this_store',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -137,11 +135,10 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                                 this.oldProduct.store.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
-                                style: Theme.of(context).textTheme.subhead,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
-                              Text(
-                                S.of(context).keep_your_old_meals_of_this_store,
+                              Text( 'keep_your_old_meals_of_this_store',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],

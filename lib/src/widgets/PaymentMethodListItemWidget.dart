@@ -51,7 +51,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                           paymentMethod.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
                           paymentMethod.description,

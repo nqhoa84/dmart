@@ -65,9 +65,9 @@ class EmptyNotificationsWidget extends StatelessWidget {
           Opacity(
             opacity: 0.4,
             child: Text(
-              S.of(context).dont_have_any_item_in_the_notification_list,
+              S.of(context).yourNotificationEmpty,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.display2.merge(TextStyle(fontWeight: FontWeight.w300)),
+              style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
             ),
           ),
           SizedBox(height: 50),
@@ -79,10 +79,10 @@ class EmptyNotificationsWidget extends StatelessWidget {
             color: Theme.of(context).accentColor.withOpacity(1),
             shape: StadiumBorder(),
             child: Text(
-              S.of(context).start_exploring,
+              S.of(context).home,
               style: Theme.of(context)
                   .textTheme
-                  .title
+                  .headline6
                   .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
             ),
           ),

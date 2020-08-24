@@ -11,13 +11,13 @@ import '../repository/user_repository.dart' as userRepo;
 
 Future<Stream<Cart>> getCart() async {
   User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
+  if (_user.isLogin == false) {
     return new Stream.value(null);
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
       '${GlobalConfiguration().getString('api_base_url')}carts?${_apiToken}with=product;product.store;options&search=user_id:${_user.id}&searchFields=user_id:=';
-  print('getCart $url');
+  print('getCarts $url');
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));

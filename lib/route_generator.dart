@@ -1,4 +1,5 @@
 import 'package:dmart/src/screens/contactus.dart';
+import 'package:dmart/src/screens/delivery_to.dart';
 import 'package:dmart/src/screens/error.dart';
 import 'package:flutter/material.dart';
 import 'src/models/route_argument.dart';
@@ -10,7 +11,6 @@ import 'src/screens/category.dart';
 import 'src/screens/checkout.dart';
 import 'src/screens/debug.dart';
 import 'src/screens/delivery_addresses.dart';
-import 'src/screens/delivery_pickup.dart';
 import 'src/screens/favorites.dart';
 import 'src/screens/forget_password.dart';
 import 'src/screens/help.dart';
@@ -33,15 +33,21 @@ class RouteGenerator {
     Navigator.of(context).pushReplacementNamed('/Splash', arguments: 0);
   }
 
-  static void gotoHome(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+  static gotoLogin(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushNamed('/Login')
+        : Navigator.of(context).pushNamed('/Login');
   }
 
+  static void gotoHome(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0)
+        : Navigator.of(context).pushNamed('/Pages', arguments: 0);
+  }
   static void gotoCategories(BuildContext context) {
     Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
   }
-  static void gotoPromotions(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+  static void gotoPromotions(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2)
+        : Navigator.of(context).pushNamed('/Pages', arguments: 2);
   }
   static void gotoNotifications(BuildContext context) {
     Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
@@ -86,13 +92,9 @@ class RouteGenerator {
       case '/Splash':
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/SignUp':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
-      case '/MobileVerification':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
-      case '/MobileVerification2':
-        return MaterialPageRoute(builder: (_) => SignUpWidget());
+        return MaterialPageRoute(builder: (_) => SignUpScreen());
       case '/Login':
-        return MaterialPageRoute(builder: (_) => SignInWidget());
+        return MaterialPageRoute(builder: (_) => SignInScreen());
       case '/ForgetPassword':
         return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
       case '/Pages':
@@ -106,13 +108,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => BrandsWidget());
       case '/Category':
         return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
-      case '/Categories':
+      case '/Categories': //todo unused
         return MaterialPageRoute(builder: (_) => CategoriesWidget());
 
       case '/Cart':
-        return MaterialPageRoute(builder: (_) => CartWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
       case '/DeliveryPickup':
-        return MaterialPageRoute(builder: (_) => DeliveryPickupWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
       case '/Tracking':
         return MaterialPageRoute(builder: (_) => TrackingWidget(routeArgument: args as RouteArgument));
       case '/Reviews':
@@ -122,7 +124,7 @@ class RouteGenerator {
       case '/DeliveryAddresses':
         return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
       case '/DeliveryPickup':
-        return MaterialPageRoute(builder: (_) => DeliveryPickupWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
       case '/Checkout':
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/CashOnDelivery':
@@ -151,6 +153,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ErrorScreen());
     }
   }
+
+
 
 
 

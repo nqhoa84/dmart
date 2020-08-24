@@ -2,6 +2,7 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/generated/l10n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant.dart';
@@ -14,8 +15,21 @@ class ProductItemWide extends StatefulWidget {
   final Product product;
   int amountInCart;
   bool isFavorite;
+  bool showRemoveIcon;
+  double _removeIconSize = 0;
+  Function(String) onPressedOnRemoveIcon;
 
-  ProductItemWide({Key key, this.product, this.heroTag, this.amountInCart = 2, this.isFavorite = true}) : super(key: key);
+  ProductItemWide(
+      {Key key,
+      this.product,
+      this.heroTag,
+      this.amountInCart = 0,
+      this.isFavorite = false,
+      this.showRemoveIcon = false,
+      this.onPressedOnRemoveIcon})
+      : super(key: key) {
+    if (showRemoveIcon) _removeIconSize = 25;
+  }
 
   @override
   _ProductItemWideState createState() => _ProductItemWideState();
@@ -92,7 +106,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Expanded(
-                                flex: 6,
+                                flex: 7,
                                 child: Text(
                                   widget.product?.name,
                                   overflow: TextOverflow.ellipsis,
@@ -100,10 +114,8 @@ class _ProductItemWideState extends State<ProductItemWide> {
                                   style: Theme.of(context).textTheme.subtitle2,
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: createFavoriteIcon(context, widget.isFavorite),
-                              ),
+                              createFavoriteIcon(context, widget.isFavorite),
+                              SizedBox(width: widget._removeIconSize)
                             ],
                           ),
                         ),
@@ -121,6 +133,18 @@ class _ProductItemWideState extends State<ProductItemWide> {
               ],
             ),
           ),
+          widget.showRemoveIcon ? Align(
+              alignment: Alignment.topRight,
+              child: InkWell(child: Container( padding: EdgeInsets.all(0),
+                  color: Theme.of(context).accentColor,
+                  child: Icon(Icons.close, size: widget._removeIconSize, color: Colors.white,)),
+                onTap: () {
+                  if(widget.onPressedOnRemoveIcon != null) {
+                    widget.onPressedOnRemoveIcon(widget.product?.id);
+                  }
+                },
+              ))
+              : SizedBox(width: 0)
 //          _createSaleTag(context),
 //          _createFavIcon(context),
         ],
@@ -146,7 +170,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
   BoxDecoration _createDecoration() {
     return widget.amountInCart > 0
         ? BoxDecoration(
-            border: Border.all(color: DmConst.primaryColor),
+            border: Border.all(color: DmConst.accentColor),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
@@ -157,7 +181,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
             ],
           )
         : BoxDecoration(
-            border: Border.all(color: DmConst.primaryColor),
+            border: Border.all(color: DmConst.accentColor),
             color: Colors.transparent,
           );
   }
@@ -198,9 +222,9 @@ class _ProductItemWideState extends State<ProductItemWide> {
     } else {
       return FlatButton(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: DmConst.primaryColor)),
+            borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: DmConst.accentColor)),
         child: Text(S.of(context).addToCart),
-        color: DmConst.primaryColor,
+        color: DmConst.accentColor,
         onPressed: () {},
       );
     }

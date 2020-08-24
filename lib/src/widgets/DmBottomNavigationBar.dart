@@ -45,7 +45,7 @@ class DmBottomNavigationBar extends StatelessWidget {
       backgroundColor: Colors.transparent,
 //      selectedIconTheme: IconThemeData(size: 25),
 //        unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
-      currentIndex: currentIndex,
+      currentIndex: currentIndex != null ? currentIndex : DmState.bottomBarSelectedIndex,
       onTap: onTap != null ? onTap : (int i) {_defaultOnTap (i, context);},
       // this will be set when a new tab is tapped
       items: [

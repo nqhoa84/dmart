@@ -101,7 +101,7 @@ class _BottomRightMenuState extends StateMVC<BottomRightMenu> {
             onTap: () {
               Navigator.of(context).pushNamed('/Help');
             },
-            leading: Icon(Icons.help_outline, color: DmConst.primaryColor),
+            leading: Icon(Icons.help_outline, color: DmConst.accentColor),
             title: Text(S.of(context).help),
           ),
           ListTile(

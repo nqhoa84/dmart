@@ -108,7 +108,7 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
                       Product product = _con.categoriesProducts.elementAt(index);
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ProductItemWide(product: product, heroTag: 'category_products_grid', amountInCart: 10),
+                        child: ProductItemWide(product: product, heroTag: 'category_products_grid'),
                       );
                     },
                   ),

@@ -3,19 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
+import '../../route_generator.dart';
 import '../helpers/app_config.dart' as config;
 import '../helpers/ui_icons.dart';
 
-class EmptyCart extends StatefulWidget {
-  EmptyCart({
+class EmptyCartGrid extends StatefulWidget {
+  EmptyCartGrid({
     Key key
   }) : super(key: key);
 
   @override
-  _EmptyCartState createState() => _EmptyCartState();
+  _EmptyCartGridState createState() => _EmptyCartGridState();
 }
 
-class _EmptyCartState extends State<EmptyCart> {
+class _EmptyCartGridState extends State<EmptyCartGrid> {
   bool loading = true;
 
   @override
@@ -61,7 +62,7 @@ class _EmptyCartState extends State<EmptyCart> {
               !loading
                   ? FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/Pages', arguments: 2);
+                        RouteGenerator.gotoHome(context, replaceOld: true);
                       },
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
                       color: Theme.of(context).accentColor.withOpacity(1),

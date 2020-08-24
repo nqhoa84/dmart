@@ -14,7 +14,7 @@ import '../../src/models/route_argument.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductDetailsTabWidget.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 
@@ -31,8 +31,7 @@ class ProductDetailScreen extends StatefulWidget {
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
-    with SingleTickerProviderStateMixin {
+class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with SingleTickerProviderStateMixin {
   ProductController _con;
   int _tabIndex = 0;
   TabController _tabController;
@@ -46,8 +45,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
     _con.listenForProduct(productId: widget.routeArgument.id);
     _con.listenForFavorite(productId: widget.routeArgument.id);
     _con.listenForCart();
-    _tabController =
-        TabController(length: 3, initialIndex: _tabIndex, vsync: this);
+    _tabController = TabController(length: 3, initialIndex: _tabIndex, vsync: this);
     _tabController.addListener(_handleTabSelection);
     super.initState();
   }
@@ -66,25 +64,25 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
   }
 
   Widget _createPriceForBottomBar(BuildContext context) {
-    if(_con.product == null) return Container();
-    if(_con.product.promotionPrice != null) {
-      return Column (
+    if (_con.product == null) return Container();
+    if (_con.product.promotionPrice != null) {
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('${_con.product.getDisplayPromotionPrice}',
-          style: TextStyle(color: DmConst.textColorPromotionPrice)),
-          Text('${_con.product.getDisplayOriginalPrice}',
-          style: TextStyle(decoration: TextDecoration.lineThrough,
-              decorationThickness: 2.0,
-              decorationColor: DmConst.textColorPromotionPrice),)
+          Text('${_con.product.getDisplayPromotionPrice}', style: TextStyle(color: DmConst.textColorPromotionPrice)),
+          Text(
+            '${_con.product.getDisplayOriginalPrice}',
+            style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+                decorationThickness: 2.0,
+                decorationColor: DmConst.textColorPromotionPrice),
+          )
         ],
       );
     } else {
-      return Column (
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('${_con.product.getDisplayOriginalPrice}')
-        ],
+        children: <Widget>[Text('${_con.product.getDisplayOriginalPrice}')],
       );
     }
   }
@@ -99,13 +97,9 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           color: DmConst.bgrColorBottomBarProductDetail.withOpacity(0.9),
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
           boxShadow: [
-            BoxShadow(
-                color: DmConst.productShadowColor.withOpacity(0.7),
-                blurRadius: 5,
-                offset: Offset(0, -2)),
+            BoxShadow(color: DmConst.productShadowColor.withOpacity(0.7), blurRadius: 5, offset: Offset(0, -2)),
           ],
         ),
         child: SizedBox(
@@ -116,7 +110,8 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text('${_con.product?.name}',
+                    child: Text(
+                      '${_con.product?.name}',
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                   ),
@@ -129,7 +124,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                 children: <Widget>[
                   FloatingActionButton(
                     child: createFavoriteIcon(context, isFav),
-                    backgroundColor: DmConst.primaryColor,
+                    backgroundColor: DmConst.accentColor,
                     onPressed: () {
                       if (currentUser.value.isLogin == false) {
                         Navigator.of(context).pushNamed("/Login");
@@ -153,18 +148,15 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                                     _con.decrementQuantity();
                                   },
                                   iconSize: 30,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.remove_circle_outline)),
-                              Text(_con.quantity.toString(),
-                                  style: Theme.of(context).textTheme.subtitle1),
+                              Text(_con.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
                               IconButton(
                                   onPressed: () {
                                     _con.incrementQuantity();
                                   },
                                   iconSize: 30,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.add_circle_outline))
                             ],
                           )
@@ -176,12 +168,10 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                                 _con.addToCart(_con.product);
                               }
                             },
-                            padding: EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 20),
-                            color: DmConst.primaryColor,
+                            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            color: DmConst.accentColor,
                             shape: StadiumBorder(),
-                            child: Text(S.of(context).addToCart,
-                                textAlign: TextAlign.center),
+                            child: Text(S.of(context).addToCart, textAlign: TextAlign.center),
                           ),
                   ),
                 ],
@@ -192,11 +182,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
       ),
       body: _con.product == null
           ? CircularLoadingWidget(height: 500)
-          : CustomScrollView(
-            slivers: <Widget>[
-              _createImageSpace(context),
-              _createInfoSpace(context)
-            ]),
+          : CustomScrollView(slivers: <Widget>[_createImageSpace(context), _createInfoSpace(context)]),
     );
   }
 
@@ -205,21 +191,17 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
       floating: true,
       automaticallyImplyLeading: false,
       leading: new IconButton(
-        icon: new Icon(UiIcons.return_icon, color: DmConst.colorFavorite),
+        color: DmConst.accentColor.withOpacity(0.6),
+        icon: new Icon(UiIcons.return_icon, color: Colors.white),
         onPressed: () => Navigator.of(context).pop(),
       ),
       actions: <Widget>[
         _con.loadCart
             ? Container(
-          margin:
-          EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          child: RefreshProgressIndicator(),
-        )
-            : ShoppingCartButtonWidget(
-          iconColor: Theme.of(context).hintColor,
-          labelColor: Theme.of(context).accentColor,
-          product: _con.product,
-        ),
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                child: RefreshProgressIndicator(),
+              )
+            : Container(width: 50, height: 40, padding: EdgeInsets.only(right: 10), child: ShoppingCartButton()),
       ],
 //                backgroundColor: Theme.of(context).primaryColor,
       expandedHeight: 350,
@@ -229,9 +211,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
         background: GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return DetailScreen(
-                  heroTag: widget._heroTag,
-                  image: _con.product.image.thumb);
+              return ProductPhotoGalleryScreen(heroTag: widget._heroTag, image: _con.product.image.thumb);
             }));
           },
           child: Hero(
@@ -240,33 +220,26 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
               fit: StackFit.expand,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 5, vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                   width: double.infinity,
                   child: ClipRRect(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(5)),
-                      child: createNetworkImage(
-                          url: _con.product.image.thumb)),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      child: createNetworkImage(url: _con.product.image.thumb)),
                 ),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Theme.of(context).primaryColor,
-                            Colors.white.withOpacity(0),
-                            Colors.white.withOpacity(0),
-                            Theme.of(context).scaffoldBackgroundColor
-                          ],
-                          stops: [
-                            0,
-                            0.4,
-                            0.6,
-                            1
-                          ])),
+                      gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
+                    Theme.of(context).primaryColor,
+                    Colors.white.withOpacity(0),
+                    Colors.white.withOpacity(0),
+                    Theme.of(context).scaffoldBackgroundColor
+                  ], stops: [
+                    0,
+                    0.4,
+                    0.6,
+                    1
+                  ])),
                 ),
               ],
             ),
@@ -279,18 +252,15 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
           labelPadding: EdgeInsets.symmetric(horizontal: 10),
           unselectedLabelColor: DmConst.colorFavorite,
           labelColor: DmConst.colorFavorite,
-          indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: DmConst.primaryColor.withOpacity(0.6)),
+          indicator:
+              BoxDecoration(borderRadius: BorderRadius.circular(20), color: DmConst.accentColor.withOpacity(0.6)),
           tabs: [
             Tab(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                        color: DmConst.primaryColor.withOpacity(0.5),
-                        width: 1)),
+                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(S.of(context).product),
@@ -302,9 +272,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                        color: DmConst.primaryColor.withOpacity(0.5),
-                        width: 1)),
+                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(S.of(context).detail),
@@ -316,9 +284,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                        color: DmConst.primaryColor.withOpacity(0.5),
-                        width: 1)),
+                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(S.of(context).review),
@@ -339,17 +305,19 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 8),
-                child: Wrap(runSpacing: 6,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: Wrap(
+                  runSpacing: 6,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
-                          child: Text(_con.product.name,
+                          child: Text(
+                            _con.product.name,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2, style: Theme.of(context).textTheme.headline6,
+                            maxLines: 2,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                         Chip(
@@ -358,11 +326,10 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Text(_con.product.rate,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1.copyWith(color: DmConst.primaryColor)),
-                              Icon(Icons.star_border,
-                                color: DmConst.primaryColor,
+                                  style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor)),
+                              Icon(
+                                Icons.star_border,
+                                color: DmConst.accentColor,
                                 size: 16,
                               ),
                             ],
@@ -376,8 +343,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
               ),
               //Options label
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                 child: ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -390,84 +356,66 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   subtitle: Text(
-                    S.of(context)
-                        .select_options_to_add_them_on_the_product,
+                    S.of(context).select_options_to_add_them_on_the_product,
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
               ),
               //Options and price from DB.
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _con.product.optionGroups == null
                         ? CircularLoadingWidget(height: 100)
                         : ListView.separated(
-                      padding: EdgeInsets.all(0),
-                      itemBuilder: (context, optionGroupIndex) {
-                        var optionGroup = _con
-                            .product.optionGroups
-                            .elementAt(optionGroupIndex);
-                        return Wrap(
-                          children: <Widget>[
-                            ListTile(
-                              dense: true,
-                              contentPadding:
-                              EdgeInsets.symmetric(
-                                  vertical: 0),
-                              leading: Icon(
-                                Icons.add_circle_outline,
-                                color:
-                                Theme.of(context).hintColor,
-                              ),
-                              title: Text(
-                                optionGroup.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1,
-                              ),
-                            ),
-                            ListView.separated(
-                              padding: EdgeInsets.all(0),
-                              itemBuilder:
-                                  (context, optionIndex) {
-                                return OptionItemWidget(
-                                  option: _con.product.options
-                                      .where((option) =>
-                                  option
-                                      .optionGroupId ==
-                                      optionGroup.id)
-                                      .elementAt(optionIndex),
-                                  onChanged:
-                                  _con.calculateTotal,
-                                );
-                              },
-                              separatorBuilder:
-                                  (context, index) {
-                                return SizedBox(height: 20);
-                              },
-                              itemCount: _con.product.options
-                                  .where((option) =>
-                              option.optionGroupId ==
-                                  optionGroup.id)
-                                  .length,
-                              primary: false,
-                              shrinkWrap: true,
-                            ),
-                          ],
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 10);
-                      },
-                      itemCount:
-                      _con.product.optionGroups.length,
-                      primary: false,
-                      shrinkWrap: true,
-                    ),
+                            padding: EdgeInsets.all(0),
+                            itemBuilder: (context, optionGroupIndex) {
+                              var optionGroup = _con.product.optionGroups.elementAt(optionGroupIndex);
+                              return Wrap(
+                                children: <Widget>[
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                    leading: Icon(
+                                      Icons.add_circle_outline,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                    title: Text(
+                                      optionGroup.name,
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                  ),
+                                  ListView.separated(
+                                    padding: EdgeInsets.all(0),
+                                    itemBuilder: (context, optionIndex) {
+                                      return OptionItemWidget(
+                                        option: _con.product.options
+                                            .where((option) => option.optionGroupId == optionGroup.id)
+                                            .elementAt(optionIndex),
+                                        onChanged: _con.calculateTotal,
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(height: 20);
+                                    },
+                                    itemCount: _con.product.options
+                                        .where((option) => option.optionGroupId == optionGroup.id)
+                                        .length,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                  ),
+                                ],
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(height: 10);
+                            },
+                            itemCount: _con.product.optionGroups.length,
+                            primary: false,
+                            shrinkWrap: true,
+                          ),
                     SizedBox(height: 10),
                     //SelectColorWidget()
                   ],
@@ -492,8 +440,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -520,27 +467,40 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen>
   }
 }
 
-class DetailScreen extends StatefulWidget {
+class ProductPhotoGalleryScreen extends StatefulWidget {
   final String image;
   final String heroTag;
 
-  const DetailScreen({Key key, this.image, this.heroTag}) : super(key: key);
+  const ProductPhotoGalleryScreen({Key key, this.image, this.heroTag}) : super(key: key);
 
   @override
-  _DetailScreenWidgetState createState() => _DetailScreenWidgetState();
+  _ProductPhotoGalleryScreenState createState() => _ProductPhotoGalleryScreenState();
 }
 
-class _DetailScreenWidgetState extends State<DetailScreen> {
+class _ProductPhotoGalleryScreenState extends State<ProductPhotoGalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: DmConst.accentColor.withOpacity(0.3),
+//        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+            icon: Icon(UiIcons.return_icon)),
+        title: Image.asset('assets/img/H_Logo_Dmart.png', width: DmConst.appBarHeight* 0.7, fit: BoxFit.contain),
+        centerTitle: true,
+      ),
         body: Center(
       child: GestureDetector(
         child: Hero(
             tag: widget.heroTag,
             child: PhotoView(
+              enableRotation: true,
 //                  imageProvider: CachedNetworkImageProvider(widget.image),
-                imageProvider: NetworkImage(widget.image))),
+                imageProvider: NetworkImage(widget.image),
+            )),
       ),
     ));
   }

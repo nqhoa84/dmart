@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
 import '../widgets/PaymentMethodListItemWidget.dart';
 import '../widgets/SearchBar.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart';
@@ -56,7 +56,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+          new ShoppingCartButton(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
       body: SingleChildScrollView(

@@ -253,6 +253,390 @@ class S {
     );
   }
 
+  /// `Process order`
+  String get processOrder {
+    return Intl.message(
+      'Process order',
+      name: 'processOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery info`
+  String get deliveryInfo {
+    return Intl.message(
+      'Delivery info',
+      name: 'deliveryInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deliver to`
+  String get deliverTo {
+    return Intl.message(
+      'Deliver to',
+      name: 'deliverTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full`
+  String get full {
+    return Intl.message(
+      'Full',
+      name: 'full',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select delivery time`
+  String get selectDeliveryTime {
+    return Intl.message(
+      'Select delivery time',
+      name: 'selectDeliveryTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get note {
+    return Intl.message(
+      'Note',
+      name: 'note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order summary`
+  String get orderSummary {
+    return Intl.message(
+      'Order summary',
+      name: 'orderSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voucher`
+  String get voucher {
+    return Intl.message(
+      'Voucher',
+      name: 'voucher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voucher code`
+  String get voucherCode {
+    return Intl.message(
+      'Voucher code',
+      name: 'voucherCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total items`
+  String get totalItems {
+    return Intl.message(
+      'Total items',
+      name: 'totalItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order value`
+  String get orderValue {
+    return Intl.message(
+      'Order value',
+      name: 'orderValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service fee`
+  String get serviceFee {
+    return Intl.message(
+      'Service fee',
+      name: 'serviceFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery fee`
+  String get deliveryFee {
+    return Intl.message(
+      'Delivery fee',
+      name: 'deliveryFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount`
+  String get discount {
+    return Intl.message(
+      'Discount',
+      name: 'discount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total`
+  String get total {
+    return Intl.message(
+      'Total',
+      name: 'total',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `VAT`
+  String get VAT {
+    return Intl.message(
+      'VAT',
+      name: 'VAT',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grand total`
+  String get grandTotal {
+    return Intl.message(
+      'Grand total',
+      name: 'grandTotal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change`
+  String get change {
+    return Intl.message(
+      'Change',
+      name: 'change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Items list`
+  String get itemsList {
+    return Intl.message(
+      'Items list',
+      name: 'itemsList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Place order`
+  String get placeOrder {
+    return Intl.message(
+      'Place order',
+      name: 'placeOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order number`
+  String get orderNumber {
+    return Intl.message(
+      'Order number',
+      name: 'orderNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you`
+  String get thankYou {
+    return Intl.message(
+      'Thank you',
+      name: 'thankYou',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your order is being placed.`
+  String get yourOrderIsBeingPlaced {
+    return Intl.message(
+      'Your order is being placed.',
+      name: 'yourOrderIsBeingPlaced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'pleaseCheck' key
+
+  /// `Pending orders`
+  String get pendingOrders {
+    return Intl.message(
+      'Pending orders',
+      name: 'pendingOrders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmed orders`
+  String get confirmedOrders {
+    return Intl.message(
+      'Confirmed orders',
+      name: 'confirmedOrders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message(
+      'History',
+      name: 'history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order status`
+  String get orderStatus {
+    return Intl.message(
+      'Order status',
+      name: 'orderStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bought products`
+  String get boughtProducts {
+    return Intl.message(
+      'Bought products',
+      name: 'boughtProducts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome`
+  String get welcome {
+    return Intl.message(
+      'Welcome',
+      name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personal details`
+  String get personalDetails {
+    return Intl.message(
+      'Personal details',
+      name: 'personalDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of birth',
+      name: 'dateOfBirth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please provide us your date of birth. We will have special offers on your birthday.`
+  String get dateOfBirthNote {
+    return Intl.message(
+      'Please provide us your date of birth. We will have special offers on your birthday.',
+      name: 'dateOfBirthNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address details`
+  String get addressDetails {
+    return Intl.message(
+      'Address details',
+      name: 'addressDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `House no.`
+  String get houseNo {
+    return Intl.message(
+      'House no.',
+      name: 'houseNo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `st. name`
+  String get streetName {
+    return Intl.message(
+      'st. name',
+      name: 'streetName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Commune`
+  String get commune {
+    return Intl.message(
+      'Commune',
+      name: 'commune',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get changePassword {
+    return Intl.message(
+      'Change password',
+      name: 'changePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'limitedServiceCoverageNote' key
+
   /// `Dmart24.com`
   String get domainDmart {
     return Intl.message(
@@ -348,6 +732,16 @@ class S {
     return Intl.message(
       'Register',
       name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to login.`
+  String get backToLogin {
+    return Intl.message(
+      'Back to login.',
+      name: 'backToLogin',
       desc: '',
       args: [],
     );
@@ -468,16 +862,6 @@ class S {
     return Intl.message(
       'Subtotal',
       name: 'subtotal',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Total`
-  String get total {
-    return Intl.message(
-      'Total',
-      name: 'total',
       desc: '',
       args: [],
     );
@@ -1183,16 +1567,6 @@ class S {
     );
   }
 
-  /// `Welcome`
-  String get welcome {
-    return Intl.message(
-      'Welcome',
-      name: 'welcome',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Wrong email or password`
   String get wrongEmailOrPassword {
     return Intl.message(
@@ -1398,16 +1772,6 @@ class S {
     return Intl.message(
       'Reviews refreshed successfully!',
       name: 'reviews_refreshed_successfully',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delivery fee`
-  String get deliveryFee {
-    return Intl.message(
-      'Delivery fee',
-      name: 'deliveryFee',
       desc: '',
       args: [],
     );

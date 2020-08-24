@@ -1,30 +1,25 @@
-import '../../generated/l10n.dart';
-import '../../src/repository/user_repository.dart';
-import '../../src/widgets/PermissionDenied.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
-
-import '../controllers/notification_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../src/repository/user_repository.dart';
 import '../../src/widgets/EmptyNotificationsWidget.dart';
 import '../../src/widgets/NotificationItem.dart';
-import '../../src/widgets/SearchBar.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
-import 'package:flutter/material.dart';
+import '../../src/widgets/PermissionDenied.dart';
+import '../controllers/notification_controller.dart';
 
-class NotificationsWidget extends StatefulWidget {
+class NotificationsScreen extends StatefulWidget {
 
   final GlobalKey<ScaffoldState> parentScaffoldKey;
 
-  const NotificationsWidget({Key key, this.parentScaffoldKey}) : super(key: key);
+  const NotificationsScreen({Key key, this.parentScaffoldKey}) : super(key: key);
   @override
-  _NotificationsWidgetState createState() => _NotificationsWidgetState();
+  _NotificationsScreenState createState() => _NotificationsScreenState();
 }
 
-class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
+class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
   NotificationController _con;
 
-  _NotificationsWidgetState() : super(NotificationController()){
+  _NotificationsScreenState() : super(NotificationController()){
     _con = controller;
   }
 
@@ -33,7 +28,6 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
     super.initState();
     _con.listenForNotifications(onDone: (){
       setState(() { });
-      print('Now noti count = ${_con.notifications.length}');
     });
   }
 
@@ -41,7 +35,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key:_con.scaffoldKey,
-        body: currentUser.value.isLogin == true
+        body: currentUser.value.isLogin == false
         ? PermissionDenied()
         : RefreshIndicator(
             onRefresh: _con.refreshNotifications,

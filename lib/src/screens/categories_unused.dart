@@ -11,7 +11,7 @@ import '../repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/SearchBar.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
@@ -52,7 +52,7 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
           },
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(
+          new ShoppingCartButton(
               iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           Container(
             width: 30,
@@ -119,7 +119,7 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 1, color: DmConst.primaryColor),
+              border: Border.all(width: 1, color: DmConst.accentColor),
               boxShadow: [
                 BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
               ],
@@ -138,7 +138,7 @@ class _CategoriesWidgetState extends StateMVC<CategoriesWidget> {
                           child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
                         ),
                 ),
-                Divider(thickness: 1, height: 1, color: DmConst.primaryColor),
+                Divider(thickness: 1, height: 1, color: DmConst.accentColor),
                 Expanded(
                   flex: 2,
                   child: Padding(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
+import '../../route_generator.dart';
 import '../helpers/helper.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as repository;
@@ -35,7 +36,8 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.login(user).then((value) {
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+
+          RouteGenerator.gotoPromotions(context, replaceOld: true);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text(S.of(context).wrongEmailOrPassword),

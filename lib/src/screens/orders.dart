@@ -7,7 +7,7 @@ import '../controllers/order_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/OrderItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../repository/user_repository.dart';
 
 class OrdersWidget extends StatefulWidget {
@@ -46,7 +46,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
-            new ShoppingCartButtonWidget(
+            new ShoppingCartButton(
                 iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           ],
           bottom: TabBar(

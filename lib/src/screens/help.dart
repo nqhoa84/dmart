@@ -11,7 +11,7 @@ import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/DrawerWidget.dart';
 import '../widgets/FaqItem.dart';
 import '../widgets/SearchBar.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 
 class HelpScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();

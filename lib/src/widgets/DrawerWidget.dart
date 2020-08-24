@@ -1,4 +1,5 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
+import '../../route_generator.dart';
 import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -20,9 +21,9 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              currentUser.value.apiToken != null
+              currentUser.value.isLogin
                   ? Navigator.of(context).pushNamed('/Pages', arguments: 1)
-                  : Navigator.of(context).pushNamed('/Login');
+                  : RouteGenerator.gotoLogin(context);
             },
             child: currentUser.value.apiToken != null
                 ? UserAccountsDrawerHeader(

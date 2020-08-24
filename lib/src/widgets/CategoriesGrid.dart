@@ -79,7 +79,7 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
         return Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 1, color: DmConst.primaryColor),
+              border: Border.all(width: 1, color: DmConst.accentColor),
               boxShadow: [
                 BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
               ]),
@@ -119,7 +119,7 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1, color: DmConst.primaryColor),
+                          border: Border.all(width: 1, color: DmConst.accentColor),
                           boxShadow: [
                             BoxShadow(
                                 color: Theme.of(context).hintColor.withOpacity(0.10),
@@ -138,7 +138,7 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
                                     child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
                                   ),
                           ),
-                          Divider(thickness: 1, height: 1, color: DmConst.primaryColor),
+                          Divider(thickness: 1, height: 1, color: DmConst.accentColor),
                           Expanded(
                               flex: 2,
                               child: Padding(

@@ -46,7 +46,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
                 },
                 child: Text(S.of(context).home),
                 shape: StadiumBorder(),
-                color: DmConst.primaryColor,
+                color: DmConst.accentColor,
               ),
             ),
             Padding(
@@ -56,7 +56,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
                     RouteGenerator.gotoSplash(context);
                   },
                   shape: StadiumBorder(),
-                  color: DmConst.primaryColor,
+                  color: DmConst.accentColor,
                   child: Text(S.of(context).reset)),
             ),
           ],

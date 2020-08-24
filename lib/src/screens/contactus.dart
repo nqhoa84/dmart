@@ -14,7 +14,7 @@ import '../../src/widgets/CategoryHomeTabWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByCategory.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -47,7 +47,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 //            createSilverAppBar(context, haveBackIcon: true, title: S.of(context).contactUs),
             createTitleRowWithBack(context, title: S.of(context).contactUs),
               SizedBox(height: 10),
-              createTitleRow(context, title: S.of(context).hotline),
+//              createTitleRow(context, title: S.of(context).hotline),
+              TitleDivider(title: S.of(context).hotline, titleTextColor: Theme.of(context).accentColor,
+                  dividerColor: Colors.grey.shade400, dividerThickness: 2),
               Card(
                 elevation: 10,
                 color: Colors.grey.shade100.withOpacity(0.5),
@@ -89,7 +91,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ),
               ),
               SizedBox(height: 10),
-              createTitleRow(context, title: S.of(context).socialNetwork),
+//              createTitleRow(context, title: S.of(context).socialNetwork),
+              TitleDivider(title: S.of(context).socialNetwork, titleTextColor: Theme.of(context).accentColor,
+                  dividerColor: Colors.grey.shade400, dividerThickness: 2),
               _createSocial(context)
             ],
         ),
@@ -187,21 +191,34 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     );
   }
 
-  Row createTitleRow(BuildContext context, {String title}) {
+}
+
+class TitleDivider extends StatelessWidget {
+  final String title;
+  final Color titleTextColor;
+  final Color dividerColor;
+  final double dividerThickness;
+  const TitleDivider({
+    Key key, this.title = '',
+    this.titleTextColor, this.dividerColor, this.dividerThickness = 1
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: Padding(
                 padding: const EdgeInsets.only(right: 50),
-                child: Divider(thickness: 2, color: Colors.grey.shade400),
+                child: Divider(thickness: this.dividerThickness, color: dividerColor),
               )),
               Text(title, style: Theme.of(context).textTheme.headline6.copyWith(
-                color: DmConst.primaryColor
+                color: titleTextColor
               )),
               Expanded(child: Padding(
                 padding: const EdgeInsets.only(left: 50),
-                child: Divider(thickness: 2, color: Colors.grey.shade400),
+                child: Divider(thickness: this.dividerThickness, color: dividerColor),
               )),
             ],
           );

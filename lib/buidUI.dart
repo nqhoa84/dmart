@@ -3,6 +3,7 @@ import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/helpers/ui_icons.dart';
+import 'package:dmart/src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -120,14 +121,15 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
                           padding: EdgeInsets.only(right: 30),
                           height: 40,
 //                          child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown)
-                          child: _shoppingCartBadge(),
+//                          child: _shoppingCartBadge(),
+                          child: ShoppingCartButton(),
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-            Divider(height: 4, thickness: 2, color: DmConst.primaryColor),
+            Divider(height: 4, thickness: 2, color: DmConst.accentColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
               child: SearchBar(onClickFilter: (event) {
@@ -216,14 +218,14 @@ Widget createSilverAppBar(BuildContext context, {bool haveBackIcon = true, Strin
         child: Center(child: Text('$title')),
       )
     ],
-    backgroundColor: DmConst.primaryColor,
+    backgroundColor: DmConst.accentColor,
   );
 }
 
 Widget createTitleRowWithBack(BuildContext context, {String title=''}) {
   return Container(
     width: double.infinity, height: DmConst.appBarHeight * 0.7,
-    color: DmConst.primaryColor,
+    color: DmConst.accentColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -238,5 +240,17 @@ Widget createTitleRowWithBack(BuildContext context, {String title=''}) {
         )
       ],
     ),
+  );
+}
+
+BoxDecoration createRoundedBorderBoxDecoration() {
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(15),
+    border: Border.all(width: 2, color: Colors.grey.shade300),
+//                      color: Theme.of(context).primaryColor,
+//                      boxShadow: [
+//                        BoxShadow(
+//                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 10), blurRadius: 20)
+//                      ],
   );
 }

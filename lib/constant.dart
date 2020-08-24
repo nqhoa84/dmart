@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class DmConst {
-  static const Color primaryColor = Color(0xff1DA5BE);
+  static const Color accentColor = Color(0xff1DA5BE);
   static Color textColorForTopBar = Color(0xff1DA5BE);
   static Color textColorForTopBarCredit = Color(0xff8000FF);
   static Color colorFavorite = Color(0xff8000FF);

@@ -6,7 +6,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/widgets/BrandGridWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/SearchBar.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
@@ -49,7 +49,7 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
           },
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(
+          new ShoppingCartButton(
               iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           Container(
             width: 30,

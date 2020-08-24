@@ -9,7 +9,7 @@ import '../../src/models/route_argument.dart';
 
 class ProductItemHigh extends StatelessWidget {
   const ProductItemHigh({Key key, @required this.product, @required this.heroTag,
-  this.amountInCart = 2}) : super(key: key);
+  this.amountInCart = 0}) : super(key: key);
   final Product product;
   final String heroTag;
   final int amountInCart;
@@ -76,8 +76,8 @@ class ProductItemHigh extends StatelessWidget {
   BoxDecoration _createDecoration() {
     return this.amountInCart > 0
         ? BoxDecoration(
-      border: Border.all(color: DmConst.primaryColor),
-      color: DmConst.primaryColor,
+      border: Border.all(color: DmConst.accentColor),
+      color: DmConst.accentColor,
       borderRadius: BorderRadius.circular(6),
       boxShadow: [
         BoxShadow(
@@ -87,9 +87,9 @@ class ProductItemHigh extends StatelessWidget {
       ],
     )
         : BoxDecoration(
-      border: Border.all(color: DmConst.primaryColor),
+      border: Border.all(color: DmConst.accentColor),
       borderRadius: BorderRadius.circular(6),
-      color: DmConst.primaryColor,
+      color: DmConst.accentColor,
     );
   }
 }

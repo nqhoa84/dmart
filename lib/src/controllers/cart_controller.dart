@@ -20,7 +20,6 @@ class CartController extends ControllerMVC {
   }
 
   void listenForCarts({String message}) async {
-    return;
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
       if (!carts.contains(_cart)) {
@@ -38,8 +37,7 @@ class CartController extends ControllerMVC {
         calculateSubtotal();
       }
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
+        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message),
         ));
       }
     });
@@ -51,12 +49,14 @@ class CartController extends ControllerMVC {
       setState(() {
         this.cartCount = _count;
       });
+
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
-    });
+    }
+    );
   }
 
   Future<void> refreshCarts() async {

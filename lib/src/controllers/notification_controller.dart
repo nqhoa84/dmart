@@ -16,45 +16,45 @@ class NotificationController extends ControllerMVC {
   }
 
   void listenForNotifications({String message, Function() onDone}) async {
-//    final Stream<model.Notification> stream = await getNotifications();
-//    stream.listen((model.Notification _notification) {
-//      setState(() {
-//        notifications.add(_notification);
-//      });
-//    }, onError: (a) {
-//      print(a);
-//      scaffoldKey.currentState.showSnackBar(SnackBar(
-//        content: Text(S.of(context).verifyYourInternetConnection),
-//      ));
-//    }, onDone: () {
-//      if (message != null) {
-//        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
-//      }
-//    });
+    final Stream<model.Notification> stream = await getNotifications();
+    stream.listen((model.Notification _notification) {
+      setState(() {
+        notifications.add(_notification);
+      });
+    }, onError: (a) {
+      print(a);
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(S.of(context).verifyYourInternetConnection),
+      ));
+    }, onDone: () {
+      if (message != null) {
+        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+      }
+    });
 
     //TODO this is for testing only
-    if(notifications.isEmpty) {
-      notifications.clear();
-      int i= 0;
-      var noti = model.Notification();
-      noti.id = '${i++}';
-      noti.createdAt = DateTime.now();
-      noti.type = 'Test';
-      notifications.add(noti);
-
-      noti = model.Notification();
-      noti.id = '${i++}';
-      noti.createdAt = DateTime.now();
-      noti.type = 'Test';
-      notifications.add(noti);
-
-      noti = model.Notification();
-      noti.id = '${i++}';
-      noti.createdAt = DateTime.now();
-      noti.type = 'Test';
-      notifications.add(noti);
-    }
-    if(onDone != null) onDone();
+//    if(notifications.isEmpty) {
+//      notifications.clear();
+//      int i= 0;
+//      var noti = model.Notification();
+//      noti.id = '${i++}';
+//      noti.createdAt = DateTime.now();
+//      noti.type = 'Test';
+//      notifications.add(noti);
+//
+//      noti = model.Notification();
+//      noti.id = '${i++}';
+//      noti.createdAt = DateTime.now();
+//      noti.type = 'Test';
+//      notifications.add(noti);
+//
+//      noti = model.Notification();
+//      noti.id = '${i++}';
+//      noti.createdAt = DateTime.now();
+//      noti.type = 'Test';
+//      notifications.add(noti);
+//    }
+//    if(onDone != null) onDone();
   }
 
   Future<void> refreshNotifications() async {

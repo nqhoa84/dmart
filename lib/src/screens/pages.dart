@@ -73,7 +73,7 @@ class _PagesScreenState extends State<PagesScreen> {
           widget.currentPage = PromotionGroups(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 3:
-          widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = NotificationsScreen(parentScaffoldKey: widget.scaffoldKey);
           break;
 
         case 4:

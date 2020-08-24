@@ -7,7 +7,7 @@ import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/OrderItemWidget.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 
@@ -52,7 +52,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
-            new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+            new ShoppingCartButton(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
           ],
         ),
         body: _con.order == null || _con.orderStatus.isEmpty

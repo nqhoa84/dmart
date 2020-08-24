@@ -214,7 +214,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
                   ),
                 ],
               ),
-              Divider(height: 4, thickness: 2, color: DmConst.primaryColor),
+              Divider(height: 4, thickness: 2, color: DmConst.accentColor),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
                 child: SearchBar(onClickFilter: (event) {

@@ -8,7 +8,7 @@ import '../widgets/DrawerWidget.dart';
 import '../widgets/OrderItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
 import '../widgets/ProfileAvatarWidget.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../repository/user_repository.dart';
 import '../helpers/ui_icons.dart';
 
@@ -57,7 +57,7 @@ class _AccountWidgetState extends StateMVC<AccountWidget> {
               .merge(TextStyle(letterSpacing: 1.3, color:Theme.of(context).primaryColor)),
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(
+          new ShoppingCartButton(
               iconColor: currentUser.value.apiToken == null?Theme.of(context).hintColor:Theme.of(context).primaryColor,
               labelColor: currentUser.value.apiToken == null?Theme.of(context).accentColor:Theme.of(context).hintColor),
         ],

@@ -52,13 +52,13 @@ class _DmartState extends State<Dmart> {
       supportedLocales: S.delegate.supportedLocales,
       //localeListResolutionCallback: S.delegate.listResolution(fallback: const Locale('en', '')),
       theme: ThemeData(
-        brightness: Brightness.light,
-//        accentColor: Colors.purple,
-//        primaryColor: DmConst.primaryColor,
+        brightness: Brightness.light,// then the primary color = white
+        accentColor: DmConst.accentColor,
+//        primaryColor: DmConst.,
 //        backgroundColor: clrPri,
 //        dividerColor: clrPri,
-        iconTheme: IconThemeData(size: 25, color: DmConst.primaryColor),
-        buttonTheme: ButtonThemeData(minWidth: 20),
+        iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
+        buttonTheme: ButtonThemeData(minWidth: 20, textTheme: ButtonTextTheme.primary),
 //        textTheme: TextTheme(
 //          headline1: TextStyle(
 //              fontSize: 26.0,

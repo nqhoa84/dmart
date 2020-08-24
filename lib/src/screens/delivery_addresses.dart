@@ -9,7 +9,7 @@ import '../controllers/delivery_addresses_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/DeliveryAddressDialog.dart';
 import '../widgets/DeliveryAddressesItemWidget.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
@@ -56,7 +56,7 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+          new ShoppingCartButton(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
       floatingActionButton:// _con.cart != null && _con.cart.product.store.availableForDelivery

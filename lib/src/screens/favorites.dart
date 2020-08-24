@@ -17,7 +17,7 @@ import '../widgets/FavoriteGridItemWidget.dart';
 import '../widgets/FavoriteListItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
 import '../widgets/SearchBar.dart';
-import '../widgets/ShoppingCartButtonWidget.dart';
+import '../widgets/ShoppingCartButton.dart';
 import '../repository/user_repository.dart';
 
 class FavoritesScreen extends StatefulWidget {

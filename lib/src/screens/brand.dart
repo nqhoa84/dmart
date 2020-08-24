@@ -9,7 +9,7 @@ import '../../src/models/route_argument.dart';
 import '../../src/widgets/BrandHomeTabWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByBrandWidget.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -66,7 +66,7 @@ class _BrandWidgetState extends State<BrandWidget> with SingleTickerProviderStat
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: <Widget>[
-            new ShoppingCartButtonWidget(
+            new ShoppingCartButton(
                 iconColor: Theme.of(context).primaryColor, labelColor: Theme.of(context).hintColor
             ),
             Container(

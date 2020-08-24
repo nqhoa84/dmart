@@ -13,7 +13,7 @@ import '../../src/widgets/CategoryHomeTabWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByCategory.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
-import '../../src/widgets/ShoppingCartButtonWidget.dart';
+import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -51,23 +51,7 @@ class _CategoryScreenState extends State<CategoryScreen>
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: CustomScrollView(slivers: <Widget>[
-        SliverAppBar(
-          toolbarHeight: DmConst.appBarHeight * 0.7,
-          snap: true,
-          floating: true,
-          automaticallyImplyLeading: false,
-          leading: new IconButton(
-            icon: new Icon(UiIcons.return_icon),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Center(child: Text('${widget._category?.name}')),
-            )
-          ],
-          backgroundColor: DmConst.primaryColor,
-        ),
+        createSilverAppBar(context, haveBackIcon: true, title: widget._category?.name),
         SliverList(
           delegate: SliverChildListDelegate([
             ProductsByCategory(category: widget._category)

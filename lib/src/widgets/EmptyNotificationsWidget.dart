@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
 
 class EmptyNotificationsWidget extends StatelessWidget {
-  const EmptyNotificationsWidget({
-    Key key,
-  }) : super(key: key);
+  const EmptyNotificationsWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +27,7 @@ class EmptyNotificationsWidget extends StatelessWidget {
                       Theme.of(context).focusColor,
                       Theme.of(context).focusColor.withOpacity(0.1),
                     ])),
-                child: Icon(
-                  UiIcons.bell,
-                  color: Theme.of(context).primaryColor,
-                  size: 70,
-                ),
+                child: Icon(UiIcons.bell, size: 70),
               ),
               Positioned(
                 right: -30,
@@ -42,7 +36,7 @@ class EmptyNotificationsWidget extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(150),
                   ),
                 ),
@@ -54,7 +48,7 @@ class EmptyNotificationsWidget extends StatelessWidget {
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.15),
+                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(150),
                   ),
                 ),
@@ -67,7 +61,7 @@ class EmptyNotificationsWidget extends StatelessWidget {
             child: Text(
               S.of(context).yourNotificationEmpty,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
           SizedBox(height: 50),
@@ -78,13 +72,7 @@ class EmptyNotificationsWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
             color: Theme.of(context).accentColor.withOpacity(1),
             shape: StadiumBorder(),
-            child: Text(
-              S.of(context).home,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-            ),
+            child: Text(S.of(context).home),
           ),
         ],
       ),

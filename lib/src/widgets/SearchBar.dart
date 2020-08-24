@@ -29,7 +29,7 @@ class SearchBar extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsetsDirectional.only(end: 12, start: 0),
-              child: Icon(UiIcons.loupe, color: DmConst.primaryColor),
+              child: Icon(UiIcons.loupe, color: DmConst.accentColor),
 //              child: Image.asset('assets/img/S_Search.png', width: 25),
             ),
             Expanded(
@@ -45,7 +45,7 @@ class SearchBar extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 5, left: 5, top: 3, bottom: 3),
-                child: Icon(UiIcons.settings_2, color: DmConst.primaryColor),
+                child: Icon(UiIcons.settings_2, color: DmConst.accentColor),
               ),
             ),
           ],

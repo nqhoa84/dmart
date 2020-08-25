@@ -222,17 +222,17 @@ Widget createSilverAppBar(BuildContext context, {bool haveBackIcon = true, Strin
   );
 }
 
-Widget createTitleRowWithBack(BuildContext context, {String title=''}) {
+Widget createTitleRowWithBack(BuildContext context, {String title='', bool showBack = true}) {
   return Container(
     width: double.infinity, height: DmConst.appBarHeight * 0.7,
     color: DmConst.accentColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(
-          icon: new Icon(UiIcons.return_icon, color: Colors.white),
+        showBack ? IconButton(
+          icon: Icon(UiIcons.return_icon, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
-        ),
+        ) : Text(''),
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Center(child: Text(title,

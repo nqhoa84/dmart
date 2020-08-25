@@ -2,6 +2,7 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/IconWithText.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../DmState.dart';
 import '../../buidUI.dart';
@@ -84,25 +85,62 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
+//                      color: Colors.grey,
                       decoration: createRoundedBorderBoxDecoration(),
                       padding: EdgeInsets.all(8),
-                      child: Table(
+                      child: Column(
                         children: [
-                          TableRow(children: [
-                            Text(S.of(context).fullName),
-                            Text(':'),
-                            Text('Full name'),
-                          ]),
-                          TableRow(children: [
-                            Text(S.of(context).phone),
-                            Text(':'),
-                            Text('Full name'),
-                          ]),
-                          TableRow(children: [
-                            Text(S.of(context).address),
-                            Text(':'),
-                            Text('Full name'),
-                          ])
+                          TextFormField(
+                            style: TextStyle(color: DmConst.accentColor),
+
+                            keyboardType: TextInputType.emailAddress,
+                            onSaved: (input) {
+                              print('afddf _con.user.email = input');
+                            },
+//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                            decoration: new InputDecoration(
+//                              hintText: S.of(context).emailAddress,
+//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+//                              prefixStyle: Theme.of(context).textTheme.headline5.copyWith(color: DmConst.accentColor),
+                              labelText: S.of(context).fullName + ':',
+                            ),
+
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: DmConst.accentColor),
+                            keyboardType: TextInputType.phone,
+                            onSaved: (input) {
+                              print('afddf _con.user.email = input');
+                            },
+//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                            decoration: new InputDecoration(
+//                              hintText: S.of(context).emailAddress,
+//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+                              labelText: S.of(context).phone + ':',
+                            ),
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: DmConst.accentColor),
+                            keyboardType: TextInputType.multiline, maxLines: 3,
+                            onSaved: (input) {
+                              print('afddf _con.user.email = input');
+                            },
+//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                            decoration: new InputDecoration(
+//                              hintText: S.of(context).emailAddress,
+//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+                              labelText: S.of(context).address + ':',
+                            ),
+                          ),
                         ],
                       ),
                     )),
@@ -136,7 +174,37 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                         ],
                       ),
                     )),
-                SizedBox(height: 100),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: TitleDivider(
+                      title: S.of(context).note,
+                      titleTextColor: Theme.of(context).accentColor,
+                      dividerColor: Colors.grey.shade400,
+                      dividerThickness: 2),
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+//                      color: Colors.grey,
+                      decoration: createRoundedBorderBoxDecoration(),
+                      padding: EdgeInsets.all(8),
+                      child: TextFormField(
+                        style: TextStyle(color: DmConst.accentColor),
+                        keyboardType: TextInputType.multiline, maxLines: 3,
+                        onSaved: (input) {
+                          print('afddf _con.user.email = input');
+                        },
+//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                        decoration: new InputDecoration(
+//                              hintText: S.of(context).emailAddress,
+//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+                        ),
+                      ),
+                    )),
+                SizedBox(height: 50),
               ],
             ),
           ),
@@ -157,6 +225,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 
   void onPressedOnDeliveryInfo() {
     print('onPressedOnDeliveryInfo');
+    Navigator.of(context).pushNamed('/PlaceOrder');
   }
 
   Widget _createDatePiker(BuildContext context) {

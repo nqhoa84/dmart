@@ -18,4 +18,6 @@ class DmConst {
   static Color productShadowColor = Color(0x808000FF);
   static Color bgrColorBottomBarProductDetail = Color(0xffE6E6E6);
 
+  static const double masterHorizontalPad = 10;
+
 }

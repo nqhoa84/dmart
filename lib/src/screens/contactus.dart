@@ -200,7 +200,9 @@ class TitleDivider extends StatelessWidget {
   final double dividerThickness;
   const TitleDivider({
     Key key, this.title = '',
-    this.titleTextColor, this.dividerColor, this.dividerThickness = 1
+    this.titleTextColor = DmConst.accentColor,
+    this.dividerColor = Colors.black12,
+    this.dividerThickness = 2
   }) : super(key: key);
 
   @override

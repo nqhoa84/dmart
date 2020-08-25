@@ -33,6 +33,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Phnom penh`
+  String get phnompenh {
+    return Intl.message(
+      'Phnom penh',
+      name: 'phnompenh',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Forgotten password?`
   String get forgetPassword {
     return Intl.message(
@@ -343,6 +353,16 @@ class S {
     );
   }
 
+  /// `Apply`
+  String get apply {
+    return Intl.message(
+      'Apply',
+      name: 'apply',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Date`
   String get date {
     return Intl.message(
@@ -493,7 +513,25 @@ class S {
     );
   }
 
-  // skipped getter for the 'pleaseCheck' key
+  /// `Please check`
+  String get pleaseCheck1 {
+    return Intl.message(
+      'Please check',
+      name: 'pleaseCheck1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `menu for any update.`
+  String get pleaseCheck2 {
+    return Intl.message(
+      'menu for any update.',
+      name: 'pleaseCheck2',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Pending orders`
   String get pendingOrders {
@@ -510,6 +548,16 @@ class S {
     return Intl.message(
       'Confirmed orders',
       name: 'confirmedOrders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order confirmation`
+  String get orderConfirmation {
+    return Intl.message(
+      'Order confirmation',
+      name: 'orderConfirmation',
       desc: '',
       args: [],
     );

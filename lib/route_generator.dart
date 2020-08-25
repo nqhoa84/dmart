@@ -1,6 +1,8 @@
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/screens/delivery_to.dart';
 import 'package:dmart/src/screens/error.dart';
+import 'package:dmart/src/screens/orders.dart';
+import 'package:dmart/src/screens/place_order.dart';
 import 'package:flutter/material.dart';
 import 'src/models/route_argument.dart';
 import 'src/screens/brand.dart';
@@ -115,6 +117,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
       case '/DeliveryPickup':
         return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
+      case '/PlaceOrder':
+        return MaterialPageRoute(builder: (_) => PlaceOrderScreen());
+
       case '/Tracking':
         return MaterialPageRoute(builder: (_) => TrackingWidget(routeArgument: args as RouteArgument));
       case '/Reviews':
@@ -125,18 +130,18 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
       case '/DeliveryPickup':
         return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
-      case '/Checkout':
+      case '/Checkout'://todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/CashOnDelivery':
-        return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: RouteArgument(param: 'Cash on Delivery')));
+        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Cash on Delivery')));
       case '/PayOnPickup':
-        return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: RouteArgument(param: 'Pay on Pickup')));
+        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Pay on Pickup')));
       case '/PayPal':
         return MaterialPageRoute(builder: (_) => PayPalPaymentWidget(routeArgument: args as RouteArgument));
       case '/RazorPay':
         return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
       case '/OrderSuccess':
-        return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: args as RouteArgument));
       case '/Help':
         return MaterialPageRoute(builder: (_) => HelpScreen());
       case '/Settings':
@@ -148,6 +153,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => FavoritesScreen());
       case '/ContactUs':
         return MaterialPageRoute(builder: (_) => ContactUsScreen());
+
+      case '/MyOrders':
+        return MaterialPageRoute(builder: (_) => OrderScreen());
+
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => ErrorScreen());

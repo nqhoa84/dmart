@@ -18,17 +18,18 @@ class PaymentMethodList {
 
   PaymentMethodList() {
     this._paymentsList = [
-//      new PaymentMethod("visacard", S.current.visa_card, S.current.click_to_pay_with_your_visa_card, "/Checkout", "assets/img/visacard.png", isDefault: true),
-//      new PaymentMethod("mastercard", S.current.mastercard, S.current.click_to_pay_with_your_mastercard, "/Checkout", "assets/img/mastercard.png"),
-//      new PaymentMethod("razorpay", S.current.razorpay, S.current.clickToPayWithRazorpayMethod, "/RazorPay", "assets/img/razorpay.png"),
-//
-//      new PaymentMethod("paypal", S.current.paypal, S.current.click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
+      new PaymentMethod("visacard", 'visa_card', 'click_to_pay_with_your_visa_card', "/Checkout", "assets/img/visacard.png",
+          isDefault: true),
+      new PaymentMethod("mastercard", 'mastercard', 'click_to_pay_with_your_mastercard', "/Checkout", "assets/img/mastercard.png"),
+      new PaymentMethod("razorpay", 'razorpay', 'clickToPayWithRazorpayMethod', "/RazorPay", "assets/img/razorpay.png"),
+
+      new PaymentMethod("paypal", 'paypal', 'click_to_pay_with_your_paypal_account', "/PayPal", "assets/img/paypal.png"),
     ];
     this._cashList = [
-//      new PaymentMethod("cod", S.current.cash_on_delivery, S.current.click_to_pay_cash_on_delivery, "/CashOnDelivery", "assets/img/cash.png"),
+      new PaymentMethod("cod", 'cash_on_delivery', 'click_to_pay_cash_on_delivery', "/CashOnDelivery", "assets/img/cash.png"),
     ];
     this._pickupList = [
-//      new PaymentMethod("pop", S.current.pay_on_pickup, S.current.click_to_pay_on_pickup, "/PayOnPickup", "assets/img/pay_pickup.png"),
+      new PaymentMethod("pop", 'pay_on_pickup', 'click_to_pay_on_pickup', "/PayOnPickup", "assets/img/pay_pickup.png"),
     ];
   }
 

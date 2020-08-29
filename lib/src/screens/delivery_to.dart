@@ -2,6 +2,7 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/IconWithText.dart';
+import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../DmState.dart';

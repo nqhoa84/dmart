@@ -68,39 +68,13 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
 //    });
   }
 
-  Widget _createLoading() {
-    return GridView.count(
-      primary: false,
-      shrinkWrap: true,
-      padding: EdgeInsets.only(top: 15),
-      childAspectRatio: 7.0 / 9.0,
-      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-      children: List.generate(4, (index) {
-        return Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 1, color: DmConst.accentColor),
-              boxShadow: [
-                BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
-              ]),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(9)),
-            child: Image.asset('assets/img/loading_categories.gif', fit: BoxFit.cover),
-          ),
-        );
-      }),
-      mainAxisSpacing: 15.0,
-      crossAxisSpacing: 15.0,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: categories == null || categories.isEmpty
-          ? _createLoading() // CircularLoadingWidget()
+          ? CategoriesGridLoading() // CircularLoadingWidget()
           : FadeTransition(
               opacity: animationOpacity,
               child: GridView.count(
@@ -159,5 +133,34 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
               ),
             ),
     ));
+  }
+}
+
+class CategoriesGridLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      primary: false,
+      shrinkWrap: true,
+      padding: EdgeInsets.only(top: 15),
+      childAspectRatio: 7.0 / 9.0,
+      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      children: List.generate(4, (index) {
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1, color: DmConst.accentColor),
+              boxShadow: [
+                BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
+              ]),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(9)),
+            child: Image.asset('assets/img/loading_categories.gif', fit: BoxFit.cover),
+          ),
+        );
+      }),
+      mainAxisSpacing: 15.0,
+      crossAxisSpacing: 15.0,
+    );
   }
 }

@@ -11,12 +11,12 @@ import 'CircularLoadingWidget.dart';
 import 'ProductItemWide.dart';
 import 'ProductsGridLoadingWidget.dart';
 class BrandedProductsWidget extends StatefulWidget {
-
+  final String heroTag;
   final Animation animationOpacity;
   final Brand brand;
 
   const BrandedProductsWidget (
-      {Key key,  this.animationOpacity,  this.brand,}) :super(key: key);
+      {Key key,  this.animationOpacity,  this.brand, this.heroTag = 'brand'}) :super(key: key);
 
   @override
   State<StatefulWidget> createState () => _BrandedProductsWidget();
@@ -63,7 +63,7 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
 //                  width: 100*550/192,
                   child: ProductItemWide(
                     product: product,
-                    heroTag: 'branded_products_grid',
+                    heroTag: '${widget.heroTag}_${product.id}',
 //                        amountInCart: 10,
                   ),
                 ),

@@ -173,6 +173,26 @@ class S {
     );
   }
 
+  /// `Best sale`
+  String get bestSale {
+    return Intl.message(
+      'Best sale',
+      name: 'bestSale',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New arrival`
+  String get newArrival {
+    return Intl.message(
+      'New arrival',
+      name: 'newArrival',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Promotions`
   String get promotions {
     return Intl.message(

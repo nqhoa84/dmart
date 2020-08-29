@@ -5,6 +5,7 @@ import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/ProductsByCategory.dart';
+import 'package:dmart/src/widgets/TitleDivider.dart';
 
 import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';

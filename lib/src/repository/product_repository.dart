@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/custom_trace.dart';
@@ -98,6 +99,7 @@ Future<Stream<Product>> searchProducts(String search) async {
   }
 }
 
+
 Future<Stream<Product>> getProductsByCategory(categoryId) async {
   Uri uri = Helper.getUri('api/products');
   Map<String, dynamic> _queryParams = {};
@@ -110,6 +112,7 @@ Future<Stream<Product>> getProductsByCategory(categoryId) async {
 
   _queryParams = filter.toQuery(oldQuery: _queryParams);
   uri = uri.replace(queryParameters: _queryParams);
+  print(uri);
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
@@ -122,6 +125,42 @@ Future<Stream<Product>> getProductsByCategory(categoryId) async {
     return new Stream.value(new Product.fromJSON({}));
   }
 }
+
+Future<Stream<Product>> getProductsByPromotion(promotionId) async {
+  Uri uri = Helper.getUri('api/promotions/$promotionId');
+  Map<String, dynamic> _queryParams = {};
+//  SharedPreferences prefs = await SharedPreferences.getInstance();
+//  Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
+  _queryParams['with'] = 'store';
+//  _queryParams['search'] = 'category_id:$categoryId;itemsAvailable:0';
+//  _queryParams['searchFields'] = 'category_id:=;itemsAvailable:<>';
+//  _queryParams['searchJoin'] = 'and';
+
+//  _queryParams = filter.toQuery(oldQuery: _queryParams);
+  uri = uri.replace(queryParameters: _queryParams);
+  print('getProductsByPromotion $uri');
+  try {
+    final client = new http.Client();
+    StreamedResponse streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+        .map((data) {
+          print('data $data');
+      return Helper.getData(data);
+//      return data['data']['products'];
+    }).map((event) {
+      print('event $event');
+      return Helper.getProducts(event);
+    }).expand((data) => (data as List)).map((data) {
+      return Product.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return new Stream.value(new Product.fromJSON({}));
+  }
+}
+
+
 
 Future<Stream<Product>> getProductsByBrand(brandId) async {
   Uri uri = Helper.getUri('api/products');

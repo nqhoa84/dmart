@@ -21,6 +21,8 @@ class ProductController extends ControllerMVC {
   bool loadCart = false;
   List<Review> reviews = <Review>[];
   List<Product> brandsProducts=[];
+  List<Product> boughtProducts=[];
+  List<Product> promotionProducts=[];
   List<Product> categoriesProducts=[];
   List<Favorite> favorites = <Favorite>[];
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -48,7 +50,7 @@ class ProductController extends ControllerMVC {
   }
   Future<void> refreshFavorites() async {
     favorites.clear();
-    listenForFavorites(message: 'Favorites refreshed successfuly');
+    listenForFavorites(message: 'Favorites refreshed successfully');
   }
 
   void listenForFavorites({String message}) async {
@@ -111,6 +113,38 @@ class ProductController extends ControllerMVC {
       print(a);
     });
   }
+
+  //todo need api and change to that new api.
+  void listenForBoughtProducts({Function() onDone}) async {
+    final Stream<Product> stream = await getProductsByCategory('2');
+    boughtProducts.clear();
+    stream.listen((Product _product) {
+      setState(() {
+        boughtProducts.add(_product);
+      });
+    }, onError: (a) {
+      print(a);
+    }, onDone: (){
+      print(' onDone boughtProducts ${boughtProducts.length}');
+    }
+    );
+  }
+
+  Future<void> listenForPromoProducts(String id) async {
+    final Stream<Product> stream = await getProductsByPromotion(id);
+    promotionProducts.clear();
+    stream.listen((Product _product) {
+      setState(() {
+        promotionProducts.add(_product);
+      });
+    }, onError: (a) {
+      print(a);
+    }, onDone: (){
+      print(' onDone boughtProducts ${promotionProducts.length}');
+    }
+    );
+  }
+
 
   void listenForProductsByCategory({String id, String message}) async {
     final Stream<Product> stream = await getProductsByCategory(id);
@@ -273,4 +307,5 @@ class ProductController extends ControllerMVC {
       calculateTotal();
     }
   }
+
 }

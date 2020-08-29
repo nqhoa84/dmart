@@ -23,6 +23,10 @@ class Helper {
     return data['data'] ?? [];
   }
 
+  static getProducts(Map<String, dynamic> data) {
+    return data['products'] ?? [];
+  }
+
   static int getIntData(Map<String, dynamic> data) {
     return (data['data'] as int) ?? 0;
   }

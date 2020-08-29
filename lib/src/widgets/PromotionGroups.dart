@@ -2,6 +2,7 @@
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/controllers/promotion_controller.dart';
+import 'package:dmart/src/models/promotion.dart';
 import 'package:dmart/src/widgets/CircularLoadingWidget.dart';
 
 import '../../src/controllers/category_controller.dart';
@@ -13,6 +14,8 @@ import '../../src/models/route_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'CategoriesGrid.dart';
 
 class PromotionGroups extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
@@ -32,31 +35,28 @@ class PromotionGroups extends StatefulWidget {
 class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerProviderStateMixin {
   PromotionController _con;
 
-  //Todo change to PromotionGroup class
-  List<Category> promoGroups = [];
-
   _PromotionGroupsState() : super(PromotionController()) {
     _con = controller;
   }
 
   @override
   void initState() {
-    _con.listenForGroups(onDone: onCompleteLoading);
+    _con.listenForPromotions();
     super.initState();
   }
 
-  onCompleteLoading() {
-    setState(() {
-      print('Finish loading categories, length = ${_con.promoGroups?.length}');
-      promoGroups = _con.promoGroups;
-    });
-  }
+//  onCompleteLoading() {
+//    setState(() {
+//      print('Finish loading categories, length = ${_con.promoGroups?.length}');
+//      promoGroups = _con.promoGroups;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: promoGroups == null
-            ? CircularLoadingWidget()
+        body: _con.promotions.isEmpty
+            ? CategoriesGridLoading()
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: GridView.count(
@@ -65,12 +65,13 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
                   padding: EdgeInsets.only(top: 15),
                   childAspectRatio: 7.0 / 9.0,
                   crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-                  children: List.generate(promoGroups.length, (index) {
-                    Category category = promoGroups.elementAt(index);
+                  children: List.generate(_con.promotions.length, (index) {
+                    Promotion promo = _con.promotions.elementAt(index);
                     return InkWell(
                       onTap: () {
                         Navigator.of(context)
-                            .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
+                            .pushNamed('/Promotion', arguments: new RouteArgument(id: promo.id, param: [promo],
+                        heroTag: "fromPromoGroup_${promo.id}"));
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -88,15 +89,15 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
                             //category image space.
                             Expanded(
                               flex: 7,
-                              child: category.image.url.toLowerCase().endsWith('.svg')
+                              child: promo.image.url.toLowerCase().endsWith('.svg')
                                   ? Container(
                                       child:
-                                          SvgPicture.network(category.image.url, color: Theme.of(context).primaryColor),
+                                          SvgPicture.network(promo.image.url, color: Theme.of(context).primaryColor),
                                     )
                                   : ClipRRect(
                                       borderRadius:
                                           BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
-                                      child: createNetworkImage(url: category.image.thumb, fit: BoxFit.cover),
+                                      child: createNetworkImage(url: promo.image.thumb, fit: BoxFit.cover),
                                     ),
                             ),
                             Divider(thickness: 1, height: 1, color: DmConst.accentColor),
@@ -105,7 +106,7 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
                               child: Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: Center(
-                                  child: Text(category.name,
+                                  child: Text(promo.name,
                                       style: Theme.of(context).textTheme.headline6,
                                       maxLines: 1,
                                       softWrap: false,

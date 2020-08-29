@@ -21,6 +21,7 @@ import 'src/screens/pages.dart';
 import 'src/screens/payment_methods.dart';
 import 'src/screens/paypal_payment.dart';
 import 'src/screens/product_detail.dart';
+import 'src/screens/promotion.dart';
 import 'src/screens/razorpay_payment.dart';
 import 'src/screens/reviews.dart';
 import 'src/screens/settings.dart';
@@ -156,6 +157,8 @@ class RouteGenerator {
 
       case '/MyOrders':
         return MaterialPageRoute(builder: (_) => OrderScreen());
+      case '/Promotion':
+        return MaterialPageRoute(builder: (_) => PromotionScreen(routeArgument: args as RouteArgument));
 
       default:
         // If there is no such named route in the switch statement, e.g. /third

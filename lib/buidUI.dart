@@ -1,16 +1,18 @@
 import 'package:badges/badges.dart';
-import 'package:dmart/DmState.dart';
-import 'package:dmart/constant.dart';
-import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/helpers/ui_icons.dart';
-import 'package:dmart/src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'DmState.dart';
+import 'constant.dart';
 import 'generated/l10n.dart';
+import 'route_generator.dart';
+import 'src/helpers/ui_icons.dart';
+import 'src/models/product.dart';
 import 'src/models/user.dart';
 import 'src/repository/user_repository.dart';
+import 'src/widgets/ProductItemWide.dart';
 import 'src/widgets/SearchBar.dart';
+import 'src/widgets/ShoppingCartButton.dart';
 
 Widget createNetworkImage({String url, double width, double height, BoxFit fit = BoxFit.cover}) {
 //  return CachedNetworkImage(
@@ -149,15 +151,17 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
       children: <Widget>[
         CircleAvatar(
           backgroundColor: Colors.transparent,
-          child: Image.network(
-            '${user.image?.thumb}',
-            loadingBuilder: (ctx, wid, event) {
-              return Center(child: CircularProgressIndicator());
-            },
-            errorBuilder: (ctx, obj, trace) {
-              return Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown);
-            },
-          ),
+//todo need to get the avatar
+//          child: Image.network(
+//            '${user.image?.thumb}',
+//            loadingBuilder: (ctx, wid, event) {
+//              return Center(child: CircularProgressIndicator());
+//            },
+//            errorBuilder: (ctx, obj, trace) {
+//              return Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown);
+//            },
+//          ),
+        child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
 //            Image.asset('assets/img/H_User_Icon.png',
 //                width: 40, height: 40, fit: BoxFit.scaleDown),
         ),
@@ -243,14 +247,38 @@ Widget createTitleRowWithBack(BuildContext context, {String title='', bool showB
   );
 }
 
-BoxDecoration createRoundedBorderBoxDecoration() {
+BoxDecoration createRoundedBorderBoxDecoration({double radius = 15, double borderWidth = 2, Color borderColor = Colors.black12}) {
   return BoxDecoration(
-    borderRadius: BorderRadius.circular(15),
-    border: Border.all(width: 2, color: Colors.grey.shade300),
+    borderRadius: BorderRadius.circular(radius),
+    border: Border.all(width: borderWidth, color: borderColor),
 //                      color: Theme.of(context).primaryColor,
 //                      boxShadow: [
 //                        BoxShadow(
 //                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 10), blurRadius: 20)
 //                      ],
+  );
+}
+
+
+Widget createGridViewOfProducts(BuildContext context, List<Product> products,
+{String heroTag = 'dm'}) {
+  return GridView.count(
+    primary: false,
+    shrinkWrap: true,
+    scrollDirection: Axis.vertical,
+    crossAxisCount: 1,
+    crossAxisSpacing: 1.5,
+    childAspectRatio: 337.0 / 120,
+    // 120 / 337,
+    children: List.generate(
+      products.length,
+          (index) {
+        Product product = products.elementAt(index);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ProductItemWide(product: product, heroTag: '${heroTag}_${index}_'),
+        );
+      },
+    ),
   );
 }

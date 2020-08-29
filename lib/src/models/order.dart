@@ -16,7 +16,7 @@ class Order {
   Payment payment;
   Address deliveryAddress;
 
-  Order();
+  Order({this.id, this.orderStatus});
 
   Order.fromJSON(Map<String, dynamic> jsonMap) {
     try {

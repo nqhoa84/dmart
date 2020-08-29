@@ -1,6 +1,8 @@
+import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/user.dart';
 
+import '../../route_generator.dart';
 import '../../src/widgets/ProductsGridLoadingWidget.dart';
 import '../widgets/BrandedProductsWidget.dart';
 import '../widgets/DeliveryAddressBottomSheetWidget.dart';
@@ -67,7 +69,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              _createHeader(S.of(context).promotions),
+              _createHeader(title: S.of(context).promotions, backgroundColor: DmConst.homePromotionColor,
+              onTap: () {
+                RouteGenerator.gotoPromotions(context, replaceOld: true);
+              }),
               HomePromotionsSlider(),
 //              FlashSalesHeaderWidget(),
 //              _createHeader(S.of(context).trending_this_week),
@@ -77,21 +82,20 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
 //                  animationOpacity: animationOpacity,
 //                  category: _con.categorySelected),
 //              // Heading (Recommended for you)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: _createHeader(S.of(context).category),
-              ),
+              _createHeader(title: S.of(context).bestSale),
               _con.categorySelected == null
                   ? ProductsGridLoadingWidget()
                   : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
               // Heading (Brands)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: _createHeader(S.of(context).brand),
-              ),
+              _createHeader(title: S.of(context).newArrival),
               _con.brandSelected == null
                   ? ProductsGridLoadingWidget()
                   : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected),
+              _createHeader(title: S.of(context).specialForYou),
+              _con.brandSelected == null
+                  ? ProductsGridLoadingWidget()
+                  : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected,
+              heroTag: 'spe4u',),
             ],
           ),
         ),
@@ -99,22 +103,26 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
     );
   }
 
-  Widget _createHeader(String title) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Card(
-              margin: EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              color: DmConst.homePromotionColor,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('$title', textAlign: TextAlign.right),
-              )),
+  Widget _createHeader({String title, Color backgroundColor = DmConst.accentColor,
+    Function() onTap
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity, height: DmConst.appBarHeight * 0.7,
+        color: backgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Center(child: Text(title,
+                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+            ),
+            Icon(Icons.arrow_forward_ios, color: Colors.white)
+          ],
         ),
-      ],
+      ),
     );
   }
 

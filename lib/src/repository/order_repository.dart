@@ -14,7 +14,7 @@ import '../repository/user_repository.dart' as userRepo;
 
 Future<Stream<Order>> getOrders() async {
   User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
+  if (_user.isLogin == false) {
     return new Stream.value(null);
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';

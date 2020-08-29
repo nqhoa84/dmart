@@ -1,3 +1,5 @@
+import 'package:dmart/src/models/product.dart';
+import 'package:dmart/src/repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -13,10 +15,29 @@ class OrderController extends ControllerMVC {
   List<Order> ordersPreparing = <Order>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
+  List<Product> boughtProducts=[];
+
   OrderController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForOrders();
   }
+
+  void listenForBoughtProducts({Function() onDone}) async {
+    final Stream<Product> stream = await getProductsByCategory('2');
+    boughtProducts.clear();
+    stream.listen((Product _product) {
+      setState(() {
+        boughtProducts.add(_product);
+        print('----------- ${_product.id}');
+      });
+    }, onError: (a) {
+      print(a);
+    }, onDone: (){
+      print(' onDone boughtProducts ${boughtProducts.length}');
+    }
+    );
+  }
+
   void listenForOrders({String message}) async {
     final Stream<Order> stream = await getOrders();
     stream.listen((Order _order) {
@@ -46,4 +67,5 @@ class OrderController extends ControllerMVC {
     orders.clear();
     listenForOrders(message: S.of(context).orderRefreshedSuccessfully);
   }
+
 }

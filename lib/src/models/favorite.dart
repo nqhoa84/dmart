@@ -14,15 +14,15 @@ class Favorite extends IdObj{
     try {
       id = toInt(jsonMap['id']);
       product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : new Product();
-      options = jsonMap['options'] != null
-          ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
-          : null;
+      userId = toInt(jsonMap['user_id']);
+//      options = jsonMap['options'] != null
+//          ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
+//          : null;
     } catch (e, trace) {
       id = -1;
       product = new Product();
       options = [];
       print('Error parsing data in Favorite $e \n $trace');
-
     }
   }
 
@@ -31,7 +31,10 @@ class Favorite extends IdObj{
     map["id"] = id;
     map["product_id"] = product.id;
     map["user_id"] = userId;
-    map["options"] = options.map((element) => element.id).toList();
+//    map["options"] = options.map((element) => element.id).toList();
     return map;
   }
+
+  @override
+  bool get isValid => super.isValid && product!= null && product.isValid;
 }

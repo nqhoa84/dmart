@@ -62,9 +62,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
                       ),
-                      trailing: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.asset('assets/img/C_Smart_Mobile.png', fit: BoxFit.scaleDown)),
+                      trailing: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.asset('assets/img/C_Smart_Mobile.png', fit: BoxFit.scaleDown)),
+                      ),
                     ),
                     Divider(thickness: 1.5, color: Colors.white, height: 2),
                     ListTile(
@@ -73,9 +76,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
                       ),
-                      trailing: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        child: Image.asset('assets/img/C_Cellcard_Mobile.png', fit: BoxFit.scaleDown)),
+                      trailing: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.asset('assets/img/C_Cellcard_Mobile.png', fit: BoxFit.scaleDown)),
+                      ),
                     ),
                     Divider(thickness: 1.5, color: Colors.white, height: 2),
                     ListTile(
@@ -84,9 +90,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
                       ),
-                      trailing: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          child: Image.asset('assets/img/C_Metfone_Mobile.png', fit: BoxFit.scaleDown)),
+                      trailing: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.asset('assets/img/C_Metfone_Mobile.png', fit: BoxFit.scaleDown)),
+                      ),
                     )
                   ],
                 ),

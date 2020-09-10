@@ -1,24 +1,18 @@
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
-import 'package:dmart/src/controllers/cart_controller.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
-import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/filter.dart';
-import 'package:dmart/src/models/route_argument.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
-import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../../route_generator.dart';
-import '../../src/controllers/home_controller.dart';
 import '../../src/widgets/HomeProductsByCategory.dart';
 import '../../src/widgets/HomePromotionsSlider.dart';
 import '../../src/widgets/ProductsGridViewLoading.dart';
-import '../widgets/BrandedProductsWidget.dart';
 
 class Home2Screen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,7 +35,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     _con.listenForBestSaleProducts();
     _con.listenForNewArrivals();
     _con.listenForSpecial4U();
-    _con.listenForCart();
+    _con.listenForCarts();
     _con.listenForFavorites();
 
 //    _con.listenForBrands();
@@ -64,7 +58,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     _con.listenForBestSaleProducts();
     _con.listenForNewArrivals();
     _con.listenForSpecial4U();
-    _con.listenForCart();
+    _con.listenForCarts();
 
   }
 

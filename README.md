@@ -7,4 +7,6 @@ $ mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload
 $ cd build/ios/iphoneos
 $ zip -r app.ipa Payload
 
-dmart
+git add .
+git commit -m 'message'
+git push

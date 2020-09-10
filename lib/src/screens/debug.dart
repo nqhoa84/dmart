@@ -1,9 +1,7 @@
+import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-
-import '../controllers/favorite_controller.dart';
-import '../widgets/CircularLoadingWidget.dart';
 import '../models/route_argument.dart';
 
 class DebugWidget extends StatefulWidget {
@@ -18,10 +16,10 @@ class DebugWidget extends StatefulWidget {
 }
 
 class _DebugWidgetState extends StateMVC<DebugWidget> {
-  FavoriteController _con;
+//  FavoriteController _con;
 
-  _DebugWidgetState() : super(FavoriteController()) {
-    _con = controller;
+  _DebugWidgetState() : super(ProductController()) {
+//    _con = controller;
   }
 
   @override
@@ -33,7 +31,7 @@ class _DebugWidgetState extends StateMVC<DebugWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _con.scaffoldKey,
+//        key: _con.scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -50,24 +48,7 @@ class _DebugWidgetState extends StateMVC<DebugWidget> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        body: RefreshIndicator(
-          onRefresh: _con.refreshFavorites,
-          child: _con.favorites.isEmpty
-              ? CircularLoadingWidget(height: 500)
-              : ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: _con.favorites.length,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 10);
-                  },
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(_con.favorites.elementAt(index).product.name),
-                    );
-                  },
-                ),
-        ));
+        body: Container()
+    );
   }
 }

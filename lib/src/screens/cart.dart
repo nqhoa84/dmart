@@ -7,6 +7,7 @@ import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
+import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -16,6 +17,7 @@ import '../controllers/cart_controller.dart';
 import '../models/route_argument.dart';
 import '../widgets/CartItemWidget.dart';
 import '../widgets/EmptyCart.dart';
+import 'abs_product_mvc.dart';
 import 'delivery_to.dart';
 
 class CartsScreen extends StatefulWidget {
@@ -28,12 +30,70 @@ class CartsScreen extends StatefulWidget {
   _CartsScreenState createState() => _CartsScreenState();
 }
 
-class _CartsScreenState extends StateMVC<CartsScreen>
+class _CartsScreenState extends ProductStateMVC<CartsScreen>
+{
+  _CartsScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
+
+  @override
+  void initState() {
+    proCon.listenForCarts();
+    canLoadMore = false;
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  String getTitle(BuildContext context) {
+    return S.of(context).myCart;
+  }
+
+  @override
+  Future<void> onRefresh() async{
+//    proCon.newArrivalProducts?.clear();
+    proCon.listenForCarts();
+  }
+
+  @override
+  Widget buildContent(BuildContext context) {
+    if (DmState.carts.isEmpty) {
+      return EmptyCartGrid();
+//      return ProductsGridViewLoading(isList: true);
+    } else {
+//      print('DmState.carts ${DmState.carts.length}');
+      List<Product>  ps = [];
+      DmState.carts.forEach((cart) {
+        if(!ps.contains(cart.product)) {
+          ps.add(cart.product);
+        }
+      });
+//      return ProductGridView(products: ps, heroTag: 'myCart');
+      return FadeTransition(
+        opacity: this.animationOpacity,
+        child: ProductGridView(products: ps, heroTag: 'myCart',
+          showRemoveIcon: true,
+        ));
+    }
+  }
+
+  @override
+  void loadMore() {
+//    int pre = proCon.newArrivalProducts != null ? proCon.newArrivalProducts.length : 0;
+//    proCon.listenForNewArrivals(nextPage: true);
+//    canLoadMore = proCon.newArrivalProducts != null
+//        && proCon.newArrivalProducts.length > pre;
+  }
+}
+
+
+class _CartsScreenStateOld extends StateMVC<CartsScreen>
     with SingleTickerProviderStateMixin {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   CartController _con;
-  _CartsScreenState() : super(CartController()) {
+  _CartsScreenStateOld() : super(CartController()) {
     _con = controller;
   }
 

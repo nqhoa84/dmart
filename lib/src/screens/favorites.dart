@@ -2,9 +2,9 @@ import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
 import 'package:dmart/src/widgets/ProductsByCategory.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
-import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -12,11 +12,7 @@ import '../../buidUI.dart';
 import '../../generated/l10n.dart';
 import '../../src/controllers/product_controller.dart';
 import '../repository/user_repository.dart';
-import '../widgets/CircularLoadingWidget.dart';
-import '../widgets/FavoriteGridItemWidget.dart';
-import '../widgets/FavoriteListItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
-import '../widgets/SearchBar.dart';
 import 'abs_product_mvc.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -57,9 +53,12 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
   @override
   Widget buildContent(BuildContext context) {
     if (proCon.favorites.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
+//      return ProductsGridViewLoading(isList: true);
+      return EmptyDataLoginWid(
+        message: S.of(context).yourFavoriteEmpty,
+        iconData: Icons.favorite_border,
+      );
     } else {
-//      print('proCon.favorites ${proCon.favorites.length}');
       List<Product> lp = [];
       proCon.favorites.forEach((element) {
         lp.add(element.product);

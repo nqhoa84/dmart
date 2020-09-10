@@ -238,8 +238,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "wrongEmailOrPassword" : MessageLookupByLibrary.simpleMessage("Wrong email or password"),
     "youMustSignToSeeThisSection" : MessageLookupByLibrary.simpleMessage("You must sign-in to access to this section"),
     "yourAddress" : MessageLookupByLibrary.simpleMessage("Your Address"),
-    "yourCartEmpty" : MessageLookupByLibrary.simpleMessage("D\'ont have any item in your cart"),
-    "yourNotificationEmpty" : MessageLookupByLibrary.simpleMessage("D\'ont have any item in the notification list"),
+    "yourCartEmpty" : MessageLookupByLibrary.simpleMessage("Don\'t have any item in your cart"),
+    "yourFavoriteEmpty" : MessageLookupByLibrary.simpleMessage("Your favorite list is empty."),
+    "yourNotificationEmpty" : MessageLookupByLibrary.simpleMessage("Don\'t have any item in the notification list"),
     "yourOrderIsBeingPlaced" : MessageLookupByLibrary.simpleMessage("Your order is being placed.")
   };
 }

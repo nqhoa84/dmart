@@ -1415,20 +1415,30 @@ class S {
     );
   }
 
-  /// `D'ont have any item in your cart`
+  /// `Don't have any item in your cart`
   String get yourCartEmpty {
     return Intl.message(
-      'D\'ont have any item in your cart',
+      'Don\'t have any item in your cart',
       name: 'yourCartEmpty',
       desc: '',
       args: [],
     );
   }
 
-  /// `D'ont have any item in the notification list`
+  /// `Your favorite list is empty.`
+  String get yourFavoriteEmpty {
+    return Intl.message(
+      'Your favorite list is empty.',
+      name: 'yourFavoriteEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have any item in the notification list`
   String get yourNotificationEmpty {
     return Intl.message(
-      'D\'ont have any item in the notification list',
+      'Don\'t have any item in the notification list',
       name: 'yourNotificationEmpty',
       desc: '',
       args: [],

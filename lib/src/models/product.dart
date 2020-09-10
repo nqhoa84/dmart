@@ -33,15 +33,14 @@ class Product extends IdNameObj{
   double promotionPrice = 5, originalPrice = 10;
   String currency = '\$';
 
-  //TODO change to return null.
-  SaleTag get getDisplaySaleTag =>
-      saleTags != null && saleTags.length > 0 ? saleTags[0] : SaleTag.BestSale;
+  bool isSpecial4U = false;
+
   bool isNewArrival, isBestSale;
   double totalSale;
 
   Product();
 
-  bool get isPromotion => discountPrice != null && discountPrice >= 0;
+  bool get isPromotion => discountPrice != null && discountPrice > 0 && discountPrice < price;
 
   @override
   bool get isValid {

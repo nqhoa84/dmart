@@ -306,8 +306,6 @@ Future<Stream<Favorite>> getFavorites(int pageIdx) async {
         .expand((data) => (data as List))
         .map((data) => Favorite.fromJSON(data));
   } catch (e, trace) {
-    print(e);
-    print(trace);
     print('$e \n $trace');
     return new Stream.value(new Favorite.fromJSON({}));
   }
@@ -315,7 +313,7 @@ Future<Stream<Favorite>> getFavorites(int pageIdx) async {
 
 Future<Favorite> addFavorite(Favorite favorite) async {
   User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
+  if (_user.isLogin == false) {
     return new Favorite();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';

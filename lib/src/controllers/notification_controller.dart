@@ -19,7 +19,8 @@ class NotificationController extends ControllerMVC {
     final Stream<model.Notification> stream = await getNotifications();
     stream.listen((model.Notification _notification) {
       setState(() {
-        notifications.add(_notification);
+        if(_notification != null && _notification.isValid)
+          notifications.add(_notification);
       });
     }, onError: (a) {
       print(a);

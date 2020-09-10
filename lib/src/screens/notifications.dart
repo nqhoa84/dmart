@@ -1,4 +1,6 @@
 import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/route_generator.dart';
+import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,12 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
 import '../../src/repository/user_repository.dart';
-import '../../src/widgets/EmptyNotificationsWidget.dart';
+import '../../src/widgets/EmptyDataLoginWid.dart';
 import '../../src/widgets/NotificationItem.dart';
 import '../../src/widgets/PermissionDenied.dart';
 import '../controllers/notification_controller.dart';
+import '../repository/user_repository.dart' as userRepo;
+
 
 class NotificationsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -26,7 +30,7 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
   NotificationController _con;
-
+  User user = userRepo.currentUser.value;
   _NotificationsScreenState() : super(NotificationController()) {
     _con = controller;
   }
@@ -37,45 +41,48 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
   }
 
   Widget buildContent(BuildContext context) {
+//    if(user== null || !user.isLogin) {
+//      RouteGenerator.gotoLogin(context);
+//      return Container();
+//    } else
     return RefreshIndicator(
       onRefresh: _con.refreshNotifications,
-      child:SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 7),
-        child: Column(
-          children: <Widget>[
-            //ListView of empty
-            Offstage(
-                offstage: _con.notifications.isEmpty,
-                child: ListView.separated(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: _con.notifications.length,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 7);
-                  },
-                  itemBuilder: (context, index) {
-                    var noti = _con.notifications.elementAt(index);
+      child:Column(
+        children: <Widget>[
+          //ListView of empty
+          Offstage(
+              offstage: _con.notifications.isEmpty,
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                shrinkWrap: true,
+                primary: false,
+                itemCount: _con.notifications.length,
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 7);
+                },
+                itemBuilder: (context, index) {
+                  var noti = _con.notifications.elementAt(index);
 //                        return Text('${noti?.id} - ${noti?.type}');
-                    return NotificationItem(
-                      notification: noti,
-                      onDismissed: (notification) {
-                        setState(() {
+                  return NotificationItem(
+                    notification: noti,
+                    onDismissed: (notification) {
+                      setState(() {
 //                              _con.removeFromNotification(_con.notifications.elementAt(index));
-                          _con.notifications.removeAt(index);
-                        });
-                      },
-                    );
-                  },
-                )
-            ),
-            //EmptyNotificationWidget
-            Offstage(
-                offstage: _con.notifications.isNotEmpty,
-                child: EmptyNotificationsWidget()
-            )
-          ],
-        ),
+                        _con.notifications.removeAt(index);
+                      });
+                    },
+                  );
+                },
+              )
+          ),
+          //EmptyNotificationWidget
+          Offstage(
+              offstage: _con.notifications.isNotEmpty,
+              child: EmptyDataLoginWid(
+                message: S.of(context).yourNotificationEmpty,
+              )
+          )
+        ],
       ),
     );
   }

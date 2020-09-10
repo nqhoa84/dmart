@@ -48,7 +48,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     _con.listenForProduct(productId: widget.routeArgument.id);
     //TODO check need to get favorite or related
     _con.listenForFavorite(productId: widget.routeArgument.id);
-    _con.listenForCart();
+    _con.listenForCarts();
     _tabController = TabController(length: 3, initialIndex: _tabIndex, vsync: this);
     _tabController.addListener(_handleTabSelection);
     super.initState();

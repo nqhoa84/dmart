@@ -99,8 +99,10 @@ class ProductController extends ControllerMVC {
     final Stream<Product> stream = await getSpecial4U(_spe4UPageIdx);
     stream.listen((Product _product) {
       setState(() {
-        if(_product.isValid)
+        if(_product.isValid) {
+          _product.isSpecial4U = true;
           special4UProducts.add(_product);
+        }
       });
 //      print('special for U, pro id = ${_product.id}');
     }, onError: (a) {
@@ -118,11 +120,12 @@ class ProductController extends ControllerMVC {
 
     final Stream<Favorite> stream = await getFavorites(_favPageIdx);
     stream.listen((Favorite _favorite) {
-      setState(() {
-        favorites.add(_favorite);
-        print('listenForFavorites favorites {id: ${_favorite.id} product ${_favorite.product.toStringIdName()}');
-
-      });
+      if(_favorite != null && _favorite.isValid) {
+        setState(() {
+          favorites.add(_favorite);
+          print('listenForFavorites favorites {id: ${_favorite.id} product ${_favorite.product.toStringIdName()}');
+        });
+      }
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).verifyYourInternetConnection),
@@ -231,12 +234,12 @@ class ProductController extends ControllerMVC {
   ///Listen for all carts from server.
   ///Then update to [carts] property of this controller and refreshCart of [DmState.refreshCart].
   ///This will also refresh [DmState.amountInCart] value
-  void listenForCart() async {
+  void listenForCarts() async {
     final Stream<Cart> stream = await getCarts();
     carts.clear();
     stream.listen((Cart _cart) {
-      carts.add(_cart);
-//      print('cart ====== $_cart');
+      if(_cart != null && _cart.isValid)
+        carts.add(_cart);
     }).onDone(() {
       DmState.refreshCart(carts);
     });
@@ -309,9 +312,10 @@ class ProductController extends ControllerMVC {
   void addToFavorite(Product product) async {
     var _favorite = new Favorite();
     _favorite.product = product;
-    _favorite.options = product.options.where((Option _option) {
-      return _option.checked;
-    }).toList();
+//    _favorite.options = product.options.where((Option _option) {
+//      return _option.checked;
+//    }).toList();
+
     addFavorite(_favorite).then((value) {
       setState(() {
         this.favorite = value;

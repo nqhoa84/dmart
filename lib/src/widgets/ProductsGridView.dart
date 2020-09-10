@@ -12,7 +12,10 @@ class ProductGridView extends StatefulWidget {
   final bool isList;
   Axis scrollDirection;
 
+  bool showRemoveIcon;
+
   ProductGridView({@required this.products, this.heroTag = 'product', this.isList = true,
+    this.showRemoveIcon = false,
     this.scrollDirection = Axis.vertical
   });
 
@@ -71,7 +74,9 @@ class _ProductGridViewState extends State<ProductGridView> {
               Product product = widget.products.elementAt(index);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ProductItemWide(product: product, heroTag: '${widget.heroTag}'),
+                child: ProductItemWide(product: product, heroTag: '${widget.heroTag}',
+                    showRemoveIcon: widget.showRemoveIcon
+                ),
               );
             },
           ),

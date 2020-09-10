@@ -2,7 +2,9 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
+import 'package:dmart/src/models/favorite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -93,22 +95,24 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                           ),
                         ),
                       ),
-                      Align(
+                      getTagAssetImage() != null
+                        ? Align(
                         alignment: Alignment.topLeft,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
                               flex: 1,
-                              child: Image.asset('assets/img/Tag_Best_Sale.png', fit: BoxFit.scaleDown),
+                              child: Image.asset(getTagAssetImage(), fit: BoxFit.scaleDown),
                             ),
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: Container(),
                             ),
                           ],
                         ),
                       )
+                          : SizedBox()
                     ],
                   ),
                 ),
@@ -134,7 +138,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                                   style: Theme.of(context).textTheme.subtitle2,
                                 ),
                               ),
-                              createFavoriteIcon(context, widget.isFavorite),
+                              _createFavoriteIcon(context),
                               SizedBox(width: widget._removeIconSize)
                             ],
                           ),
@@ -165,11 +169,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                           size: widget._removeIconSize,
                           color: Colors.white,
                         )),
-                    onTap: () {
-                      if (widget.onPressedOnRemoveIcon != null) {
-                        widget.onPressedOnRemoveIcon(widget.product?.id);
-                      }
-                    },
+                    onTap: _onTapIconRemove,
                   ))
               : SizedBox(width: 0)
 //          _createSaleTag(context),
@@ -179,19 +179,31 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
     );
   }
 
+  Widget _createFavoriteIcon(BuildContext context) {
+//    return IconButton(
+//        icon: widget.isFavorite
+//            ? Icon(Icons.favorite, color: DmConst.colorFavorite)
+//            : Icon(Icons.favorite_border, color: DmConst.colorFavorite),
+//        onPressed: _onTapIconFav);
+    return InkWell(
+      onTap: _onTapIconFav,
+      child: widget.isFavorite
+          ? Icon(Icons.favorite, color: DmConst.colorFavorite)
+          : Icon(Icons.favorite_border, color: DmConst.colorFavorite),
+    );
+  }
+
   String getTagAssetImage() {
-    switch (widget.product.getDisplaySaleTag) {
-      case SaleTag.BestSale:
-        return 'assets/img/Tag_Best_Sale.png';
-      case SaleTag.NewArrival:
-        return 'assets/img/Tag_NewArrival.png';
-      case SaleTag.Promotion:
-        return 'assets/img/Tag_Promotion.png';
-      case SaleTag.Special4U:
-        return 'assets/img/Tag_Special4u.png';
-      default:
-        return null;
-    }
+    if(widget.product.isPromotion == true)
+      return 'assets/img/Tag_Promotion.png';
+    else if(widget.product.isBestSale == true)
+      return 'assets/img/Tag_Best_Sale.png';
+    else if(widget.product.isNewArrival == true)
+      return 'assets/img/Tag_NewArrival.png';
+    else if(widget.product.isSpecial4U == true)
+      return 'assets/img/Tag_Special4u.png';
+    else
+      return null;
   }
 
   BoxDecoration _createDecoration() {
@@ -222,9 +234,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           InkWell(
-            onTap: () {
-              DmState.amountInCart.value++;
-            },
+            onTap: _onTapIconSubtract,
             child: Container(
                 decoration: new BoxDecoration(
                   border: Border.all(color: DmConst.accentColor, width: 2),
@@ -237,9 +247,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
             child: Text('${widget.amountInCart}'),
           ),
           InkWell(
-            onTap: () {
-              DmState.amountInCart.value++;
-            },
+            onTap: _onTapIconAdd,
             child: Container(
                     decoration: new BoxDecoration(
                       border: Border.all(color: DmConst.accentColor, width: 2),
@@ -256,7 +264,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(S.of(context).add),
           color: DmConst.accentColor,
-          onPressed: onPressedAdd2Cart,
+          onPressed: _onPressedAdd2Cart,
         ),
       );
     }
@@ -283,7 +291,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
     }
   }
 
-  void onPressedAdd2Cart() {
+  void _onPressedAdd2Cart() {
     if (currentUser.value.isLogin) {
       _con.addToCart(_con.product);
       DmState.amountInCart.value ++;
@@ -291,7 +299,38 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
         widget.amountInCart++;
       });
     } else {
-      Navigator.of(context).pushNamed("/Login");
+      RouteGenerator.gotoLogin(context, replaceOld: true);
+    }
+  }
+
+  void _onTapIconSubtract() {
+  }
+
+  void _onTapIconAdd() {
+  }
+
+  void _onTapIconRemove() {
+    if (widget.onPressedOnRemoveIcon != null) {
+      widget.onPressedOnRemoveIcon(widget.product?.id);
+    }
+  }
+
+  void _onTapIconFav() {
+    setState(() {
+      widget.isFavorite = !widget.isFavorite;
+    });
+    if(widget.isFavorite) {
+      Favorite mark = null;
+      DmState.favorites.forEach((element) {
+        if(element.product.id == widget.product.id) {
+          mark = element;
+          _con.removeFromFavorite(element);
+        }
+      });
+
+      if(mark != null) DmState.favorites.remove(mark);
+    } else {
+      _con.addToFavorite(widget.product);
     }
   }
 }

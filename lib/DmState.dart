@@ -24,7 +24,7 @@ class DmState {
 
     double am = 0;
     carts.forEach((element) {
-      print('this is currently in cart: $element');
+//      print('this is currently in cart: $element');
       am += element.quantity;
     });
     amountInCart.value = am.round();

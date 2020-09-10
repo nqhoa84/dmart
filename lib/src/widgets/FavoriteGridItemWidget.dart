@@ -44,7 +44,7 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
             children: <Widget>[
               Expanded(
                 child: Hero(
-                  tag: widget.heroTag + widget.favorite.product.id,
+                  tag: widget.heroTag + widget.favorite.product.id.toString(),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(image: NetworkImage(this.widget.favorite.product.image.thumb), fit: BoxFit.cover),

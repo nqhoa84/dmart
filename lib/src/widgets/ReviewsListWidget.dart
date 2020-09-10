@@ -32,7 +32,7 @@ class _ReviewsListWidget extends StateMVC<ReviewsListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.product.productReviews.isEmpty
+    return widget.product.productReviews == null || widget.product.productReviews.isEmpty
         ? CircularLoadingWidget(height: 200)
         : ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 20),

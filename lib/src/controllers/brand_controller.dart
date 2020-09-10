@@ -24,7 +24,7 @@ class BrandController extends ControllerMVC {
     listenForProductsByBrand();
   }
 
-  /*selectById(List<Brand> brands, String id) {
+  /*selectById(List<Brand> brands, int id) {
     brands.forEach((Brand brand) {
       brand.selected = false;
       if (brand.id == id) {
@@ -42,7 +42,7 @@ class BrandController extends ControllerMVC {
   }
 
 
-  void listenForProductsByBrand({String id, String message}) async {
+  void listenForProductsByBrand({int id, String message}) async {
     final Stream<Product> stream = await getProductsByBrand(id);
     stream.listen((Product _product) {
       setState(() {
@@ -61,7 +61,7 @@ class BrandController extends ControllerMVC {
     });
   }
 
-  void listenForBrand({String id, String message}) async {
+  void listenForBrand({int id, String message}) async {
     final Stream<Brand> stream = await getBrand(id);
     stream.listen((Brand _brand) {
       setState(() => brand = _brand);
@@ -80,7 +80,7 @@ class BrandController extends ControllerMVC {
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCart();
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
       carts.add(_cart);
     });
@@ -112,44 +112,41 @@ class BrandController extends ControllerMVC {
   }*/
 
   void addToCart(Product product, {bool reset = false}) async {
-    setState(() {
-      this.loadCart = true;
-    });
-    var _newCart = new Cart();
-    _newCart.product = product;
-    _newCart.options = [];
-    _newCart.quantity = 1;
-    // if product exist in the cart then increment quantity
-    var _oldCart = isExistInCart(_newCart);
-    if (_oldCart != null) {
-      _oldCart.quantity++;
-      updateCart(_oldCart).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
-        ));
-      });
-    } else {
-      // the product doesnt exist in the cart add new one
-      addCart(_newCart, reset).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
-        ));
-      });
-    }
+    print('================== NOT YET IMPLEMENTED');
+//    setState(() {
+//      this.loadCart = true;
+//    });
+//    var _newCart = new Cart();
+//    _newCart.product = product;
+//    _newCart.options = [];
+//    _newCart.quantity = 1;
+//    // if product exist in the cart then increment quantity
+//    var _oldCart = isExistInCart(_newCart);
+//    if (_oldCart != null) {
+//      _oldCart.quantity++;
+//      updateCart(_oldCart).then((value) {
+//        setState(() {
+//          this.loadCart = false;
+//        });
+//      }).whenComplete(() {
+//        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//          content: Text(S.of(context).productAdded2Cart),
+//        ));
+//      });
+//    } else {
+//      // the product doesnt exist in the cart add new one
+//      addCart(_newCart, reset).then((value) {
+//        setState(() {
+//          this.loadCart = false;
+//        });
+//      }).whenComplete(() {
+//        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//          content: Text(S.of(context).productAdded2Cart),
+//        ));
+//      });
+//    }
   }
 
-  Cart isExistInCart(Cart _cart) {
-    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart),
-        orElse: () => null);
-  }
 
   Future<void> refreshBrand() async {
     products.clear();

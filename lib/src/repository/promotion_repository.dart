@@ -23,9 +23,8 @@ Future<Stream<Promotion>> getPromotions() async {
         .map((data) {
       return Promotion.fromJSON(data);
     });
-  }catch (e) {
-    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+  }catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Promotion.fromJSON({}));
-
   }
 }

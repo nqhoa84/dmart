@@ -905,6 +905,26 @@ class S {
     );
   }
 
+  /// `Type`
+  String get type {
+    return Intl.message(
+      'Type',
+      name: 'type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sort by`
+  String get sortBy {
+    return Intl.message(
+      'Sort by',
+      name: 'sortBy',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Checkout`
   String get checkout {
     return Intl.message(

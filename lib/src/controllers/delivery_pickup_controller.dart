@@ -22,7 +22,7 @@ class DeliveryPickupController extends CartController {
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCart();
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
         setState(() {
             carts.add(_cart);

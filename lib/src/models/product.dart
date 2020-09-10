@@ -1,3 +1,4 @@
+import '../../utils.dart';
 import '../models/category.dart';
 import '../models/store.dart';
 import '../models/media.dart';
@@ -5,10 +6,9 @@ import '../models/option.dart';
 import '../models/option_group.dart';
 import '../models/review.dart';
 import '../models/brand.dart';
+import 'i_name.dart';
 
-class Product {
-  String id;
-  String name;
+class Product extends IdNameObj{
   double price;
   double discountPrice;
   Media image;
@@ -16,7 +16,7 @@ class Product {
   String ingredients;
   String capacity;
   String unit;
-  String packageItemsCount;
+  double packageItemsCount;
   String itemsAvailable;
   bool featured;
   bool deliverable;
@@ -25,6 +25,7 @@ class Product {
   Store store;
   Category category;
   List<Option> options;
+  List<Media> medias;
   List<OptionGroup> optionGroups;
   List<Review> productReviews;
   List<SaleTag> saleTags;
@@ -35,80 +36,36 @@ class Product {
   //TODO change to return null.
   SaleTag get getDisplaySaleTag =>
       saleTags != null && saleTags.length > 0 ? saleTags[0] : SaleTag.BestSale;
-  bool checked;
+  bool isNewArrival, isBestSale;
+  double totalSale;
 
   Product();
 
+  bool get isPromotion => discountPrice != null && discountPrice >= 0;
+
+  @override
+  bool get isValid {
+    return
+      super.isValid
+      && image != null && image.thumb!= null && image.thumb.length > 10
+      && price != null && price >= 0
+        ;
+  }
+
   Product.fromJSON(Map<String, dynamic> jsonMap) {
+//    convert(jsonMap);
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'];
-      price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
-      discountPrice = jsonMap['discount_price'] != null
-          ? jsonMap['discount_price'].toDouble()
-          : 0.0;
-      price = discountPrice != 0 ? discountPrice : price;
-      discountPrice = discountPrice == 0
-          ? discountPrice
-          : jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
-      description =
-          jsonMap['description'] != null ? jsonMap['description'] : '';
-      capacity = jsonMap['capacity'].toString();
-      unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';
-      packageItemsCount = jsonMap['package_items_count'] != null
-          ? jsonMap['package_items_count'].toString()
-          : '0';
-      featured = jsonMap['featured'] ?? false;
-      deliverable = jsonMap['deliverable'] ?? false;
-      rate = jsonMap['rate'] ?? '0';
-      itemsAvailable = jsonMap['itemsAvailable'] ?? '0';
-      brand = jsonMap['brand'] != null
-          ? Brand.fromJSON(jsonMap['brand'])
-          : new Brand();
-
-      store = jsonMap['store'] != null
-          ? Store.fromJSON(jsonMap['store'])
-          : new Store();
-
-      category = jsonMap['category'] != null
-          ? Category.fromJSON(jsonMap['category'])
-          : new Category();
-
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
-          ? Media.fromJSON(jsonMap['media'][0])
-          : new Media();
-
-      options =
-          jsonMap['options'] != null && (jsonMap['options'] as List).length > 0
-              ? List.from(jsonMap['options'])
-                  .map((element) => Option.fromJSON(element))
-                  .toSet()
-                  .toList()
-              : [];
-      optionGroups = jsonMap['option_groups'] != null &&
-              (jsonMap['option_groups'] as List).length > 0
-          ? List.from(jsonMap['option_groups'])
-              .map((element) => OptionGroup.fromJSON(element))
-              .toSet()
-              .toList()
-          : [];
-      productReviews = jsonMap['product_reviews'] != null &&
-              (jsonMap['product_reviews'] as List).length > 0
-          ? List.from(jsonMap['product_reviews'])
-              .map((element) => Review.fromJSON(element))
-              .toSet()
-              .toList()
-          : [];
-      checked = false;
-    } catch (e) {
-      id = '';
+      convert(jsonMap);
+//      checked = false;
+    } catch (e, trace) {
+      id = -1;
       name = '';
       price = 0.0;
       discountPrice = 0.0;
       description = '';
       capacity = '';
       unit = '';
-      packageItemsCount = '';
+      packageItemsCount = 0;
       featured = false;
       deliverable = false;
       rate = '0';
@@ -120,9 +77,68 @@ class Product {
       options = [];
       optionGroups = [];
       productReviews = [];
-      checked = false;
-      print(jsonMap);
+      print('Error parsing data in Product.fromJSON $e \n $trace');
     }
+  }
+
+  convert(Map<String, dynamic> jsonMap){
+    id = toInt(jsonMap['id']);
+    name = toStringVal(jsonMap['name']);
+    price = toDouble(jsonMap['price'], errorValue: 0.0);
+    discountPrice = toDouble(jsonMap['discount_price'], errorValue: null);
+    description = jsonMap['description'] ?? '';
+    capacity = toStringVal(jsonMap['capacity']);
+    unit = toStringVal(jsonMap['unit']);
+    packageItemsCount = toDouble(jsonMap['package_items_count'], errorValue: 0.0);
+    featured = jsonMap['featured'] ?? false;
+    deliverable = jsonMap['deliverable'] ?? false;
+    isNewArrival = jsonMap['is_new_arrival'] ?? false;
+    isBestSale = jsonMap['is_best_sale'] ?? false;
+    totalSale = toDouble(jsonMap['total_sale'], errorValue: 0.0);
+    rate = toStringVal(jsonMap['rate']);
+    itemsAvailable = toStringVal(jsonMap['itemsAvailable']);
+    brand = jsonMap['brand'] != null
+        ? Brand.fromJSON(jsonMap['brand'])
+        : new Brand();
+
+//    store = jsonMap['store'] != null
+//        ? Store.fromJSON(jsonMap['store'])
+//        : new Store();
+
+    category = jsonMap['category'] != null
+        ? Category.fromJSON(jsonMap['category'])
+        : new Category();
+
+    medias = jsonMap['media'] != null &&
+        (jsonMap['media'] as List).length > 0
+        ? List.from(jsonMap['media'])
+        .map((element) => Media.fromJSON(element)).toSet().toList()
+        : [];
+    image = medias != null && medias.length > 0 ? medias[0] : Media();
+
+//    options =
+//    jsonMap['options'] != null && (jsonMap['options'] as List).length > 0
+//        ? List.from(jsonMap['options'])
+//        .map((element) => Option.fromJSON(element))
+//        .toSet()
+//        .toList()
+//        : [];
+
+//    optionGroups = jsonMap['option_groups'] != null &&
+//        (jsonMap['option_groups'] as List).length > 0
+//        ? List.from(jsonMap['option_groups'])
+//        .map((element) => OptionGroup.fromJSON(element))
+//        .toSet()
+//        .toList()
+//        : [];
+
+//    productReviews = jsonMap['product_reviews'] != null &&
+//        (jsonMap['product_reviews'] as List).length > 0
+//        ? List.from(jsonMap['product_reviews'])
+//        .map((element) => Review.fromJSON(element))
+//        .toSet()
+//        .toList()
+//        : [];
   }
 
   Map toMap() {

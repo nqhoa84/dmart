@@ -46,7 +46,8 @@ class MapController extends ControllerMVC {
           });
         });
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, trace) {
+      print('$e \n $trace');
       if (e.code == 'PERMISSION_DENIED') {
         print('Permission denied');
       }

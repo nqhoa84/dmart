@@ -1,7 +1,7 @@
 import '../../generated/l10n.dart';
 
 class PaymentMethod {
-  String id;
+  int id;
   String name;
   String description;
   String logo;
@@ -18,18 +18,18 @@ class PaymentMethodList {
 
   PaymentMethodList() {
     this._paymentsList = [
-      new PaymentMethod("visacard", 'visa_card', 'click_to_pay_with_your_visa_card', "/Checkout", "assets/img/visacard.png",
-          isDefault: true),
-      new PaymentMethod("mastercard", 'mastercard', 'click_to_pay_with_your_mastercard', "/Checkout", "assets/img/mastercard.png"),
-      new PaymentMethod("razorpay", 'razorpay', 'clickToPayWithRazorpayMethod', "/RazorPay", "assets/img/razorpay.png"),
-
-      new PaymentMethod("paypal", 'paypal', 'click_to_pay_with_your_paypal_account', "/PayPal", "assets/img/paypal.png"),
+//      new PaymentMethod("visacard", 'visa_card', 'click_to_pay_with_your_visa_card', "/Checkout", "assets/img/visacard.png",
+//          isDefault: true),
+//      new PaymentMethod("mastercard", 'mastercard', 'click_to_pay_with_your_mastercard', "/Checkout", "assets/img/mastercard.png"),
+//      new PaymentMethod("razorpay", 'razorpay', 'clickToPayWithRazorpayMethod', "/RazorPay", "assets/img/razorpay.png"),
+//
+//      new PaymentMethod("paypal", 'paypal', 'click_to_pay_with_your_paypal_account', "/PayPal", "assets/img/paypal.png"),
     ];
     this._cashList = [
-      new PaymentMethod("cod", 'cash_on_delivery', 'click_to_pay_cash_on_delivery', "/CashOnDelivery", "assets/img/cash.png"),
+//      new PaymentMethod("cod", 'cash_on_delivery', 'click_to_pay_cash_on_delivery', "/CashOnDelivery", "assets/img/cash.png"),
     ];
     this._pickupList = [
-      new PaymentMethod("pop", 'pay_on_pickup', 'click_to_pay_on_pickup', "/PayOnPickup", "assets/img/pay_pickup.png"),
+//      new PaymentMethod("pop", 'pay_on_pickup', 'click_to_pay_on_pickup', "/PayOnPickup", "assets/img/pay_pickup.png"),
     ];
   }
 

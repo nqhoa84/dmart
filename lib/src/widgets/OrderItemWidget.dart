@@ -36,7 +36,7 @@ class OrderItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: heroTag + productOrder?.id,
+              tag: heroTag + productOrder?.id.toString(),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
 //                child: CachedNetworkImage(

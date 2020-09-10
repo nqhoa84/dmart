@@ -40,7 +40,8 @@ class Colors {
   Color mainColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.mainColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -48,7 +49,8 @@ class Colors {
   Color secondColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.secondColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -56,7 +58,8 @@ class Colors {
   Color accentColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.accentColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -64,7 +67,8 @@ class Colors {
   Color mainDarkColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.mainDarkColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -72,7 +76,8 @@ class Colors {
   Color secondDarkColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.secondDarkColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -80,7 +85,8 @@ class Colors {
   Color accentDarkColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.accentDarkColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }
@@ -89,7 +95,8 @@ class Colors {
     // TODO test if brightness is dark or not
     try {
       return Color(int.parse(settingRepo.setting.value.scaffoldColor.replaceAll("#", "0xFF"))).withOpacity(opacity);
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }
   }

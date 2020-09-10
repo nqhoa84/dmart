@@ -71,7 +71,7 @@ class FavoriteListItemWidget extends StatefulWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Hero(
-                tag: widget.heroTag + widget.favorite.product.id,
+                tag: widget.heroTag + widget.favorite.product.id.toString(),
                 child: Container(
                   height: 60,
                   width: 60,

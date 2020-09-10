@@ -1,5 +1,8 @@
-class CreditCard {
-  String id;
+import 'package:dmart/src/models/i_name.dart';
+
+import '../../utils.dart';
+
+class CreditCard extends IdObj {
   String number = '';
   String expMonth = '';
   String expYear = '';
@@ -9,18 +12,19 @@ class CreditCard {
 
   CreditCard.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       number = jsonMap['stripe_number'].toString();
       expMonth = jsonMap['stripe_exp_month'].toString();
       expYear = jsonMap['stripe_exp_year'].toString();
       cvc = jsonMap['stripe_cvc'].toString();
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       number = '';
       expMonth = '';
       expYear = '';
       cvc = '';
-      print(e);
+      print('Error parsing data in CreditCard $e \n $trace');
+
     }
   }
 

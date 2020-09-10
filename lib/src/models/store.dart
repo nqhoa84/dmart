@@ -1,8 +1,8 @@
+import '../../utils.dart';
 import '../models/media.dart';
+import 'i_name.dart';
 
-class Store {
-  String id;
-  String name;
+class Store extends IdNameObj{
   Media image;
   String rate;
   String description;
@@ -21,25 +21,25 @@ class Store {
 
   Store.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'];
+      id = toInt(jsonMap['id']);
+      name = toStringVal(jsonMap['name']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
-      rate = jsonMap['rate'] ?? '0';
-      deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
-      adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
-      deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
-      description = jsonMap['description'];
-      phone = jsonMap['phone'];
-      mobile = jsonMap['mobile'];
-      defaultTax = jsonMap['default_tax'] != null ? jsonMap['default_tax'].toDouble() : 0.0;
-      information = jsonMap['information'];
-      closed = jsonMap['closed'] ?? false;
-      availableForDelivery = jsonMap['available_for_delivery'] ?? false;
-      distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
-    } catch (e) {
-      id = '';
+//      rate = jsonMap['rate'] ?? '0';
+//      deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
+//      adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
+//      deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
+//      description = jsonMap['description'];
+//      phone = jsonMap['phone'];
+//      mobile = jsonMap['mobile'];
+//      defaultTax = jsonMap['default_tax'] != null ? jsonMap['default_tax'].toDouble() : 0.0;
+//      information = jsonMap['information'];
+//      closed = jsonMap['closed'] ?? false;
+//      availableForDelivery = jsonMap['available_for_delivery'] ?? false;
+//      distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
+    } catch (e, trace) {
+      id = -1;
       name = '';
       image = new Media();
       rate = '0';
@@ -54,7 +54,8 @@ class Store {
       closed = false;
       availableForDelivery = false;
       distance = 0.0;
-      print(e);
+      print('Error parsing data in Store.fromJSON $e \n $trace');
+
     }
   }
 

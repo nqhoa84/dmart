@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 class CategoriesIconsCarouselWidget extends StatefulWidget {
   List<Category> categoriesList;
   String heroTag;
-  ValueChanged<String> onChanged;
+  ValueChanged<int> onChanged;
 
   CategoriesIconsCarouselWidget({Key key, this.categoriesList, this.heroTag, this.onChanged}) : super(key: key);
 
@@ -72,7 +72,7 @@ class _CategoriesIconsCarouselWidgetState extends StateMVC<CategoriesIconsCarous
                           heroTag: widget.heroTag+UniqueKey().toString(),
                           marginLeft: _marginLeft,
                           category: widget.categoriesList.elementAt(index),
-                          onPressed: (String id) {
+                          onPressed: (int id) {
                             setState(() {
                               _con.selectCategoryById(widget.categoriesList,id);
                               widget.onChanged(id);

@@ -92,6 +92,8 @@
   "categories": "Categories",
   "brands": "Brands",
   "brand": "Brand",
+  "type": "Type",
+  "sortBy": "Sort by",
   "checkout": "Checkout",
   "orCheckOutWith": "Or Checkout With",
   "subtotal": "Subtotal",

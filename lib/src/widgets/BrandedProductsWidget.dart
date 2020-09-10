@@ -9,7 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'CircularLoadingWidget.dart';
 import 'ProductItemWide.dart';
-import 'ProductsGridLoadingWidget.dart';
+import 'ProductsGridViewLoading.dart';
 class BrandedProductsWidget extends StatefulWidget {
   final String heroTag;
   final Animation animationOpacity;
@@ -41,7 +41,7 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return _con.brandsProducts.isEmpty ? ProductsGridLoadingWidget() : FadeTransition(
+    return _con.brandsProducts.isEmpty ? ProductsGridViewLoading() : FadeTransition(
       opacity: widget.animationOpacity,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -77,7 +77,7 @@ class _BrandedProductsWidget extends StateMVC<BrandedProductsWidget>{
 
   Widget _build(BuildContext context) {
 
-    return _con.brandsProducts.isEmpty ? ProductsGridLoadingWidget() : FadeTransition(
+    return _con.brandsProducts.isEmpty ? ProductsGridViewLoading() : FadeTransition(
       opacity: widget.animationOpacity,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

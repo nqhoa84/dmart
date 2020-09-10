@@ -16,11 +16,10 @@ class FavoriteController extends ControllerMVC {
   }
 
   void listenForFavorites({String message}) async {
-    final Stream<Favorite> stream = await getFavorites();
+    final Stream<Favorite> stream = await getFavorites(1);
     stream.listen((Favorite _favorite) {
       setState(() {
           favorites.add(_favorite);
-
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(

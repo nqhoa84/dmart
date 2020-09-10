@@ -17,7 +17,7 @@ class TrackingController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForOrder({String orderId, String message}) async {
+  void listenForOrder({int orderId, String message}) async {
     final Stream<Order> stream = await getOrder(orderId);
     stream.listen((Order _order) {
       setState(() {
@@ -68,7 +68,7 @@ class TrackingController extends ControllerMVC {
             child: Text(
               '${Helper.skipHtml(order.hint)}',
             )),
-        isActive: (int.tryParse(order.orderStatus.id)) >= (int.tryParse(_orderStatus.id)),
+        isActive: order.orderStatus.id >= _orderStatus.id,
       ));
     });
     return _orderStatusSteps;

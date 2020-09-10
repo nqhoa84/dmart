@@ -24,7 +24,7 @@ class StoreController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForStore({String id, String message}) async {
+  void listenForStore({int id, String message}) async {
     final Stream<Store> stream = await getStore(id, deliveryAddress.value);
     stream.listen((Store _store) {
       setState(() => store = _store);
@@ -42,21 +42,21 @@ class StoreController extends ControllerMVC {
     });
   }
 
-  void listenForGalleries(String idStore) async {
+  void listenForGalleries(int idStore) async {
     final Stream<Gallery> stream = await getGalleries(idStore);
     stream.listen((Gallery _gallery) {
       setState(() => galleries.add(_gallery));
     }, onError: (a) {}, onDone: () {});
   }
 
-  void listenForStoreReviews({String id, String message}) async {
+  void listenForStoreReviews({int id, String message}) async {
     final Stream<Review> stream = await getStoreReviews(id);
     stream.listen((Review _review) {
       setState(() => reviews.add(_review));
     }, onError: (a) {}, onDone: () {});
   }
 
-  void listenForProducts(String idStore) async {
+  void listenForProducts(int idStore) async {
     final Stream<Product> stream = await getProductsOfStore(idStore);
     stream.listen((Product _product) {
       setState(() => products.add(_product));
@@ -65,7 +65,7 @@ class StoreController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForTrendingProducts(String idStore) async {
+  void listenForTrendingProducts(int idStore) async {
     final Stream<Product> stream = await getTrendingProductsOfStore(idStore);
     stream.listen((Product _product) {
       setState(() => trendingProducts.add(_product));
@@ -74,7 +74,7 @@ class StoreController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForFeaturedProducts(String idStore) async {
+  void listenForFeaturedProducts(int idStore) async {
     final Stream<Product> stream = await getFeaturedProductsOfStore(idStore);
     stream.listen((Product _product) {
       setState(() => featuredProducts.add(_product));

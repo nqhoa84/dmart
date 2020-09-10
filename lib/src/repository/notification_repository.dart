@@ -49,8 +49,8 @@ Future<Notification> removeNotification(Notification notification) async {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
     return Notification.fromJSON(json.decode(response.body)['data']);
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return Notification.fromJSON({});
   }
 }

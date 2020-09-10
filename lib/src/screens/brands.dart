@@ -1,3 +1,10 @@
+import 'package:dmart/DmState.dart';
+import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/widgets/CategoriesGrid.dart';
+import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:dmart/src/widgets/FilterWidget.dart';
+
+import '../../buidUI.dart';
 import '../../src/controllers/brand_controller.dart';
 import '../../src/widgets/CircularLoadingWidget.dart';
 import '../../generated/l10n.dart';
@@ -27,75 +34,43 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
   }
 
   @override
+  void initState() {
+    _con.listenForBrands();
+    super.initState();
+  }
+
+  Widget buildContent(BuildContext context) {
+    if (_con.brands.isEmpty)  {
+      return CategoriesGridLoading();
+    } else
+    {
+      return CategoriesGridView(categories: _con.brands);
+//      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _con.scaffoldKey,
+      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: ValueListenableBuilder(
-          valueListenable: settingsRepo.setting,
-          builder: (context, value, child) {
-            return Text(
-              value.appName ?? S.of(context).home,
-              style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
-            );
-          },
-        ),
-        actions: <Widget>[
-          new ShoppingCartButton(
-              iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
-          Container(
-            width: 30,
-            height: 30,
-            //margin: EdgeInsets.only(top: 12.5, bottom: 12.5, right: 20),
-            margin: EdgeInsetsDirectional.only(top: 12.5, bottom: 12.5, end: 20),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(300),
-              onTap: () {
-                currentUser.value.apiToken != null
-                    ? Navigator.of(context).pushNamed('/Pages', arguments: 1)
-                    : Navigator.of(context).pushNamed('/Login');
-              },
-              child: currentUser.value.apiToken != null
-                  ? CircleAvatar(
-                      backgroundImage: NetworkImage(currentUser.value.image.thumb),
-                    )
-                  : Icon(
-                      Icons.person,
-                      size: 26,
-                      color: Theme.of(context).accentColor.withOpacity(1),
-                    ),
-            ),
+      endDrawer: FilterWidget(onFilter: (Filter f) {
+        print('selected filter: $f');
+      }),
+      endDrawerEnableOpenDragGesture: true,
+      drawerEnableOpenDragGesture: true,
+      body: SafeArea(
+        child: CustomScrollView(slivers: <Widget>[
+          createSliverTopBar(context),
+          createSliverSearch(context),
+          createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).brands),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              buildContent(context),
+            ]),
           )
-        ],
+        ]),
       ),
-      body: _con.brands.isEmpty
-          ? CircularLoadingWidget(
-              height: 500,
-            )
-          : SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Wrap(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: SearchBar(
-                      onClickFilter: (event) {
-                        _con.scaffoldKey.currentState.openEndDrawer();
-                      },
-                    ),
-                  ),
-                  BrandGridWidget(brands: _con.brands),
-                ],
-              ),
-            ),
     );
   }
 }

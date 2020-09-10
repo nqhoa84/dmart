@@ -23,19 +23,20 @@ class OrderController extends ControllerMVC {
   }
 
   void listenForBoughtProducts({Function() onDone}) async {
-    final Stream<Product> stream = await getProductsByCategory('2');
-    boughtProducts.clear();
-    stream.listen((Product _product) {
-      setState(() {
-        boughtProducts.add(_product);
-        print('----------- ${_product.id}');
-      });
-    }, onError: (a) {
-      print(a);
-    }, onDone: (){
-      print(' onDone boughtProducts ${boughtProducts.length}');
-    }
-    );
+    print(' listenForBoughtProducts on order controller called. ${boughtProducts.length}');
+//    final Stream<Product> stream = await getProductsByCategory(1,1);
+//    boughtProducts.clear();
+//    stream.listen((Product _product) {
+//      setState(() {
+//        boughtProducts.add(_product);
+//        print('----------- ${_product.id}');
+//      });
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: (){
+//      print(' onDone boughtProducts ${boughtProducts.length}');
+//    }
+//    );
   }
 
   void listenForOrders({String message}) async {

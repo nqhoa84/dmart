@@ -1,17 +1,19 @@
-class OptionGroup {
-  String id;
-  String name;
+import '../../utils.dart';
+import 'i_name.dart';
+
+class OptionGroup extends IdNameObj {
 
   OptionGroup();
 
   OptionGroup.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'];
-    } catch (e) {
-      id = '';
+      id = toInt(jsonMap['id']);
+      name = toStringVal(jsonMap['name']);
+    } catch (e, trace) {
+      id = -1;
       name = '';
-      print(e);
+      print('Error parsing data in OptionGroup.fromJSON $e \n $trace');
+
     }
   }
 

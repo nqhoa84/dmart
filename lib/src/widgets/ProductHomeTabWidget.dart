@@ -93,7 +93,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                       color: Theme.of(context).focusColor,
                       borderRadius: BorderRadius.circular(24)),
                   child:Text(
-                        widget.product.packageItemsCount + " " + S.of(context).items,
+                        '${widget.product.packageItemsCount}' + S.of(context).items,
                         style: Theme.of(context).textTheme.bodyText2
                   )
               ),

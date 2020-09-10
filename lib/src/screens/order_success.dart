@@ -83,7 +83,7 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-                child: ProductsByCategory(category: Category(id: '1', name: 'name', description: 'desc')),
+                child: ProductsByCategory(category: Category(id: 1, name: 'name', description: 'desc')),
               ),
             ],
           ),

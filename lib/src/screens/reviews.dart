@@ -55,7 +55,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                     height: 150,
                                     width: double.infinity,
                                     child: Hero(
-                                      tag: widget.routeArgument.heroTag + _con.order.productOrders[0].product.store.id,
+                                      tag: widget.routeArgument.heroTag + _con.order.productOrders[0].product.store.id.toString(),
 //                                      child: CachedNetworkImage(
 //                                        fit: BoxFit.cover,
 //                                        imageUrl: _con.order.productOrders[0].product.store.image.url,

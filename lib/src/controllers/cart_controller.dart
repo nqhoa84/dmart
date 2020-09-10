@@ -1,3 +1,5 @@
+import 'package:dmart/DmState.dart';
+
 import '../helpers/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -19,13 +21,18 @@ class CartController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForCarts({String message}) async {
-    final Stream<Cart> stream = await getCart();
+  void listenForCarts({String message, bool isRefresh = true}) async {
+    if(isRefresh) {
+      carts.clear();
+    }
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
-      if (!carts.contains(_cart)) {
+      if (_cart.isValid) {
         setState(() {
           carts.add(_cart);
         });
+      } else {
+        print('Cart $_cart is Invalid');
       }
     }, onError: (a) {
       print(a);
@@ -33,13 +40,13 @@ class CartController extends ControllerMVC {
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
-      if (carts.isNotEmpty) {
-        calculateSubtotal();
-      }
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message),
-        ));
-      }
+//      if (carts.isNotEmpty) {
+//        calculateSubtotal();
+//      }
+//      if (message != null) {
+//        scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message),
+//        ));
+//      }
     });
   }
 

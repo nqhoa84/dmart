@@ -9,7 +9,7 @@ class BrandIconWidget extends StatefulWidget {
   Brand brand;
   String heroTag;
   double marginLeft;
-  ValueChanged<String> onPressed;
+  ValueChanged<int> onPressed;
 
   BrandIconWidget(
       {Key key, this.brand, this.heroTag, this.marginLeft, this.onPressed})
@@ -52,7 +52,7 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
         child: Row(
           children: <Widget>[
             Hero(
-              tag: widget.heroTag + widget.brand.id,
+              tag: widget.heroTag + widget.brand.id.toString(),
               child: widget.brand.image.url.toLowerCase().endsWith('.svg') ? Container(
                 height: 36,
                 width: 36,

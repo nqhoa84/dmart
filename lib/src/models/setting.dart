@@ -47,8 +47,9 @@ class Setting {
       payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
       stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
       razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
-    } catch (e) {
-      print(e);
+    } catch (e, trace) {
+      print('Error parsing data in Setting.fromJSON $e \n $trace');
+
     }
   }
 

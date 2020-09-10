@@ -33,26 +33,29 @@ class CategoryController extends ControllerMVC {
     }, onDone: onDone != null ? onDone : (){});
   }
 
-  void listenForProductsByCategory({String id, String message}) async {
-    final Stream<Product> stream = await getProductsByCategory(id);
-    stream.listen((Product _product) {
-      setState(() {
-        products.add(_product);
-      });
-    }, onError: (a) {
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
-    }, onDone: () {
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
-    });
+  void listenForProductsByCategory({int id, String message}) async {
+
+    print('listenForProductsByCategory called.........');
+
+//    final Stream<Product> stream = await getProductsByCategory(id, 1);
+//    stream.listen((Product _product) {
+//      setState(() {
+//        products.add(_product);
+//      });
+//    }, onError: (a) {
+//      scaffoldKey.currentState.showSnackBar(SnackBar(
+//        content: Text(S.of(context).verifyYourInternetConnection),
+//      ));
+//    }, onDone: () {
+//      if (message != null) {
+//        scaffoldKey.currentState.showSnackBar(SnackBar(
+//          content: Text(message),
+//        ));
+//      }
+//    });
   }
 
-  void listenForCategory({String id, String message}) async {
+  void listenForCategory({int id, String message}) async {
     final Stream<Category> stream = await getCategory(id);
     stream.listen((Category _category) {
       setState(() => category = _category);
@@ -71,7 +74,7 @@ class CategoryController extends ControllerMVC {
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCart();
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
       carts.add(_cart);
     });
@@ -103,43 +106,41 @@ class CategoryController extends ControllerMVC {
   }*/
 
   void addToCart(Product product, {bool reset = false}) async {
-    setState(() {
-      this.loadCart = true;
-    });
-    var _newCart = new Cart();
-    _newCart.product = product;
-    _newCart.options = [];
-    _newCart.quantity = 1;
-    // if product exist in the cart then increment quantity
-    var _oldCart = isExistInCart(_newCart);
-    if (_oldCart != null) {
-      _oldCart.quantity++;
-      updateCart(_oldCart).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
-        ));
-      });
-    } else {
-      // the product doesnt exist in the cart add new one
-      addCart(_newCart, reset).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
-        ));
-      });
-    }
+    print('================== NOT YET IMPLEMENTED');
+//    setState(() {
+//      this.loadCart = true;
+//    });
+//    var _newCart = new Cart();
+//    _newCart.product = product;
+//    _newCart.options = [];
+//    _newCart.quantity = 1;
+//    // if product exist in the cart then increment quantity
+//    var _oldCart = isExistInCart(_newCart);
+//    if (_oldCart != null) {
+//      _oldCart.quantity++;
+//      updateCart(_oldCart).then((value) {
+//        setState(() {
+//          this.loadCart = false;
+//        });
+//      }).whenComplete(() {
+//        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//          content: Text(S.of(context).productAdded2Cart),
+//        ));
+//      });
+//    } else {
+//      // the product doesnt exist in the cart add new one
+//      addCart(_newCart, reset).then((value) {
+//        setState(() {
+//          this.loadCart = false;
+//        });
+//      }).whenComplete(() {
+//        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//          content: Text(S.of(context).productAdded2Cart),
+//        ));
+//      });
+//    }
   }
 
-  Cart isExistInCart(Cart _cart) {
-    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
-  }
 
   Future<void> refreshCategory() async {
     products.clear();

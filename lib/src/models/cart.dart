@@ -1,28 +1,38 @@
+import 'package:dmart/utils.dart';
+
 import '../models/option.dart';
 import '../models/product.dart';
+import 'i_name.dart';
 
-class Cart {
-  String id;
+class Cart extends IdObj{
   Product product;
   double quantity;
   List<Option> options;
-  String userId;
+  int userId;
+
+
+  @override
+  String toString(){
+    return 'Cart {id: $id, productId: ${product.id}, quantity: $quantity, userId: $userId}';
+  }
 
   Cart();
 
   Cart.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
+      id = toInt(jsonMap['id']);
+      quantity = toDouble(jsonMap['quantity'], errorValue: 0);
       product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : new Product();
-      options = jsonMap['options'] != null ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList() : [];
-      product.price = getProductPrice();
-    } catch (e) {
-      id = '';
+      userId = toInt(jsonMap['user_id']);
+//      options = jsonMap['options'] != null ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList() : [];
+    }
+    catch (e, trace) {
+      id = -1;
       quantity = 0.0;
       product = new Product();
       options = [];
-      print(e);
+      print('Error parsing data in Cart $e \n $trace');
+
     }
   }
 
@@ -34,28 +44,6 @@ class Cart {
     map["user_id"] = userId;
     map["options"] = options.map((element) => element.id).toList();
     return map;
-  }
-
-  double getProductPrice() {
-    double result = product.price;
-    if (options.isNotEmpty) {
-      options.forEach((Option option) {
-        result += option.price != null ? option.price : 0;
-      });
-    }
-    return result;
-  }
-
-  bool isSame(Cart cart) {
-    bool _same = true;
-    _same &= this.product == cart.product;
-    _same &= this.options.length == cart.options.length;
-    if (_same) {
-      this.options.forEach((Option _option) {
-        _same &= cart.options.contains(_option);
-      });
-    }
-    return _same;
   }
 
   @override

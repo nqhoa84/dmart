@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'CircularLoadingWidget.dart';
-import '../../src/widgets/ProductsGridLoadingWidget.dart';
+import '../../src/widgets/ProductsGridViewLoading.dart';
 import 'ProductItemWide.dart';
 
 class HomeProductsByCategory extends StatefulWidget {
@@ -26,8 +26,6 @@ class HomeProductsByCategory extends StatefulWidget {
 }
 
 class _CategorizedProductsWidget extends StateMVC<HomeProductsByCategory>{
-
-
     ProductController _con;
 
     _CategorizedProductsWidget() : super(ProductController()) {
@@ -37,7 +35,7 @@ class _CategorizedProductsWidget extends StateMVC<HomeProductsByCategory>{
 
     @override
     void initState() {
-      _con.listenForProductsByCategory(id: widget.category.id);
+//      _con.listenForProductsByCategory(id: widget.category.id);
       super.initState();
     }
 
@@ -45,7 +43,7 @@ class _CategorizedProductsWidget extends StateMVC<HomeProductsByCategory>{
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return _con.categoriesProducts.isEmpty ?
-      ProductsGridLoadingWidget():
+      ProductsGridViewLoading():
       FadeTransition(
           opacity: widget.animationOpacity,
           child: Container(
@@ -74,5 +72,47 @@ class _CategorizedProductsWidget extends StateMVC<HomeProductsByCategory>{
     );
   }
 }
+
+class HomeProductsListView extends StatelessWidget {
+  final List<Product> ps;
+  final String hero;
+  final Animation animationOpacity;
+
+  HomeProductsListView({this.ps = const [], this.hero = 'home',
+    this.animationOpacity
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return FadeTransition(
+      opacity: animationOpacity,
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          height: width / 3 * 2,
+          width: double.infinity,
+          child: GridView.count(
+              scrollDirection: Axis.horizontal,
+              crossAxisCount: 2,
+              crossAxisSpacing: 1.5,
+              childAspectRatio: 120 / 337,
+              children: List.generate(ps.length, (index) {
+                Product product = ps.elementAt(index);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: ProductItemWide(
+                      product: product,
+                      heroTag: hero,
+//                        amountInCart: 10,
+                    ),
+                  ),
+                );
+              },
+              ))),
+    );
+  }
+}
+
 
 

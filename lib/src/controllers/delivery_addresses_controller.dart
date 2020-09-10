@@ -40,7 +40,7 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCart();
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
       cart = _cart;
     });

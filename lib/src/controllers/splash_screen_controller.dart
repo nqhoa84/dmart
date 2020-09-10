@@ -54,7 +54,8 @@ class SplashScreenController extends ControllerMVC with ChangeNotifier {
         onLaunch: notificationOnLaunch,
         onResume: notificationOnResume,
       );
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       print(CustomTrace(StackTrace.current, message: 'Error Config firebase').toString());
     }
   }
@@ -65,8 +66,9 @@ class SplashScreenController extends ControllerMVC with ChangeNotifier {
       if (message['data']['id'] == "orders") {
         settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
       }
-    } catch (e) {
+    } catch (e, trace) {
       print(e);
+      print(trace);
     }
   }
 
@@ -79,7 +81,9 @@ class SplashScreenController extends ControllerMVC with ChangeNotifier {
           settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
         }
       }
-    } catch (e) {}
+    } catch (e, trace) {
+      print(trace);
+    }
   }
 
   Future notificationOnMessage(Map<String, dynamic> message) async {

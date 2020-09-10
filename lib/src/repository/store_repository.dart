@@ -29,8 +29,8 @@ Future<Stream<Store>> getNearStores(Address myLocation, Address areaLocation) as
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
       return Store.fromJSON(data);
     });
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Store.fromJSON({}));
   }
 }
@@ -52,8 +52,8 @@ Future<Stream<Store>> getPopularStores(Address myLocation) async {
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
       return Store.fromJSON(data);
     });
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Store.fromJSON({}));
   }
 }
@@ -69,13 +69,13 @@ Future<Stream<Store>> searchStores(String search, Address address) async {
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
       return Store.fromJSON(data);
     });
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Store.fromJSON({}));
   }
 }
 
-Future<Stream<Store>> getStore(String id, Address address) async {
+Future<Stream<Store>> getStore(int id, Address address) async {
   Uri uri = Helper.getUri('api/stores/$id');
   Map<String, dynamic> _queryParams = {};
   uri = uri.replace(queryParameters: _queryParams);
@@ -84,13 +84,13 @@ Future<Stream<Store>> getStore(String id, Address address) async {
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).map((data) => Store.fromJSON(data));
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Store.fromJSON({}));
   }
 }
 
-Future<Stream<Review>> getStoreReviews(String id) async {
+Future<Stream<Review>> getStoreReviews(int id) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}store_reviews?with=user&search=store_id:$id';
   try {
     final client = new http.Client();
@@ -99,8 +99,8 @@ Future<Stream<Review>> getStoreReviews(String id) async {
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
       return Review.fromJSON(data);
     });
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Review.fromJSON({}));
   }
 }
@@ -113,8 +113,8 @@ Future<Stream<Review>> getRecentReviews() async {
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
       return Review.fromJSON(data);
     });
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Review.fromJSON({}));
   }
 }
@@ -135,8 +135,8 @@ Future<Review> addStoreReview(Review review, Store store) async {
       print(CustomTrace(StackTrace.current, message: response.body).toString());
       return Review.fromJSON({});
     }
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return Review.fromJSON({});
   }
 }

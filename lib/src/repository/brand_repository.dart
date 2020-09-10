@@ -31,21 +31,21 @@ Future<Stream<Brand>> getBrands() async {
         .map((data) => Helper.getData(data))
         .expand((data) => (data as List))
         .map((data) => Brand.fromJSON(data));
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Brand.fromJSON({}));
   }
 }
 
-Future<Stream<Brand>> getBrand(String id) async {
+Future<Stream<Brand>> getBrand(int id) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}brands/$id';
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).map((data) => Brand.fromJSON(data));
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url).toString());
+  } catch (e, trace) {
+    print('$e \n $trace');
     return new Stream.value(new Brand.fromJSON({}));
   }
 }

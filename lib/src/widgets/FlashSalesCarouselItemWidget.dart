@@ -37,7 +37,7 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
           alignment: AlignmentDirectional.topCenter,
           children: <Widget>[
             Hero(
-              tag: heroTag + product.id,
+              tag: heroTag + product.id.toString(),
               child: Container(
                 width: 160,
                 height: 200,

@@ -16,7 +16,7 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (onDismissed != null) {
       return Dismissible(
-        key: Key(address.id),
+        key: Key(address.id.toString()),
         onDismissed: (direction) {
           this.onDismissed(address);
         },

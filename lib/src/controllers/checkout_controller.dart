@@ -38,7 +38,7 @@ class CheckoutController extends ControllerMVC {
   }
 
   void listenForCarts({String message, bool withAddOrder = false}) async {
-    final Stream<Cart> stream = await getCart();
+    final Stream<Cart> stream = await getCarts();
     stream.listen((Cart _cart) {
       if (!carts.contains(_cart)) {
         setState(() {
@@ -70,7 +70,7 @@ class CheckoutController extends ControllerMVC {
       _order.tax = _cart.product.store.defaultTax;
       _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : _cart.product.store.deliveryFee;
       OrderStatus _orderStatus = new OrderStatus();
-      _orderStatus.id = '1'; // TODO default order status Id
+      _orderStatus.id = -1; // TODO default order status Id
       _order.orderStatus = _orderStatus;
       _order.deliveryAddress =payment.method == 'Pay on Pickup' ? new Address() : settingRepo.deliveryAddress.value;
       _order.hint = ' ';

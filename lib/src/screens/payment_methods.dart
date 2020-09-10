@@ -56,7 +56,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
-          new ShoppingCartButton(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+          new ShoppingCartButton(),
         ],
       ),
       body: SingleChildScrollView(

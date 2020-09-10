@@ -1,17 +1,20 @@
-class OrderStatus {
-  String id;
+import '../../utils.dart';
+import 'i_name.dart';
+
+class OrderStatus extends IdObj{
   String status;
 
-  OrderStatus({this.id, this.status});
+  OrderStatus({id, this.status}) : super(id: id);
 
   OrderStatus.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       status = jsonMap['status'] != null ? jsonMap['status'] : '';
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       status = '';
-      print(e);
+      print('Error parsing data in OrderStatus.fromJSON $e \n $trace');
+
     }
   }
 }

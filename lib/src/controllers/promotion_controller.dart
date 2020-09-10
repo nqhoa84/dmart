@@ -5,19 +5,24 @@ import '../models/promotion.dart';
 class PromotionController extends ControllerMVC {
   List<Promotion> promotions = <Promotion>[];
 
-  PromotionController() {
-    listenForPromotions();
-  }
+  PromotionController();
 
   void listenForPromotions({String message}) async {
     final Stream<Promotion> stream = await getPromotions();
     promotions.clear();
     stream.listen((Promotion _slider) {
-      setState(() {
-        promotions.add(_slider);
-      });
+      if(_slider.isValid) {
+        setState(() {
+          promotions.add(_slider);
+        });
+      } else {
+        print('promotion $_slider is Invalid');
+      }
+
     }, onError: (a) {print(a);
-    }, onDone: () {});
+    }, onDone: () {
+      print('promotions.length ${promotions.length}');
+    });
   }
 
   Future<void> refreshPromotions() async {

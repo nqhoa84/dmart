@@ -8,7 +8,7 @@ import '../models/gallery.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart';
 
-Future<Stream<Gallery>> getGalleries(String idBrand) async {
+Future<Stream<Gallery>> getGalleries(int idBrand) async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =

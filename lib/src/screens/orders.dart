@@ -63,7 +63,7 @@ class _OrderScreenState extends StateMVC<OrderScreen> {
             onRefresh: _con.refreshOrders,
             child: CustomScrollView(
               slivers: [
-                createSilverAppBar(context, haveBackIcon: true, title: S.of(context).myOrders),
+                createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myOrders),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     ExpansionPanelList(

@@ -34,7 +34,7 @@ class ProductItemSearchResult extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: heroTag + product.id,
+              tag: heroTag + product.id.toString(),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
 //                child: CachedNetworkImage(

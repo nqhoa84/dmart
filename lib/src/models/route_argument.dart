@@ -1,5 +1,5 @@
 class RouteArgument {
-  String id;
+  int id;
   String heroTag;
   dynamic param;
 

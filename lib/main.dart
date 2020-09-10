@@ -58,7 +58,18 @@ class _DmartState extends State<Dmart> {
 //        backgroundColor: clrPri,
 //        dividerColor: clrPri,
         iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
-        buttonTheme: ButtonThemeData(minWidth: 20, textTheme: ButtonTextTheme.primary),
+        buttonTheme: ButtonThemeData(minWidth: 25, height: 25,
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            shape: StadiumBorder(),
+            buttonColor: DmConst.accentColor,
+            textTheme: ButtonTextTheme.primary
+        ),
+        textTheme: TextTheme(
+          button: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w300,
+              color: DmConst.homePromotionColor),
+        )
 //        textTheme: TextTheme(
 //          headline1: TextStyle(
 //              fontSize: 26.0,
@@ -244,7 +255,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //

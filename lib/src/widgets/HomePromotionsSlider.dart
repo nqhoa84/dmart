@@ -27,6 +27,12 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
   }
 
   @override
+  void initState() {
+    _con.listenForPromotions();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: AlignmentDirectional.bottomEnd,

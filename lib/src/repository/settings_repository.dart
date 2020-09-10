@@ -46,7 +46,7 @@ Future<Setting> initSettings() async {
   }
 //  try {
 //
-//  } catch (e) {
+//  } catch (e, trace) {
 //    print(CustomTrace(StackTrace.current, message: e).toString());
 //    return Setting.fromJSON({});
 //  }

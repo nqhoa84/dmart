@@ -1,9 +1,10 @@
+import '../../utils.dart';
 import '../models/store.dart';
 import '../models/product.dart';
 import '../models/user.dart';
+import 'i_name.dart';
 
-class Review {
-  String id;
+class Review extends IdObj{
   String review;
   String rate;
   User user;
@@ -13,16 +14,17 @@ class Review {
 
   Review.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       review = jsonMap['review'];
       rate = jsonMap['rate'].toString() ?? '0';
       user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       review = '';
       rate = '0';
       user = new User();
-      print(e);
+      print('Error parsing data in Review.fromJSON $e \n $trace');
+
     }
   }
 

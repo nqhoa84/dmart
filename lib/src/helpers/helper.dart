@@ -139,7 +139,8 @@ class Helper {
                 ],
               ),
       );
-    } catch (e) {
+    } catch (e, trace) {
+      print(trace);
       return Text('');
     }
   }

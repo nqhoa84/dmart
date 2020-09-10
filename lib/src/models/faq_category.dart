@@ -1,23 +1,24 @@
+import '../../utils.dart';
 import '../models/faq.dart';
+import 'i_name.dart';
 
-class FaqCategory {
-  String id;
-  String name;
+class FaqCategory extends IdNameObj{
   List<Faq> faqs;
 
   FaqCategory();
 
   FaqCategory.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       name = jsonMap['faqs'] != null ? jsonMap['name'].toString() : '';
       faqs =
           jsonMap['faqs'] != null ? List.from(jsonMap['faqs']).map((element) => Faq.fromJSON(element)).toList() : null;
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       name = '';
       faqs = [];
-      print(e);
+      print('Error parsing data in FaqCategory $e \n $trace');
+
     }
   }
 }

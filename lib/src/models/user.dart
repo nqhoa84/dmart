@@ -1,8 +1,8 @@
+import '../../utils.dart';
 import '../models/media.dart';
+import 'i_name.dart';
 
-class User {
-  String id;
-  String name;
+class User extends IdNameObj{
   String email;
   String password;
 //  String apiToken = 'acmdOkB9kdh0SuFaopN7TYoSWCCTlihqU9INjumwqGjdDgbUGY88zOhG6Xkm';
@@ -24,29 +24,31 @@ class User {
 
   User.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'] != null ? jsonMap['name'] : '';
-      email = jsonMap['email'] != null ? jsonMap['email'] : '';
-      apiToken = jsonMap['api_token'];
-      deviceToken = jsonMap['device_token'];
+      id = toInt(jsonMap['id']);
+      name = toStringVal(jsonMap['name']);
+      email = toStringVal(jsonMap['email']);
+      apiToken = toStringVal(jsonMap['api_token']);
+      deviceToken = toStringVal(jsonMap['device_token']);
       try {
-        phone = jsonMap['custom_fields']['phone']['view'];
-      } catch (e) {
+        phone = toStringVal(jsonMap['custom_fields']['phone']['view']);
+      } catch (e, trace) {
         phone = "";
       }
       try {
-        address = jsonMap['custom_fields']['address']['view'];
-      } catch (e) {
+        address = toStringVal(jsonMap['custom_fields']['address']['view']);
+      } catch (e, trace) {
         address = "";
       }
       try {
-        bio = jsonMap['custom_fields']['bio']['view'];
-      } catch (e) {
+        bio = toStringVal(jsonMap['custom_fields']['bio']['view']);
+      } catch (e, trace) {
         bio = "";
       }
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
-    } catch (e) {
-      print(e);
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+          ? Media.fromJSON(jsonMap['media'][0])
+          : new Media();
+    } catch (e, trace) {
+      print('Error parsing data in User.fromJSON $e \n $trace');
     }
   }
 

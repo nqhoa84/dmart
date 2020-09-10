@@ -8,10 +8,13 @@ import '../../src/models/product.dart';
 import '../../src/models/route_argument.dart';
 
 class ProductItemHigh extends StatelessWidget {
-  const ProductItemHigh({Key key, @required this.product, @required this.heroTag,
-  this.amountInCart = 0}) : super(key: key);
-  final Product product;
-  final String heroTag;
+  ProductItemHigh({Key key, @required Product product, @required String heroTag,
+  this.amountInCart = 0}) : super(key: key) {
+    this.product = product;
+    this.heroTag = '$heroTag' + '_H_${product.id}';
+  }
+  Product product;
+  String heroTag;
   final int amountInCart;
 
   @override
@@ -21,7 +24,7 @@ class ProductItemHigh extends StatelessWidget {
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
       onTap: () {
         Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(param: [this.product, this.heroTag], id: this.product.id));
+            arguments: new RouteArgument(param: [this.product, heroTag], id: this.product.id));
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
@@ -30,7 +33,7 @@ class ProductItemHigh extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: this.heroTag + product.id,
+              tag: heroTag,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
 //                child: CachedNetworkImage(

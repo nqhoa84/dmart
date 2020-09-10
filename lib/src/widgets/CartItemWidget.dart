@@ -29,7 +29,7 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(widget.cart.id),
+      key: Key('${widget.cart.id}'),
       background: Container(
         color: Colors.red,
         child: Align(

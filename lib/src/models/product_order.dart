@@ -1,8 +1,9 @@
+import '../../utils.dart';
 import '../models/option.dart';
 import '../models/product.dart';
+import 'i_name.dart';
 
-class ProductOrder {
-  String id;
+class ProductOrder extends IdObj{
   double price;
   double quantity;
   List<Option> options;
@@ -12,7 +13,7 @@ class ProductOrder {
 
   ProductOrder.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
       product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : [];
@@ -20,14 +21,15 @@ class ProductOrder {
       options = jsonMap['options'] != null
           ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
           : null;
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       price = 0.0;
       quantity = 0.0;
       product = new Product();
       dateTime = DateTime(0);
       options = [];
-      print(e);
+      print('Error parsing data in ProductOrder.fromJSON $e \n $trace');
+
     }
   }
 

@@ -11,7 +11,7 @@ import 'BrandsIconsCarouselLoadingWidget.dart';
 class BrandsIconsCarouselWidget extends StatefulWidget {
   List<Brand> brandsList;
   String heroTag;
-  ValueChanged<String> onChanged;
+  ValueChanged<int> onChanged;
 
   BrandsIconsCarouselWidget({Key key, this.brandsList, this.heroTag, this.onChanged}) : super(key: key);
 
@@ -52,7 +52,7 @@ class _BrandsIconsCarouselWidgetState extends StateMVC<BrandsIconsCarouselWidget
                             heroTag: widget.heroTag+UniqueKey().toString(),
                             marginLeft: _marginLeft,
                             brand: widget.brandsList.elementAt(index),
-                            onPressed: (String id) {
+                            onPressed: (int id) {
                               setState(() {
                                 _con.selectBrandById(widget.brandsList,id);
                                 widget.onChanged(id);

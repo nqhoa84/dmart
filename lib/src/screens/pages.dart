@@ -1,20 +1,14 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/generated/l10n.dart';
-import 'package:dmart/src/models/user.dart';
-import 'package:dmart/src/repository/user_repository.dart';
-import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
-import 'package:dmart/src/widgets/BottomRightMenu.dart';
+import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/PromotionGroups.dart';
 import 'package:flutter/material.dart';
+
 import '../../buidUI.dart';
-import '../../constant.dart';
 import '../Widgets/DrawerWidget.dart';
-import '../widgets/FilterWidget.dart';
 import '../models/route_argument.dart';
 import '../screens/home.dart';
-import '../screens/notifications.dart';
-import '../../src/helpers/ui_icons.dart';
+import '../widgets/FilterWidget.dart';
 
 class PagesScreen extends StatefulWidget {
   dynamic currentTab;
@@ -73,11 +67,11 @@ class _PagesScreenState extends State<PagesScreen> {
           widget.currentPage = PromotionGroups(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 3:
-          widget.currentPage = NotificationsScreen(parentScaffoldKey: widget.scaffoldKey);
+//          widget.currentPage = NotificationsScreen(parentScaffoldKey: widget.scaffoldKey);
           break;
 
         case 4:
-          widget.currentPage = BottomRightMenu(parentScaffoldKey: widget.scaffoldKey);
+//          widget.currentPage = BottomRightMenMenu();
           break;
       }
     });
@@ -89,90 +83,27 @@ class _PagesScreenState extends State<PagesScreen> {
       onWillPop: () async => false,
       child: Scaffold(
         key: widget.scaffoldKey,
-        appBar: createAppBar(context, widget.scaffoldKey),
+//        appBar: createAppBar(context, widget.scaffoldKey),
+//        appBar: DmAppBar(),
         drawer: DrawerWidget(),
-
         endDrawer: FilterWidget(onFilter: (filter) {
           Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
         }),
-        body: widget.currentPage,
-//        bottomNavigationBar: _bottomBar(),
         bottomNavigationBar: DmBottomNavigationBar(currentIndex: widget.currentTab, onTap: this._selectTab),
+        body: SafeArea(
+          child: CustomScrollView(slivers: <Widget>[
+            createSliverTopBar(context),
+            createSliverSearch(context),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                widget.currentPage,
+              ]),
+            )
+          ]),
+        ),
       ),
     );
   }
-
-  Widget _createHeader(String title) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Card(
-              margin: EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              color: DmConst.homePromotionColor,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('$title', textAlign: TextAlign.right),
-              )),
-        ),
-      ],
-    );
-  }
-
-  Widget _bottomBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Theme.of(context).accentColor,
-      selectedFontSize: 0,
-      unselectedFontSize: 0,
-      iconSize: 22,
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      selectedIconTheme: IconThemeData(size: 25),
-      unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
-      currentIndex: widget.currentTab,
-      onTap: (int i) {
-        this._selectTab(i);
-      },
-      // this will be set when a new tab is tapped
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(UiIcons.bell),
-          title: new Container(height: 0.0),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(UiIcons.user_1),
-          title: new Container(height: 0.0),
-        ),
-        BottomNavigationBarItem(
-            title: new Container(height: 5.0),
-            icon: Container(
-              width: 45,
-              height: 45,
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 40, offset: Offset(0, 15)),
-                  BoxShadow(color: Theme.of(context).accentColor.withOpacity(0.4), blurRadius: 13, offset: Offset(0, 3))
-                ],
-              ),
-              child: new Icon(UiIcons.home, color: Theme.of(context).primaryColor),
-            )),
-        BottomNavigationBarItem(
-          icon: new Icon(UiIcons.inbox),
-          title: new Container(height: 0.0),
-        ),
-        BottomNavigationBarItem(
-          icon: new Icon(UiIcons.heart),
-          title: new Container(height: 0.0),
-        ),
-      ],
-    );
-  }
 }
+
+

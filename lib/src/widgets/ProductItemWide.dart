@@ -2,44 +2,63 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../constant.dart';
 import '../helpers/helper.dart';
 import '../models/product.dart';
 import '../models/route_argument.dart';
+import '../../src/repository/user_repository.dart';
 
 class ProductItemWide extends StatefulWidget {
-  final String heroTag;
-  final Product product;
+  String heroTag;
+  Product product;
   int amountInCart;
   bool isFavorite;
   bool showRemoveIcon;
   double _removeIconSize = 0;
-  Function(String) onPressedOnRemoveIcon;
+  Function(int) onPressedOnRemoveIcon;
 
   ProductItemWide(
       {Key key,
-      this.product,
-      this.heroTag,
-      this.amountInCart = 0,
-      this.isFavorite = false,
+      @required Product product,
+      @required String heroTag,
       this.showRemoveIcon = false,
       this.onPressedOnRemoveIcon})
       : super(key: key) {
     if (showRemoveIcon) _removeIconSize = 25;
+
+    this.product = product;
+    this.heroTag = '$heroTag' + '_W_${product.id}';
+
+    this.amountInCart = DmState.countQualityInCarts(product.id);
+    this.isFavorite = DmState.isFavorite(productId: product.id);
+
+//    print('${product.id} is in cart with quality = ${this.amountInCart}');
   }
 
   @override
   _ProductItemWideState createState() => _ProductItemWideState();
 }
 
-class _ProductItemWideState extends State<ProductItemWide> {
+class _ProductItemWideState extends StateMVC<ProductItemWide> {
   static const double _width = 550.0, _height = 192.0;
   static const double _tagSize = 50.0 / 550 * _width,
       _photoWid = 200.0 / 550 * _width,
       _icFavWSize = 34.0 / 550 * _width;
+  ProductController _con;
+
+  _ProductItemWideState() : super(ProductController()) {
+    _con = controller;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +68,8 @@ class _ProductItemWideState extends State<ProductItemWide> {
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
         Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(id: widget.product.id, param: [widget.product, widget.heroTag]));
+            arguments: new RouteArgument(id: widget.product.id,
+                param: [widget.product, widget.heroTag + widget.product.id.toString()]));
       },
       child: Stack(
         children: <Widget>[
@@ -64,7 +84,7 @@ class _ProductItemWideState extends State<ProductItemWide> {
                   child: Stack(
                     children: <Widget>[
                       Hero(
-                        tag: widget.heroTag + widget.product.id,
+                        tag: widget.heroTag + '${widget.product.id}',
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
                           child: ClipRRect(
@@ -133,17 +153,24 @@ class _ProductItemWideState extends State<ProductItemWide> {
               ],
             ),
           ),
-          widget.showRemoveIcon ? Align(
-              alignment: Alignment.topRight,
-              child: InkWell(child: Container( padding: EdgeInsets.all(0),
-                  color: Theme.of(context).accentColor,
-                  child: Icon(Icons.close, size: widget._removeIconSize, color: Colors.white,)),
-                onTap: () {
-                  if(widget.onPressedOnRemoveIcon != null) {
-                    widget.onPressedOnRemoveIcon(widget.product?.id);
-                  }
-                },
-              ))
+          widget.showRemoveIcon
+              ? Align(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                    child: Container(
+                        padding: EdgeInsets.all(0),
+                        color: Theme.of(context).accentColor,
+                        child: Icon(
+                          Icons.close,
+                          size: widget._removeIconSize,
+                          color: Colors.white,
+                        )),
+                    onTap: () {
+                      if (widget.onPressedOnRemoveIcon != null) {
+                        widget.onPressedOnRemoveIcon(widget.product?.id);
+                      }
+                    },
+                  ))
               : SizedBox(width: 0)
 //          _createSaleTag(context),
 //          _createFavIcon(context),
@@ -194,38 +221,43 @@ class _ProductItemWideState extends State<ProductItemWide> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton(
-            onPressed: () {
-//                _con.decrementQuantity();
-              setState(() {
-                DmState.amountInCart.value--;
-              });
-            },
-//            iconSize: 30,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.remove_circle_outline),
-//              color: Theme.of(context).hintColor,
-          ),
-          Text('${widget.amountInCart}'),
-          IconButton(
-            onPressed: () {
-//                _con.incrementQuantity();
+          InkWell(
+            onTap: () {
               DmState.amountInCart.value++;
             },
-//            iconSize: 30,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.add_circle_outline),
-//              color: Theme.of(context).hintColor,
+            child: Container(
+                decoration: new BoxDecoration(
+                  border: Border.all(color: DmConst.accentColor, width: 2),
+                  shape: BoxShape.rectangle,
+                ),
+                child: Center(child: Icon(Icons.remove))),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text('${widget.amountInCart}'),
+          ),
+          InkWell(
+            onTap: () {
+              DmState.amountInCart.value++;
+            },
+            child: Container(
+                    decoration: new BoxDecoration(
+                      border: Border.all(color: DmConst.accentColor, width: 2),
+                    shape: BoxShape.rectangle,
+                    ),
+                child: Center(child: Icon(Icons.add))),
           )
         ],
       );
     } else {
-      return FlatButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: DmConst.accentColor)),
-        child: Text(S.of(context).addToCart),
-        color: DmConst.accentColor,
-        onPressed: () {},
+      return ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 80),
+        child: FlatButton(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Text(S.of(context).add),
+          color: DmConst.accentColor,
+          onPressed: onPressedAdd2Cart,
+        ),
       );
     }
   }
@@ -248,6 +280,18 @@ class _ProductItemWideState extends State<ProductItemWide> {
       );
     } else {
       return Text('${widget.product.getDisplayOriginalPrice}');
+    }
+  }
+
+  void onPressedAdd2Cart() {
+    if (currentUser.value.isLogin) {
+      _con.addToCart(_con.product);
+      DmState.amountInCart.value ++;
+      setState(() {
+        widget.amountInCart++;
+      });
+    } else {
+      Navigator.of(context).pushNamed("/Login");
     }
   }
 }

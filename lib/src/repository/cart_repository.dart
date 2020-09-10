@@ -9,7 +9,7 @@ import '../models/cart.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Cart>> getCart() async {
+Future<Stream<Cart>> getCarts() async {
   User _user = userRepo.currentUser.value;
   if (_user.isLogin == false) {
     return new Stream.value(null);
@@ -73,8 +73,9 @@ Future<Cart> addCart(Cart cart, bool reset) async {
     print('addCart result\n${response.body}');
     decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
     print('Add cart return : $decodedJSON');
-  } on FormatException catch (e) {
+  } on FormatException catch (e, trace) {
     print(e);
+    print(trace);
   }
   return Cart.fromJSON(decodedJSON);
 }

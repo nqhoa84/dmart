@@ -1,3 +1,4 @@
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -23,7 +24,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     super.initState();
 //    loadData();
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+      //Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+      RouteGenerator.gotoHome(context);
     });
 
   }

@@ -43,40 +43,41 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
                 )
               )
             : SizedBox(),
-        Container(
-          alignment: AlignmentDirectional.center,
-          padding: EdgeInsets.symmetric(horizontal: 30),
-          height: config.App(context).appHeight(70),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Opacity(
-                opacity: 0.4,
-                child: Text(
-                  S.of(context).yourCartEmpty,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontWeight: FontWeight.w300)),
+        Expanded(
+          child: Container(
+            alignment: AlignmentDirectional.center,
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Opacity(
+                  opacity: 0.4,
+                  child: Text(
+                    S.of(context).yourCartEmpty,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontWeight: FontWeight.w300)),
+                  ),
                 ),
-              ),
-              !loading
-                  ? FlatButton(
-                      onPressed: () {
-                        RouteGenerator.gotoHome(context, replaceOld: true);
-                      },
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-                      color: Theme.of(context).accentColor.withOpacity(1),
-                      shape: StadiumBorder(),
-                      child: Text(
-                        S.of(context).home,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-                      ),
-                    )
-                  : SizedBox(),
-            ],
+                !loading
+                    ? FlatButton(
+                        onPressed: () {
+                          RouteGenerator.gotoHome(context, replaceOld: true);
+                        },
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                        color: Theme.of(context).accentColor.withOpacity(1),
+                        shape: StadiumBorder(),
+                        child: Text(
+                          S.of(context).home,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
+                        ),
+                      )
+                    : SizedBox(),
+              ],
+            ),
           ),
         ),
       ],

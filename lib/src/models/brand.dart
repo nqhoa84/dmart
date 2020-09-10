@@ -1,9 +1,9 @@
+import 'package:dmart/src/models/i_name.dart';
+import 'package:dmart/utils.dart';
+
 import '../models/media.dart';
 
-class Brand {
-  String id;
-  String name;
-  Media image;
+class Brand extends SimpleObj{
   String description;
   bool selected=false;
 
@@ -11,18 +11,18 @@ class Brand {
 
   Brand.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'];
+      id = toInt(jsonMap['id']);
+      name = toStringVal(jsonMap['name']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
-      description = jsonMap['description'];
-    } catch (e) {
-      id = '';
+      description = toStringVal(jsonMap['description']);
+    } catch (e, trace) {
+      id = -1;
       name = '';
       image = new Media();
       description = '';
-      print(e);
+      print('Error parsing data in Brand $e \n $trace');
     }
-  }
+  } 
 }

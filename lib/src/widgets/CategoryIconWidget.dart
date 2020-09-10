@@ -11,7 +11,7 @@ class CategoryIconWidget extends StatefulWidget {
   Category category;
   String heroTag;
   double marginLeft;
-  ValueChanged<String> onPressed;
+  ValueChanged<int> onPressed;
 
   CategoryIconWidget({Key key, this.category, this.heroTag, this.marginLeft, this.onPressed}) : super(key: key);
 
@@ -50,7 +50,7 @@ class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget> with SingleT
         child: Row(
           children: <Widget>[
             Hero(
-              tag: widget.heroTag + widget.category.id,
+              tag: widget.heroTag + '${widget.category.id}',
               child: widget.category.image.url.toLowerCase().endsWith('.svg')
                   ? Container(
                       height: 32,

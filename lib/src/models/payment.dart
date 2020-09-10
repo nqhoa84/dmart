@@ -1,5 +1,7 @@
-class Payment {
-  String id;
+import '../../utils.dart';
+import 'i_name.dart';
+
+class Payment extends IdObj{
   String status;
   String method;
 
@@ -9,14 +11,15 @@ class Payment {
 
   Payment.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       status = jsonMap['status'] ?? '';
       method = jsonMap['method'] ?? '';
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       status = '';
       method = '';
-      print(e);
+      print('Error parsing data in Payment.fromJSON $e \n $trace');
+
     }
   }
 

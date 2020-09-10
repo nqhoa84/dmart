@@ -1,14 +1,21 @@
+import 'package:dmart/src/screens/bottom_right_menu.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/screens/delivery_to.dart';
 import 'package:dmart/src/screens/error.dart';
+import 'package:dmart/src/screens/home2.dart';
+import 'package:dmart/src/screens/new_arrival.dart';
+import 'package:dmart/src/screens/notifications.dart';
 import 'package:dmart/src/screens/orders.dart';
 import 'package:dmart/src/screens/place_order.dart';
+import 'package:dmart/src/screens/promotions.dart';
 import 'package:flutter/material.dart';
+
 import 'src/models/route_argument.dart';
+import 'src/screens/best_sale.dart';
 import 'src/screens/brand.dart';
 import 'src/screens/brands.dart';
 import 'src/screens/cart.dart';
-import 'src/screens/categories_unused.dart';
+import 'src/screens/categories.dart';
 import 'src/screens/category.dart';
 import 'src/screens/checkout.dart';
 import 'src/screens/debug.dart';
@@ -42,26 +49,42 @@ class RouteGenerator {
   }
 
   static void gotoHome(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0)
-        : Navigator.of(context).pushNamed('/Pages', arguments: 0);
+    Navigator.of(context).pushReplacementNamed('/Home');
   }
   static void gotoCategories(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+    Navigator.of(context).pushReplacementNamed('/Categories');
   }
   static void gotoPromotions(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2)
-        : Navigator.of(context).pushNamed('/Pages', arguments: 2);
+//    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2)
+//        : Navigator.of(context).pushNamed('/Pages', arguments: 2);
+    Navigator.of(context).pushReplacementNamed('/Promotions');
   }
   static void gotoNotifications(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+    Navigator.of(context).pushReplacementNamed('/Notifications');
   }
   static void gotoMenu(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 4);
+//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 4);
+    Navigator.of(context).pushReplacementNamed('/BottomRightMenu');
   }
+
+  static void gotoBestSale(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/BestSale')
+        : Navigator.of(context).pushNamed('/BestSale');
+  }
+
+  static void gotoNewArrivals(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/NewArrivals')
+        : Navigator.of(context).pushNamed('/NewArrivals');
+  }
+
   static void gotoMyFavorites(BuildContext context, {bool replaceOld = false}) {
     replaceOld ? Navigator.of(context).pushReplacementNamed('/MyFavorites')
     : Navigator.of(context).pushNamed('/MyFavorites');
   }
+
+
   static void gotoMyOrders(BuildContext context, {bool replaceOld = false}) {
     replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders') : Navigator.of(context).pushNamed('/MyOrders');
   }
@@ -111,8 +134,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => BrandsWidget());
       case '/Category':
         return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
-      case '/Categories': //todo unused
-        return MaterialPageRoute(builder: (_) => CategoriesWidget());
+
 
       case '/Cart':
         return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
@@ -148,8 +170,6 @@ class RouteGenerator {
       case '/Settings':
         return MaterialPageRoute(builder: (_) => SettingsWidget());
 
-      case '/Special4U':
-        return MaterialPageRoute(builder: (_) => Special4UScreen());
       case '/MyFavorites':
         return MaterialPageRoute(builder: (_) => FavoritesScreen());
       case '/ContactUs':
@@ -159,6 +179,25 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => OrderScreen());
       case '/Promotion':
         return MaterialPageRoute(builder: (_) => PromotionScreen(routeArgument: args as RouteArgument));
+
+      case '/Home':
+        return MaterialPageRoute(builder: (_) => Home2Screen());
+      case '/Categories':
+        return MaterialPageRoute(builder: (_) => CategoriesScreen());
+      case '/Promotions':
+        return MaterialPageRoute(builder: (_) => PromotionsScreen());
+      case '/Notifications':
+        return MaterialPageRoute(builder: (_) => NotificationsScreen());
+      case '/BottomRightMenu':
+        return MaterialPageRoute(builder: (_) => BottomRightMenuScreen());
+      case '/BestSale':
+        return MaterialPageRoute(builder: (_) => BestSaleScreen());
+      case '/NewArrivals':
+        return MaterialPageRoute(builder: (_) => NewArrivalsScreen());
+      case '/Special4U':
+        return MaterialPageRoute(builder: (_) => Special4UScreen());
+
+
 
       default:
         // If there is no such named route in the switch statement, e.g. /third

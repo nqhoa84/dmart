@@ -14,8 +14,9 @@ class Filter {
       fields = jsonMap['fields'] != null && (jsonMap['fields'] as List).length > 0
           ? List.from(jsonMap['fields']).map((element) => Field.fromJSON(element)).toList()
           : [];
-    } catch (e) {
-      print(e);
+    } catch (e, trace) {
+      print('Error parsing data in Filter $e \n $trace');
+
     }
   }
 

@@ -32,7 +32,7 @@ class MapsUtil {
       List<LatLng> steps;
       try {
         steps = parseSteps(_decoder.convert(res)["routes"][0]["legs"][0]["steps"]);
-      } catch (e) {
+      } catch (e, trace) {
         // throw new Exception(e);
       }
 
@@ -55,8 +55,9 @@ class MapsUtil {
       var response = jsonDecode((await http.get(endPoint, headers: await LocationUtils.getAppHeaders())).body);
 
       return response['results'][0]['formatted_address'];
-    } catch (e) {
+    } catch (e, trace) {
       print(e);
+      print(trace);
       return 'S.of(context).unknown' + '4';
     }
   }

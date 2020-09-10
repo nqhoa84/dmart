@@ -27,7 +27,7 @@ class DeliveryToScreen extends StatefulWidget {
   final int countItem = 10;
   final double grandTotal = 100.0;
 
-  DeliveryToScreen({Key key, this.routeArgument}) : super(key: key) {}
+  DeliveryToScreen({Key key, this.routeArgument}) : super(key: key);
 
   @override
   _DeliveryToScreenState createState() => _DeliveryToScreenState();

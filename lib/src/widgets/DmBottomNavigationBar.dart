@@ -8,7 +8,9 @@ class DmBottomNavigationBar extends StatelessWidget {
   int currentIndex;
   Function(int i) onTap;
 
-  DmBottomNavigationBar({this.currentIndex, this.onTap, Key key}) : super(key: key);
+  DmBottomNavigationBar({this.currentIndex, this.onTap, Key key}) : super(key: key) {
+    DmState.bottomBarSelectedIndex = currentIndex;
+  }
 
   void _defaultOnTap(int selectedIndex, BuildContext context) {
     if(selectedIndex == DmState.bottomBarSelectedIndex) {

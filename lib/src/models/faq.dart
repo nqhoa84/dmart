@@ -1,5 +1,7 @@
-class Faq {
-  String id;
+import '../../utils.dart';
+import 'i_name.dart';
+
+class Faq extends IdObj{
   String question;
   String answer;
 
@@ -7,14 +9,15 @@ class Faq {
 
   Faq.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       question = jsonMap['question'] != null ? jsonMap['question'] : '';
       answer = jsonMap['answer'] != null ? jsonMap['answer'] : '';
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       question = '';
       answer = '';
-      print(e);
+      print('Error parsing data in Faq $e \n $trace');
+
     }
   }
 }

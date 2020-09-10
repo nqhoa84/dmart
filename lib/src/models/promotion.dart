@@ -1,27 +1,28 @@
-import '../../src/models/media.dart';
+import 'package:dmart/utils.dart';
 
-class Promotion {
-  String id;
-  Media image;
+import '../../src/models/media.dart';
+import 'i_name.dart';
+
+class Promotion extends SimpleObj{
   String description;
-  String name;
 
   Promotion();
 
   Promotion.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
-      name = jsonMap['name'];
-      description=jsonMap['description'];
+      id = toInt(jsonMap['id']);
+      name = toStringVal(jsonMap['name']);
+      description=toStringVal(jsonMap['description']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       name = '';
       description = '';
       image = new Media();
-      print(e);
+      print('Error parsing data in Promotion.fromJSON $e \n $trace');
+
     }
   }
 }

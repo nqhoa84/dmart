@@ -3,7 +3,7 @@ import 'package:dmart/src/models/product.dart';
 import 'package:flutter/material.dart';
 
 import 'ProductItemWide.dart';
-import 'ProductsGridLoadingWidget.dart';
+import 'ProductsGridViewLoading.dart';
 
 class DmRelatedProductsWidget extends StatelessWidget {
   List<Product> productsList;
@@ -19,7 +19,7 @@ class DmRelatedProductsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return productsList == null || productsList.isEmpty ?
-    ProductsGridLoadingWidget():
+    ProductsGridViewLoading():
     Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         height: width / 3 * 2,

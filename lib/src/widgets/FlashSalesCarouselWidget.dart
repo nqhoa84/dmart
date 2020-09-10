@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'ProductItemWide.dart';
 import 'ProductsCarouselLoaderWidget.dart';
-import 'ProductsGridLoadingWidget.dart';
+import 'ProductsGridViewLoading.dart';
 
 class FlashSalesCarouselWidget extends StatelessWidget {
   List<Product> productsList;

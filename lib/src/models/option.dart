@@ -1,7 +1,8 @@
+import '../../utils.dart';
 import '../models/media.dart';
+import 'i_name.dart';
 
-class Option {
-  String id;
+class Option extends IdObj{
   String optionGroupId;
   String name;
   double price;
@@ -13,22 +14,23 @@ class Option {
 
   Option.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       optionGroupId = jsonMap['option_group_id'] != null ? jsonMap['option_group_id'].toString() : '0';
       name = jsonMap['name'].toString();
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0;
       description = jsonMap['description'];
       checked = false;
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       optionGroupId = '0';
       name = '';
       price = 0.0;
       description = '';
       checked = false;
       image = new Media();
-      print(e);
+      print('Error parsing data in Option.fromJSON $e \n $trace');
+
     }
   }
 

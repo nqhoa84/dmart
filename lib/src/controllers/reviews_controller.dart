@@ -25,7 +25,7 @@ class ReviewsController extends ControllerMVC {
     this.productReview = new Review.init("0");
   }
 
-  void listenForOrder({String orderId, String message}) async {
+  void listenForOrder({int orderId, String message}) async {
     final Stream<Order> stream = await getOrder(orderId);
     stream.listen((Order _order) {
       setState(() {

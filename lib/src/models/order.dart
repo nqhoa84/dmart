@@ -1,11 +1,12 @@
+import '../../utils.dart';
 import '../models/address.dart';
 import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../models/product_order.dart';
 import '../models/user.dart';
+import 'i_name.dart';
 
-class Order {
-  String id;
+class Order extends IdObj {
   List<ProductOrder> productOrders;
   OrderStatus orderStatus;
   double tax;
@@ -16,11 +17,11 @@ class Order {
   Payment payment;
   Address deliveryAddress;
 
-  Order({this.id, this.orderStatus});
+  Order({int id, this.orderStatus}) : super(id: id);
 
   Order.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       tax = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
       deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
       hint = jsonMap['hint'].toString();
@@ -33,8 +34,8 @@ class Order {
           ? List.from(jsonMap['product_orders']).map((element) => ProductOrder.fromJSON(element)).toList()
           : [];
       payment = jsonMap['payment'] != null ? Payment.fromJSON(jsonMap['payment']) : new Payment.init();
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       tax = 0.0;
       deliveryFee = 0.0;
       hint = '';
@@ -44,7 +45,8 @@ class Order {
       deliveryAddress = new Address();
       productOrders = [];
       payment =  new Payment.init();
-      print(e);
+      print('Error parsing data in Order.fromJSON $e \n $trace');
+
     }
   }
 

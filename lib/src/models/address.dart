@@ -1,34 +1,36 @@
 //import 'package:location/location.dart';
 
-import '../../generated/l10n.dart';
+import 'package:dmart/src/models/i_name.dart';
 
-class Address {
-  String id;
+import '../../generated/l10n.dart';
+import '../../utils.dart';
+
+class Address extends IdObj{
   String description;
   String address;
   double latitude;
   double longitude;
   bool isDefault;
-  String userId;
+  int userId;
 
   Address();
 
   Address.fromJSON(Map<String, dynamic> jsonMap) {
     try {
-      id = jsonMap['id'].toString();
+      id = toInt(jsonMap['id']);
       description = jsonMap['description'] != null ? jsonMap['description'].toString() : null;
       address = jsonMap['address'] != null ? jsonMap['address'] : 'S.of(context).unknown';
       latitude = jsonMap['latitude'] != null ? jsonMap['latitude'] : null;
       longitude = jsonMap['longitude'] != null ? jsonMap['longitude'] : null;
       isDefault = jsonMap['is_default'] ?? false;
-    } catch (e) {
-      id = '';
+    } catch (e, trace) {
+      id = -1;
       description = '';
       address = 'S.current.unknown';
       latitude = null;
       longitude = null;
       isDefault = false;
-      print(e);
+      print('Error parsing data in Address $e \n $trace');
     }
   }
 

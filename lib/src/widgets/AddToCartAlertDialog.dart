@@ -51,7 +51,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Hero(
-                    tag: 'new_store' + this.newProduct?.store?.id,
+                    tag: 'new_store' + this.newProduct?.store?.id.toString(),
                     child: Container(
                       height: 60,
                       width: 60,
@@ -111,7 +111,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Hero(
-                    tag: 'old_store' + this.oldProduct.store.id,
+                    tag: 'old_store' + this.oldProduct.store.id.toString(),
                     child: Container(
                       height: 60,
                       width: 60,

@@ -1,6 +1,10 @@
 //import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dmart/buidUI.dart';
+import 'package:dmart/src/models/media.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../../src/helpers/helper.dart';
@@ -16,7 +20,6 @@ import '../../src/widgets/ProductDetailsTabWidget.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
 import '../../src/widgets/ShoppingCartButton.dart';
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 class ProductDetailScreen extends StatefulWidget {
   RouteArgument routeArgument;
@@ -43,6 +46,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   @override
   void initState() {
     _con.listenForProduct(productId: widget.routeArgument.id);
+    //TODO check need to get favorite or related
     _con.listenForFavorite(productId: widget.routeArgument.id);
     _con.listenForCart();
     _tabController = TabController(length: 3, initialIndex: _tabIndex, vsync: this);
@@ -150,7 +154,8 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                                   iconSize: 30,
                                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.remove_circle_outline)),
-                              Text(_con.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
+                              //TODO
+                              Text('TODO', style: Theme.of(context).textTheme.subtitle1),
                               IconButton(
                                   onPressed: () {
                                     _con.incrementQuantity();
@@ -180,9 +185,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
           ),
         ),
       ),
-      body: _con.product == null
-          ? CircularLoadingWidget(height: 500)
-          : CustomScrollView(slivers: <Widget>[_createImageSpace(context), _createInfoSpace(context)]),
+      body: SafeArea(child: _buildContent(context)),
     );
   }
 
@@ -192,66 +195,37 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
       automaticallyImplyLeading: false,
       leading: new IconButton(
         color: DmConst.accentColor.withOpacity(0.6),
-        icon: new Icon(UiIcons.return_icon, color: Colors.white),
+        icon: Container(
+            padding: EdgeInsets.all(8),
+            decoration: new BoxDecoration(
+              color: Theme.of(context).accentColor.withOpacity(0.3),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(UiIcons.return_icon, color: Colors.white)),
         onPressed: () => Navigator.of(context).pop(),
       ),
       actions: <Widget>[
-        _con.loadCart
-            ? Container(
-                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                child: RefreshProgressIndicator(),
-              )
-            : Container(width: 50, height: 40, padding: EdgeInsets.only(right: 10), child: ShoppingCartButton()),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+              0, DmConst.masterHorizontalPad / 2, DmConst.masterHorizontalPad, DmConst.masterHorizontalPad / 2),
+          child: ShoppingCartButton(),
+        ),
       ],
 //                backgroundColor: Theme.of(context).primaryColor,
-      expandedHeight: 350,
+      expandedHeight: MediaQuery.of(context).size.width,
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
-        background: GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return ProductPhotoGalleryScreen(heroTag: widget._heroTag, image: _con.product.image.thumb);
-            }));
-          },
-          child: Hero(
-            tag: widget._heroTag,
-            child: Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                  width: double.infinity,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      child: createNetworkImage(url: _con.product.image.thumb)),
-                ),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-                    Theme.of(context).primaryColor,
-                    Colors.white.withOpacity(0),
-                    Colors.white.withOpacity(0),
-                    Theme.of(context).scaffoldBackgroundColor
-                  ], stops: [
-                    0,
-                    0.4,
-                    0.6,
-                    1
-                  ])),
-                ),
-              ],
-            ),
-          ),
-        ),
+        background: _buildCarouselImages(context),
       ),
       bottom: TabBar(
           controller: _tabController,
           indicatorSize: TabBarIndicatorSize.label,
           labelPadding: EdgeInsets.symmetric(horizontal: 10),
           unselectedLabelColor: DmConst.colorFavorite,
-          labelColor: DmConst.colorFavorite,
+          unselectedLabelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.colorFavorite),
+//          labelColor: Colors.white,
+          labelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
           indicator:
               BoxDecoration(borderRadius: BorderRadius.circular(20), color: DmConst.accentColor.withOpacity(0.6)),
           tabs: [
@@ -435,6 +409,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
             ],
           ),
         ),
+
         Offstage(
           offstage: 2 != _tabIndex,
           child: Column(
@@ -465,13 +440,75 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
       ]),
     );
   }
+
+  void _onTapOnPhoto(Media media) {
+    print('-------tap on image ${media?.id}');
+    if(media == null) return;
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return ProductPhotoGalleryScreen(
+        heroTag: 'img_media_${media.id}',
+        image: media.url,
+      );
+    }));
+  }
+
+//  double _expandedHeight =
+  Widget _buildCarouselImages(BuildContext context) {
+    if (_con.product.medias == null || _con.product.medias.isEmpty) return Container();
+    return CarouselSlider(
+      options: CarouselOptions(
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 4),
+        aspectRatio: 1 / 1,
+        viewportFraction: 1.0,
+      ),
+      items: _con.product.medias.map((item) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+                child: Stack(
+              children: <Widget>[
+                //display slider.image
+                InkWell(
+                  onTap: () => _onTapOnPhoto(item),
+                  child: Container(
+                    height: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: NetworkImage(item.url), fit: BoxFit.cover),
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 4), blurRadius: 9)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ));
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    return _con.product == null
+        ? CircularLoadingWidget(height: 500)
+        : CustomScrollView(
+            slivers: <Widget>[
+              _createImageSpace(context),
+              _createInfoSpace(context),
+            ],
+          );
+  }
 }
 
 class ProductPhotoGalleryScreen extends StatefulWidget {
+//  final List<Media> medias;
   final String image;
   final String heroTag;
 
-  const ProductPhotoGalleryScreen({Key key, this.image, this.heroTag}) : super(key: key);
+  const ProductPhotoGalleryScreen({Key key, @required this.image, @required this.heroTag}) : super(key: key);
 
   @override
   _ProductPhotoGalleryScreenState createState() => _ProductPhotoGalleryScreenState();
@@ -481,27 +518,48 @@ class _ProductPhotoGalleryScreenState extends State<ProductPhotoGalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: DmConst.accentColor.withOpacity(0.3),
-//        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-            icon: Icon(UiIcons.return_icon)),
-        title: Image.asset('assets/img/H_Logo_Dmart.png', width: DmConst.appBarHeight* 0.7, fit: BoxFit.contain),
-        centerTitle: true,
-      ),
-        body: Center(
-      child: GestureDetector(
-        child: Hero(
-            tag: widget.heroTag,
-            child: PhotoView(
+        appBar: AppBar(
+          backgroundColor: DmConst.accentColor.withOpacity(0.3),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(UiIcons.return_icon)),
+          title: Image.asset(DmConst.assetImgLogo, width: DmConst.appBarHeight * 0.7, fit: BoxFit.contain),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: [
+            Center(
+              child: Container(
+                height: 150,
+                width: 150,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  colorFilter: ColorFilter.mode(Theme.of(context).scaffoldBackgroundColor, BlendMode.hue),
+                  image: AssetImage(DmConst.assetImgLogo),
+                )),
+              ),
+            ),
+            PhotoView(
               enableRotation: true,
-//                  imageProvider: CachedNetworkImageProvider(widget.image),
-                imageProvider: NetworkImage(widget.image),
-            )),
-      ),
-    ));
+              imageProvider: NetworkImage(widget.image),
+                heroAttributes: PhotoViewHeroAttributes(
+                  tag: '${widget.heroTag}'
+                )
+            )
+//            _buildGallery(context),
+//            _buildContent(context),
+          ],
+        ));
   }
+
+}
+
+class GalleryItem {
+  GalleryItem({this.id, this.resource, this.isSvg = false});
+
+  final String id;
+  final String resource;
+  final bool isSvg;
 }

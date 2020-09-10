@@ -52,7 +52,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
-            new ShoppingCartButton(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+            new ShoppingCartButton(),
           ],
         ),
         body: _con.order == null || _con.orderStatus.isEmpty
@@ -96,7 +96,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                                   return SizedBox(height: 0);
                                 },
                                 steps: _con.getTrackingSteps(context),
-                                currentStep: int.tryParse(this._con.order.orderStatus.id) - 1,
+                                currentStep: this._con.order.orderStatus.id - 1,
                               ),
                             ),
                           ),

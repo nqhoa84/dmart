@@ -1,7 +1,12 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/category.dart';
+import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:dmart/src/widgets/DrawerWidget.dart';
+import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsByCategory.dart';
+import 'package:dmart/src/widgets/ProductsGridView.dart';
+import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -14,6 +19,7 @@ import '../widgets/FavoriteGridItemWidget.dart';
 import '../widgets/FavoriteListItemWidget.dart';
 import '../widgets/PermissionDenied.dart';
 import '../widgets/SearchBar.dart';
+import 'abs_product_mvc.dart';
 
 class Special4UScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -24,172 +30,108 @@ class Special4UScreen extends StatefulWidget {
   _Special4UScreenState createState() => _Special4UScreenState();
 }
 
-class _Special4UScreenState extends StateMVC<Special4UScreen> {
-  String layout = 'grid';
+class _Special4UScreenState extends ProductStateMVC<Special4UScreen> {
+  _Special4UScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
-  ProductController _con;
-
-  _Special4UScreenState() : super(ProductController()) {
-    _con = controller;
-  }
   @override
   void initState() {
-    _con.listenForFavorites();
+    proCon.listenForSpecial4U();
     super.initState();
   }
 
-  @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  String getTitle(BuildContext context) {
+    return S.of(context).specialForYou;
+  }
+
+  @override
+  Future<void> onRefresh() async {
+    proCon.special4UProducts?.clear();
+    proCon.listenForSpecial4U();
+    canLoadMore = true;
+  }
+
+  @override
+  Widget buildContent(BuildContext context) {
+    if (proCon.special4UProducts.isEmpty) {
+      return ProductsGridViewLoading(isList: true);
+    } else {
+      print('_con.special4UProducts ${proCon.special4UProducts.length}');
+      return FadeTransition(
+        opacity: this.animationOpacity,
+        child: ProductGridView(products: proCon.special4UProducts, heroTag: 'spe4U'),
+      );
+    }
+  }
+
+  @override
+  void loadMore() {
+    print('loadMore on Spec4U');
+    int pre = proCon.special4UProducts != null ? proCon.special4UProducts.length : 0;
+    proCon.listenForSpecial4U(nextPage: true);
+    canLoadMore = proCon.special4UProducts != null && proCon.special4UProducts.length > pre;
+  }
+}
+
+class _Special4UScreenStateOld extends StateMVC<Special4UScreen> {
+  ProductController _con;
+
+  _Special4UScreenStateOld() : super(ProductController()) {
+    _con = controller;
+  }
+
+  @override
+  void initState() {
+    _con.listenForSpecial4U();
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
+  Widget buildContent(BuildContext context) {
+    if (_con.special4UProducts.isEmpty) {
+      return ProductsGridViewLoading(isList: true);
+    } else {
+      print('_con.newArrivalProducts ${_con.special4UProducts.length}');
+      return ProductGridView(products: _con.special4UProducts, heroTag: 'spe4U');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key:  widget.scaffoldKey,
-      appBar: createAppBar(context, widget.scaffoldKey),
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
-      body: currentUser.value.isLogin == false
-          ? PermissionDenied()
-          : RefreshIndicator(
-        onRefresh: _con.refreshFavorites,
+      drawer: DrawerWidget(),
+      endDrawer: FilterWidget(onFilter: (Filter f) {
+        print('selected filter: $f');
+      }),
+      endDrawerEnableOpenDragGesture: false,
+      body: SafeArea(
         child: CustomScrollView(slivers: <Widget>[
-          createSilverAppBar(context, haveBackIcon: true, title: S.of(context).favorites),
+          createSliverTopBar(context),
+          createSliverSearch(context),
+          createSilverTopMenu(
+            context, haveBackIcon: true, title: S.of(context).specialForYou,
+//              types: [ProductType()],
+//              cates: [Category()],
+//              sorts: [SortBy.nameAsc],
+//              brands: [Brand()]
+          ),
           SliverList(
             delegate: SliverChildListDelegate([
-              ProductsByCategory(category: Category(id: '1', name: 'name', description: 'desc'))
+              buildContent(context),
+//              ProductsByCategory(category: widget._category),
+//              Text('this is the best sale screen')
             ]),
           )
         ]),
       ),
     );
   }
-
-  Widget _build(BuildContext context) {
-    return Scaffold(
-      key:  widget.scaffoldKey,
-      appBar: createAppBar(context, widget.scaffoldKey),
-      body: currentUser.value.isLogin == false
-          ? PermissionDenied()
-          : RefreshIndicator(
-        onRefresh: _con.refreshFavorites,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SearchBar(onClickFilter: (e) {
-                  widget.scaffoldKey.currentState.openEndDrawer();
-                }),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                //padding: const EdgeInsets.only(left: 20, right: 10),
-                padding: const EdgeInsetsDirectional.only(start: 20, end: 10),
-                child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                  leading: Icon(
-                    Icons.favorite,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  title: Text(
-                    S.of(context).favoriteProducts,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            this.layout = 'list';
-                          });
-                        },
-                        icon: Icon(
-                          Icons.format_list_bulleted,
-                          color: this.layout == 'list'
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).focusColor,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-
-                            this.layout = 'grid';
-                          });
-                        },
-                        icon: Icon(
-                          Icons.apps,
-                          color: this.layout == 'grid'
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).focusColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              _con.favorites.isEmpty
-                  ? CircularLoadingWidget(height: 500)
-                  : Offstage(
-                offstage: this.layout != 'list',
-                child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: _con.favorites.length,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 10);
-                  },
-                  itemBuilder: (context, index) {
-                    return
-                      FavoriteListItemWidget(
-                        heroTag: 'favorites_list',
-                        favorite: _con.favorites.elementAt(index),
-                        onDismissed: () {
-                          _con.removeFromFavorite(_con.favorites.elementAt(index));
-                        },
-
-                      );
-                  },
-                ),
-              ),
-              _con.favorites.isEmpty
-                  ? CircularLoadingWidget(height: 500)
-                  : Offstage(
-                offstage: this.layout != 'grid',
-                child: GridView.count(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: false,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 20,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  // Create a grid with 2 columns. If you change the scrollDirection to
-                  // horizontal, this produces 2 rows.
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-                  // Generate 100 widgets that display their index in the List.
-                  children: List.generate(_con.favorites.length, (index) {
-                    return FavoriteGridItemWidget(
-                      heroTag: 'favorites_grid',
-                      favorite: _con.favorites.elementAt(index),
-                    );
-                  }),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
-

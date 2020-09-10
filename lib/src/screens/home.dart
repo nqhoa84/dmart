@@ -1,21 +1,21 @@
-import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
+import 'package:dmart/src/models/category.dart';
+import 'package:dmart/src/models/route_argument.dart';
 import 'package:dmart/src/models/user.dart';
-
-import '../../route_generator.dart';
-import '../../src/widgets/ProductsGridLoadingWidget.dart';
-import '../widgets/BrandedProductsWidget.dart';
-import '../widgets/DeliveryAddressBottomSheetWidget.dart';
-import '../../generated/l10n.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+
+import '../../generated/l10n.dart';
+import '../../route_generator.dart';
 import '../../src/controllers/home_controller.dart';
 import '../../src/helpers/ui_icons.dart';
 import '../../src/widgets/HomeProductsByCategory.dart';
 import '../../src/widgets/HomePromotionsSlider.dart';
+import '../../src/widgets/ProductsGridViewLoading.dart';
 import '../../src/widgets/SearchBar.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
+import '../widgets/BrandedProductsWidget.dart';
+import '../widgets/DeliveryAddressBottomSheetWidget.dart';
 
 class HomeWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
@@ -69,33 +69,55 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              _createHeader(title: S.of(context).promotions, backgroundColor: DmConst.homePromotionColor,
-              onTap: () {
-                RouteGenerator.gotoPromotions(context, replaceOld: true);
-              }),
+              _createHeader(
+                  title: S.of(context).promotions,
+                  backgroundColor: DmConst.homePromotionColor,
+                  onTap: () {
+                    RouteGenerator.gotoPromotions(context, replaceOld: true);
+                  }),
+
               HomePromotionsSlider(),
-//              FlashSalesHeaderWidget(),
-//              _createHeader(S.of(context).trending_this_week),
-//              _con.categorySelected == null
-//                  ? ProductsGridLoadingWidget()
-//                  : CategorizedProductsWidget(
-//                  animationOpacity: animationOpacity,
-//                  category: _con.categorySelected),
-//              // Heading (Recommended for you)
-              _createHeader(title: S.of(context).bestSale),
+
+//              // Heading (bestSale)
+              _createHeader(
+                  title: S.of(context).bestSale,
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/Category',
+                        arguments: new RouteArgument(
+                            id: 1,
+                            param: [Category(id: 1, name: S.of(context).bestSale)],
+                            heroTag: "bestSale_"));
+                  }),
               _con.categorySelected == null
-                  ? ProductsGridLoadingWidget()
+                  ? ProductsGridViewLoading()
                   : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
               // Heading (Brands)
-              _createHeader(title: S.of(context).newArrival),
+              _createHeader(
+                  title: S.of(context).newArrival,
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/Category',
+                        arguments: new RouteArgument(
+                            id: 1,
+                            param: [Category(id: 2, name: S.of(context).newArrival)],
+                            heroTag: "newArival_"));
+                  }),
               _con.brandSelected == null
-                  ? ProductsGridLoadingWidget()
+                  ? ProductsGridViewLoading()
                   : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected),
-              _createHeader(title: S.of(context).specialForYou),
+              _createHeader(
+                  title: S.of(context).specialForYou,
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/Category',
+                        arguments: new RouteArgument(
+                            id: 3, param: [Category(id: 1, name: S.of(context).bestSale)], heroTag: "spe4U_"));
+                  }),
               _con.brandSelected == null
-                  ? ProductsGridLoadingWidget()
-                  : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected,
-              heroTag: 'spe4u',),
+                  ? ProductsGridViewLoading()
+                  : BrandedProductsWidget(
+                      animationOpacity: animationOpacity,
+                      brand: _con.brandSelected,
+                      heroTag: 'spe4u',
+                    ),
             ],
           ),
         ),
@@ -103,23 +125,27 @@ class _HomeWidgetState extends StateMVC<HomeWidget> with SingleTickerProviderSta
     );
   }
 
-  Widget _createHeader({String title, Color backgroundColor = DmConst.accentColor,
-    Function() onTap
-  }) {
+  Widget _createHeader({String title, Color backgroundColor = DmConst.accentColor, Function() onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: double.infinity, height: DmConst.appBarHeight * 0.7,
+        width: double.infinity,
+        height: DmConst.appBarHeight * 0.7,
         color: backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 10),
-              child: Center(child: Text(title,
-                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+              child: Center(
+                  child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.white)
+            Stack(
+              children: [
+                Positioned(child: Icon(Icons.arrow_forward_ios, color: Colors.white)),
+                Positioned(child: Icon(Icons.arrow_forward_ios, color: Colors.white), left: -7)
+              ],
+            )
           ],
         ),
       ),

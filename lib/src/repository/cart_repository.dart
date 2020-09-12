@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/user.dart';
@@ -14,14 +15,20 @@ Future<Stream<Cart>> getCarts() async {
   if (_user.isLogin == false) {
     return new Stream.value(null);
   }
-  final String _apiToken = 'api_token=${_user.apiToken}&';
+//  final String _apiToken = 'api_token=${_user.apiToken}&';
+//  final String url =
+//  '${GlobalConfiguration().getString('api_base_url')}carts?${_apiToken}with=product;product.store;options&search=user_id:${_user.id}&searchFields=user_id:=';
+
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}carts?${_apiToken}with=product;product.store;options&search=user_id:${_user.id}&searchFields=user_id:=';
+      '${GlobalConfiguration().getString('api_base_url')}carts?with=product;product.store;options&searchFields=user_id:=';
   print('getCarts $url');
 
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-  //print(url);
+  var req = http.Request('get', Uri.parse(url));
+  req.headers.addAll(createHeadersRepo());
+  final streamedRest = await http.Client().send(req);
+
+//  final client = new http.Client();
+//  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
   return streamedRest.stream
       .transform(utf8.decoder)
       .transform(json.decoder)
@@ -32,86 +39,74 @@ Future<Stream<Cart>> getCarts() async {
   });
 }
 
-Future<Stream<int>> getCartCount() async {
-  User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
-    return new Stream.value(0);
-  }
-  final String _apiToken = 'api_token=${_user.apiToken}&';
-  print ('_apiToken $_apiToken');
-  final String url =
-      '${GlobalConfiguration().getString('api_base_url')}carts/count?${_apiToken}search=user_id:${_user.id}&searchFields=user_id:=';
-  print('getCartCount $url');
-
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map(
-        (data) => Helper.getIntData(data),
-      );
-}
-
-Future<Cart> addCart(Cart cart, bool reset) async {
-  User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
-    return new Cart();
-  }
-  Map<String, dynamic> decodedJSON = {};
-  final String _apiToken = 'api_token=${_user.apiToken}';
-  final String _resetParam = 'reset=${reset ? 1 : 0}';
-  cart.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts?$_apiToken&$_resetParam';
+///Add cart for this user.
+///return the up-to-state cart-list of current user.
+Future<List<Cart>> addCart(int productId, {int quality = 1}) async {
+//  Map<String, dynamic> decodedJSON = {};
+//  final String _apiToken = 'api_token=${_user.apiToken}';
+//  final String _resetParam = 'reset=${reset ? 1 : 0}';
+//  cart.userId = _user.id;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}carts';
   print('addCart $url');
 
-  final client = new http.Client();
-  final response = await client.post(
+//  final client = new http.Client();
+  final response = await http.Client().post(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(cart.toMap()),
+    headers: createHeadersRepo(),
+    body: json.encode({
+      "product_id" : '$productId',
+      "quantity" : '$quality'
+    }),
   );
-  try {
+  List<Cart> re = [];
     print('addCart result\n${response.body}');
-    decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
-    print('Add cart return : $decodedJSON');
-  } on FormatException catch (e, trace) {
-    print(e);
-    print(trace);
-  }
-  return Cart.fromJSON(decodedJSON);
+    var decodedJSON = json.decode(response.body)['data'] as List<dynamic>;
+    decodedJSON.forEach((element) {
+      Cart c = Cart.fromJSON(element);
+      if(c.isValid) {
+        re.add(c);
+      }
+    });
+    return re;
 }
 
-Future<Cart> updateCart(Cart cart) async {
-  User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
-    return new Cart();
-  }
-  final String _apiToken = 'api_token=${_user.apiToken}';
-  cart.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}?$_apiToken';
+Future<List<Cart>> updateCart(Cart cart) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}';
   print('updateCart $url');
   final client = new http.Client();
   final response = await client.put(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
     body: json.encode(cart.toMap()),
   );
-  return Cart.fromJSON(json.decode(response.body)['data']);
+  List<Cart> re = [];
+  print('updateCart result\n${response.body}');
+  var decodedJSON = json.decode(response.body)['data'] as List<dynamic>;
+  decodedJSON.forEach((element) {
+    Cart c = Cart.fromJSON(element);
+    if(c.isValid) {
+      re.add(c);
+    }
+  });
+  return re;
 }
 
-Future<bool> removeCart(Cart cart) async {
-  User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
-    return false;
-  }
-  final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}?$_apiToken';
+Future<List<Cart>> removeCart(Cart cart) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}';
   print('removeCart $url');
   final client = new http.Client();
   final response = await client.delete(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
   );
-  var re = json.decode(response.body);
-//  return Helper.getBoolData(json.decode(response.body));
-  return Helper.getBoolData(re);
+  List<Cart> re = [];
+  print('updateCart result\n${response.body}');
+  var decodedJSON = json.decode(response.body)['data'] as List<dynamic>;
+  decodedJSON.forEach((element) {
+    Cart c = Cart.fromJSON(element);
+    if(c.isValid) {
+      re.add(c);
+    }
+  });
+  return re;
 }

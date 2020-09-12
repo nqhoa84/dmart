@@ -185,7 +185,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                               option: widget.product.options
                                   .where((option) => option.optionGroupId == optionGroup.id)
                                   .elementAt(optionIndex),
-                              onChanged: _con.calculateTotal,
+//                              onChanged: _con.calculateTotal,
                             );
                           },
                           separatorBuilder: (context, index) {

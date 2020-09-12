@@ -75,13 +75,13 @@ class _CategoriesGridState extends StateMVC<CategoriesGrid> with SingleTickerPro
         body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: categories == null || categories.isEmpty
-          ? CategoriesGridLoading() // CircularLoadingWidget()
-          : CategoriesGridView( categories: categories),
+          ? NameImageItemGridViewLoading() // CircularLoadingWidget()
+          : NameImageItemGridView( items: categories),
     ));
   }
 }
 
-class CategoriesGridLoading extends StatelessWidget {
+class NameImageItemGridViewLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -114,9 +114,11 @@ class CategoriesGridLoading extends StatelessWidget {
   }
 }
 
-class CategoriesGridView extends StatelessWidget {
-  final List<SimpleObj> categories;
-  CategoriesGridView({@required this.categories});
+///TODO remove promotion gridview and use this grid.
+///GridView of 2 columns to display NameImageObj (such as Category, Brand, Promotion...).
+class NameImageItemGridView extends StatelessWidget {
+  final List<NameImageObj> items;
+  NameImageItemGridView({@required this.items});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -128,8 +130,8 @@ class CategoriesGridView extends StatelessWidget {
         padding: EdgeInsets.only(top: 15),
         childAspectRatio: 7.0 / 9.0,
         crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: List.generate(categories.length, (index) {
-          Category category = categories.elementAt(index);
+        children: List.generate(items.length, (index) {
+          Category category = items.elementAt(index);
           return InkWell(
             onTap: () {
               Navigator.of(context)

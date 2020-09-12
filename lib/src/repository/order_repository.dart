@@ -77,27 +77,27 @@ Future<Stream<Order>> getRecentOrders() async {
   });
 }
 
-Future<Stream<OrderStatus>> getOrderStatus() async {
-  User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
-    return new Stream.value(null);
-  }
-  final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}order_statuses?$_apiToken';
-  print('getOrderStatus $url');
-
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-
-  return streamedRest.stream
-      .transform(utf8.decoder)
-      .transform(json.decoder)
-      .map((data) => Helper.getData(data))
-      .expand((data) => (data as List))
-      .map((data) {
-    return OrderStatus.fromJSON(data);
-  });
-}
+//Future<Stream<OrderStatus>> getOrderStatus() async {
+//  User _user = userRepo.currentUser.value;
+//  if (_user.apiToken == null) {
+//    return new Stream.value(null);
+//  }
+//  final String _apiToken = 'api_token=${_user.apiToken}';
+//  final String url = '${GlobalConfiguration().getString('api_base_url')}order_statuses?$_apiToken';
+//  print('getOrderStatus $url');
+//
+//  final client = new http.Client();
+//  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+//
+//  return streamedRest.stream
+//      .transform(utf8.decoder)
+//      .transform(json.decoder)
+//      .map((data) => Helper.getData(data))
+//      .expand((data) => (data as List))
+//      .map((data) {
+//    return OrderStatus.fromJSON(data);
+//  });
+//}
 
 Future<Order> addOrder(Order order, Payment payment) async {
   User _user = userRepo.currentUser.value;
@@ -106,7 +106,6 @@ Future<Order> addOrder(Order order, Payment payment) async {
   }
   CreditCard _creditCard = await userRepo.getCreditCard();
   order.user = _user;
-  order.payment = payment;
   final String _apiToken = 'api_token=${_user.apiToken}';
   final String url = '${GlobalConfiguration().getString('api_base_url')}orders?$_apiToken';
   print('addOrder $url');

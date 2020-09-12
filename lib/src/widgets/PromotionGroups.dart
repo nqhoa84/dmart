@@ -56,7 +56,7 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
   Widget build(BuildContext context) {
     return Scaffold(
         body: _con.promotions.isEmpty
-            ? CategoriesGridLoading()
+            ? NameImageItemGridViewLoading()
             : PromotionsGridView(promotions: _con.promotions),
     );
   }

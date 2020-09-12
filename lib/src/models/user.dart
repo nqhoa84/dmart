@@ -5,7 +5,6 @@ import 'i_name.dart';
 class User extends IdNameObj{
   String email;
   String password;
-//  String apiToken = 'acmdOkB9kdh0SuFaopN7TYoSWCCTlihqU9INjumwqGjdDgbUGY88zOhG6Xkm';
   String apiToken;
   String deviceToken;
   String phone;
@@ -15,7 +14,6 @@ class User extends IdNameObj{
 
   /// used for indicate if client logged in or not
   bool get isLogin => this.apiToken != null && this.apiToken.length > 10;
-
   double credit = 0;
 
 //  String role;
@@ -27,7 +25,7 @@ class User extends IdNameObj{
       id = toInt(jsonMap['id']);
       name = toStringVal(jsonMap['name']);
       email = toStringVal(jsonMap['email']);
-      apiToken = toStringVal(jsonMap['api_token']);
+      apiToken = toStringVal(jsonMap['token']);
       deviceToken = toStringVal(jsonMap['device_token']);
       try {
         phone = toStringVal(jsonMap['custom_fields']['phone']['view']);
@@ -52,20 +50,20 @@ class User extends IdNameObj{
     }
   }
 
-  Map toMap() {
+  Map   toMap() {
     var map = new Map<String, dynamic>();
-    map["id"] = id;
+    map["id"] = id.toString();
     map["email"] = email;
     map["name"] = name;
     map["password"] = password;
-    map["api_token"] = apiToken;
+    map["token"] = apiToken;
     if (deviceToken != null) {
       map["device_token"] = deviceToken;
     }
     map["phone"] = phone;
     map["address"] = address;
     map["bio"] = bio;
-    map["media"] = image?.toMap();
+    map["media"] = [image?.toMap()];
     return map;
   }
 

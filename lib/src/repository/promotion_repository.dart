@@ -10,7 +10,7 @@ import '../repository/user_repository.dart';
 import '../models/promotion.dart';
 
 Future<Stream<Promotion>> getPromotions() async {
-  Uri uri = Helper.getUri('api/promotions');
+  Uri uri = Helper.getApiUri('promotions');
   print(uri.toString());
   try{
     final client = new http.Client();

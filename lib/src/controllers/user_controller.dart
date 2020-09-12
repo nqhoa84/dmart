@@ -1,3 +1,5 @@
+import 'package:dmart/src/models/address.dart';
+import 'package:dmart/src/repository/user_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -34,9 +36,9 @@ class UserController extends ControllerMVC {
     if (loginFormKey.currentState.validate()) {
       loginFormKey.currentState.save();
       Overlay.of(context).insert(loader);
+
       repository.login(user).then((value) {
         if (value != null && value.apiToken != null) {
-
           RouteGenerator.gotoPromotions(context, replaceOld: true);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -44,6 +46,7 @@ class UserController extends ControllerMVC {
           ));
         }
       }).catchError((e) {
+        print(e);
         loader.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(S.of(context).emailAccountExists),
@@ -105,5 +108,21 @@ class UserController extends ControllerMVC {
         Helper.hideLoader(loader);
       });
     }
+  }
+
+  List<Address> deliveryAddresses = [];
+  void listenForDeliveryAddresses({Function() onComplete}) async {
+    final Stream<Address> stream = await getAddresses();
+    deliveryAddresses.clear();
+    stream.listen((Address addr) {
+      setState(() {
+        if(addr.isValid)
+          deliveryAddresses.add(addr);
+      });
+//      print('new arrival, pro id =${_product.id}, name=${_product.name}');
+    }, onError: (a) {
+      print(a);
+    }, onDone: onComplete,
+    );
   }
 }

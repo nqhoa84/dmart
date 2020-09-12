@@ -5,9 +5,12 @@ import 'package:dmart/src/models/i_name.dart';
 import '../../generated/l10n.dart';
 import '../../utils.dart';
 
-class Address extends IdObj{
+class Address extends IdObj {
+  String fullName, phoneNumber;
+  String province, district, ward, street, address = 'A215, duong C8, f Tay thanh, Q. tan phu ';
   String description;
-  String address;
+
+//  String address; //fullAddress
   double latitude;
   double longitude;
   bool isDefault;
@@ -15,24 +18,34 @@ class Address extends IdObj{
 
   Address();
 
-  Address.fromJSON(Map<String, dynamic> jsonMap) {
+  Address.fromJSON(Map<String, dynamic> map) {
     try {
-      id = toInt(jsonMap['id']);
-      description = jsonMap['description'] != null ? jsonMap['description'].toString() : null;
-      address = jsonMap['address'] != null ? jsonMap['address'] : 'S.of(context).unknown';
-      latitude = jsonMap['latitude'] != null ? jsonMap['latitude'] : null;
-      longitude = jsonMap['longitude'] != null ? jsonMap['longitude'] : null;
-      isDefault = jsonMap['is_default'] ?? false;
+      id = toInt(map['id']);
+      fullName = map["full_name"] ?? 'n q h ';
+      phoneNumber = map["phone_number"] ?? '0988848066';
+      province = map["province"] ?? 'quang nam';
+      district = map["district"] ?? 'tam ky';
+      ward = map["ward"] ?? 'tam thai';
+      street = map["street"] ?? 'c8';
+      address = map["address"] ?? 'addr';
+      description = map["description"] ?? 'desc';
+      latitude = toDouble(map["latitude"], errorValue: null);
+      longitude = toDouble(map["longitude"], errorValue: null);
+      isDefault = map["isDefault"] ?? false;
     } catch (e, trace) {
       id = -1;
+      province = '';
+      district = '';
+      ward = '';
+      street = '';
+      address = '';
       description = '';
-      address = 'S.current.unknown';
-      latitude = null;
-      longitude = null;
       isDefault = false;
       print('Error parsing data in Address $e \n $trace');
     }
   }
+
+  String get getFullAddress => '$address $street $ward $district $province';
 
   bool isUnknown() {
     return latitude == null || longitude == null;
@@ -41,12 +54,15 @@ class Address extends IdObj{
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
-    map["description"] = description;
+    map["province"] = province;
+    map["district"] = district;
+    map["ward"] = ward;
+    map["street"] = street;
     map["address"] = address;
+    map["description"] = description;
     map["latitude"] = latitude;
     map["longitude"] = longitude;
-    map["is_default"] = isDefault;
-    map["user_id"] = userId;
+    map["isDefault"] = isDefault;
     return map;
   }
 

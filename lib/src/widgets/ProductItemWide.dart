@@ -1,4 +1,5 @@
-//import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math' as math;
+
 import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/generated/l10n.dart';
@@ -10,10 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../constant.dart';
-import '../helpers/helper.dart';
+import '../../src/repository/user_repository.dart';
 import '../models/product.dart';
 import '../models/route_argument.dart';
-import '../../src/repository/user_repository.dart';
 
 class ProductItemWide extends StatefulWidget {
   String heroTag;
@@ -22,21 +22,20 @@ class ProductItemWide extends StatefulWidget {
   bool isFavorite;
   bool showRemoveIcon;
   double _removeIconSize = 0;
-  Function(int) onPressedOnRemoveIcon;
+//  Function(int) onPressedOnRemoveIcon;
 
   ProductItemWide(
       {Key key,
       @required Product product,
       @required String heroTag,
-      this.showRemoveIcon = false,
-      this.onPressedOnRemoveIcon})
+      this.showRemoveIcon = false })
       : super(key: key) {
     if (showRemoveIcon) _removeIconSize = 25;
 
     this.product = product;
     this.heroTag = '$heroTag' + '_W_${product.id}';
 
-    this.amountInCart = DmState.countQualityInCarts(product.id);
+    this.amountInCart = DmState.countQuantityInCarts(product.id);
     this.isFavorite = DmState.isFavorite(productId: product.id);
 
 //    print('${product.id} is in cart with quality = ${this.amountInCart}');
@@ -95,7 +94,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                           ),
                         ),
                       ),
-                      getTagAssetImage() != null
+                      widget.product.getTagAssetImage() != null
                         ? Align(
                         alignment: Alignment.topLeft,
                         child: Column(
@@ -103,7 +102,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                           children: <Widget>[
                             Expanded(
                               flex: 1,
-                              child: Image.asset(getTagAssetImage(), fit: BoxFit.scaleDown),
+                              child: Image.asset(widget.product.getTagAssetImage(), fit: BoxFit.scaleDown),
                             ),
                             Expanded(
                               flex: 2,
@@ -193,19 +192,6 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
     );
   }
 
-  String getTagAssetImage() {
-    if(widget.product.isPromotion == true)
-      return 'assets/img/Tag_Promotion.png';
-    else if(widget.product.isBestSale == true)
-      return 'assets/img/Tag_Best_Sale.png';
-    else if(widget.product.isNewArrival == true)
-      return 'assets/img/Tag_NewArrival.png';
-    else if(widget.product.isSpecial4U == true)
-      return 'assets/img/Tag_Special4u.png';
-    else
-      return null;
-  }
-
   BoxDecoration _createDecoration() {
     return widget.amountInCart > 0
         ? BoxDecoration(
@@ -271,7 +257,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   Widget _createPriceWidget(BuildContext context) {
-    if (widget.product.promotionPrice != null) {
+    if (widget.product.isPromotion) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -292,27 +278,33 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   void _onPressedAdd2Cart() {
+    addCart(1);
+  }
+
+  void _onTapIconSubtract() {
+    print(' _onTapIconSubtract');
+    addCart(-1);
+  }
+
+  void addCart(int quantity) {
     if (currentUser.value.isLogin) {
-      _con.addToCart(_con.product);
-      DmState.amountInCart.value ++;
+      _con.addCartGeneral(widget.product.id, quantity);
+//      DmState.amountInCart.value ++;
       setState(() {
-        widget.amountInCart++;
+        widget.amountInCart = math.max<int>(0, widget.amountInCart + quantity);
+        widget.showRemoveIcon = widget.amountInCart > 0;// = DmState.countQualityInCarts(widget.product.id);
       });
     } else {
       RouteGenerator.gotoLogin(context, replaceOld: true);
     }
   }
 
-  void _onTapIconSubtract() {
-  }
-
   void _onTapIconAdd() {
+    addCart(1);
   }
 
   void _onTapIconRemove() {
-    if (widget.onPressedOnRemoveIcon != null) {
-      widget.onPressedOnRemoveIcon(widget.product?.id);
-    }
+    addCart(-999999999);
   }
 
   void _onTapIconFav() {
@@ -320,17 +312,19 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       widget.isFavorite = !widget.isFavorite;
     });
     if(widget.isFavorite) {
-      Favorite mark = null;
+      _con.addToFavorite(widget.product);
+
+    } else {
+      Favorite mark;
       DmState.favorites.forEach((element) {
         if(element.product.id == widget.product.id) {
           mark = element;
-          _con.removeFromFavorite(element);
+          return;
         }
       });
-
-      if(mark != null) DmState.favorites.remove(mark);
-    } else {
-      _con.addToFavorite(widget.product);
+      if(mark != null) {
+        _con.removeFromFavorite(mark);
+      }
     }
   }
 }

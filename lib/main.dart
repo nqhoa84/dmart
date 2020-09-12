@@ -1,6 +1,7 @@
 import 'package:dmart/constant.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
 
@@ -14,7 +15,10 @@ import 'src/repository/user_repository.dart' as userRepo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
-  runApp(Dmart());
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    runApp(Dmart());
+  });
 }
 
 class Dmart extends StatefulWidget {
@@ -28,6 +32,7 @@ class _DmartState extends State<Dmart> {
     settingRepo.initSettings();
     settingRepo.getCurrentLocation();
     userRepo.getCurrentUser();
+
     super.initState();
   }
 
@@ -116,7 +121,6 @@ class _DmartState extends State<Dmart> {
     );
   }
 
-//  @override
   Widget _build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: settingRepo.setting,

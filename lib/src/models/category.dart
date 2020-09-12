@@ -5,7 +5,7 @@ import 'package:dmart/utils.dart';
 
 import '../models/media.dart';
 
-class Category extends SimpleObj{
+class Category extends NameImageObj{
   String description;
   bool selected=false;
 

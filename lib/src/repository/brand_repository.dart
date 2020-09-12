@@ -12,7 +12,7 @@ import '../helpers/helper.dart';
 import '../models/filter.dart';
 
 Future<Stream<Brand>> getBrands() async {
-  Uri uri = Helper.getUri('api/brands');
+  Uri uri = Helper.getApiUri('brands');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));

@@ -77,16 +77,16 @@ class OrderItemWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
-                        Text(
-                          '${order.payment.method}',
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
+//                        Text(
+//                          '${order.payment.method}',
+//                          overflow: TextOverflow.ellipsis,
+//                          style: Theme.of(context).textTheme.bodyText2,
+//                        ),
                         SizedBox(height:10),
-                        Text(
-                          DateFormat('yyyy-MM-dd').format(productOrder.dateTime),
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
+//                        Text(
+//                          DateFormat('yyyy-MM-dd').format(productOrder),
+//                          style: Theme.of(context).textTheme.bodyText2,
+//                        ),
                       ],
                     ),
                   ),
@@ -107,10 +107,10 @@ class OrderItemWidget extends StatelessWidget {
                           style: TextStyle(color: Theme.of(context).focusColor),
                         ),
                       ),
-                      Text(
-                        DateFormat('HH:mm').format(productOrder.dateTime),
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
+//                      Text(
+//                        DateFormat('HH:mm').format(productOrder.dateTime),
+//                        style: Theme.of(context).textTheme.bodyText2,
+//                      ),
 
                     ],
                   ),

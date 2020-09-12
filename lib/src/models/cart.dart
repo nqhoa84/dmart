@@ -42,7 +42,7 @@ class Cart extends IdObj{
     map["quantity"] = quantity;
     map["product_id"] = product.id;
     map["user_id"] = userId;
-    map["options"] = options.map((element) => element.id).toList();
+//    map["options"] = options.map((element) => element.id).toList();
     return map;
   }
 

@@ -613,6 +613,26 @@ class S {
     );
   }
 
+  /// `Available`
+  String get available {
+    return Intl.message(
+      'Available',
+      name: 'available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unit`
+  String get unit {
+    return Intl.message(
+      'Unit',
+      name: 'unit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Welcome`
   String get welcome {
     return Intl.message(

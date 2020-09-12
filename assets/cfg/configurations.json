@@ -1,4 +1,4 @@
 {
   "base_url": "http://dmart.khmermedia.xyz/",
-  "api_base_url": "http://dmart.khmermedia.xyz/api/"
+  "api_base_url": "http://dmart.khmermedia.xyz/api/v1/"
 }

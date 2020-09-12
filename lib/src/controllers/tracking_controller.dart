@@ -29,46 +29,32 @@ class TrackingController extends ControllerMVC {
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
     }, onDone: () {
-      listenForOrderStatus();
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
     });
   }
 
-  void listenForOrderStatus() async {
-    final Stream<OrderStatus> stream = await getOrderStatus();
-    stream.listen((OrderStatus _orderStatus) {
-      setState(() {
-        orderStatus.add(_orderStatus);
-      });
-    }, onError: (a) {}, onDone: () {});
-  }
+//  void listenForOrderStatus() async {
+//    final Stream<OrderStatus> stream = await getOrderStatus();
+//    stream.listen((OrderStatus _orderStatus) {
+//      setState(() {
+//        orderStatus.add(_orderStatus);
+//      });
+//    }, onError: (a) {}, onDone: () {});
+//  }
 
   List<Step> getTrackingSteps(BuildContext context) {
     List<Step> _orderStatusSteps = [];
     this.orderStatus.forEach((OrderStatus _orderStatus) {
       _orderStatusSteps.add(Step(
         state: StepState.complete,
-        title: Text(
-          _orderStatus.status,
+        title: Text( '$_orderStatus',
           style: Theme.of(context).textTheme.subtitle1,
         ),
-        subtitle: order.orderStatus.id == _orderStatus.id
-            ? Text(
-                '${DateFormat('HH:mm | yyyy-MM-dd').format(order.dateTime)}',
-                style: Theme.of(context).textTheme.caption,
-                overflow: TextOverflow.ellipsis,
-              )
-            : SizedBox(height: 0),
         content: SizedBox(
             width: double.infinity,
             child: Text(
               '${Helper.skipHtml(order.hint)}',
             )),
-        isActive: order.orderStatus.id >= _orderStatus.id,
+        isActive: false,
       ));
     });
     return _orderStatusSteps;

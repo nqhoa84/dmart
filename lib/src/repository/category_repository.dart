@@ -11,7 +11,7 @@ import '../models/category.dart';
 import '../models/filter.dart';
 
 Future<Stream<Category>> getCategories() async {
-  Uri uri = Helper.getUri('api/categories');
+  Uri uri = Helper.getApiUri('categories');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));

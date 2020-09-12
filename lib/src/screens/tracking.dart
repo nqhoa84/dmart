@@ -73,7 +73,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                                 children: <Widget>[
                                   Expanded(child: Text('${S.of(context).orderId}: #${_con.order.id}')),
                                   Text(
-                                    '${_con.order.orderStatus.status}',
+                                    '${_con.order.orderStatus}',
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ],
@@ -96,7 +96,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                                   return SizedBox(height: 0);
                                 },
                                 steps: _con.getTrackingSteps(context),
-                                currentStep: this._con.order.orderStatus.id - 1,
+                                currentStep: 0,
                               ),
                             ),
                           ),

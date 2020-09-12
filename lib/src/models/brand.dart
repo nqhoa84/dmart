@@ -3,7 +3,7 @@ import 'package:dmart/utils.dart';
 
 import '../models/media.dart';
 
-class Brand extends SimpleObj{
+class Brand extends NameImageObj{
   String description;
   bool selected=false;
 

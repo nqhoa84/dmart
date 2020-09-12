@@ -1,8 +1,13 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:dmart/src/controllers/order_controller.dart';
+import 'package:dmart/src/controllers/user_controller.dart';
+import 'package:dmart/src/models/order.dart';
 import 'package:dmart/src/screens/contactus.dart';
+import 'package:dmart/src/screens/place_order.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/IconWithText.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../DmState.dart';
@@ -21,6 +26,7 @@ import '../widgets/ShoppingCartButton.dart';
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/route_argument.dart';
+import '../widgets/cart_bottom_button.dart';
 
 class DeliveryToScreen extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -34,15 +40,22 @@ class DeliveryToScreen extends StatefulWidget {
 }
 
 class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
-  DeliveryPickupController _con;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  UserController _con;
   DatePickerController _datePickerController = DatePickerController();
 
-  _DeliveryToScreenState() : super(DeliveryPickupController()) {
+  Address deliverAdd = Address();
+
+  Order newOrder = Order();
+  _DeliveryToScreenState() : super(UserController()) {
     _con = controller;
   }
 
   @override
   void initState() {
+    _con.listenForDeliveryAddresses(onComplete: () {
+      deliverAdd = getDeliverAddr();
+    });
     super.initState();
   }
 
@@ -55,178 +68,218 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        key: _con.scaffoldKey,
-        appBar: createAppBar(context, _con.scaffoldKey),
+        key: _scaffoldKey,
+        endDrawerEnableOpenDragGesture: false,
+        endDrawer: Drawer(
+          child: _createSelectAddressWid(context, _con.deliveryAddresses),
+        ),
         bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
-        body: _createProductsGrid(context),
+        body: SafeArea(
+          child: Stack (
+            children: [
+              CustomScrollView(
+                slivers: <Widget>[
+                  createSliverTopBar(context),
+                  createSliverSearch(context),
+                  createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myCart),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      buildContent(context),
+                      SizedBox(height: 80),
+                    ]),
+                  )
+                ],
+              ),
+              buildBottom(context),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Stack _createProductsGrid(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        //display list of product on gridView.
-        Container(
-          padding: EdgeInsets.only(bottom: 15),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              children: [
-                createTitleRowWithBack(context, title: S.of(context).myCart),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: TitleDivider(
-                      title: S.of(context).deliverTo,
-                      titleTextColor: Theme.of(context).accentColor,
-                      dividerColor: Colors.grey.shade400,
-                      dividerThickness: 2),
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-//                      color: Colors.grey,
-                      decoration: createRoundedBorderBoxDecoration(),
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            style: TextStyle(color: DmConst.accentColor),
-
-                            keyboardType: TextInputType.emailAddress,
-                            onSaved: (input) {
-                              print('afddf _con.user.email = input');
-                            },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
-                            decoration: new InputDecoration(
-//                              hintText: S.of(context).emailAddress,
-//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-//                              prefixStyle: Theme.of(context).textTheme.headline5.copyWith(color: DmConst.accentColor),
-                              labelText: S.of(context).fullName + ':',
-                            ),
-
-                          ),
-                          TextFormField(
-                            style: TextStyle(color: DmConst.accentColor),
-                            keyboardType: TextInputType.phone,
-                            onSaved: (input) {
-                              print('afddf _con.user.email = input');
-                            },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
-                            decoration: new InputDecoration(
-//                              hintText: S.of(context).emailAddress,
-//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                              labelText: S.of(context).phone + ':',
-                            ),
-                          ),
-                          TextFormField(
-                            style: TextStyle(color: DmConst.accentColor),
-                            keyboardType: TextInputType.multiline, maxLines: 3,
-                            onSaved: (input) {
-                              print('afddf _con.user.email = input');
-                            },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
-                            decoration: new InputDecoration(
-//                              hintText: S.of(context).emailAddress,
-//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                              labelText: S.of(context).address + ':',
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: TitleDivider(
-                      title: S.of(context).selectDeliveryTime,
-                      titleTextColor: Theme.of(context).accentColor,
-                      dividerColor: Colors.grey.shade400,
-                      dividerThickness: 2),
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: Container(
-                      decoration: createRoundedBorderBoxDecoration(),
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          _createDatePiker(context),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                          _createRowSelectDeliveryTime('10:00 - 12:00', 0, 1.5),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                          _createRowSelectDeliveryTime('12:00 - 14:00', 1, 1.5),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                          _createRowSelectDeliveryTime('14:00 - 16:00', -10, 1.5),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                          _createRowSelectDeliveryTime('16:00 - 18:00', -10, 1.5),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                          _createRowSelectDeliveryTime('18:00 - 20:00', -10, 1.5),
-                          Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                        ],
-                      ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: TitleDivider(
-                      title: S.of(context).note,
-                      titleTextColor: Theme.of(context).accentColor,
-                      dividerColor: Colors.grey.shade400,
-                      dividerThickness: 2),
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-//                      color: Colors.grey,
-                      decoration: createRoundedBorderBoxDecoration(),
-                      padding: EdgeInsets.all(8),
-                      child: TextFormField(
-                        style: TextStyle(color: DmConst.accentColor),
-                        keyboardType: TextInputType.multiline, maxLines: 3,
-                        onSaved: (input) {
-                          print('afddf _con.user.email = input');
-                        },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
-                        decoration: new InputDecoration(
-//                              hintText: S.of(context).emailAddress,
-//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                        ),
-                      ),
-                    )),
-                SizedBox(height: 50),
-              ],
-            ),
+  Widget _createSelectAddressWid(BuildContext context, List<Address> adds) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: List.generate(adds.length + 2, (index) {
+            if(index == 0) return Text('Please select delivery address:',
+                style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor));
+            else if (index <= adds.length) {
+              Address a = adds[index-1];
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                child: Column(children: [
+                  ListTile(
+                    title: const Text('Use this address'),
+                    leading: Radio<Address>(
+                      value: a,
+                      groupValue: this.deliverAdd,
+                      onChanged: (value) {
+                        setState(() {
+                          this.deliverAdd = value;
+                        });
+                      },
+                    ),
+                  ),
+                  this.buildDeliverInfo(context, a),
+                  Divider(thickness: 1.5, color: DmConst.accentColor)
+                ],),
+              );
+            } else {
+              return FlatButton(onPressed: () {
+                Navigator.pop(context);
+              }, child: Text('OK'),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                color: DmConst.accentColor,
+                shape: StadiumBorder(),
+              );
+            }
+          },
           ),
         ),
-        //Bottom Process order space.
-        Positioned(
-          bottom: 0,
-          child: CartBottomButton(
-            countItem: widget.countItem,
-            grandTotalMoney: widget.grandTotal,
-            title: S.of(context).deliveryInfo,
-            onPressed: onPressedOnDeliveryInfo,
-          ),
-        )
-      ],
+      ),
     );
   }
 
-  void onPressedOnDeliveryInfo() {
-    print('onPressedOnDeliveryInfo');
-    Navigator.of(context).pushNamed('/PlaceOrder');
+  Widget buildBottom(BuildContext context) {
+    return Positioned(
+      bottom: 0, left: 0, right: 0,
+      child: CartBottomButton(
+          title: S.of(context).deliverTo,
+          onPressed: _onPressedOnDeliveryInfo
+      ),
+    );
+  }
+  void _onPressedOnDeliveryInfo() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlaceOrderScreen()));
+  }
+
+  Widget buildContent(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 15),
+      child: SingleChildScrollView(
+//        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TitleDivider(
+                        title: S.of(context).deliverTo),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.all(0),
+                      icon: Icon(Icons.arrow_forward_ios), onPressed: (){
+                    _scaffoldKey.currentState.openEndDrawer();
+                  })
+                ],
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: buildDeliverInfo(context, deliverAdd)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: TitleDivider(title: S.of(context).selectDeliveryTime),
+            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: buildSelectDeliverTime(context)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: TitleDivider(title: S.of(context).note),
+            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+//                      color: Colors.grey,
+                  decoration: createRoundedBorderBoxDecoration(),
+                  padding: EdgeInsets.all(8),
+                  child: TextFormField(
+                    style: TextStyle(color: DmConst.accentColor),
+                    keyboardType: TextInputType.multiline, maxLines: 3,
+                    onSaved: (input) {
+                      print('afddf _con.user.email = input');
+                    },
+//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                    decoration: new InputDecoration(
+//                              hintText: S.of(context).emailAddress,
+//                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+                    ),
+                  ),
+                )),
+            SizedBox(height: 50),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Address getDeliverAddr() {
+    Address re = Address();
+    if (_con.deliveryAddresses != null) {
+      _con.deliveryAddresses.forEach((element) {
+        if (element.isValid && element.isDefault) {
+          re = element;
+          return;
+        }
+      });
+    }
+    //don't have the default address
+    if (re.isValid) {
+      return re;
+    } else if (_con.deliveryAddresses.length > 0) {
+      //don't have the default address
+      return _con.deliveryAddresses[0];
+    } else {
+      return Address();
+    }
+  }
+
+  Container buildSelectDeliverTime(BuildContext context) {
+    return Container(
+                decoration: createRoundedBorderBoxDecoration(),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    _createDatePiker(context),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('10:00 - 12:00', 0, 1.5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('12:00 - 14:00', 1, 1.5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('14:00 - 16:00', -10, 1.5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('16:00 - 18:00', -10, 1.5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('18:00 - 20:00', -10, 1.5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                  ],
+                ),
+              );
+  }
+
+  Container buildDeliverInfo(BuildContext context, Address address) {
+//    Address deliverAdd = getDeliverAddr();
+    return Container(
+                decoration: createRoundedBorderBoxDecoration(),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    _createDeliveryRow(context, '${S.of(context).fullName}', "${address.fullName}"),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createDeliveryRow(context, '${S.of(context).phone}', '${address.phoneNumber}'),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createDeliveryRow(context, '${S.of(context).address}', '${address.getFullAddress}'),
+                  ],
+                ),
+              );
   }
 
   Widget _createDatePiker(BuildContext context) {
@@ -296,6 +349,40 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
         ],
       );
     }
+  }
+
+
+  Widget _createDeliveryRow(BuildContext context, String text1, String text2, {bool isBold = false}) {
+    if(isBold)
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            Expanded(flex: 3, child: Text(text1, style: TextStyle(fontWeight: FontWeight.bold))),
+            Text(":"),
+            Expanded(flex: 5,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10),
+                  child: Text(text2, textAlign: TextAlign.left,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+                )),
+          ],
+        ),
+      );
+    else
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            Expanded(flex: 2, child: Text(text1)),
+            Text(":"),
+            Expanded(flex: 3, child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 10),
+              child: Text(text2, textAlign: TextAlign.left),
+            )),
+          ],
+        ),
+      );
   }
 
   @override
@@ -423,63 +510,3 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
   }
 }
 
-class CartBottomButton extends StatelessWidget {
-  const CartBottomButton({Key key, this.countItem = 0, this.grandTotalMoney = 0, this.title = '', this.onPressed})
-      : super(key: key);
-
-  final int countItem;
-  final double grandTotalMoney;
-  final String title;
-  final Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 2,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      decoration: BoxDecoration(
-//                color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-//                border: Border.all(color: Colors.red, width: 2),
-          boxShadow: [
-            BoxShadow(color: DmConst.colorFavorite.withOpacity(0.9), offset: Offset(0, -2), blurRadius: 5.0)
-          ]),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IconWithText(
-                      title: '$countItem',
-                      icon: UiIcons.shopping_cart,
-                      color: Colors.white,
-                      style: Theme.of(context).textTheme.headline6),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8, right: 8, left: 8),
-                  child: IconWithText(
-                      title: '${this.grandTotalMoney.toStringAsFixed(2)}',
-                      icon: UiIcons.money,
-                      color: Colors.white,
-                      style: Theme.of(context).textTheme.headline6),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-            ),
-          ),
-          VerticalDivider(thickness: 2, color: Colors.white),
-          Expanded(
-              child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-            child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-            onPressed: onPressed,
-          ))
-//                FlatButton(child: Text(S.of(context).processOrder))
-        ],
-      ),
-    );
-  }
-}

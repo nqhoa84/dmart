@@ -3,15 +3,15 @@ import 'media.dart';
 class IdObj {
   int id;
 
-  IdObj({this.id = -1});
+  IdObj({this.id = 0});
 
   bool get isValid {
-    return id != null && id >= 0;
+    return id != null && id > 0;
   }
 
   @override
   bool operator ==(dynamic other) {
-    return this.id >= 0 && other.id == this.id;
+    return this.isValid && other.id == this.id;
 
 //    if(this.id >= 0)  {
 //      return this.id >= 0 && other.id == this.id;
@@ -37,10 +37,10 @@ class IdNameObj extends IdObj {
   }
 }
 
-class SimpleObj extends IdNameObj {
+class NameImageObj extends IdNameObj {
   Media image;
 
-  SimpleObj({int id = -1, String name = '', this.image}) : super(id: id, name: name);
+  NameImageObj({int id = -1, String name = '', this.image}) : super(id: id, name: name);
 
   @override
   bool get isValid {

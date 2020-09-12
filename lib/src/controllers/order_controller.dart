@@ -19,7 +19,6 @@ class OrderController extends ControllerMVC {
 
   OrderController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    listenForOrders();
   }
 
   void listenForBoughtProducts({Function() onDone}) async {
@@ -44,10 +43,11 @@ class OrderController extends ControllerMVC {
     stream.listen((Order _order) {
       setState(() {
         orders.add(_order);
-        if(_order.orderStatus.id=='5') ordersDelivered.add(_order);
-        if(_order.payment.status!='Paid') ordersUnpaid.add(_order);
-        if(_order.orderStatus.id=='4') ordersOnTheWay.add(_order);
-        if(_order.orderStatus.id=='3') ordersPreparing.add(_order);
+        // TODO
+//        if(_order.orderStatus.id=='5') ordersDelivered.add(_order);
+//        if(_order.payment.status!='Paid') ordersUnpaid.add(_order);
+//        if(_order.orderStatus.id=='4') ordersOnTheWay.add(_order);
+//        if(_order.orderStatus.id=='3') ordersPreparing.add(_order);
 
       });
     }, onError: (a) {

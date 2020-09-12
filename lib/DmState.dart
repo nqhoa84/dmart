@@ -6,32 +6,33 @@ class DmState {
   static int bottomBarSelectedIndex = 0;
 
   static ValueNotifier<int> amountInCart = ValueNotifier(0);
+  static ValueNotifier<double> cartsValue = ValueNotifier(0.0);
   static List<Cart> carts = [];
 
   static void refreshCart(List<Cart> _carts) {
-//    print('current _carts.length = ${_carts.length} ');
-
     carts.clear();
     _carts.forEach((element) {
-      Cart c = _findCart(element.product?.id);
-      if(c != null) {
+      Cart c = findCart(element.product?.id);
+      if(c != null && c.isValid) {
         c.quantity += element.quantity;
       } else {
         carts.add(element);
       }
     });
-//    carts.addAll(_carts);
 
     double am = 0;
+    double value = 0;
     carts.forEach((element) {
 //      print('this is currently in cart: $element');
       am += element.quantity;
+      value += element.product.paidPrice * element.quantity;
     });
+    cartsValue.value = value;
     amountInCart.value = am.round();
 //    print('current cart amountInCart = ${amountInCart.value} ');
   }
 
-  static Cart _findCart(int productId) {
+  static Cart findCart(int productId) {
     Cart c;
     carts.forEach((element) {
       if(element.product?.id == productId) {
@@ -42,7 +43,7 @@ class DmState {
     return c;
   }
 
-  static int countQualityInCarts(int productId) {
+  static int countQuantityInCarts(int productId) {
     int re = 0;
     carts.forEach((c) {
       if(c.product.id == productId) {
@@ -67,5 +68,24 @@ class DmState {
   static void refreshFav({List<Favorite> fav}) {
     favorites.clear();
     if(fav != null) favorites.addAll(fav);
+  }
+
+  static Favorite findFav(int productId) {
+    Favorite f;
+    favorites.forEach((element) {
+      if(element.product?.id == productId) {
+        f = element;
+        return;
+      }
+    });
+    return f;
+  }
+
+  static double calculateTotalMoneyOnCarts() {
+    double re = 0;
+    carts.forEach((element) {
+      re += element.quantity * element.product.paidPrice;
+    });
+    return re;
   }
 }

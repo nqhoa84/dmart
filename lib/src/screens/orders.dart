@@ -137,15 +137,15 @@ class _OrderScreenState extends StateMVC<OrderScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Pending'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Created),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Pending'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Created),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Pending'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Created),
               ),
             ],
           ),
@@ -223,15 +223,15 @@ class _OrderScreenState extends StateMVC<OrderScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Confirmed'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Confirmed'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Confirmed'))),
+                child: buildOrderItem(order: Order()..orderStatus=OrderStatus.Approved),
               ),
             ],
           ),
@@ -255,19 +255,19 @@ class _OrderScreenState extends StateMVC<OrderScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Pending'))),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Created),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Confirmed'))),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Rejected'))),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Rejected),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order(orderStatus: OrderStatus(status: 'Canceled'))),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Canceled),
               ),
             ],
           ),

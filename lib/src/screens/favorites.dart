@@ -45,14 +45,13 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
 
   @override
   Future<void> onRefresh() async{
-    proCon.favorites?.clear();
     proCon.listenForFavorites();
     canLoadMore = true;
   }
 
   @override
   Widget buildContent(BuildContext context) {
-    if (proCon.favorites.isEmpty) {
+    if (DmState.favorites.isEmpty) {
 //      return ProductsGridViewLoading(isList: true);
       return EmptyDataLoginWid(
         message: S.of(context).yourFavoriteEmpty,
@@ -60,7 +59,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
       );
     } else {
       List<Product> lp = [];
-      proCon.favorites.forEach((element) {
+      DmState.favorites.forEach((element) {
         lp.add(element.product);
       });
       return FadeTransition(
@@ -71,53 +70,9 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
 
   @override
   void loadMore() {
-    int pre = proCon.favorites != null ? proCon.favorites.length : 0;
-    proCon.listenForFavorites(nextPage: true);
-    canLoadMore = proCon.favorites != null
-        && proCon.favorites.length > pre;
+//    int pre = proCon.favorites != null ? proCon.favorites.length : 0;
+//    proCon.listenForFavorites(nextPage: true);
+//    canLoadMore = proCon.favorites != null
+//        && proCon.favorites.length > pre;
   }
-}
-
-class _FavoritesScreenStateOld extends StateMVC<FavoritesScreen> {
-  String layout = 'grid';
-
-  ProductController _con;
-
-  _FavoritesScreenStateOld() : super(ProductController()) {
-    _con = controller;
-  }
-
-@override
-  void initState() {
-    _con.listenForFavorites();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key:  widget.scaffoldKey,
-      appBar: createAppBar(context, widget.scaffoldKey),
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
-      body: currentUser.value.isLogin == false
-          ? PermissionDenied()
-          : RefreshIndicator(
-              onRefresh: _con.refreshFavorites,
-              child: CustomScrollView(slivers: <Widget>[
-                createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).favorites),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    ProductsByCategory(category: Category(id: 1, name: 'name', description: 'desc'))
-                  ]),
-                )
-              ]),
-            ),
-    );
-  }
-
 }

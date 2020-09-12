@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
@@ -15,19 +16,40 @@ import '../repository/user_repository.dart' as userRepo;
 ValueNotifier<User> currentUser = new ValueNotifier(User());
 
 Future<User> login(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}login';
-  final client = new http.Client();
-  final response = await client.post(
-    url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(user.toMap()),
-  );
-  if (response.statusCode == 200) {
-    setCurrentUser(response.body);
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
-  } else {
-    throw new Exception(response.body);
+  try {
+    final String url = '${GlobalConfiguration().getString('api_base_url')}login';
+    final client = new http.Client();
+    print('login $url \n map-para ${user.toMap()}');
+    final response = await client.post(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+//      body: user.toMap(),
+      body: json.encode(user.toMap()),
+    );
+    print('login ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      String token = toStringVal(js['data']['token']);
+      currentUser.value = User.fromJSON(js['data']['user']);
+      currentUser.value.apiToken = token;
+      print('=============');
+      print(json.encode(currentUser.value.toMap()));
+      print('=============');
+      setCurrentUser(json.encode(currentUser.value.toMap()));
+      print('-----------------------------------');
+      print('user: ${currentUser.value.toStringIdName()}');
+      print('token: ${currentUser.value.apiToken}');
+      print('-----------------------------------');
+    }
+  } catch (e, trace) {
+    print('$e \n $trace');
   }
+//  if (response.statusCode == 200) {
+//    setCurrentUser(response.body);
+//    currentUser.value = User.fromJSON(json.decode(response.body)['data']['user']);
+//  } else {
+//    throw new Exception(response.body);
+//  }
   return currentUser.value;
 }
 
@@ -70,10 +92,13 @@ Future<void> logout() async {
 }
 
 void setCurrentUser(jsonString) async {
-  if (json.decode(jsonString)['data'] != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
-  }
+//  if (json.decode(jsonString)['data'] != null) {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
+//  }
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('current_user', jsonString);
 }
 
 Future<void> setCreditCard(CreditCard creditCard) async {
@@ -84,11 +109,14 @@ Future<void> setCreditCard(CreditCard creditCard) async {
 }
 
 Future<User> getCurrentUser() async {
-//  currentUser.value.auth = false;
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //prefs.clear();
   if (prefs.containsKey('current_user')) {
     currentUser.value = User.fromJSON(json.decode(await prefs.get('current_user')));
+
+    print('------From share preferences---------');
+    print('User: ${userRepo.currentUser.value.toStringIdName()}');
+    print('token: ${userRepo.currentUser.value.apiToken}');
+    print('-----------------------');
   }
   // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
   currentUser.notifyListeners();
@@ -119,15 +147,21 @@ Future<User> update(User user) async {
 }
 
 Future<Stream<Address>> getAddresses() async {
-  User _user = currentUser.value;
-  final String _apiToken = 'api_token=${_user.apiToken}&';
+//  final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken&search=user_id:${_user.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
-  //print(url);
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?search=user_id:${userRepo.currentUser.value.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
+  print(url);
+  var req = http.Request('get', Uri.parse(url));
+  req.headers.addAll(createHeadersRepo());
+  final streamedRest = await http.Client().send(req);
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
+//    print(' --+++++++--- $data');
+    return Helper.getData(data);
+  }).expand((data) {
+//        print(' ------------ $data');
+    return data as List;
+  }).map((data) {
     return Address.fromJSON(data);
   });
 }

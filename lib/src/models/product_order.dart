@@ -3,43 +3,46 @@ import '../models/option.dart';
 import '../models/product.dart';
 import 'i_name.dart';
 
-class ProductOrder extends IdObj{
-  double price;
+class ProductOrder extends IdObj {
+  double paidPrice;
   double quantity;
-  List<Option> options;
+
+//  List<Option> options;
   Product product;
-  DateTime dateTime;
+
   ProductOrder();
+
+  @override
+  bool get isValid {
+    return super.isValid && product != null && product.id > 0 && quantity >= 0 && paidPrice >= 0;
+  }
 
   ProductOrder.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
-      quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : [];
-      dateTime = DateTime.parse(jsonMap['updated_at']);
-      options = jsonMap['options'] != null
-          ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
-          : null;
+      paidPrice = toDouble(jsonMap['price'], errorValue: 0);
+      quantity = toDouble(jsonMap['quantity'], errorValue: 0);
+      product = Product.fromJSON(jsonMap['product']);
+//      dateTime = DateTime.parse(jsonMap['updated_at']);
+//      options = jsonMap['options'] != null
+//          ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
+//          : null;
     } catch (e, trace) {
       id = -1;
-      price = 0.0;
+      paidPrice = 0.0;
       quantity = 0.0;
       product = new Product();
-      dateTime = DateTime(0);
-      options = [];
       print('Error parsing data in ProductOrder.fromJSON $e \n $trace');
-
     }
   }
 
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
-    map["price"] = price;
+    map["price"] = paidPrice;
     map["quantity"] = quantity;
     map["product_id"] = product.id;
-    map["options"] = options.map((element) => element.id).toList();
+//    map["options"] = options.map((element) => element.id).toList();
     return map;
   }
 }

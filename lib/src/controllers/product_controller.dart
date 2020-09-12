@@ -15,18 +15,18 @@ import '../repository/product_repository.dart';
 
 class ProductController extends ControllerMVC {
   Product product;
-  List<Product> featuredProducts = [];
+  List<Product> relatedProducts = [];
   List<Product> bestSaleProducts = [];
   List<Product> newArrivalProducts = [];
   List<Product> special4UProducts = [];
   List<Cart> carts = [];
-  Favorite favorite;
+//  Favorite favorite;
   List<Review> reviews = <Review>[];
   List<Product> brandsProducts=[];
   List<Product> boughtProducts=[];
   List<Product> promotionProducts=[];
   List<Product> categoriesProducts=[];
-  List<Favorite> favorites = <Favorite>[];
+//  List<Favorite> favorites = <Favorite>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
   ProductController() {
@@ -49,10 +49,6 @@ class ProductController extends ControllerMVC {
         category.selected = true;
       }
     });
-  }
-  Future<void> refreshFavorites() async {
-    favorites.clear();
-    listenForFavorites(message: 'Favorites refreshed successfully');
   }
 
   int _bestSalePageIdx = 1;
@@ -113,16 +109,17 @@ class ProductController extends ControllerMVC {
   }
 
   int _favPageIdx = 1;
-  ///if [nextPage] is true, this will load the next page, store on [special4UProducts] and move pageIndex one step up.
-  ///if [nextPage] is FALSE, this will refresh the [special4UProducts].
+  ///if [nextPage] is true, this will load the next page, store on [favorites] and move pageIndex one step up.
+  ///if [nextPage] is FALSE, this will refresh the [favorites].
+  /// NO NEED TO PAGING here. server returns 100 items.
   void listenForFavorites({String message, bool nextPage = false}) async {
-    _favPageIdx = nextPage == false ? 1 : _favPageIdx + 1;
-
+//    _favPageIdx = nextPage == false ? 1 : _favPageIdx + 1;
+    DmState.favorites.clear();
     final Stream<Favorite> stream = await getFavorites(_favPageIdx);
     stream.listen((Favorite _favorite) {
       if(_favorite != null && _favorite.isValid) {
         setState(() {
-          favorites.add(_favorite);
+          DmState.favorites.add(_favorite);
           print('listenForFavorites favorites {id: ${_favorite.id} product ${_favorite.product.toStringIdName()}');
         });
       }
@@ -132,27 +129,28 @@ class ProductController extends ControllerMVC {
       ));
     }, onDone: () {
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
-      print('listenForFavorites favorites.length = ${favorites.length}');
-      DmState.refreshFav(fav: this.favorites);
     });
   }
 
-  void listenForFeaturedProducts () async {
-    final Stream<Product> stream = await getProducts();
+  ///Get related products of one product [id], the results is stored on [relatedProducts] property of this object.
+  void listenForRelatedProducts({int productId}) async {
+    final Stream<Product> stream = await getRelatedProducts(productId);
+    relatedProducts.clear();
     stream.listen((Product _product) {
-      if (_product.featured) {
-        setState(() => featuredProducts.add(_product));
+      if (_product!= null && _product.isValid) {
+        setState(() => relatedProducts.add(_product));
       }
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
 
-  void listenForProduct({int productId, String message}) async {
+  ///Listen for full inform from server, and the result will be store on [product] property of this controller.
+  void listenForProduct({int productId, String message, Function() onComplete}) async {
     final Stream<Product> stream = await getProduct(productId);
     stream.listen((Product _product) {
       setState(() => product = _product);
@@ -161,14 +159,7 @@ class ProductController extends ControllerMVC {
       scaffoldKey.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
-    }, onDone: () {
-      calculateTotal();
-      if (message != null) {
-        scaffoldKey.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
-    });
+    }, onDone: onComplete);
   }
 
   void listenForProductsByBrand({int id, String message}) async {
@@ -222,91 +213,107 @@ class ProductController extends ControllerMVC {
     });
   }
 
-  void listenForFavorite({int productId}) async {
-    final Stream<Favorite> stream = await isFavoriteProduct(productId);
-    stream.listen((Favorite _favorite) {
-      setState(() => favorite = _favorite);
-    }, onError: (a) {
-      print(a);
-    });
-  }
-
   ///Listen for all carts from server.
   ///Then update to [carts] property of this controller and refreshCart of [DmState.refreshCart].
   ///This will also refresh [DmState.amountInCart] value
   void listenForCarts() async {
-    final Stream<Cart> stream = await getCarts();
-    carts.clear();
-    stream.listen((Cart _cart) {
-      if(_cart != null && _cart.isValid)
-        carts.add(_cart);
-    }).onDone(() {
-      DmState.refreshCart(carts);
-    });
-  }
-
-  bool isSameStores(Product product) {
-    if (carts.isNotEmpty) {
-      return carts[0].product?.store?.id == product.store?.id;
+    try {
+      final Stream<Cart> stream = await getCarts();
+      carts.clear();
+      stream.listen((Cart _cart) {
+        if(_cart != null && _cart.isValid)
+          carts.add(_cart);
+      }).onDone(() {
+        setState(() {
+          DmState.refreshCart(carts);
+        });
+      });
+    } catch (e, trace) {
+      print(e);
+      print(trace);
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).generalErrorMessage),
+      ));
     }
-    return true;
   }
 
-  void addToCart(Product product, {bool reset = false}) async {
-    print('================== NOT YET IMPLEMENTED');
-//
-//    var _newCart = new Cart();
-//    _newCart.quantity = this.quantity;
-//    // if quantity more than Items Available
-//    if(double.parse(product.itemsAvailable) >=_newCart.quantity){
-//      setState(() {
-//        this.loadCart = true;
-//      });
-//      _newCart.product = product;
-//      if(product.options !=null){
-//        _newCart.options = product.options.where((element) => element.checked).toList();
-//        // if product exist in the cart then increment quantity
-//        var _oldCart = isExistInCart(_newCart);
-//        if (_oldCart != null) {
-//          if(_oldCart.quantity+this.quantity <= double.parse(product.itemsAvailable)){
-//            _oldCart.quantity += this.quantity;
-//            updateCart(_oldCart).then((value) {
-//              setState(() {
-//                this.loadCart = false;
-//              });
-//            }).whenComplete(() {
-//              scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//                content: Text(S.of(context).productAdded2Cart),
-//              ));
-//            });
-//          }else{
-//            setState(() {
-//              this.loadCart = false;
-//            });
-//            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//              content: Text('No items available '),
-//
-//            ));
-//          }
-//
-//        } else {
-//          // the product doesnt exist in the cart add new one
-//          addCart(_newCart, reset).then((value) {
-//            setState(() {
-//              this.loadCart = false;
-//            });
-//          }).whenComplete(() {
-//            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//              content: Text(S.of(context).productAdded2Cart),
-//            ));
-//          });
-//        }
-//      }
-//    }else{
-//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//          content: Text('No items available '),
-//      ));
-//    }
+  void addToCart(int productId, {int quality = 1}) async {
+    try {
+      addCart(productId, quality: quality).then((newCart) {
+        setState(() {
+          carts.clear();
+          carts.addAll(newCart);
+          DmState.refreshCart(carts);
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).productAdded2Cart),
+        ));
+      });
+    }  catch (e, trace) {
+      print('$e \n $trace');
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).generalErrorMessage),
+      ));
+    }
+  }
+
+  void updateToCart(Cart c){
+    try {
+      updateCart(c).then((newCart) {
+        setState(() {
+          carts.clear();
+          carts.addAll(newCart);
+          DmState.refreshCart(carts);
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).productAdded2Cart),
+        ));
+      });
+    }  catch (e, trace) {
+      print('$e \n $trace');
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).generalErrorMessage),
+      ));
+    }
+  }
+
+  void removeFromCart(Cart c){
+    try {
+      removeCart(c).then((newCart) {
+        setState(() {
+          carts.clear();
+          carts.addAll(newCart);
+          DmState.refreshCart(carts);
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).productAdded2Cart),
+        ));
+      });
+    } catch (e, trace) {
+      print('$e \n $trace');
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).generalErrorMessage),
+      ));
+    }
+  }
+
+  void addCartGeneral(int productId, int quantity) {
+    if(quantity > 0) {
+      addToCart(productId, quality: quantity);
+    } else {
+      Cart c = DmState.findCart(productId);
+      if(c!= null) {
+        c.quantity += quantity;
+        if(c.quantity > 0) {
+          updateToCart(c);
+        } else {
+          removeFromCart(c);
+        }
+      }
+    }
   }
 
   void addToFavorite(Product product) async {
@@ -316,10 +323,12 @@ class ProductController extends ControllerMVC {
 //      return _option.checked;
 //    }).toList();
 
-    addFavorite(_favorite).then((value) {
-      setState(() {
-        this.favorite = value;
-      });
+    addFavorite(product.id).then((value) {
+      if(value != null && value.isValid) {
+        setState(() {
+          DmState.favorites.add(value);
+        });
+      }
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text('This product was added to favorite'),
       ));
@@ -327,14 +336,8 @@ class ProductController extends ControllerMVC {
   }
 
   void removeFromFavorite(Favorite _favorite) async {
-    setState(() {
-      this.favorites.remove(_favorite);
-    });
-    removeFavorite(_favorite).then((value) {
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(_favorite.product.name))
-      );
-    });
+    DmState.favorites.remove(_favorite);
+    await removeFavorite(_favorite);
   }
 
   void listenForProductReviews({int id, String message}) async {
@@ -347,31 +350,7 @@ class ProductController extends ControllerMVC {
   Future<void> refreshProduct() async {
     var _id = product.id;
     product = new Product();
-    listenForFavorite(productId: _id);
     listenForProduct(productId: _id, message: 'Product refreshed successfully');
-  }
-
-  void calculateTotal() {
-//    total = product?.price ?? 0;
-//    product.options.forEach((option) {
-//      total += option.checked ? option.price : 0;
-//    });
-//    total *= quantity;
-    setState(() {});
-  }
-
-  incrementQuantity() {
-//    if (this.quantity < double.parse(product.itemsAvailable)) {
-//      ++this.quantity;
-//      calculateTotal();
-//    }
-  }
-
-  decrementQuantity() {
-//    if (this.quantity > 1) {
-//      --this.quantity;
-//      calculateTotal();
-//    }
   }
 
 }

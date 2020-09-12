@@ -60,7 +60,8 @@
   "orderNumber": "Order number",
   "orderValue": "Order value",
   "boughtProducts": "Bought products",
-
+  "available": "Available",
+  "unit": "Unit",
   "welcome": "Welcome",
   "personalDetails": "Personal details",
   "dateOfBirth": "Date of birth",

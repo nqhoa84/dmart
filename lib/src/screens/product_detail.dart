@@ -1,54 +1,65 @@
-//import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math' as math;
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dmart/DmState.dart';
 import 'package:dmart/buidUI.dart';
+import 'package:dmart/route_generator.dart';
+import 'package:dmart/src/helpers/helper.dart';
+import 'package:dmart/src/models/favorite.dart';
 import 'package:dmart/src/models/media.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:dmart/src/widgets/ProductsGridView.dart';
+import 'package:dmart/src/widgets/TitleDivider.dart';
+import 'package:expandable/expandable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
+
 import '../../constant.dart';
 import '../../generated/l10n.dart';
-import '../../src/helpers/helper.dart';
-import '../../src/widgets/OptionItemWidget.dart';
 import '../../src/controllers/product_controller.dart';
-import '../../src/repository/user_repository.dart';
-import '../../src/widgets/CircularLoadingWidget.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/helpers/ui_icons.dart';
 import '../../src/models/route_argument.dart';
+import '../../src/repository/user_repository.dart';
+import '../../src/widgets/CircularLoadingWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
+import '../../src/widgets/OptionItemWidget.dart';
 import '../../src/widgets/ProductDetailsTabWidget.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
 import '../../src/widgets/ShoppingCartButton.dart';
-import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   RouteArgument routeArgument;
   String _heroTag;
-  int amountInCart;
 
-  ProductDetailScreen({Key key, this.routeArgument, this.amountInCart = 0}) {
+  ProductDetailScreen({Key key, this.routeArgument}) {
     _heroTag = this.routeArgument.param[1] as String;
   }
 
   @override
-  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+  _ProductDetailScreenState createState() => _ProductDetailScreenState(productId: routeArgument.id);
 }
 
 class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with SingleTickerProviderStateMixin {
   ProductController _con;
   int _tabIndex = 0;
   TabController _tabController;
+  bool isFav;
+  int amountInCart;
+  final int productId;
 
-  _ProductDetailScreenState() : super(ProductController()) {
+  _ProductDetailScreenState({@required this.productId}) : super(ProductController()) {
     _con = controller;
+    isFav = DmState.isFavorite(productId: productId);
+    this.amountInCart = DmState.countQuantityInCarts(productId);
   }
 
   @override
   void initState() {
-    _con.listenForProduct(productId: widget.routeArgument.id);
-    //TODO check need to get favorite or related
-    _con.listenForFavorite(productId: widget.routeArgument.id);
-    _con.listenForCarts();
+    _controller = ExpandableController(initialExpanded: true);
+    _controller.expanded = true;
+    _con.listenForProduct(productId: productId);
+    _con.listenForRelatedProducts(productId: productId);
     _tabController = TabController(length: 3, initialIndex: _tabIndex, vsync: this);
     _tabController.addListener(_handleTabSelection);
     super.initState();
@@ -69,7 +80,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 
   Widget _createPriceForBottomBar(BuildContext context) {
     if (_con.product == null) return Container();
-    if (_con.product.promotionPrice != null) {
+    if (_con.product.isPromotion) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -93,7 +104,6 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 
   @override
   Widget build(BuildContext context) {
-    bool isFav = _con.favorite?.id != null;
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
@@ -129,50 +139,36 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                   FloatingActionButton(
                     child: createFavoriteIcon(context, isFav),
                     backgroundColor: DmConst.accentColor,
-                    onPressed: () {
-                      if (currentUser.value.isLogin == false) {
-                        Navigator.of(context).pushNamed("/Login");
-                      } else {
-                        if (isFav) {
-                          _con.removeFromFavorite(_con.favorite);
-                        } else {
-                          _con.addToFavorite(_con.product);
-                        }
-                      }
-                    },
+                    onPressed: _onPressOnFav,
                   ),
                   Expanded(child: SizedBox(width: 10)),
                   Expanded(
-                    child: widget.amountInCart > 0
-                        ? Row(
+                    child: amountInCart > 0
+                        ? Row( 
                             mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               IconButton(
-                                  onPressed: () {
-                                    _con.decrementQuantity();
-                                  },
-                                  iconSize: 30,
+                                  onPressed: _onPressIconDecrement,
+                                  iconSize: 40,
                                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.remove_circle_outline)),
-                              //TODO
-                              Text('TODO', style: Theme.of(context).textTheme.subtitle1),
+                              ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minWidth: 20
+                                  ),
+                                  child: Text('${amountInCart}',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context).textTheme.subtitle1)),
                               IconButton(
-                                  onPressed: () {
-                                    _con.incrementQuantity();
-                                  },
-                                  iconSize: 30,
+                                  onPressed: _onPressIconIncrement,
+                                  iconSize: 40,
                                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                   icon: Icon(Icons.add_circle_outline))
                             ],
                           )
                         : FlatButton(
-                            onPressed: () {
-                              if (currentUser.value.apiToken == null) {
-                                Navigator.of(context).pushNamed("/Login");
-                              } else {
-                                _con.addToCart(_con.product);
-                              }
-                            },
+                            onPressed: _onPressAdd2Cart,
                             padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                             color: DmConst.accentColor,
                             shape: StadiumBorder(),
@@ -191,7 +187,9 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 
   Widget _createImageSpace(BuildContext context) {
     return SliverAppBar(
+      backgroundColor: Colors.transparent,
       floating: true,
+      pinned: true,
       automaticallyImplyLeading: false,
       leading: new IconButton(
         color: DmConst.accentColor.withOpacity(0.6),
@@ -212,62 +210,148 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
         ),
       ],
 //                backgroundColor: Theme.of(context).primaryColor,
+//        collapsedHeight: kToolbarHeight + 10,
       expandedHeight: MediaQuery.of(context).size.width,
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: _buildCarouselImages(context),
       ),
-      bottom: TabBar(
-          controller: _tabController,
-          indicatorSize: TabBarIndicatorSize.label,
-          labelPadding: EdgeInsets.symmetric(horizontal: 10),
-          unselectedLabelColor: DmConst.colorFavorite,
-          unselectedLabelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.colorFavorite),
-//          labelColor: Colors.white,
-          labelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
-          indicator:
-              BoxDecoration(borderRadius: BorderRadius.circular(20), color: DmConst.accentColor.withOpacity(0.6)),
-          tabs: [
-            Tab(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(S.of(context).product),
-                ),
-              ),
-            ),
-            Tab(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(S.of(context).detail),
-                ),
-              ),
-            ),
-            Tab(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(S.of(context).review),
-                ),
-              ),
-            ),
-          ]),
+//      bottom: TabBar(
+//          controller: _tabController,
+//          indicatorSize: TabBarIndicatorSize.label,
+//          labelPadding: EdgeInsets.symmetric(horizontal: 10),
+//          unselectedLabelColor: DmConst.colorFavorite,
+//          unselectedLabelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.colorFavorite),
+////          labelColor: Colors.white,
+//          labelStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
+//          indicator:
+//              BoxDecoration(borderRadius: BorderRadius.circular(20), color: DmConst.accentColor.withOpacity(0.6)),
+//          tabs: [
+//            Tab(
+//              child: Container(
+//                padding: EdgeInsets.symmetric(horizontal: 5),
+//                decoration: BoxDecoration(
+//                    borderRadius: BorderRadius.circular(20),
+//                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
+//                child: Align(
+//                  alignment: Alignment.center,
+//                  child: Text(S.of(context).product),
+//                ),
+//              ),
+//            ),
+//            Tab(
+//              child: Container(
+//                padding: EdgeInsets.symmetric(horizontal: 5),
+//                decoration: BoxDecoration(
+//                    borderRadius: BorderRadius.circular(20),
+//                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
+//                child: Align(
+//                  alignment: Alignment.center,
+//                  child: Text(S.of(context).detail),
+//                ),
+//              ),
+//            ),
+//            Tab(
+//              child: Container(
+//                padding: EdgeInsets.symmetric(horizontal: 5),
+//                decoration: BoxDecoration(
+//                    borderRadius: BorderRadius.circular(20),
+//                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
+//                child: Align(
+//                  alignment: Alignment.center,
+//                  child: Text(S.of(context).review),
+//                ),
+//              ),
+//            ),
+//          ]),
     );
   }
+
+  ExpandableController _controller;
+
+  Widget _createInfoWidget(BuildContext context) {
+
+    var them =  ExpandableThemeData(
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
+        tapBodyToExpand: true,
+        tapBodyToCollapse: false,
+        tapHeaderToExpand: true,
+        hasIcon: true,
+        iconColor: DmConst.accentColor,
+        useInkWell: true
+    );
+    TextStyle ts = Theme.of(context).textTheme.bodyText2;
+
+    return ExpandableNotifier(
+        child: ScrollOnExpand(
+          scrollOnExpand: false,
+          scrollOnCollapse: false,
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: <Widget>[
+                //Product information panel
+                ExpandablePanel(
+                  controller: _controller,
+                  theme: them,
+                  header: Container(
+                    decoration: BoxDecoration(
+                      border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))
+                    ),
+                      child: _createNameRow(context)),
+                  expanded: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Table(
+//                      defaultVerticalAlignment: TableCellVerticalAlignment.fill,
+                        columnWidths: {0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(3),
+                        },
+                      children: [
+                      TableRow( children: [
+                        Text(S.of(context).category, style: ts),
+                        Text(_con.product.name, style: ts),
+                      ]),
+                        TableRow( children: [
+                          Text(S.of(context).brand, style: ts),
+                          Text('${_con.product.brand?.name}', style: ts),
+                        ]),
+                        TableRow( children: [
+                          Text(S.of(context).available, style: ts),
+                          Text('${_con.product.itemsAvailable??''}', style: ts),
+                        ]),
+                        TableRow( children: [
+                          Text(S.of(context).unit, style: ts),
+                          Text('${_con.product.unit??''}', style: ts),
+                        ]),
+                        TableRow( children: [
+                          Text(S.of(context).description, style: ts),
+                          Helper.applyHtml(context, _con.product.description??''),
+//                          Text('${_con.product.description??''}', style: ts),
+                        ])
+                    ],),
+                  ),
+                ),
+                SizedBox(height: 10),
+                //related product panel
+                ExpandablePanel(
+                  theme: them,
+                  header: TitleDivider(title: S.of(context).relatedProducts),
+                  expanded: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: _con.relatedProducts != null
+                      ? ProductGridView(
+                        products: _con.relatedProducts, heroTag: 'related_',)
+                    : Container(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+
 
   Widget _createInfoSpace(BuildContext context) {
     return SliverList(
@@ -279,42 +363,10 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Wrap(
-                  runSpacing: 6,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            _con.product.name,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        Chip(
-                          padding: EdgeInsets.all(0),
-                          label: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(_con.product.rate,
-                                  style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor)),
-                              Icon(
-                                Icons.star_border,
-                                color: DmConst.accentColor,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                          shape: StadiumBorder(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                padding: const EdgeInsets.all(2),
+                child: _createNameRow(context),
               ),
+              Divider(color: DmConst.accentColor, indent: 10, endIndent: 10, height: 2),
               //Options label
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -368,7 +420,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                                         option: _con.product.options
                                             .where((option) => option.optionGroupId == optionGroup.id)
                                             .elementAt(optionIndex),
-                                        onChanged: _con.calculateTotal,
+//                                        onChanged: _con.calculateTotal,
                                       );
                                     },
                                     separatorBuilder: (context, index) {
@@ -441,9 +493,48 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     );
   }
 
+  Row _createNameRow(BuildContext context) {
+    return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _con.product.getTagAssetImage() != null
+                  ? IconButton(padding: EdgeInsets.all(5),
+                      onPressed: null,
+                      icon: Image.asset(_con.product.getTagAssetImage()))
+                  : Container(width: 10),
+                  Expanded(
+                    child: Align( alignment: Alignment.centerLeft,
+                      child: Text(
+                        _con.product.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                  ),
+                  Chip(
+                    padding: EdgeInsets.all(0),
+                    label: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(_con.product.rate,
+                            style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor)),
+                        Icon(
+                          Icons.star_border,
+                          color: DmConst.accentColor,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                    shape: StadiumBorder(),
+                  ),
+                ],
+              );
+  }
+
   void _onTapOnPhoto(Media media) {
     print('-------tap on image ${media?.id}');
-    if(media == null) return;
+    if (media == null) return;
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return ProductPhotoGalleryScreen(
         heroTag: 'img_media_${media.id}',
@@ -497,9 +588,58 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
         : CustomScrollView(
             slivers: <Widget>[
               _createImageSpace(context),
-              _createInfoSpace(context),
-            ],
+//              _createInfoSpace(context),
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                    _createInfoWidget(context),
+                      ])),
+            ]
           );
+  }
+
+  void _onPressOnFav() {
+    if (currentUser.value.isLogin == false) {
+      RouteGenerator.gotoLogin(context);
+    } else {
+      setState(() {
+        this.isFav = !this.isFav;
+      });
+      if(isFav) {
+        _con.addToFavorite(_con.product);
+      } else {
+        Favorite mark;
+        DmState.favorites.forEach((element) {
+          if(element.product.id == productId) {
+            mark = element;
+            _con.removeFromFavorite(element);
+          }
+        });
+
+        if(mark != null) DmState.favorites.remove(mark);
+      }
+    }
+  }
+
+  void _onPressAdd2Cart() {
+    addCart(1);
+  }
+
+  void _onPressIconDecrement () {
+    addCart(-1);
+  }
+  void _onPressIconIncrement () {
+    addCart(1);
+  }
+
+  void addCart(int quantity) {
+    if (currentUser.value.isLogin) {
+      _con.addCartGeneral(productId, quantity);
+      setState(() {
+        amountInCart = math.max<int>(0, amountInCart + quantity);
+      });
+    } else {
+      RouteGenerator.gotoLogin(context, replaceOld: true);
+    }
   }
 }
 
@@ -542,18 +682,14 @@ class _ProductPhotoGalleryScreenState extends State<ProductPhotoGalleryScreen> {
               ),
             ),
             PhotoView(
-              enableRotation: true,
-              imageProvider: NetworkImage(widget.image),
-                heroAttributes: PhotoViewHeroAttributes(
-                  tag: '${widget.heroTag}'
-                )
-            )
+                enableRotation: true,
+                imageProvider: NetworkImage(widget.image),
+                heroAttributes: PhotoViewHeroAttributes(tag: '${widget.heroTag}'))
 //            _buildGallery(context),
 //            _buildContent(context),
           ],
         ));
   }
-
 }
 
 class GalleryItem {

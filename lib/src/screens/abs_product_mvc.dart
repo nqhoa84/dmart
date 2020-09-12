@@ -18,7 +18,7 @@ with SingleTickerProviderStateMixin
 
   ProductController proCon;
   final ScrollController _scrollCon = ScrollController();
-  bool _isLoading = false, canLoadMore = true;
+  bool isLoading = false, canLoadMore = true;
   static const double _endReachedThreshold = 100;
   final int bottomIdx;
   ProductStateMVC({@required this.bottomIdx,
@@ -49,12 +49,12 @@ with SingleTickerProviderStateMixin
   }
 
   void _onScroll() {
-    if (!_scrollCon.hasClients || _isLoading || !canLoadMore) return;
+    if (!_scrollCon.hasClients || isLoading || !canLoadMore) return;
     final thresholdReached = _scrollCon.position.extentAfter < _endReachedThreshold;
     if (thresholdReached) {
-      _isLoading = true;
+      isLoading = true;
       loadMore();
-      _isLoading = false;
+      isLoading = false;
     }
   }
 
@@ -63,9 +63,9 @@ with SingleTickerProviderStateMixin
   void loadMore();
 
   Future<void> _refresh() async {
-    _isLoading = true;
+    isLoading = true;
     onRefresh();
-    _isLoading = false;
+    isLoading = false;
     canLoadMore = true;
   }
 

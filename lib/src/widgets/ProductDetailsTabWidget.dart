@@ -33,34 +33,13 @@ class ProductDetailsTabWidgetState extends StateMVC<ProductDetailsTabWidget> {
   }
   @override
   void initState() {
-    _con.listenForFeaturedProducts();
+//    _con.listenForFeaturedProducts();
   }
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        /*Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.symmetric(vertical: 0),
-            leading: Icon(
-              UiIcons.checked,
-              color: Theme.of(context).hintColor,
-            ),
-            title: Text(
-              S.of(context).store,
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Text(
-            widget.product.store.name,
-          ),
-        ),*/
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: ListTile(
@@ -98,16 +77,8 @@ class ProductDetailsTabWidgetState extends StateMVC<ProductDetailsTabWidget> {
               ),
             ],
           ),
-//          ListTile(
-//            dense: true,
-//            contentPadding: EdgeInsets.symmetric(vertical: 0),
-//            leading: Icon(UiIcons.box),
-//            title: Text(S.of(context).relatedProducts,
-//              style: Theme.of(context).textTheme.headline6,
-//            ),
-//          ),
         ),
-        DmRelatedProductsWidget(productsList: _con.featuredProducts),
+        DmRelatedProductsWidget(productsList: _con.relatedProducts),
       ],
     );
   }

@@ -48,10 +48,10 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
 
   Widget buildContent(BuildContext context) {
     if (_con.categories.isEmpty)  {
-      return CategoriesGridLoading();
+      return NameImageItemGridViewLoading();
     } else
     {
-      return CategoriesGridView(categories: _con.categories);
+      return NameImageItemGridView(items: _con.categories);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }

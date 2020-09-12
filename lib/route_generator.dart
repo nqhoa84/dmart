@@ -142,6 +142,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
       case '/PlaceOrder':
         return MaterialPageRoute(builder: (_) => PlaceOrderScreen());
+      case '/PlaceOrderOK':
+        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Cash on Delivery')));
 
       case '/Tracking':
         return MaterialPageRoute(builder: (_) => TrackingWidget(routeArgument: args as RouteArgument));
@@ -151,12 +153,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PaymentMethodsWidget());
       case '/DeliveryAddresses':
         return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
-      case '/DeliveryPickup':
-        return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
       case '/Checkout'://todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
-      case '/CashOnDelivery':
-        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Cash on Delivery')));
       case '/PayOnPickup':
         return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Pay on Pickup')));
       case '/PayPal':

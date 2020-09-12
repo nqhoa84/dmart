@@ -14,7 +14,7 @@ import '../models/review.dart';
 import '../repository/user_repository.dart';
 
 Future<Stream<Store>> getNearStores(Address myLocation, Address areaLocation) async {
-  Uri uri = Helper.getUri('api/stores');
+  Uri uri = Helper.getApiUri('stores');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
@@ -36,7 +36,7 @@ Future<Stream<Store>> getNearStores(Address myLocation, Address areaLocation) as
 }
 
 Future<Stream<Store>> getPopularStores(Address myLocation) async {
-  Uri uri = Helper.getUri('api/stores');
+  Uri uri = Helper.getApiUri('stores');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
@@ -76,7 +76,7 @@ Future<Stream<Store>> searchStores(String search, Address address) async {
 }
 
 Future<Stream<Store>> getStore(int id, Address address) async {
-  Uri uri = Helper.getUri('api/stores/$id');
+  Uri uri = Helper.getApiUri('stores/$id');
   Map<String, dynamic> _queryParams = {};
   uri = uri.replace(queryParameters: _queryParams);
   try {

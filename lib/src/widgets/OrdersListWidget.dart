@@ -32,7 +32,7 @@ class _OrderListWidgetState extends State<OrdersListWidget> {
                     child:
                     Text('${S.of(context).orderId}: #${widget.orders.elementAt(index).id}')),
                 Text(
-                  '${widget.orders.elementAt(index).orderStatus.status}',
+                  '${widget.orders.elementAt(index).orderStatus}',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],

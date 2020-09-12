@@ -1,16 +1,13 @@
-import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/src/models/ProductType.dart';
 import 'package:dmart/src/models/brand.dart';
 import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/i_name.dart';
-import 'package:dmart/src/screens/pages.dart';
 import 'package:dmart/src/widgets/DmDropDown.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'DmState.dart';
 import 'constant.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -62,38 +59,6 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
   return isFav
       ? Icon(Icons.favorite, color: DmConst.colorFavorite)
       : Icon(Icons.favorite_border, color: DmConst.colorFavorite);
-}
-
-Widget _shoppingCartBadge() {
-  return ValueListenableBuilder(
-      valueListenable: DmState.amountInCart,
-      builder: (context, value, child) {
-        if (value > 0) {
-          return Badge(
-            position: BadgePosition.topRight(top: 0, right: 3),
-            animationDuration: Duration(milliseconds: 300),
-            animationType: BadgeAnimationType.slide,
-            badgeContent: Text('$value', style: TextStyle(color: Colors.white)),
-            child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
-          );
-        } else {
-          return Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown);
-        }
-      });
-//  if (amountBadge > 0) {
-//    return Badge(
-//      position: BadgePosition.topRight(top: 0, right: 3),
-//      animationDuration: Duration(milliseconds: 300),
-//      animationType: BadgeAnimationType.slide,
-//      badgeContent: Text(
-//          amountBadge.toString(),
-//          style: TextStyle(color: Colors.white)
-//      ),
-//      child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
-//    );
-//  } else {
-//    return Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown);
-//  }
 }
 
 Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {

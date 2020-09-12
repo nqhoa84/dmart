@@ -3,7 +3,7 @@ import 'package:dmart/utils.dart';
 import '../../src/models/media.dart';
 import 'i_name.dart';
 
-class Promotion extends SimpleObj{
+class Promotion extends NameImageObj{
   String description;
 
   Promotion();

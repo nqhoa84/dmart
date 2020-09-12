@@ -54,8 +54,6 @@ class _ProductGridViewState extends State<ProductGridView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad,
-          vertical: DmConst.masterHorizontalPad/2),
       child: widget.isList == true
        ? RefreshIndicator(
         onRefresh: onRefresh,

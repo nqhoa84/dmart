@@ -50,21 +50,6 @@ class CartController extends ControllerMVC {
     });
   }
 
-  void listenForCartsCount({String message}) async {
-    final Stream<int> stream = await getCartCount();
-    stream.listen((int _count) {
-      setState(() {
-        this.cartCount = _count;
-      });
-
-    }, onError: (a) {
-      print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
-    }
-    );
-  }
 
   Future<void> refreshCarts() async {
     listenForCarts(message: S.of(context).cartsRefreshedSuccessfully);

@@ -28,9 +28,7 @@ class Product extends IdNameObj{
   List<Media> medias;
   List<OptionGroup> optionGroups;
   List<Review> productReviews;
-  List<SaleTag> saleTags;
 
-  double promotionPrice = 5, originalPrice = 10;
   String currency = '\$';
 
   bool isSpecial4U = false;
@@ -79,6 +77,8 @@ class Product extends IdNameObj{
       print('Error parsing data in Product.fromJSON $e \n $trace');
     }
   }
+
+  num get paidPrice => isPromotion ? discountPrice : price;
 
   convert(Map<String, dynamic> jsonMap){
     id = toInt(jsonMap['id']);
@@ -162,10 +162,21 @@ class Product extends IdNameObj{
   int get hashCode => super.hashCode;
 
   String get getDisplayOriginalPrice =>
-      '$currency ${originalPrice.toStringAsFixed(2)} / $unit';
-  String get getDisplayPromotionPrice => promotionPrice != null
-      ? '$currency ${promotionPrice.toStringAsFixed(2)} / $unit'
+      '$currency ${price.toStringAsFixed(2)} / $unit';
+  String get getDisplayPromotionPrice => discountPrice != null
+      ? '$currency ${discountPrice.toStringAsFixed(2)} / $unit'
       : '';
-}
 
-enum SaleTag { BestSale, NewArrival, Promotion, Special4U }
+  String getTagAssetImage() {
+    if(isPromotion == true)
+      return 'assets/img/Tag_Promotion.png';
+    else if(isBestSale == true)
+      return 'assets/img/Tag_Best_Sale.png';
+    else if(isNewArrival == true)
+      return 'assets/img/Tag_NewArrival.png';
+    else if(isSpecial4U == true)
+      return 'assets/img/Tag_Special4u.png';
+    else
+      return null;
+  }
+}

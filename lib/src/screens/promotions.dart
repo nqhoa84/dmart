@@ -38,7 +38,7 @@ with SingleTickerProviderStateMixin
 
   Widget buildContent(BuildContext context) {
     if (_con.promotions.isEmpty) {
-      return CategoriesGridLoading();
+      return NameImageItemGridViewLoading();
     } else {
       return PromotionsGridView(promotions: _con.promotions);
     }

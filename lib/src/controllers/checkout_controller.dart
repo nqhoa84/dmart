@@ -68,17 +68,11 @@ class CheckoutController extends ControllerMVC {
       Order _order = new Order();
       _order.productOrders = new List<ProductOrder>();
       _order.tax = _cart.product.store.defaultTax;
-      _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : _cart.product.store.deliveryFee;
-      OrderStatus _orderStatus = new OrderStatus();
-      _orderStatus.id = -1; // TODO default order status Id
-      _order.orderStatus = _orderStatus;
-      _order.deliveryAddress =payment.method == 'Pay on Pickup' ? new Address() : settingRepo.deliveryAddress.value;
       _order.hint = ' ';
       ProductOrder _productOrder = new ProductOrder();
       _productOrder.quantity = _cart.quantity;
-      _productOrder.price = _cart.product.price;
+      _productOrder.paidPrice = _cart.product.price;
       _productOrder.product = _cart.product;
-      _productOrder.options = _cart.options;
       _order.productOrders.add(_productOrder);
       orderRepo.addOrder(_order, this.payment).then((value) {
         if (value is Order) {

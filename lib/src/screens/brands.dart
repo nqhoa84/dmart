@@ -41,10 +41,10 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
 
   Widget buildContent(BuildContext context) {
     if (_con.brands.isEmpty)  {
-      return CategoriesGridLoading();
+      return NameImageItemGridViewLoading();
     } else
     {
-      return CategoriesGridView(categories: _con.brands);
+      return NameImageItemGridView(items: _con.brands);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }

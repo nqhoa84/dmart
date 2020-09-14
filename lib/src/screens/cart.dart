@@ -26,6 +26,7 @@ class CartsScreen extends StatefulWidget {
 
 class _CartsScreenState extends ProductStateMVC<CartsScreen>
 {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   _CartsScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
   @override
@@ -90,6 +91,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: bottomIdx),
 //      drawer: DrawerWidget(),
       body: SafeArea(
@@ -129,6 +131,13 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
     );
   }
   void _onPressProcessOrder() {
+    if(DmState.amountInCart.value <= 0) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${S.of(context).yourCartEmpty}',
+              style: TextStyle(color: Colors.red))));
+      return;
+    }
+
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => DeliveryToScreen()));
   }
 }

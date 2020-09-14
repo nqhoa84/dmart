@@ -334,11 +334,13 @@ Future<Favorite> addFavorite(int productId) async {
   favorite.userId = _user.id;
   favorite.product = new Product()..id=productId;
   final String url = '${GlobalConfiguration().getString('api_base_url')}favorites';
+  print(url);
+  print(favorite.toMap());
   try {
     final client = new http.Client();
     final response = await client.post(
       url,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      headers: createHeadersRepo(),
       body: json.encode(favorite.toMap()),
     );
     return favorite;
@@ -351,10 +353,12 @@ Future<Favorite> addFavorite(int productId) async {
 
   removeFavorite(Favorite favorite) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}favorites/${favorite.id}';
+  print('remove fav $url');
+//  print(favorite.toMap());
   try {
     final client = new http.Client();
     final response = await client.delete(url,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      headers: createHeadersRepo(),
     );
 //    return Favorite.fromJSON(json.decode(response.body)['data']);
   } catch (e, trace) {

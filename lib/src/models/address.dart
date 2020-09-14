@@ -45,8 +45,17 @@ class Address extends IdObj {
     }
   }
 
-  String get getFullAddress => '$address $street $ward $district $province';
+  String get getFullAddress => '${address??''}'
+      '${isNullOrEmpty(street) ? '' : ', $street'}'
+      '${isNullOrEmpty(ward) ? '' : ', $ward'}'
+      '${isNullOrEmpty(district) ? '' : ', $district'}'
+      '${isNullOrEmpty(province) ? '' : ', $province'}'
+      '${isNullOrEmpty(description) ? '' : ', \n$description'}'
+  ;
 
+  bool isNullOrEmpty(String str) {
+    return str == null || str.trim().length == 0;
+  }
   bool isUnknown() {
     return latitude == null || longitude == null;
   }

@@ -382,7 +382,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                   subtitle: Text(
-                    S.of(context).select_options_to_add_them_on_the_product,
+                    'select_options_to_add_them_on_the_product',
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),

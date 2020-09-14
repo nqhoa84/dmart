@@ -81,7 +81,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                         color: Theme.of(context).hintColor,
                       ),
                       title: Text(
-                        S.of(context).payment_options,
+                        'payment_options',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline4,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dmart/src/models/user.dart';
+import 'package:intl/intl.dart';
 import './src/repository/user_repository.dart' as userRepo;
 
 
@@ -11,6 +12,16 @@ double toDouble(var obj, {double errorValue = -1}) {
   if(obj is num) return obj.toDouble();
   double v = double.tryParse(obj.toString());
   return v??errorValue;
+}
+
+DateTime toDateTime (var obj, {String format = 'yyyy-MM-dd HH:mm:ss',  DateTime errorValue}) {
+  if(obj == null) return null;
+  if(obj is DateTime) return obj;
+  try {
+    return DateFormat(format).parse(obj.toString());
+  } catch (e) {
+    return null;
+  }
 }
 
 /// Parse a object to int. if error return the [errorValue] data.
@@ -44,4 +55,8 @@ String toStringVal(var obj, {String errorValue = ''}) {
 
 Map<String, String> createHeadersRepo() {
   return createHeaders(userRepo.currentUser.value);
+}
+
+String getDisplayMoney(double value) {
+  return '\$ ${value != null ? value.toStringAsFixed(2) : '0.00'}';
 }

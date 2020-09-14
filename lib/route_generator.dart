@@ -140,10 +140,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
       case '/DeliveryPickup':
         return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
-      case '/PlaceOrder':
-        return MaterialPageRoute(builder: (_) => PlaceOrderScreen());
-      case '/PlaceOrderOK':
-        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Cash on Delivery')));
+
 
       case '/Tracking':
         return MaterialPageRoute(builder: (_) => TrackingWidget(routeArgument: args as RouteArgument));
@@ -155,15 +152,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
       case '/Checkout'://todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
-      case '/PayOnPickup':
-        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: RouteArgument(param: 'Pay on Pickup')));
       case '/PayPal':
         return MaterialPageRoute(builder: (_) => PayPalPaymentWidget(routeArgument: args as RouteArgument));
       case '/RazorPay':
         return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
-      case '/OrderSuccess':
-        return MaterialPageRoute(builder: (_) => OrderSuccessScreen(routeArgument: args as RouteArgument));
-      case '/Help':
+     case '/Help':
         return MaterialPageRoute(builder: (_) => HelpScreen());
       case '/Settings':
         return MaterialPageRoute(builder: (_) => SettingsWidget());

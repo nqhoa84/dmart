@@ -74,7 +74,7 @@ class CheckoutController extends ControllerMVC {
       _productOrder.paidPrice = _cart.product.price;
       _productOrder.product = _cart.product;
       _order.productOrders.add(_productOrder);
-      orderRepo.addOrder(_order, this.payment).then((value) {
+      orderRepo.addOrder(_order).then((value) {
         if (value is Order) {
           setState(() {
             loading = false;

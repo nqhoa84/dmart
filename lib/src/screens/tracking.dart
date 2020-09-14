@@ -166,7 +166,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Text('how_would_you_rate_this_store', style: Theme.of(context).textTheme.subtitle1),
-                          Text(S.of(context).click_on_the_stars_below_to_leave_comments, style: Theme.of(context).textTheme.caption),
+                          Text('click_on_the_stars_below_to_leave_comments', style: Theme.of(context).textTheme.caption),
                           SizedBox(height: 5),
                           FlatButton(
                             onPressed: () {

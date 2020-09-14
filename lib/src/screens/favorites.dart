@@ -1,18 +1,10 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/product.dart';
-import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
-import 'package:dmart/src/widgets/ProductsByCategory.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../buidUI.dart';
 import '../../generated/l10n.dart';
-import '../../src/controllers/product_controller.dart';
-import '../repository/user_repository.dart';
-import '../widgets/PermissionDenied.dart';
 import 'abs_product_mvc.dart';
 
 class FavoritesScreen extends StatefulWidget {

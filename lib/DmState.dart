@@ -1,10 +1,11 @@
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/favorite.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class DmState {
+  static double serviceFeePercent= 0.05, serviceFeeMin = 0, serviceFeeMax=100, vatPercent = 0.1;
   static int bottomBarSelectedIndex = 0;
-
   static ValueNotifier<int> amountInCart = ValueNotifier(0);
   static ValueNotifier<double> cartsValue = ValueNotifier(0.0);
   static List<Cart> carts = [];
@@ -81,11 +82,28 @@ class DmState {
     return f;
   }
 
-  static double calculateTotalMoneyOnCarts() {
+  static double calculateTotalMoneyPaidOnCarts() {
     double re = 0;
     carts.forEach((element) {
       re += element.quantity * element.product.paidPrice;
     });
     return re;
+  }
+
+  static double calculateTotalMoneyBeforeDiscountOnCarts() {
+    double re = 0;
+    carts.forEach((element) {
+      re += element.quantity * element.product.price;
+    });
+    return re;
+  }
+
+  static double calculateDiscountOnCarts() {
+    return calculateTotalMoneyBeforeDiscountOnCarts() - calculateTotalMoneyPaidOnCarts();
+  }
+
+  static double calculateServiceFeeOnCarts() {
+    return math.max(serviceFeeMin,
+        math.min(calculateTotalMoneyPaidOnCarts() * serviceFeePercent, serviceFeeMax));
   }
 }

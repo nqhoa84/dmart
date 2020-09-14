@@ -50,7 +50,7 @@ class ReviewsController extends ControllerMVC {
   void addProductReview(Review _review, Product _product) async {
     productRepo.addProductReview(_review, _product).then((value) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).the_product_has_been_rated_successfully),
+        content: Text('the_product_has_been_rated_successfully'),
       ));
     });
   }
@@ -59,13 +59,13 @@ class ReviewsController extends ControllerMVC {
     brandRepo.addStoreReview(_review, this.order.productOrders[0].product.store).then((value) {
       refreshOrder();
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).the_store_has_been_rated_successfully),
+        content: Text('the_store_has_been_rated_successfully'),
       ));
     });
   }
 
   Future<void> refreshOrder() async {
-    listenForOrder(orderId: order.id, message: S.of(context).reviews_refreshed_successfully);
+    listenForOrder(orderId: order.id, message: 'reviews_refreshed_successfully');
   }
 
   void getProductsOfOrder() {

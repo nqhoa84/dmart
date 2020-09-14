@@ -237,7 +237,7 @@ class ProductController extends ControllerMVC {
     }
   }
 
-  void addToCart(int productId, {int quality = 1}) async {
+  void addToCart(int productId, {int quality = 1, Function(bool) onDone}) async {
     try {
       addCart(productId, quality: quality).then((newCart) {
         setState(() {
@@ -246,19 +246,21 @@ class ProductController extends ControllerMVC {
           DmState.refreshCart(carts);
         });
       }).whenComplete(() {
+        if(onDone != null) onDone(true);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).productAdded2Cart),
         ));
       });
     }  catch (e, trace) {
       print('$e \n $trace');
+      if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).generalErrorMessage),
       ));
     }
   }
 
-  void updateToCart(Cart c){
+  void updateToCart(Cart c, {Function(bool) onDone}){
     try {
       updateCart(c).then((newCart) {
         setState(() {
@@ -267,19 +269,21 @@ class ProductController extends ControllerMVC {
           DmState.refreshCart(carts);
         });
       }).whenComplete(() {
+        if(onDone != null) onDone(true);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).productAdded2Cart),
         ));
       });
     }  catch (e, trace) {
       print('$e \n $trace');
+      if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).generalErrorMessage),
       ));
     }
   }
 
-  void removeFromCart(Cart c){
+  void removeFromCart(Cart c, {Function(bool) onDone}){
     try {
       removeCart(c).then((newCart) {
         setState(() {
@@ -288,35 +292,39 @@ class ProductController extends ControllerMVC {
           DmState.refreshCart(carts);
         });
       }).whenComplete(() {
+        if(onDone != null) onDone(true);
+
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).productAdded2Cart),
         ));
       });
     } catch (e, trace) {
       print('$e \n $trace');
+      if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).generalErrorMessage),
       ));
     }
   }
 
-  void addCartGeneral(int productId, int quantity) {
+  void addCartGeneral(int productId, int quantity, {Function(bool) onDone}) {
     if(quantity > 0) {
-      addToCart(productId, quality: quantity);
+      addToCart(productId, quality: quantity, onDone: onDone);
     } else {
       Cart c = DmState.findCart(productId);
       if(c!= null) {
         c.quantity += quantity;
         if(c.quantity > 0) {
-          updateToCart(c);
+          updateToCart(c, onDone: onDone);
         } else {
-          removeFromCart(c);
+          removeFromCart(c, onDone: onDone);
         }
       }
     }
   }
 
-  void addToFavorite(Product product) async {
+  ///Add one [product] to favorites. function [onDone] is call to inform the result with [isOK] parameter.
+  void addToFavorite(Product product, {Function(bool) onDone}) async {
     var _favorite = new Favorite();
     _favorite.product = product;
 //    _favorite.options = product.options.where((Option _option) {
@@ -328,16 +336,23 @@ class ProductController extends ControllerMVC {
         setState(() {
           DmState.favorites.add(value);
         });
+        if(onDone != null) onDone(true);
+      } else {
+        if(onDone != null) onDone(false);
       }
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('This product was added to favorite'),
-      ));
-    });
+//      scaffoldKey.currentState.showSnackBar(SnackBar(
+//        content: Text('This product was added to favorite'),
+//      ));
+    }
+    );
   }
 
-  void removeFromFavorite(Favorite _favorite) async {
+  void removeFromFavorite(Favorite _favorite, {Function(bool) onDone}) async {
     DmState.favorites.remove(_favorite);
     await removeFavorite(_favorite);
+
+    //todo do something to handle onDone.
+    if(onDone != null) onDone(true);
   }
 
   void listenForProductReviews({int id, String message}) async {

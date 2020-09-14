@@ -11,7 +11,14 @@ import '../repository/user_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import 'DmBottomNavigationBar.dart';
 
-class BottomRightMenu extends StatelessWidget {
+
+class BottomRightMenu extends StatefulWidget {
+  @override
+  _BottomRightMenuState createState() => _BottomRightMenuState();
+}
+
+class _BottomRightMenuState extends State<BottomRightMenu> {
+
   final double _iconSize = 25;
   @override
   Widget build(BuildContext context) {
@@ -98,7 +105,16 @@ class BottomRightMenu extends StatelessWidget {
         ),
         ListTile(
           onTap: () {
-            settingRepo.setDefaultLanguage(Language.khmer.code);
+            print('---------PRESS ON KHMER');
+
+
+            setState(() {
+              settingRepo.setDefaultLanguage(Language.khmer.code);
+              S.load(Locale.fromSubtags(languageCode: 'fr'));
+            });
+
+
+//            AppLocalization
           },
 //            leading: ImageIcon(AssetImage('assets/img/M_Flag_Cambodia.png'), color: DmConst.primaryColor),
           leading: Image.asset('assets/img/M_Flag_Cambodia.png', width: _iconSize, fit: BoxFit.scaleDown),
@@ -106,7 +122,14 @@ class BottomRightMenu extends StatelessWidget {
         ),
         ListTile(
           onTap: () {
-            settingRepo.setDefaultLanguage(Language.english.code);
+            print('---------PRESS ON ENGLISH');
+
+            setState(() {
+              settingRepo.setDefaultLanguage(Language.english.code);
+              S.load(Locale.fromSubtags(languageCode: 'en'));
+            });
+
+
           },
 //            leading: ImageIcon(AssetImage('assets/img/M_Flag_Eng.png'), color: DmConst.primaryColor),
           leading: Image.asset('assets/img/M_Flag_Eng.png', width: _iconSize, fit: BoxFit.scaleDown),

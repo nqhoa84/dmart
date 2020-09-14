@@ -34,6 +34,7 @@ Future<Setting> initSettings() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('settings', json.encode(json.decode(response.body)['data']));
       _setting = Setting.fromJSON(json.decode(response.body)['data']);
+      print('language from share = [${prefs.get('language')}]');
       if (prefs.containsKey('language')) {
         _setting.mobileLanguage = new ValueNotifier(Locale(prefs.get('language'), ''));
       }

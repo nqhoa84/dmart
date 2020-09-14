@@ -11,9 +11,9 @@ import 'intl/messages_all.dart';
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 
 class S {
-  S();
+//  S();
   
-  static S current;
+//  static S current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -23,9 +23,9 @@ class S {
     final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      S.current = S();
-      
-      return S.current;
+      return S();
+//      S.current = S();
+//      return S.current;
     });
   } 
 
@@ -368,16 +368,6 @@ class S {
     return Intl.message(
       'Voucher code',
       name: 'voucherCode',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Voucher applied.`
-  String get voucherApplied {
-    return Intl.message(
-      'Voucher applied.',
-      name: 'voucherApplied',
       desc: '',
       args: [],
     );
@@ -1045,6 +1035,16 @@ class S {
     );
   }
 
+  /// `Select options to add them on the product`
+  String get select_options_to_add_them_on_the_product {
+    return Intl.message(
+      'Select options to add them on the product',
+      name: 'select_options_to_add_them_on_the_product',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Reviews`
   String get reviews {
     return Intl.message(
@@ -1125,6 +1125,16 @@ class S {
     );
   }
 
+  /// `Longpress on the product to add suplements`
+  String get longpress_on_the_product_to_add_suplements {
+    return Intl.message(
+      'Longpress on the product to add suplements',
+      name: 'longpress_on_the_product_to_add_suplements',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notifications`
   String get notifications {
     return Intl.message(
@@ -1200,6 +1210,16 @@ class S {
     return Intl.message(
       'Home',
       name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment Options`
+  String get payment_options {
+    return Intl.message(
+      'Payment Options',
+      name: 'payment_options',
       desc: '',
       args: [],
     );
@@ -1545,16 +1565,6 @@ class S {
     );
   }
 
-  /// `Invalid voucher!`
-  String get invalidVoucher {
-    return Intl.message(
-      'Invalid voucher!',
-      name: 'invalidVoucher',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Your Address`
   String get yourAddress {
     return Intl.message(
@@ -1826,10 +1836,10 @@ class S {
   }
 
   /// `Error! Verify email settings`
-  String get errorVerifyEmail {
+  String get error_verify_email_settings {
     return Intl.message(
       'Error! Verify email settings',
-      name: 'errorVerifyEmail',
+      name: 'error_verify_email_settings',
       desc: '',
       args: [],
     );
@@ -1850,6 +1860,46 @@ class S {
     return Intl.message(
       'You must sign-in to access to this section',
       name: 'youMustSignToSeeThisSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us about this product`
+  String get tell_us_about_this_product {
+    return Intl.message(
+      'Tell us about this product',
+      name: 'tell_us_about_this_product',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The store has been rated successfully`
+  String get the_store_has_been_rated_successfully {
+    return Intl.message(
+      'The store has been rated successfully',
+      name: 'the_store_has_been_rated_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The product has been rated successfully`
+  String get the_product_has_been_rated_successfully {
+    return Intl.message(
+      'The product has been rated successfully',
+      name: 'the_product_has_been_rated_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviews refreshed successfully!`
+  String get reviews_refreshed_successfully {
+    return Intl.message(
+      'Reviews refreshed successfully!',
+      name: 'reviews_refreshed_successfully',
       desc: '',
       args: [],
     );
@@ -1940,6 +1990,16 @@ class S {
     return Intl.message(
       'Km',
       name: 'km',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `mi`
+  String get mi {
+    return Intl.message(
+      'mi',
+      name: 'mi',
       desc: '',
       args: [],
     );
@@ -2085,6 +2145,26 @@ class S {
     );
   }
 
+  /// `Click on the stars below to leave comments`
+  String get click_on_the_stars_below_to_leave_comments {
+    return Intl.message(
+      'Click on the stars below to leave comments',
+      name: 'click_on_the_stars_below_to_leave_comments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to confirm your address and pay or Long press to edit your address`
+  String get click_to_confirm_your_address_and_pay_or_long_press {
+    return Intl.message(
+      'Click to confirm your address and pay or Long press to edit your address',
+      name: 'click_to_confirm_your_address_and_pay_or_long_press',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This email account exists`
   String get emailAccountExists {
     return Intl.message(
@@ -2198,11 +2278,14 @@ class S {
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
+//  final Locale overriddenLocale;
+//  const AppLocalizationDelegate(this.overriddenLocale);
 
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'kh'),
     ];
   }
 
@@ -2211,7 +2294,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   @override
   Future<S> load(Locale locale) => S.load(locale);
   @override
-  bool shouldReload(AppLocalizationDelegate old) => false;
+  bool shouldReload(LocalizationsDelegate<S> old) => false;
 
   bool _isSupported(Locale locale) {
     if (locale != null) {

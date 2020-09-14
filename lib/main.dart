@@ -11,6 +11,7 @@ import 'src/helpers/app_config.dart' as config;
 import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
+import 'package:intl/intl.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +28,16 @@ class Dmart extends StatefulWidget {
 }
 
 class _DmartState extends State<Dmart> {
+//  AppLocalizationDelegate _localeOverrideDelegate =
+//  AppLocalizationDelegate(Locale('fr', 'US'));
+
   @override
   void initState() {
-    settingRepo.initSettings();
+    settingRepo.initSettings().whenComplete(() {
+      setState(() {
+
+      });
+    });
     settingRepo.getCurrentLocation();
     userRepo.getCurrentUser();
 
@@ -46,9 +54,9 @@ class _DmartState extends State<Dmart> {
 
       initialRoute: '/Splash',
       onGenerateRoute: RouteGenerator.generateRoute,
-      debugShowCheckedModeBanner: true,
-//      locale: settingRepo.setting.value.mobileLanguage.value,
-      locale: Locale('en', ''),
+      debugShowCheckedModeBanner: false,
+      locale: settingRepo.setting.value.mobileLanguage.value,
+//      locale: Locale('en', ''),
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -65,7 +73,11 @@ class _DmartState extends State<Dmart> {
         iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
         buttonTheme: ButtonThemeData(minWidth: 25, height: 25,
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            shape: StadiumBorder(),
+//            shape: StadiumBorder(),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+//                side: BorderSide(color: Colors.red)
+            ),
             buttonColor: DmConst.accentColor,
             textTheme: ButtonTextTheme.primary
         ),

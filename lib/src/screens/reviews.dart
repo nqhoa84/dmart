@@ -225,7 +225,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.all(12),
-                                      hintText: S.of(context).tell_us_about_this_product,
+                                      hintText: 'tell_us_about_this_product',
                                       hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
                                       border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.1))),
                                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),

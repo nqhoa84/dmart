@@ -101,7 +101,7 @@ class UserController extends ControllerMVC {
         } else {
           loader.remove();
           scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).error_verify_email_settings),
+            content: Text(S.of(context).errorVerifyEmail),
           ));
         }
       }).whenComplete(() {

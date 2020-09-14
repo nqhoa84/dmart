@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:dmart/src/controllers/order_controller.dart';
 import 'package:dmart/src/controllers/user_controller.dart';
+import 'package:dmart/src/models/DateSlot.dart';
 import 'package:dmart/src/models/order.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/screens/place_order.dart';
@@ -44,18 +45,28 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
   UserController _con;
   DatePickerController _datePickerController = DatePickerController();
 
-  Address deliverAdd = Address();
-
   Order newOrder = Order();
+  DateSlot currentDateSlot;
+  double deliverFee = 1.5;
+  OrderController _orderCon = OrderController();
   _DeliveryToScreenState() : super(UserController()) {
     _con = controller;
   }
 
   @override
   void initState() {
-    _con.listenForDeliveryAddresses(onComplete: () {
-      deliverAdd = getDeliverAddr();
+    currentDateSlot = DateSlot();
+    newOrder.expectedDeliverDate = DateTime.now();
+    _orderCon.listenForDeliverSlot(date: DateTime.now()).then((value) {
+      setState(() {
+        currentDateSlot = value;
+      });
     });
+    _con.listenForDeliveryAddresses(onComplete: () {
+      newOrder.deliveryAddress = getDeliverAddr();
+    });
+
+
     super.initState();
   }
 
@@ -114,10 +125,10 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                     title: const Text('Use this address'),
                     leading: Radio<Address>(
                       value: a,
-                      groupValue: this.deliverAdd,
+                      groupValue: newOrder.deliveryAddress,
                       onChanged: (value) {
                         setState(() {
-                          this.deliverAdd = value;
+                          newOrder.deliveryAddress = value;
                         });
                       },
                     ),
@@ -132,7 +143,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
               }, child: Text('OK'),
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 color: DmConst.accentColor,
-                shape: StadiumBorder(),
+//                shape: StadiumBorder(),
               );
             }
           },
@@ -151,8 +162,31 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       ),
     );
   }
+
   void _onPressedOnDeliveryInfo() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlaceOrderScreen()));
+    if(newOrder.deliveryAddress == null || !newOrder.deliveryAddress.isValid) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${S.of(context).invalidAddress}',
+              style: TextStyle(color: Colors.red))));
+      return;
+    }
+    if(newOrder.expectedDeliverSlotTime == null || newOrder.expectedDeliverSlotTime < 0) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${S.of(context).invalidDeliveryDateTime}',
+              style: TextStyle(color: Colors.red))));
+      return;
+    }
+
+    if(DmState.amountInCart.value <= 0) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${S.of(context).yourCartEmpty}',
+              style: TextStyle(color: Colors.red))));
+      return;
+    }
+
+    newOrder.deliveryFee = deliverFee;
+    newOrder.applyCarts(DmState.carts);
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlaceOrderScreen(this.newOrder)));
   }
 
   Widget buildContent(BuildContext context) {
@@ -180,7 +214,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: buildDeliverInfo(context, deliverAdd)),
+                child: buildDeliverInfo(context, newOrder.deliveryAddress)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(title: S.of(context).selectDeliveryTime),
@@ -202,9 +236,13 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                     style: TextStyle(color: DmConst.accentColor),
                     keyboardType: TextInputType.multiline, maxLines: 3,
                     onSaved: (input) {
-                      print('afddf _con.user.email = input');
+                      newOrder.hint = input;
+                      print('newOrder.hint = ${newOrder.hint}');
                     },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+                    onChanged: (value){
+                      newOrder.hint = value;
+                      print('newOrder.hint = ${newOrder.hint}');
+                    },
                     decoration: new InputDecoration(
 //                              hintText: S.of(context).emailAddress,
 //                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
@@ -250,15 +288,23 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                   children: [
                     _createDatePiker(context),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createRowSelectDeliveryTime('10:00 - 12:00', 0, 1.5),
+                    _createRowSelectDeliveryTime('08:00 - 10:00', isFull: !currentDateSlot.is1slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 1),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createRowSelectDeliveryTime('12:00 - 14:00', 1, 1.5),
+                    _createRowSelectDeliveryTime('10:00 - 12:00', isFull: !currentDateSlot.is2slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 2),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createRowSelectDeliveryTime('14:00 - 16:00', -10, 1.5),
+                    _createRowSelectDeliveryTime('12:00 - 14:00', isFull: !currentDateSlot.is3slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 3),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createRowSelectDeliveryTime('16:00 - 18:00', -10, 1.5),
+                    _createRowSelectDeliveryTime('14:00 - 16:00', isFull: !currentDateSlot.is4slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 4),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createRowSelectDeliveryTime('18:00 - 20:00', -10, 1.5),
+                    _createRowSelectDeliveryTime('16:00 - 18:00', isFull: !currentDateSlot.is5slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 5),
+                    Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
+                    _createRowSelectDeliveryTime('18:00 - 20:00', isFull: !currentDateSlot.is6slotOK,
+                        diFee: deliverFee, timeSlotOfThisButton: 6),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                   ],
                 ),
@@ -272,11 +318,11 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                 padding: EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    _createDeliveryRow(context, '${S.of(context).fullName}', "${address.fullName}"),
+                    _createDeliveryRow(context, '${S.of(context).fullName}', "${address?.fullName}"),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createDeliveryRow(context, '${S.of(context).phone}', '${address.phoneNumber}'),
+                    _createDeliveryRow(context, '${S.of(context).phone}', '${address?.phoneNumber}'),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createDeliveryRow(context, '${S.of(context).address}', '${address.getFullAddress}'),
+                    _createDeliveryRow(context, '${S.of(context).address}', '${address?.getFullAddress}'),
                   ],
                 ),
               );
@@ -295,18 +341,32 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 //        DateTime.now().add(Duration(days: 4)),
 //        DateTime.now().add(Duration(days: 7))
 //      ],
-      onDateChange: (selectedDate) {
-        // New date selected
-        setState(() {
-//          DateTime selectedValue = date;
-          print(selectedDate);
-        });
-      },
+      onDateChange: _onSelectedDateChanged,
     );
   }
 
-  Widget _createRowSelectDeliveryTime(String strTime, int status, double diFee) {
-    if (status == 0) {
+  void _onSelectedDateChanged(DateTime selectedDate) {
+    _orderCon.listenForDeliverSlot(date: selectedDate).then((value) {
+      setState(() {
+        newOrder.expectedDeliverDate = selectedDate;
+        if((newOrder.expectedDeliverSlotTime == 1 && !value.is1slotOK)
+        || (newOrder.expectedDeliverSlotTime == 2 && !value.is2slotOK)
+            || (newOrder.expectedDeliverSlotTime == 3 && !value.is3slotOK)
+            || (newOrder.expectedDeliverSlotTime == 4 && !value.is4slotOK)
+            || (newOrder.expectedDeliverSlotTime == 5 && !value.is5slotOK)
+            || (newOrder.expectedDeliverSlotTime == 6 && !value.is6slotOK)
+        ) {
+          newOrder.expectedDeliverSlotTime = -1;
+        }
+        currentDateSlot = value;
+      });
+    });
+  }
+
+//  DateTime selectedDeliverDate;
+//  int selectedDeliverSlot;
+  Widget _createRowSelectDeliveryTime(String strTime, {bool isFull = false, double diFee = 1.5, int timeSlotOfThisButton}) {
+    if (isFull) {
       return Row(
         children: [
           Expanded(flex: 7, child: Text('$strTime')),
@@ -315,42 +375,47 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
               child: OutlineButton(onPressed: null, child: Text(S.of(context).full), color: DmConst.accentColor)),
         ],
       );
-    } else if (status > 0) {
-      // selected
-      return Row(
-        children: [
-          Expanded(flex: 7, child: Text('$strTime')),
-          Expanded(
-            flex: 3,
-            child: FlatButton(
-                onPressed: () {
-                  print('Press on button');
-                },
-                color: Theme.of(context).accentColor,
-                child: Text('\$ ${diFee.toStringAsFixed(2)}')),
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Expanded(flex: 7, child: Text('$strTime')),
-          Expanded(
+    } else  {
+      if (newOrder.expectedDeliverSlotTime == timeSlotOfThisButton) {
+        // selected
+        return Row(
+          children: [
+            Expanded(flex: 7, child: Text('$strTime')),
+            Expanded(
               flex: 3,
-              child: OutlineButton(
+              child: FlatButton(
                   onPressed: () {
-                    print('Press on button');
+                    setState(() {
+                      newOrder.expectedDeliverSlotTime = timeSlotOfThisButton;
+                    });
                   },
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
-                  child: Text(
-                    '\$ ${diFee.toStringAsFixed(2)}',
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  ))),
-        ],
-      );
+                  color: Theme.of(context).accentColor,
+                  child: Text('\$ ${diFee.toStringAsFixed(2)}')),
+            ),
+          ],
+        );
+      } else {
+        return Row(
+          children: [
+            Expanded(flex: 7, child: Text('$strTime')),
+            Expanded(
+                flex: 3,
+                child: OutlineButton(
+                    onPressed: () {
+                      setState(() {
+                        newOrder.expectedDeliverSlotTime = timeSlotOfThisButton;
+                      });
+                    },
+                    borderSide: BorderSide(color: Theme.of(context).accentColor),
+                    child: Text(
+                      '\$ ${diFee.toStringAsFixed(2)}',
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ))),
+          ],
+        );
+      }
     }
   }
-
 
   Widget _createDeliveryRow(BuildContext context, String text1, String text2, {bool isBold = false}) {
     if(isBold)

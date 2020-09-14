@@ -78,6 +78,7 @@ class Product extends IdNameObj{
     }
   }
 
+  ///get the smaller value of [promotion price and original price]
   num get paidPrice => isPromotion ? discountPrice : price;
 
   convert(Map<String, dynamic> jsonMap){

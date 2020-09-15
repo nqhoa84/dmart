@@ -33,6 +33,116 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Created`
+  String get created {
+    return Intl.message(
+      'Created',
+      name: 'created',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Approved`
+  String get approved {
+    return Intl.message(
+      'Approved',
+      name: 'approved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Denied`
+  String get denied {
+    return Intl.message(
+      'Denied',
+      name: 'denied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Canceled`
+  String get canceled {
+    return Intl.message(
+      'Canceled',
+      name: 'canceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preparing`
+  String get preparing {
+    return Intl.message(
+      'Preparing',
+      name: 'preparing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivering`
+  String get delivering {
+    return Intl.message(
+      'Delivering',
+      name: 'delivering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivered`
+  String get delivered {
+    return Intl.message(
+      'Delivered',
+      name: 'delivered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DeliverFailed`
+  String get deliverFailed {
+    return Intl.message(
+      'DeliverFailed',
+      name: 'deliverFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rejected`
+  String get rejected {
+    return Intl.message(
+      'Rejected',
+      name: 'rejected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmed`
+  String get confirmed {
+    return Intl.message(
+      'Confirmed',
+      name: 'confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get unknown {
+    return Intl.message(
+      'Unknown',
+      name: 'unknown',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Phnom penh`
   String get phnompenh {
     return Intl.message(
@@ -263,10 +373,10 @@ class S {
     );
   }
 
-  /// `My orders`
+  /// `My order`
   String get myOrder {
     return Intl.message(
-      'My orders',
+      'My order',
       name: 'myOrder',
       desc: '',
       args: [],
@@ -1445,6 +1555,46 @@ class S {
     );
   }
 
+  /// `You have not bought any product.`
+  String get yourBoughtProductsEmpty {
+    return Intl.message(
+      'You have not bought any product.',
+      name: 'yourBoughtProductsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have no pending order.`
+  String get yourPendingOrdersEmpty {
+    return Intl.message(
+      'You have no pending order.',
+      name: 'yourPendingOrdersEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have no confirmed order.`
+  String get yourConfirmedOrdersEmpty {
+    return Intl.message(
+      'You have no confirmed order.',
+      name: 'yourConfirmedOrdersEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have no order.`
+  String get yourOrdersEmpty {
+    return Intl.message(
+      'You have no order.',
+      name: 'yourOrdersEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not a valid number`
   String get invalidNumber {
     return Intl.message(
@@ -2075,16 +2225,6 @@ class S {
     );
   }
 
-  /// `Unknown`
-  String get unknown {
-    return Intl.message(
-      'Unknown',
-      name: 'unknown',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `This email account exists`
   String get emailAccountExists {
     return Intl.message(
@@ -2150,36 +2290,6 @@ class S {
     return Intl.message(
       'Unpaid',
       name: 'unpaid',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Shipped`
-  String get shipped {
-    return Intl.message(
-      'Shipped',
-      name: 'shipped',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `On the Way`
-  String get delivering {
-    return Intl.message(
-      'On the Way',
-      name: 'delivering',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Preparing`
-  String get preparing {
-    return Intl.message(
-      'Preparing',
-      name: 'preparing',
       desc: '',
       args: [],
     );

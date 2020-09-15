@@ -173,11 +173,6 @@ class ProductController extends ControllerMVC {
     });
   }
 
-  //todo need api and change to that new api.
-  void listenForBoughtProducts({Function() onDone}) async {
-    print('listenForBoughtProducts called');
-  }
-
   int _promoPageIdx = 1;
   ///if [nextPage] is true, this will load the next page, store on [promotionProducts] and move pageIndex one step up.
   ///if [nextPage] is FALSE, this will refresh the [promotionProducts].

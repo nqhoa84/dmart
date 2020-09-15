@@ -25,6 +25,8 @@ class Order extends IdObj {
 //  DateTime dateTime; //??
   User user;
 
+  DateTime createdDate;
+
   String get voucherCode => voucher != null ? (voucher.code ?? '') : '';
   double voucherDiscount = 0;
 
@@ -54,22 +56,57 @@ class Order extends IdObj {
 
   Order({int id, this.orderStatus}) : super(id: id);
 
+  /*
+   "id": 3,
+                "user_id": 1,
+                "order_status_id": 3,
+                "tax": 10,
+                "delivery_fee": 5,
+                "hint": "",
+                "active": true,
+                "driver_id": null,
+                "delivery_address_id": 18,
+                "expected_delivery_date": "2020-09-10 00:00:00",
+                "expected_delivery_slot": 3,
+                "note": "note",
+                "service_fee": 1,
+                "voucher_code": "",
+                "voucher_fee": 0,
+   */
   Order.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
+      int statusId = toInt(jsonMap['id'], errorValue: -1);
+      if(statusId >= 0 && statusId < OrderStatus.values.length) {
+          this.orderStatus = OrderStatus.values[statusId];
+      } else this.orderStatus = OrderStatus.Unknown;
+
       tax = toDouble(jsonMap['tax'], errorValue: 0);
       deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 0);
       serviceFee = toDouble(jsonMap['service_fee'], errorValue: 0);
+
+      voucherDiscount = toDouble(jsonMap['voucher_fee'], errorValue: 0);
+      this.voucher = Voucher();
+      this.voucher.code = toStringVal(jsonMap['voucher_code'], errorValue: '');
+
       note = jsonMap['hint'] ?? '';
-      expectedDeliverDate = DateTime.tryParse(jsonMap['expectedDeliverDate']) ?? DateTime.now();
-      expectedDeliverSlotTime = toInt(jsonMap['expectedDeliverSlotTime']);
-      updatedAt = DateTime.tryParse(jsonMap['updated_at']) ?? DateTime.now();
+      expectedDeliverDate = toDateTime(jsonMap['expected_delivery_date'], errorValue: null);
+      expectedDeliverSlotTime = toInt(jsonMap['expected_delivery_slot']);
+      updatedAt = toDateTime(jsonMap['updated_at'], errorValue: null);
+      createdDate = toDateTime(jsonMap['created_at'], errorValue: null);
 //      voucherCode = toStringVal(jsonMap['tax']);
       deliveryAddress =
           jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : new Address();
       productOrders = jsonMap['product_orders'] != null
           ? List.from(jsonMap['product_orders']).map((element) => ProductOrder.fromJSON(element)).toList()
           : [];
+
+      _totalItems = 0;
+      _orderVal = 0;
+      productOrders.forEach((element) {
+        _totalItems += element.quantity;
+        _orderVal += element.quantity * element.paidPrice;
+      });
     } catch (e, trace) {
       id = -1;
       tax = 0.0;

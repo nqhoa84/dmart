@@ -29,7 +29,9 @@ Future<Stream<Order>> getOrders() async {
 //  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}orders?with=productOrders;productOrders.product;orderStatus;deliveryAddress&orderBy=id&sortedBy=desc';
+      '${GlobalConfiguration().getString('api_base_url')}orders?with=productOrders;productOrders.product;deliveryAddress&orderBy=id&sortedBy=desc';
+
+  print('getOrders $url');
   var req = http.Request('get', Uri.parse(url));
   req.headers.addAll(createHeadersRepo());
   final streamedRest = await http.Client().send(req);
@@ -38,8 +40,10 @@ Future<Stream<Order>> getOrders() async {
       .transform(utf8.decoder)
       .transform(json.decoder)
       .map((data) => Helper.getData(data))
+      .map((data) => Helper.getData(data))
       .expand((data) => (data as List))
       .map((data) {
+        print(data);
     return Order.fromJSON(data);
   });
 }

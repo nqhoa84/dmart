@@ -167,7 +167,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ContactUsScreen());
 
       case '/MyOrders':
-        return MaterialPageRoute(builder: (_) => OrderScreen());
+        return MaterialPageRoute(builder: (_) => OrdersScreen());
       case '/Promotion':
         return MaterialPageRoute(builder: (_) => PromotionScreen(routeArgument: args as RouteArgument));
 

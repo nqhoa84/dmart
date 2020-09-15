@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/DateSlot.dart';
 import 'package:dmart/src/models/cart.dart';
+import 'package:dmart/src/models/order_status.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/models/product_order.dart';
 import 'package:dmart/src/models/voucher.dart';
@@ -12,16 +13,12 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../models/order.dart';
 import '../repository/order_repository.dart';
+import 'controller.dart';
 
-class OrderController extends ControllerMVC {
-  List<Order> orders = <Order>[];
-  List<Order> ordersUnpaid = <Order>[];
-  List<Order> ordersDelivered = <Order>[];
-  List<Order> ordersOnTheWay = <Order>[];
-  List<Order> ordersPreparing = <Order>[];
-
-//  Voucher voucher;
-  GlobalKey<ScaffoldState> scaffoldKey;
+class OrderController extends Controller {
+  List<Order> historyOrders = <Order>[];
+  List<Order> confirmedOrders = <Order>[];
+  List<Order> pendingOrders = <Order>[];
 
   List<Product> boughtProducts;
 
@@ -46,30 +43,37 @@ class OrderController extends ControllerMVC {
   void listenForOrders({String message}) async {
     final Stream<Order> stream = await getOrders();
     stream.listen((Order _order) {
-      setState(() {
-        orders.add(_order);
-        // TODO
-//        if(_order.orderStatus.id=='5') ordersDelivered.add(_order);
-//        if(_order.payment.status!='Paid') ordersUnpaid.add(_order);
-//        if(_order.orderStatus.id=='4') ordersOnTheWay.add(_order);
-//        if(_order.orderStatus.id=='3') ordersPreparing.add(_order);
-      });
+      if(_order.isValid) {
+        setState(() {
+          historyOrders.add(_order);
+          switch(_order.orderStatus) {
+            case OrderStatus.Created :
+              pendingOrders.add(_order);
+              break;
+            case OrderStatus.Approved :
+            case OrderStatus.Preparing :
+            case OrderStatus.Delivering :
+            case OrderStatus.DeliverFailed :
+            confirmedOrders.add(_order);
+              break;
+          }
+        });
+      }
+
     }, onError: (a) {
       print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
+      showError(S.of(context).verifyYourInternetConnection);
     }, onDone: () {
       if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
+        showError(message);
       }
     });
   }
 
   Future<void> refreshOrders() async {
-    orders.clear();
+    historyOrders.clear();
+    confirmedOrders.clear();
+    pendingOrders.clear();
     listenForOrders(message: S.of(context).orderRefreshedSuccessfully);
   }
 

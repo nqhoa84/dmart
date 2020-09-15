@@ -19,9 +19,11 @@ import 'i_name.dart';
 //  }
 //}
 enum OrderStatus {
-  Created, Approved, Denied, Canceled, Preparing, Delivering,
+  Created, Approved, Denied, Canceled, Preparing,
+  Delivering,
   //= (paid, completed)
   Delivered ,
   DeliverFailed,
-  Rejected
+  Rejected, Confirmed,
+  Unknown
 }

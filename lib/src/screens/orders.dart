@@ -12,6 +12,7 @@ import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:dmart/src/widgets/ProductsByCategory.dart';
+import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -88,7 +89,7 @@ class _OrderScreenState extends StateMVC<OrderScreen> {
                     ),
                     _con.boughtProducts.isEmpty
                         ? Center(child: CircularProgressIndicator())
-                        : createGridViewOfProducts(context, _con.boughtProducts)
+                        : ProductGridView(products: _con.boughtProducts, heroTag: 'boughPro')
                     //todo change to bought products from api
                     // ProductsByCategory(category: Category(id: '1', name: 'Bought', description: 'Many kinds of fruits'))
                   ]),

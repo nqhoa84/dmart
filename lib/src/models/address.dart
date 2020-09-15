@@ -6,7 +6,7 @@ import '../../generated/l10n.dart';
 import '../../utils.dart';
 
 class Address extends IdObj {
-  String fullName, phoneNumber;
+  String fullName, phone;
   String province, district, ward, street, address = 'A215, duong C8, f Tay thanh, Q. tan phu ';
   String description;
 
@@ -17,18 +17,35 @@ class Address extends IdObj {
   int userId;
 
   Address();
-
+/*{
+            "id": 16,
+            "description": "test address 1",
+            "address": "01 ABC, Ward 1, Dist 1, Phnomphenh",
+            "province_id": 1,
+            "district_id": 1,
+            "ward_id": 1,
+            "street": "01 ABC",
+            "phone": "8550987654321",
+            "latitude": 1234.32432,
+            "longitude": 211.12321,
+            "is_default": true,
+            "user_id": 1,
+            "created_at": "2020-09-14 08:27:11",
+            "updated_at": "2020-09-14 08:27:11",
+            "custom_fields": []
+        },
+ */
   Address.fromJSON(Map<String, dynamic> map) {
     try {
       id = toInt(map['id']);
-      fullName = map["full_name"] ?? 'n q h ';
-      phoneNumber = map["phone_number"] ?? '0988848066';
-      province = map["province"] ?? 'quang nam';
-      district = map["district"] ?? 'tam ky';
-      ward = map["ward"] ?? 'tam thai';
-      street = map["street"] ?? 'c8';
-      address = map["address"] ?? 'addr';
-      description = map["description"] ?? 'desc';
+      description = map["description"] ?? '';
+      address = map["address"] ?? '';
+      province = map["province"] ?? '';
+      district = map["district"] ?? '';
+      ward = map["ward"] ?? '';
+      street = map["street"] ?? '';
+      phone = map["phone"] ?? '';
+      fullName = map["full_name"] ?? '';
       latitude = toDouble(map["latitude"], errorValue: null);
       longitude = toDouble(map["longitude"], errorValue: null);
       isDefault = map["isDefault"] ?? false;

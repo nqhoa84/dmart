@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:intl/intl.dart';
 import './src/repository/user_repository.dart' as userRepo;
@@ -22,6 +23,18 @@ DateTime toDateTime (var obj, {String format = 'yyyy-MM-dd HH:mm:ss',  DateTime 
   } catch (e) {
     return null;
   }
+}
+
+String toDateStr(DateTime date){
+  if(date == null) return '';
+
+  return DmConst.dateFormatter.format(date);
+}
+
+String toDateTimeStr(DateTime dateTime){
+  if(dateTime == null) return '';
+
+  return DmConst.datetimeFormatter.format(dateTime);
 }
 
 /// Parse a object to int. if error return the [errorValue] data.

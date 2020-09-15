@@ -147,9 +147,9 @@ Future<User> update(User user) async {
 }
 
 Future<Stream<Address>> getAddresses() async {
-//  final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?search=user_id:${userRepo.currentUser.value.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
+      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?'
+      'search=user_id:${userRepo.currentUser.value.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
   print(url);
   var req = http.Request('get', Uri.parse(url));
   req.headers.addAll(createHeadersRepo());

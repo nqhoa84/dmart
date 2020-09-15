@@ -19,30 +19,28 @@ class OrderController extends ControllerMVC {
   List<Order> ordersDelivered = <Order>[];
   List<Order> ordersOnTheWay = <Order>[];
   List<Order> ordersPreparing = <Order>[];
+
 //  Voucher voucher;
   GlobalKey<ScaffoldState> scaffoldKey;
 
-  List<Product> boughtProducts = [];
+  List<Product> boughtProducts;
 
   Order order;
 
   OrderController();
 
   void listenForBoughtProducts({Function() onDone}) async {
-    print(' listenForBoughtProducts on order controller called. ${boughtProducts.length}');
-//    final Stream<Product> stream = await getProductsByCategory(1,1);
-//    boughtProducts.clear();
-//    stream.listen((Product _product) {
-//      setState(() {
-//        boughtProducts.add(_product);
-//        print('----------- ${_product.id}');
-//      });
-//    }, onError: (a) {
-//      print(a);
-//    }, onDone: (){
-//      print(' onDone boughtProducts ${boughtProducts.length}');
-//    }
-//    );
+    final Stream<Product> stream = await getBoughtProducts();
+    boughtProducts = [];
+    stream.listen((Product _product) {
+      setState(() {
+        boughtProducts.add(_product);
+        print('boughtProduct - ${_product.id}');
+      });
+    }, onError: (a) {
+      print(a);
+    }, onDone: onDone
+    );
   }
 
   void listenForOrders({String message}) async {
@@ -100,6 +98,7 @@ class OrderController extends ControllerMVC {
   }
 
   List<DateSlot> dateSlots = [];
+
   Future<DateSlot> listenForDeliverSlot({DateTime date}) async {
 //    final Stream<DateSlot> stream = await getDeliverSlots(date);
     var ds = findDateSlot(date);
@@ -137,4 +136,26 @@ class OrderController extends ControllerMVC {
     return re;
   }
 
+  bool checkOrderBeforePost() {
+    return order != null &&
+        order.totalItems > 0 &&
+        order.orderVal > 0 &&
+        order.expectedDeliverDate != null &&
+        order.expectedDeliverSlotTime >= 0;
+  }
+
+  bool isSavingOrder = false;
+
+  Future<Order> saveOrder({String errMsg, String successMsg}) {
+    return saveNewOrder(order);
+    isSavingOrder = true;
+    saveNewOrder(order).then((value) {
+      return value;
+    }).catchError((err) {
+      if (errMsg != null) showError(errMsg);
+      isSavingOrder = false;
+    }).whenComplete(() {
+      isSavingOrder = false;
+    });
+  }
 }

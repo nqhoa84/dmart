@@ -116,51 +116,9 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       );
   }
 
-  DateFormat fmt = DateFormat.yMMMd('en_US').add_Hm();
-
-  Widget _createSummaryContainer2(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: DmState.cartsValue,
-        builder: (context, value, child) {
-          double orderVal = DmState.calculateTotalMoneyPaidOnCarts();
-          double serFee = DmState.calculateServiceFeeOnCarts();
-          double deliverFee = _con.order.deliveryFee;
-//          double discount = _con.order.voucherDiscount;
-          double total = orderVal + serFee + deliverFee - _con.order.voucherDiscount;
-          double vat = total * DmState.vatPercent;
-          double grandTotal = total + vat;
-          return Container(
-            decoration: createRoundedBorderBoxDecoration(),
-            padding: EdgeInsets.all(8),
-            child: Column(
-              children: [
-                _createSummaryRow(context, S.of(context).date, fmt.format(DateTime.now())),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).totalItems, '${DmState.amountInCart.value}'),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).orderValue, getDisplayMoney(orderVal), isBold: true),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).serviceFee, getDisplayMoney(serFee)),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).deliveryFee, getDisplayMoney(deliverFee)),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).discount, getDisplayMoney(_con.order.voucherDiscount)),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).total, getDisplayMoney(total), isBold: true),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).VAT, getDisplayMoney(vat)),
-                Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                _createSummaryRow(context, S.of(context).grandTotal.toUpperCase(), getDisplayMoney(grandTotal),
-                    isBold: true),
-              ],
-            ),
-          );
-        });
-  }
-
   Widget _createSummaryContainer(BuildContext context) {
 //    double orderVal = DmState.calculateTotalMoneyPaidOnCarts();
-    double serFee = DmState.calculateServiceFeeOnCarts();
+//    double serFee = DmState.calculateServiceFeeOnCarts();
 //    double deliverFee = _con.order.deliveryFee;
 //          double discount = _con.order.voucherDiscount;
 //    double total = orderVal + serFee + deliverFee - _con.order.voucherDiscount;
@@ -171,7 +129,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createSummaryRow(context, S.of(context).date, fmt.format(DateTime.now())),
+          _createSummaryRow(context, S.of(context).date, toDateTimeStr(DateTime.now())),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           _createSummaryRow(context, S.of(context).totalItems, '${_con.order.totalItems}'),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
@@ -203,7 +161,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
           _createSummaryRow(context, S.of(context).fullName, widget.order.deliveryAddress.fullName,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).phone, widget.order.deliveryAddress.phoneNumber,
+          _createSummaryRow(context, S.of(context).phone, widget.order.deliveryAddress.phone,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           _createSummaryRow(context, S.of(context).date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
@@ -249,11 +207,23 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
     );
   }
 
-  void onPressedOnPlaceOrder() {
+
+  bool isSavingOrder = false;
+  Future<void> onPressedOnPlaceOrder() async {
     print('onPressedOnPlaceOrder--------');
 //    Navigator.of(context).pushReplacementNamed('/OrderSuccess');
-    DmState.refreshCart([]);
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => OrderSuccessScreen(_con.order)));
+    if(isSavingOrder) return;
+    isSavingOrder = true;
+
+    if(_con.checkOrderBeforePost()) {
+      Order savedOrder = await _con.saveOrder();
+      if(savedOrder != null && savedOrder.id > 0) {
+        DmState.refreshCart([]);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)));
+      }
+    }
+
+    isSavingOrder = false;
   }
 
   Widget _createDatePiker(BuildContext context) {

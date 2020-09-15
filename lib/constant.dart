@@ -30,7 +30,12 @@ class DmConst {
 
   static const double masterHorizontalPad = 10;
 
+  ///'assets/img/H_Logo_Dmart.png'
   static const String assetImgLogo = 'assets/img/H_Logo_Dmart.png';
+
+  ///'assets/img/H_Cart.png'
   static const String assetImgCart = 'assets/img/H_Cart.png';
+
+  ///'assets/img/H_User_Icon.png'
   static const String assetImgUserIcon = 'assets/img/H_User_Icon.png';
 }

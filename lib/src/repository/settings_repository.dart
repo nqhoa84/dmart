@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/src/models/order_setting.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -27,10 +29,14 @@ Future<Setting> initSettings() async {
   Setting _setting;
   final String url = '${GlobalConfiguration().getString('api_base_url')}settings';
   print('initSettings $url');
-  final response = await http.get(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+  final response = await http.get(url, headers: createHeadersRepo());
 //  print('response.body ${response.body}');
   if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
     if (json.decode(response.body)['data'] != null) {
+
+
+
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('settings', json.encode(json.decode(response.body)['data']));
       _setting = Setting.fromJSON(json.decode(response.body)['data']);
@@ -52,6 +58,22 @@ Future<Setting> initSettings() async {
 //    return Setting.fromJSON({});
 //  }
   return setting.value;
+}
+
+Future<OrderSetting> listenOrderSetting() async {
+  //vouchers/check?code=quI3mJB5mT
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}order_settings';
+  print(url);
+
+  http.Response res = await http.get(url, headers: createHeadersRepo());
+  var result = json.decode(res.body);
+  print(result);
+  if(result['success'] == true) {
+    return OrderSetting.fromJSON(result['data']);
+  } else {
+    return null;
+  }
 }
 
 Future<dynamic> setCurrentLocation() async {

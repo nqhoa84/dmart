@@ -36,12 +36,13 @@ class ProductOrder extends IdObj {
     }
   }
 
+  ///{id:2, quantity: 1},
   Map toMap() {
     var map = new Map<String, dynamic>();
-    map["id"] = id;
-    map["price"] = paidPrice;
+//    map["id"] = id;
+//    map["price"] = paidPrice;
     map["quantity"] = quantity;
-    map["product_id"] = product.id;
+    map["id"] = product.id;
 //    map["options"] = options.map((element) => element.id).toList();
     return map;
   }

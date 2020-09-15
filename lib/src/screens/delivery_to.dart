@@ -236,12 +236,12 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                     style: TextStyle(color: DmConst.accentColor),
                     keyboardType: TextInputType.multiline, maxLines: 3,
                     onSaved: (input) {
-                      newOrder.hint = input;
-                      print('newOrder.hint = ${newOrder.hint}');
+                      newOrder.note = input;
+                      print('newOrder.hint = ${newOrder.note}');
                     },
                     onChanged: (value){
-                      newOrder.hint = value;
-                      print('newOrder.hint = ${newOrder.hint}');
+                      newOrder.note = value;
+                      print('newOrder.hint = ${newOrder.note}');
                     },
                     decoration: new InputDecoration(
 //                              hintText: S.of(context).emailAddress,
@@ -320,7 +320,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                   children: [
                     _createDeliveryRow(context, '${S.of(context).fullName}', "${address?.fullName}"),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-                    _createDeliveryRow(context, '${S.of(context).phone}', '${address?.phoneNumber}'),
+                    _createDeliveryRow(context, '${S.of(context).phone}', '${address?.phone}'),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createDeliveryRow(context, '${S.of(context).address}', '${address?.getFullAddress}'),
                   ],

@@ -1,8 +1,12 @@
+import 'package:dmart/constant.dart';
+import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/repository/user_repository.dart';
+import 'package:dmart/src/repository/user_repository.dart' as userRepo;
+import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../DmState.dart';
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,9 +17,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends StateMVC<SplashScreen> {
+//  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   SplashScreenController _con;
 
-  SplashScreenState() : super(SplashScreenController()) {
+  bool _userLoaded = false, _settingLoaded = false;
+
+  SplashScreenState() : super(SplashScreenController(scaffoldKey: GlobalKey<ScaffoldState>())) {
     _con = controller;
   }
 
@@ -23,11 +31,34 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   void initState() {
     super.initState();
 //    loadData();
-    Future.delayed(Duration(seconds: 3), () {
-      //Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
-      RouteGenerator.gotoHome(context);
-    });
+    Future.delayed(Duration(seconds: 2), () async {
+      userRepo.getCurrentUser().whenComplete(() {
+        _userLoaded = true;
+        if (_userLoaded && _settingLoaded) {
+          RouteGenerator.gotoHome(context);
+        }
+      });
 
+      settingRepo.listenOrderSetting().then((value) {
+        DmState.orderSetting = value;
+        print('Order Setting: $value');
+      }).whenComplete(() {
+        _settingLoaded = true;
+        if(_userLoaded && _settingLoaded) {
+          RouteGenerator.gotoHome(context);
+        }
+      });
+//      DmState.orderSetting = await settingRepo.listenOrderSetting();
+//      print('Order Setting: ${DmState.orderSetting}');
+//      _settingLoaded = true;
+//      if (_userLoaded && _settingLoaded) {
+//        RouteGenerator.gotoHome(context);
+//      }
+    });
+  }
+
+  void onError(FlutterErrorDetails errDetail) {
+    _con.showErr(S.of(context).verifyYourInternetConnection);
   }
 
   void loadData() {
@@ -35,14 +66,12 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       double progress = 0;
       _con.progress.value.values.forEach((_progress) {
         progress += _progress;
-        print ('progress $progress');
+        print('progress $progress');
       });
       if (progress >= 100) {
         Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
       }
     });
-
-
   }
 
   @override
@@ -60,13 +89,13 @@ class SplashScreenState extends StateMVC<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/img/H_Logo_Dmart.png',
+                DmConst.assetImgLogo,
                 width: 150,
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 50),
               CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).hintColor),
+                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
               ),
             ],
           ),

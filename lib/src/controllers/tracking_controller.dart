@@ -52,7 +52,7 @@ class TrackingController extends ControllerMVC {
         content: SizedBox(
             width: double.infinity,
             child: Text(
-              '${Helper.skipHtml(order.hint)}',
+              '${Helper.skipHtml(order.note)}',
             )),
         isActive: false,
       ));

@@ -5,16 +5,19 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
-class Controller extends AppConMVC {
+class Controller extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKey;
-  Controller() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
+  Controller({this.scaffoldKey});
+
+  void showErr(String msg) {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text('$msg'),
+    ));
   }
 
-  @override
-  void initState() {
-    settingRepo.initSettings();
-    settingRepo.getCurrentLocation();
-    userRepo.getCurrentUser();
+  void showMsg(String msg) {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text('$msg'),
+    ));
   }
 }

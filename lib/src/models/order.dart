@@ -15,14 +15,17 @@ class Order extends IdObj {
   OrderStatus orderStatus = OrderStatus.Created; //create = post, cancel = put
   double tax;
   double deliveryFee, serviceFee;
-  String hint;
+  String note;
   DateTime expectedDeliverDate;
+  ///from 1-6, 8:00 to 20:00 of day.
   int expectedDeliverSlotTime;
   DateTime updatedAt;
   Address deliveryAddress;
+
 //  DateTime dateTime; //??
   User user;
-  String voucherCode;
+
+  String get voucherCode => voucher != null ? (voucher.code ?? '') : '';
   double voucherDiscount = 0;
 
   Voucher voucher;
@@ -34,17 +37,18 @@ class Order extends IdObj {
   double totalBeforeTax;
 
   double grandTotal;
+
 //  Payment payment;
 
-  String get getFullName  {
-    return deliveryAddress != null ? deliveryAddress.fullName??'' : '';
+  String get getFullName {
+    return deliveryAddress != null ? deliveryAddress.fullName ?? '' : '';
   }
 
-  String get getPhone  {
-    return deliveryAddress != null ? deliveryAddress.phoneNumber??'' : '';
+  String get getPhone {
+    return deliveryAddress != null ? deliveryAddress.phone ?? '' : '';
   }
 
-  String get getAddress  {
+  String get getAddress {
     return deliveryAddress != null ? deliveryAddress.getFullAddress : '';
   }
 
@@ -56,11 +60,11 @@ class Order extends IdObj {
       tax = toDouble(jsonMap['tax'], errorValue: 0);
       deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 0);
       serviceFee = toDouble(jsonMap['service_fee'], errorValue: 0);
-      hint = jsonMap['hint']??'';
-      expectedDeliverDate = DateTime.tryParse(jsonMap['expectedDeliverDate'])??DateTime.now();
+      note = jsonMap['hint'] ?? '';
+      expectedDeliverDate = DateTime.tryParse(jsonMap['expectedDeliverDate']) ?? DateTime.now();
       expectedDeliverSlotTime = toInt(jsonMap['expectedDeliverSlotTime']);
-      updatedAt = DateTime.tryParse(jsonMap['updated_at'])??DateTime.now();
-      voucherCode = toStringVal(jsonMap['tax']);
+      updatedAt = DateTime.tryParse(jsonMap['updated_at']) ?? DateTime.now();
+//      voucherCode = toStringVal(jsonMap['tax']);
       deliveryAddress =
           jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : new Address();
       productOrders = jsonMap['product_orders'] != null
@@ -70,7 +74,7 @@ class Order extends IdObj {
       id = -1;
       tax = 0.0;
       deliveryFee = 0.0;
-      hint = '';
+      note = '';
       deliveryAddress = new Address();
       productOrders = [];
       print('Error parsing data in Order.fromJSON $e \n $trace');
@@ -99,29 +103,44 @@ class Order extends IdObj {
         slot = '18:00-20:00';
         break;
     }
-   return '${DmConst.dateFormatter.format(this.expectedDeliverDate)}, $slot';
+    return '${DmConst.dateFormatter.format(this.expectedDeliverDate)}, $slot';
   }
 
   int get totalItems => _totalItems.round();
 
   double get orderVal => _orderVal;
 
+  /*
+  products: {[{id:1, quantity: 1}, {id:2, quantity: 1}, {id:3, quantity: 5, }]}
+tax: 10
+voucher_code: ABCXYZ123
+service_fee: 100
+delivery_fee: 10
+expected_delivery_date: yyyy-mm-dd
+expected_delivery_slot
+total: 1000
+   */
   Map toMap() {
-      var map = new Map<String, dynamic>();
-      map["id"] = id;
-//    map["user_id"] = user?.id;
-//    map["order_status_id"] = orderStatus?.id;
-      map["tax"] = tax;
-      map["delivery_fee"] = deliveryFee;
-      map["products"] = productOrders.map((element) => element.toMap()).toList();
-//    map["payment"] = payment?.toMap();
-      map["delivery_address"] = deliveryAddress.toMap();
-      return map;
-    }
+    var map = new Map<String, dynamic>();
+    map["id"] = id;
+    map["products"] = productOrders.map((element) => element.toMap()).toList();
+    map["tax"] = tax.toStringAsFixed(2);
+    map["voucher_code"] = voucherCode ?? '';
+    map["service_fee"] = serviceFee.toStringAsFixed(2);
+    map["delivery_fee"] = deliveryFee.toStringAsFixed(2);
+    map["expected_delivery_date"] = toDateStr(expectedDeliverDate);
+    map["expected_delivery_slot"] = expectedDeliverSlotTime;
+    map["total"] = grandTotal.toStringAsFixed(2);
+    map["delivery_address"] = deliveryAddress.toMap();
+    map["note"] = note ?? '';
+    return map;
+  }
 
   void clearProducts() {
-    if(productOrders != null) productOrders.clear();
-    else productOrders = [];
+    if (productOrders != null)
+      productOrders.clear();
+    else
+      productOrders = [];
   }
 
   void applyCarts(List<Cart> carts) {
@@ -136,7 +155,7 @@ class Order extends IdObj {
     _recalculate();
   }
 
-  void _recalculate(){
+  void _recalculate() {
     _totalItems = 0;
     _orderVal = 0;
     this.productOrders.forEach((element) {
@@ -144,26 +163,27 @@ class Order extends IdObj {
       _orderVal += element.quantity * element.product.paidPrice;
     });
 
-    serviceFee = math.max(DmState.serviceFeeMin,
-        math.min(_orderVal * DmState.serviceFeePercent, DmState.serviceFeeMax));
+    serviceFee =
+        math.max(DmState.orderSetting.serviceFeeMin,
+            math.min(_orderVal * DmState.orderSetting.serviceFeePercent, DmState.orderSetting.serviceFeeMax));
     voucherDiscount = _calculateVoucherDiscount();
     totalBeforeTax = _orderVal + serviceFee + deliveryFee - voucherDiscount;
-    tax = DmState.vatPercent * totalBeforeTax;
+    tax = DmState.orderSetting.vatTaxPercent * totalBeforeTax;
     grandTotal = totalBeforeTax + tax;
   }
 
-  double _calculateVoucherDiscount () {
-    if(voucher == null) return 0;
+  double _calculateVoucherDiscount() {
+    if (voucher == null) return 0;
     double re = 0;
-    if(voucher.minOrderValue != null && voucher.minOrderValue > orderVal) {
+    if (voucher.minOrderValue != null && voucher.minOrderValue > orderVal) {
       return 0;
     }
 
-    if(voucher!= null && voucher.isValid) {
-      if(voucher.isFixedDiscount) {
+    if (voucher != null && voucher.isValid) {
+      if (voucher.isFixedDiscount) {
         return math.max(0, voucher.value);
       } else {
-        if(voucher.maxDiscount != null && voucher.maxDiscount > 0) {
+        if (voucher.maxDiscount != null && voucher.maxDiscount > 0) {
           return math.min(voucher.maxDiscount, math.max(0, voucher.value * orderVal));
         } else {
           return math.max(0, voucher.value * orderVal);

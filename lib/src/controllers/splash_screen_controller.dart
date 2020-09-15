@@ -10,17 +10,14 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
+import 'controller.dart';
 
-class SplashScreenController extends ControllerMVC with ChangeNotifier {
+class SplashScreenController extends Controller with ChangeNotifier {
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
-  GlobalKey<ScaffoldState> scaffoldKey;
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
-  SplashScreenController() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    // Should define these variables before the app loaded
-    progress.value = {"Setting": 0, "User": 0};
-  }
+  SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super(scaffoldKey: scaffoldKey);
+
   @override
   void initState() {
     super.initState();
@@ -43,8 +40,6 @@ class SplashScreenController extends ControllerMVC with ChangeNotifier {
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
     });
-
-
   }
 
   void configureFirebase(FirebaseMessaging _firebaseMessaging) {

@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/DateSlot.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/models/voucher.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
@@ -69,6 +69,28 @@ Future<Stream<Order>> getOrder(orderId) async {
       .map((data) {
     return Order.fromJSON(data);
   });
+}
+
+Future<Order> saveNewOrder(Order order) async {
+  User _user = userRepo.currentUser.value;
+  if (_user.isLogin == false) {
+    return null;
+  }
+
+  final String url = '${GlobalConfiguration().getString('api_base_url')}orders';
+  print('saveNewOrder $url \n map-para ${order.toMap()}');
+  final response = await http.Client().post(
+    url,
+    headers: createHeadersRepo(),
+    body: json.encode(order.toMap()),
+  );
+  print('saveNewOrder ${response.body}');
+  dynamic js = json.decode(response.body);
+  if (js["success"] != null && js["success"] == true) {
+    return Order.fromJSON(js['data']);
+  } else {
+    return null;
+  }
 }
 
 Future<Stream<Order>> getRecentOrders() async {
@@ -188,3 +210,22 @@ Future<DateSlot> getDeliverSlots(DateTime date) async {
   }
 }
 
+
+Future<Stream<Product>> getBoughtProducts() async {
+
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}boughs?with=productOrders;productOrders.product;orderStatus;deliveryAddress&orderBy=id&sortedBy=desc';
+  var req = http.Request('get', Uri.parse(url));
+  req.headers.addAll(createHeadersRepo());
+  final streamedRest = await http.Client().send(req);
+
+  return streamedRest.stream
+      .transform(utf8.decoder)
+      .transform(json.decoder)
+      .map((data) => Helper.getData(data))
+      .map((data) => Helper.getData(data))
+      .expand((data) => (data as List))
+      .map((data) {
+    return Product.fromJSON(data);
+  });
+}

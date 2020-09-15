@@ -38,8 +38,8 @@ class _DmartState extends State<Dmart> {
 
       });
     });
-    settingRepo.getCurrentLocation();
-    userRepo.getCurrentUser();
+//    settingRepo.getCurrentLocation();
+
 
     super.initState();
   }

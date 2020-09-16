@@ -47,7 +47,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 
   Order newOrder = Order();
   DateSlot currentDateSlot;
-  double deliverFee = 1.5;
+//  double deliverFee = 1.5;
   OrderController _orderCon = OrderController();
   _DeliveryToScreenState() : super(UserController()) {
     _con = controller;
@@ -184,7 +184,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       return;
     }
 
-    newOrder.deliveryFee = deliverFee;
+    newOrder.applyDeliveryFee(DmState.orderSetting.deliveryFee);
     newOrder.applyCarts(DmState.carts);
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlaceOrderScreen(this.newOrder)));
   }
@@ -289,22 +289,22 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                     _createDatePiker(context),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('08:00 - 10:00', isFull: !currentDateSlot.is1slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 1),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 1),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('10:00 - 12:00', isFull: !currentDateSlot.is2slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 2),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 2),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('12:00 - 14:00', isFull: !currentDateSlot.is3slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 3),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 3),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('14:00 - 16:00', isFull: !currentDateSlot.is4slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 4),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 4),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('16:00 - 18:00', isFull: !currentDateSlot.is5slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 5),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 5),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                     _createRowSelectDeliveryTime('18:00 - 20:00', isFull: !currentDateSlot.is6slotOK,
-                        diFee: deliverFee, timeSlotOfThisButton: 6),
+                        diFee: DmState.orderSetting.deliveryFee, timeSlotOfThisButton: 6),
                     Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
                   ],
                 ),

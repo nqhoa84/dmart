@@ -40,10 +40,22 @@ class Address extends IdObj {
       id = toInt(map['id']);
       description = map["description"] ?? '';
       address = map["address"] ?? '';
-      province = map["province"] ?? '';
-      district = map["district"] ?? '';
-      ward = map["ward"] ?? '';
-      street = map["street"] ?? '';
+      try {
+        province = map["province"]['name'] ?? '';
+      } on Exception catch (e) {
+        province = '';
+      }
+      try {
+        district = map["district"]['name'] ?? '';
+      } on Exception catch (e) {
+        district = '';
+      }
+      try {
+        ward = map["ward"]['name'] ?? '';
+      } on Exception catch (e) {
+        ward = '';
+      }
+      street = toStringVal(map["street"]);
       phone = map["phone"] ?? '';
       fullName = map["full_name"] ?? '';
       latitude = toDouble(map["latitude"], errorValue: null);

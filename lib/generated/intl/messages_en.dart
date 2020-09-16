@@ -203,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
     "searchForProducts" : MessageLookupByLibrary.simpleMessage("Search for products"),
+    "searchResultEmpty" : MessageLookupByLibrary.simpleMessage("Search result is empty."),
     "selectDeliveryTime" : MessageLookupByLibrary.simpleMessage("Select delivery time"),
     "sendLink" : MessageLookupByLibrary.simpleMessage("Send link"),
     "serviceFee" : MessageLookupByLibrary.simpleMessage("Service fee"),

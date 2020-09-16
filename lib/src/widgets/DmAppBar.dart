@@ -212,10 +212,7 @@ class _DmAppBarState extends State<DmAppBar> {
               Divider(height: 4, thickness: 2, color: DmConst.accentColor),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-                child: SearchBar(onClickFilter: (event) {
-                  print('alfjfsafdf SearchBar(onClickFilter: (event)');
-//                  scaffoldKey.currentState.openEndDrawer();
-                }),
+                child: SearchBar( ),
               ),
 //                GridView.count(
 //                  scrollDirection: Axis.horizontal,

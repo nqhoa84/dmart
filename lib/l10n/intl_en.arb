@@ -161,6 +161,7 @@
   "yourPendingOrdersEmpty": "You have no pending order.",
   "yourConfirmedOrdersEmpty": "You have no confirmed order.",
   "yourOrdersEmpty": "You have no order.",
+  "searchResultEmpty": "Search result is empty.",
   "invalidNumber": "Not a valid number",
   "invalidDate": "Not a valid date",
   "invalidDeliveryDateTime": "Not a valid delivery date & time",

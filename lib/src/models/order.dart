@@ -13,9 +13,7 @@ import 'i_name.dart';
 class Order extends IdObj {
   List<ProductOrder> productOrders = [];
   OrderStatus orderStatus = OrderStatus.Created; //create = post, cancel = put
-  double tax;
-  double deliveryFee, serviceFee;
-  String note;
+
   DateTime expectedDeliverDate;
   ///from 1-6, 8:00 to 20:00 of day.
   int expectedDeliverSlotTime;
@@ -28,17 +26,16 @@ class Order extends IdObj {
   DateTime createdDate;
 
   String get voucherCode => voucher != null ? (voucher.code ?? '') : '';
-  double voucherDiscount = 0;
 
   Voucher voucher;
 
-  double _totalItems;
+  double _totalItems = 0;
+  double _orderVal = 0, _serviceFee = 0, _deliveryFee = 0, _voucherDiscount = 0;
+  double _totalBeforeTax = 0;
+  double _tax = 0;
+  double _grandTotal;
 
-  double _orderVal;
-
-  double totalBeforeTax;
-
-  double grandTotal;
+  String note;
 
 //  Payment payment;
 
@@ -76,18 +73,20 @@ class Order extends IdObj {
   Order.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      int statusId = toInt(jsonMap['id'], errorValue: -1);
-      if(statusId >= 0 && statusId < OrderStatus.values.length) {
-          this.orderStatus = OrderStatus.values[statusId];
+      int statusId = toInt(jsonMap['order_status_id'], errorValue: -1);
+      if(statusId > 0 && statusId <= OrderStatus.values.length) {
+          this.orderStatus = OrderStatus.values[statusId-1];
       } else this.orderStatus = OrderStatus.Unknown;
 
-      tax = toDouble(jsonMap['tax'], errorValue: 0);
-      deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 0);
-      serviceFee = toDouble(jsonMap['service_fee'], errorValue: 0);
-
-      voucherDiscount = toDouble(jsonMap['voucher_fee'], errorValue: 0);
+      _tax = toDouble(jsonMap['tax'], errorValue: 0);
+      _deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 0);
+      _serviceFee = toDouble(jsonMap['service_fee'], errorValue: 0);
+      _voucherDiscount = toDouble(jsonMap['voucher_fee'], errorValue: 0);
       this.voucher = Voucher();
       this.voucher.code = toStringVal(jsonMap['voucher_code'], errorValue: '');
+      _orderVal = toDouble(jsonMap['order_value'], errorValue: 0);
+      _grandTotal = toDouble(jsonMap['total'], errorValue: 0);
+      _totalBeforeTax = _grandTotal - _tax;
 
       note = jsonMap['hint'] ?? '';
       expectedDeliverDate = toDateTime(jsonMap['expected_delivery_date'], errorValue: null);
@@ -102,15 +101,13 @@ class Order extends IdObj {
           : [];
 
       _totalItems = 0;
-      _orderVal = 0;
+//      _orderVal = 0;
       productOrders.forEach((element) {
         _totalItems += element.quantity;
-        _orderVal += element.quantity * element.paidPrice;
+//        _orderVal += element.quantity * element.paidPrice;
       });
     } catch (e, trace) {
       id = -1;
-      tax = 0.0;
-      deliveryFee = 0.0;
       note = '';
       deliveryAddress = new Address();
       productOrders = [];
@@ -122,7 +119,7 @@ class Order extends IdObj {
     String slot = '';
     switch (this.expectedDeliverSlotTime) {
       case 1:
-        slot = '8:00-10:00';
+        slot = '08:00-10:00';
         break;
       case 2:
         slot = '10:00-12:00';
@@ -145,7 +142,19 @@ class Order extends IdObj {
 
   int get totalItems => _totalItems.round();
 
-  double get orderVal => _orderVal;
+  double get orderVal => _orderVal??0;
+
+  double get tax => _tax??0;
+
+  double  get serviceFee => _serviceFee??0;
+
+  double get deliveryFee => _deliveryFee??0;
+
+  double get grandTotal => _grandTotal??0;
+
+  double get voucherDiscount => _voucherDiscount??0;
+
+  double get totalBeforeTax => _totalBeforeTax??0;
 
   /*
   products: {[{id:1, quantity: 1}, {id:2, quantity: 1}, {id:3, quantity: 5, }]}
@@ -163,12 +172,13 @@ total: 1000
     map["products"] = productOrders.map((element) => element.toMap()).toList();
     map["tax"] = tax.toStringAsFixed(2);
     map["voucher_code"] = voucherCode ?? '';
-    map["service_fee"] = serviceFee.toStringAsFixed(2);
-    map["delivery_fee"] = deliveryFee.toStringAsFixed(2);
+    map["voucher_fee"] = (voucherDiscount ?? 0).toStringAsFixed(5);
+    map["service_fee"] = serviceFee.toStringAsFixed(5);
+    map["delivery_fee"] = deliveryFee.toStringAsFixed(5);
     map["expected_delivery_date"] = toDateStr(expectedDeliverDate);
     map["expected_delivery_slot"] = expectedDeliverSlotTime;
-    map["total"] = grandTotal.toStringAsFixed(2);
-    map["delivery_address"] = deliveryAddress.toMap();
+    map["total"] = grandTotal.toStringAsFixed(5);
+    map["delivery_address_id"] = deliveryAddress.id;
     map["note"] = note ?? '';
     return map;
   }
@@ -199,14 +209,18 @@ total: 1000
       _totalItems += element.quantity;
       _orderVal += element.quantity * element.product.paidPrice;
     });
+    _orderVal = _orderVal;
+    _serviceFee = math.max(DmState.orderSetting.serviceFeeMin,
+        math.min(_orderVal * DmState.orderSetting.serviceFeePercent, DmState.orderSetting.serviceFeeMax));
+    _voucherDiscount = math.min(_orderVal, _calculateVoucherDiscount());
+    _totalBeforeTax = _orderVal + serviceFee + deliveryFee - voucherDiscount;
+    _tax = DmState.orderSetting.vatTaxPercent * _totalBeforeTax;
+    _grandTotal = _totalBeforeTax + tax;
+  }
 
-    serviceFee =
-        math.max(DmState.orderSetting.serviceFeeMin,
-            math.min(_orderVal * DmState.orderSetting.serviceFeePercent, DmState.orderSetting.serviceFeeMax));
-    voucherDiscount = _calculateVoucherDiscount();
-    totalBeforeTax = _orderVal + serviceFee + deliveryFee - voucherDiscount;
-    tax = DmState.orderSetting.vatTaxPercent * totalBeforeTax;
-    grandTotal = totalBeforeTax + tax;
+  double _round(double value) {
+    return value;
+//    return (value * 100000.0).roundToDouble() / 100000.0;
   }
 
   double _calculateVoucherDiscount() {
@@ -232,6 +246,11 @@ total: 1000
 
   void applyVoucher(Voucher voucher) {
     this.voucher = voucher;
+    _recalculate();
+  }
+
+  void applyDeliveryFee(double fee) {
+    _deliveryFee = fee;
     _recalculate();
   }
 }

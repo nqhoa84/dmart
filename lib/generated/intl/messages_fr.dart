@@ -203,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("រក្សាទុក"),
     "search" : MessageLookupByLibrary.simpleMessage("ស្វែងរក"),
     "searchForProducts" : MessageLookupByLibrary.simpleMessage("ស្វែងរកផលិតផល"),
+    "searchResultEmpty" : MessageLookupByLibrary.simpleMessage("លទ្ធផលស្វែងរកគឺទទេ"),
     "selectDeliveryTime" : MessageLookupByLibrary.simpleMessage("ជ្រើសរើសពេលវេលាចែកចាយ"),
     "sendLink" : MessageLookupByLibrary.simpleMessage("ផ្ញើតំណ"),
     "serviceFee" : MessageLookupByLibrary.simpleMessage("ថ្លៃ​សេវា"),

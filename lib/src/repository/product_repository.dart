@@ -17,8 +17,6 @@ import '../models/review.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-
-
 Future<Stream<Product>> getTrendingProducts() async {
   Uri uri = Helper.getApiUri('products');
   Map<String, dynamic> _queryParams = {};
@@ -37,7 +35,12 @@ Future<Stream<Product>> getTrendingProducts() async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -52,7 +55,12 @@ Future<Stream<Product>> getProducts() async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -65,13 +73,19 @@ Future<Stream<Product>> getProduct(int productId) async {
   Uri uri = Helper.getApiUri('products/$productId');
   uri = uri.replace(queryParameters: {
     'with': 'store;category;brand;options;optionGroups;productReviews;productReviews.user',
-    'search':'itemsAvailable:0',
-    'searchFields':'itemsAvailable:<>'
+    'search': 'itemsAvailable:0',
+    'searchFields': 'itemsAvailable:<>'
   });
+
+
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -80,18 +94,37 @@ Future<Stream<Product>> getProduct(int productId) async {
   }
 }
 
-Future<Stream<Product>> searchProducts(String search) async {
-  Uri uri = Helper.getApiUri('products');
-  uri = uri.replace(queryParameters: {
-    'search': 'name:$search;description:$search;itemsAvailable:0',
-    'searchFields': 'name:like;description:like;itemsAvailable:<>',
-    'limit': '5',
-  });
-  try {
-    final client = new http.Client();
-    final streamedRest = await client.send(http.Request('get', uri));
+Future<Stream<Product>> searchProducts(String search, {int page = 1}) async {
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+//  Uri uri = Helper.getApiUri('products');
+//  uri = uri.replace(queryParameters: {
+//    'search': '$search',
+//    'page':'$page',
+//    'searchFields': 'name:like;description:like;brand.name:like;category.name:like;itemsAvailable:<>',
+//    'limit': '5',
+//  });
+//search=aaaaaa&searchFields=name;brand.name:like;category.name:like&page=2
+  //'search=name:abc;description:abc;itemsAvailable:0&searchFields=name:like;description:like;itemsAvailable:<>'
+
+  http://dmart.khmermedia.xyz/api/v1/products?search=Vegetables&searchFields=name:like;description:like;brand.name:like;category.name:like
+
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}products?search=$search&page=$page&searchFields=name:like;description:like;brand.name:like;category.name:like';
+
+  print('$url');
+
+  try {
+    var req = Request('get', Uri.parse(url));
+    req.headers.addAll(createHeadersRepo());
+    final streamedRest = await http.Client().send(req);
+
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -99,14 +132,15 @@ Future<Stream<Product>> searchProducts(String search) async {
     return new Stream.value(new Product.fromJSON({}));
   }
 }
-
 
 Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async {
   print('---getProductsByCategory called in Product repository');
   Uri uri = Helper.getApiUri('products');
 
-  uri = uri.replace(queryParameters: {'page': '$pageIdx',
-    'with': 'store', 'search':'category_id:$categoryId;itemsAvailable:0',
+  uri = uri.replace(queryParameters: {
+    'page': '$pageIdx',
+    'with': 'store',
+    'search': 'category_id:$categoryId;itemsAvailable:0',
     'searchFields': 'category_id:=;itemsAvailable:<>',
     'searchJoin': 'and'
   });
@@ -129,10 +163,13 @@ Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
         .map((data) => Helper.getData(data))
         .map((data) => Helper.getData(data))
-        .expand((data) => (data as List)).map((data) {
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -150,17 +187,22 @@ Future<Stream<Product>> getProductsByPromotion(int promotionId, int pageIdx) asy
     final client = new http.Client();
     StreamedResponse streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
         .map((data) {
 //          print('data $data');
-      return Helper.getData(data);
+          return Helper.getData(data);
 //      return data['data']['products'];
-    }).map((event) {
+        })
+        .map((event) {
 //      print('event $event');
-      return Helper.getProducts(event);
-    }).expand((data) => (data as List)).map((data) {
-      return Product.fromJSON(data);
-    });
+          return Helper.getProducts(event);
+        })
+        .expand((data) => (data as List))
+        .map((data) {
+          return Product.fromJSON(data);
+        });
   } catch (e, trace) {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
@@ -168,22 +210,21 @@ Future<Stream<Product>> getProductsByPromotion(int promotionId, int pageIdx) asy
 }
 
 Future<Stream<Product>> getRelatedProducts(int productId) async {
-    final String url =
-        '${GlobalConfiguration().getString('api_base_url')}related_products/$productId';
-    print('getRelatedProducts $url');
+  final String url = '${GlobalConfiguration().getString('api_base_url')}related_products/$productId';
+  print('getRelatedProducts $url');
 
-    var req = http.Request('get', Uri.parse(url));
-    req.headers.addAll(createHeadersRepo());
-    final streamedRest = await http.Client().send(req);
+  var req = http.Request('get', Uri.parse(url));
+  req.headers.addAll(createHeadersRepo());
+  final streamedRest = await http.Client().send(req);
 
-    return streamedRest.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .map((data) => Helper.getData(data))
-        .expand((data) => (data as List))
-        .map((data) {
-      return Product.fromJSON(data);
-    });
+  return streamedRest.stream
+      .transform(utf8.decoder)
+      .transform(json.decoder)
+      .map((data) => Helper.getData(data))
+      .expand((data) => (data as List))
+      .map((data) {
+    return Product.fromJSON(data);
+  });
 }
 
 Future<Stream<Product>> getBestSale(int pageIdx) async {
@@ -194,18 +235,23 @@ Future<Stream<Product>> getBestSale(int pageIdx) async {
     final client = new http.Client();
     StreamedResponse streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
         .map((data) {
 //      print('data $data');
-      return Helper.getData(data);
+          return Helper.getData(data);
 //      return data['data']['products'];
-    }).map((event) {
+        })
+        .map((event) {
 //      print('event $event');
-      return Helper.getData(event);
-    }).expand((data) => (data as List)).map((data) {
+          return Helper.getData(event);
+        })
+        .expand((data) => (data as List))
+        .map((data) {
 //      print('best_sale data $data');
-      return Product.fromJSON(data);
-    });
+          return Product.fromJSON(data);
+        });
   } catch (e, trace) {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
@@ -220,21 +266,25 @@ Future<Stream<Product>> getNewArrivals(int pageIdx) async {
     final client = new http.Client();
     StreamedResponse streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
         .map((data) {
-      return Helper.getData(data);
-    }).map((event) {
-      return Helper.getData(event);
-    }).expand((data) => (data as List)).map((data) {
+          return Helper.getData(data);
+        })
+        .map((event) {
+          return Helper.getData(event);
+        })
+        .expand((data) => (data as List))
+        .map((data) {
 //      print('new_arrival data $data');
-      return Product.fromJSON(data);
-    });
+          return Product.fromJSON(data);
+        });
   } catch (e, trace) {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
   }
 }
-
 
 Future<Stream<Product>> getSpecial4U(int pageIdx) async {
   Uri uri = Helper.getApiUri('special_offer');
@@ -244,22 +294,24 @@ Future<Stream<Product>> getSpecial4U(int pageIdx) async {
     final client = new http.Client();
     StreamedResponse streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder)
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
         .map((data) {
-      return Helper.getData(data);
-    }).map((event) {
-      return Helper.getData(event);
-    }).expand((data) => (data as List)).map((data) {
-      return Product.fromJSON(data);
-    });
+          return Helper.getData(data);
+        })
+        .map((event) {
+          return Helper.getData(event);
+        })
+        .expand((data) => (data as List))
+        .map((data) {
+          return Product.fromJSON(data);
+        });
   } catch (e, trace) {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
   }
 }
-
-
-
 
 Future<Stream<Product>> getProductsByBrand(brandId) async {
   Uri uri = Helper.getApiUri('products');
@@ -277,7 +329,12 @@ Future<Stream<Product>> getProductsByBrand(brandId) async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -332,7 +389,7 @@ Future<Favorite> addFavorite(int productId) async {
 //  final String _apiToken = 'api_token=${_user.apiToken}';
   var favorite = Favorite();
   favorite.userId = _user.id;
-  favorite.product = new Product()..id=productId;
+  favorite.product = new Product()..id = productId;
   final String url = '${GlobalConfiguration().getString('api_base_url')}favorites';
   print(url);
   print(favorite.toMap());
@@ -351,13 +408,14 @@ Future<Favorite> addFavorite(int productId) async {
   }
 }
 
-  removeFavorite(Favorite favorite) async {
+removeFavorite(Favorite favorite) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}favorites/${favorite.id}';
   print('remove fav $url');
 //  print(favorite.toMap());
   try {
     final client = new http.Client();
-    final response = await client.delete(url,
+    final response = await client.delete(
+      url,
       headers: createHeadersRepo(),
     );
 //    return Favorite.fromJSON(json.decode(response.body)['data']);
@@ -368,12 +426,18 @@ Future<Favorite> addFavorite(int productId) async {
 }
 
 Future<Stream<Product>> getProductsOfStore(int marketId) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}products?with=store&search=store.id:$marketId&searchFields=store.id:=';
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}products?with=store&search=store.id:$marketId&searchFields=store.id:=';
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -388,14 +452,19 @@ Future<Stream<Product>> getTrendingProductsOfStore(int marketId) async {
     'with': 'store',
     'search': 'store_id:$marketId;featured:1;itemsAvailable:0',
     'searchFields': 'store_id:=;featured:=;itemsAvailable:<>',
-    'searchJoin' : 'and',
+    'searchJoin': 'and',
   });
   // TODO Trending products only
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -415,7 +484,12 @@ Future<Stream<Product>> getFeaturedProductsOfStore(int marketId) async {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Product.fromJSON(data);
     });
   } catch (e, trace) {
@@ -447,12 +521,18 @@ Future<Review> addProductReview(Review review, Product product) async {
 }
 
 Future<Stream<Review>> getProductReviews(int id) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}product_reviews?with=user&search=product_id:$id';
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}product_reviews?with=user&search=product_id:$id';
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
       return Review.fromJSON(data);
     });
   } catch (e, trace) {

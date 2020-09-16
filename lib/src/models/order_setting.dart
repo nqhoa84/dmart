@@ -5,7 +5,7 @@ import 'i_name.dart';
 class OrderSetting extends IdObj {
   OrderSetting();
   double vatTaxPercent = 0.1, deliveryFee = 1.5, serviceFeePercent = 0.01;
-  double serviceFeeMin = 0, serviceFeeMax=100;
+  double serviceFeeMin = 0, serviceFeeMax=100000000;
 
   OrderSetting.fromJSON(Map<String, dynamic> jsonMap) {
     try {

@@ -42,11 +42,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: SearchBar(
-            onClickFilter: (event) {
-              _con.scaffoldKey.currentState.openEndDrawer();
-            },
-          ),
+          child: SearchBar( ),
         ),
         Padding(
           padding: const EdgeInsetsDirectional.only(start: 20, end: 10),

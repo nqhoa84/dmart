@@ -1,3 +1,4 @@
+import 'package:dmart/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -19,5 +20,13 @@ class Controller extends ControllerMVC {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
       content: Text('$msg'),
     ));
+  }
+
+  void showErrNoInternet() {
+    showErr(S.of(context).verifyYourInternetConnection);
+  }
+
+  void showErrGeneral() {
+    showErr(S.of(context).generalErrorMessage);
   }
 }

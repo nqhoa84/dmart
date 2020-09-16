@@ -73,3 +73,15 @@ Map<String, String> createHeadersRepo() {
 String getDisplayMoney(double value) {
   return '\$ ${value != null ? value.toStringAsFixed(2) : '0.00'}';
 }
+
+bool isNullOrEmptyStr(String value) {
+  return value == null || value.trim().isEmpty;
+}
+
+bool isNullOrEmptyList(List value) {
+  return value == null || value.isEmpty;
+}
+
+bool isNullOrEmptyMap(Map value) {
+  return value == null || value.isEmpty;
+}

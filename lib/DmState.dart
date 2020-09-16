@@ -1,10 +1,12 @@
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/favorite.dart';
 import 'package:dmart/src/models/order_setting.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class DmState {
+  static List<String> recentSearches;
   static int bottomBarSelectedIndex = 0;
   static ValueNotifier<int> amountInCart = ValueNotifier(0);
   static ValueNotifier<double> cartsValue = ValueNotifier(0.0);
@@ -82,6 +84,23 @@ class DmState {
       }
     });
     return f;
+  }
+
+  static void insertRecentSearch(String currentUserInput) {
+    if(isNullOrEmptyStr(currentUserInput)) return;
+
+    if(recentSearches == null) {
+      recentSearches = [];
+    }
+
+    String s = currentUserInput.trim();
+
+    if(!recentSearches.contains(s)) {
+      if(recentSearches.isNotEmpty)
+        recentSearches.insert(0, currentUserInput);
+      else
+        recentSearches.add(currentUserInput);
+    }
   }
 
 }

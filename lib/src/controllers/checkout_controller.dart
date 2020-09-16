@@ -67,7 +67,7 @@ class CheckoutController extends ControllerMVC {
     carts.forEach( (_cart) {
       Order _order = new Order();
       _order.productOrders = new List<ProductOrder>();
-      _order.tax = _cart.product.store.defaultTax;
+//      _order.tax = _cart.product.store.defaultTax;
       _order.note = ' ';
       ProductOrder _productOrder = new ProductOrder();
       _productOrder.quantity = _cart.quantity;

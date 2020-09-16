@@ -158,9 +158,7 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
             Divider(height: 4, thickness: 2, color: DmConst.accentColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-              child: SearchBar(onClickFilter: (event) {
-                scaffoldKey.currentState.openEndDrawer();
-              }),
+              child: SearchBar(),
             ),
           ],
         ),
@@ -260,7 +258,7 @@ SliverAppBar createSliverSearch(BuildContext context) {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       automaticallyImplyLeading: false,
       title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: SearchBar(),
       ),
       centerTitle: true,

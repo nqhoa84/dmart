@@ -123,6 +123,8 @@ Future<User> getCurrentUser() async {
   return currentUser.value;
 }
 
+
+
 Future<CreditCard> getCreditCard() async {
   CreditCard _creditCard = new CreditCard();
   SharedPreferences prefs = await SharedPreferences.getInstance();

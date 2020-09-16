@@ -213,17 +213,21 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
     print('onPressedOnPlaceOrder--------');
 //    Navigator.of(context).pushReplacementNamed('/OrderSuccess');
     if(isSavingOrder) return;
-    isSavingOrder = true;
+//    isSavingOrder = true;
 
     if(_con.checkOrderBeforePost()) {
       Order savedOrder = await _con.saveOrder();
       if(savedOrder != null && savedOrder.id > 0) {
         DmState.refreshCart([]);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)));
+//        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)),
+                (Route<dynamic> route) => false
+        );
       }
     }
 
-    isSavingOrder = false;
+//    isSavingOrder = false;
   }
 
   Widget _createDatePiker(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:dmart/src/controllers/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -5,7 +6,7 @@ import '../../generated/l10n.dart';
 import '../models/faq_category.dart';
 import '../repository/faq_repository.dart';
 
-class FaqController extends ControllerMVC {
+class FaqController extends Controller {
   List<FaqCategory> faqs = <FaqCategory>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -22,9 +23,7 @@ class FaqController extends ControllerMVC {
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
+      showErrNoInternet();
     }, onDone: () {
       if (message != null) {
         scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -36,6 +35,6 @@ class FaqController extends ControllerMVC {
 
   Future<void> refreshFaqs() async {
     faqs.clear();
-    listenForFaqs(message: 'Faqs refreshed successfuly');
+    listenForFaqs();
   }
 }

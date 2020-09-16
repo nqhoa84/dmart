@@ -1595,6 +1595,16 @@ class S {
     );
   }
 
+  /// `Search result is empty.`
+  String get searchResultEmpty {
+    return Intl.message(
+      'Search result is empty.',
+      name: 'searchResultEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not a valid number`
   String get invalidNumber {
     return Intl.message(

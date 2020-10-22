@@ -40,7 +40,8 @@ class Voucher extends IdNameObj{
   Voucher.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      this.nameKh = nameEn;
       description=toStringVal(jsonMap['description']);
       type = toInt(jsonMap['type']);
       code=toStringVal(jsonMap['code']);

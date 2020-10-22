@@ -8,10 +8,12 @@ class OptionGroup extends IdNameObj {
   OptionGroup.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      this.nameKh = nameEn;
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      this.nameKh = nameEn;
       print('Error parsing data in OptionGroup.fromJSON $e \n $trace');
 
     }

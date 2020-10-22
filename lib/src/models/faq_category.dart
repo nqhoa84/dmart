@@ -10,12 +10,14 @@ class FaqCategory extends IdNameObj{
   FaqCategory.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = jsonMap['faqs'] != null ? jsonMap['name'].toString() : '';
+      nameEn = toStringVal(jsonMap['name_en']);
+      nameKh = toStringVal(jsonMap['name_kh']);
+
       faqs =
           jsonMap['faqs'] != null ? List.from(jsonMap['faqs']).map((element) => Faq.fromJSON(element)).toList() : null;
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = ''; nameKh = '';
       faqs = [];
       print('Error parsing data in FaqCategory $e \n $trace');
 

@@ -1,3 +1,6 @@
+import 'package:dmart/DmState.dart';
+import 'package:dmart/utils.dart';
+
 import 'media.dart';
 
 class IdObj {
@@ -22,9 +25,30 @@ class IdObj {
 }
 
 class IdNameObj extends IdObj {
-  String name;
+  String nameEn, nameKh;
 
-  IdNameObj({id = -1, this.name = ''}) : super(id: id);
+  String get name {
+    if(DmState.isKhmer) {
+      if(!DmUtils.isNullOrEmptyStr(this.nameKh)) {
+        return nameKh;
+      } else if(!DmUtils.isNullOrEmptyStr(this.nameEn)) {
+        return nameEn;
+      } else return '';
+    } else {
+      if(!DmUtils.isNullOrEmptyStr(this.nameEn)) {
+        return nameEn;
+      } else if(!DmUtils.isNullOrEmptyStr(this.nameKh)) {
+        return nameKh;
+      } else return '';
+    }
+  }
+
+  set name (String value) {
+    this.nameEn = DmUtils.isNotNullEmptyStr(value) ? value.trim() : '';
+    this.nameKh = nameEn;
+  }
+
+  IdNameObj({id = -1, this.nameEn = '', this.nameKh = ''}) : super(id: id);
 
   @override
   bool get isValid {
@@ -40,7 +64,7 @@ class IdNameObj extends IdObj {
 class NameImageObj extends IdNameObj {
   Media image;
 
-  NameImageObj({int id = -1, String name = '', this.image}) : super(id: id, name: name);
+  NameImageObj({int id = -1, String nameEn = '', String nameKh = '', this.image}) : super(id: id, nameEn: nameEn, nameKh: nameKh);
 
   @override
   bool get isValid {

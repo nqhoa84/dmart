@@ -33,6 +33,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Processing`
+  String get processing {
+    return Intl.message(
+      'Processing',
+      name: 'processing',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Created`
   String get created {
     return Intl.message(
@@ -783,10 +793,10 @@ class S {
     );
   }
 
-  /// `Please provide us your date of birth. We will have special offers on your birthday.`
+  /// `Please provide us your date of birth. We'll have special offer on your birthday.`
   String get dateOfBirthNote {
     return Intl.message(
-      'Please provide us your date of birth. We will have special offers on your birthday.',
+      'Please provide us your date of birth. We\'ll have special offer on your birthday.',
       name: 'dateOfBirthNote',
       desc: '',
       args: [],
@@ -803,10 +813,10 @@ class S {
     );
   }
 
-  /// `House no.`
+  /// `House No.`
   String get houseNo {
     return Intl.message(
-      'House no.',
+      'House No.',
       name: 'houseNo',
       desc: '',
       args: [],
@@ -843,7 +853,15 @@ class S {
     );
   }
 
-  // skipped getter for the 'limitedServiceCoverageNote' key
+  /// `Please note we may not be servicing all areas yet. If you can't find your address in the options below contact us for help: $phoneNumber or Chat.`
+  String get limitedServiceCoverageNote {
+    return Intl.message(
+      'Please note we may not be servicing all areas yet. If you can\'t find your address in the options below contact us for help: \$phoneNumber or Chat.',
+      name: 'limitedServiceCoverageNote',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Dmart24.com`
   String get domainDmart {
@@ -940,6 +958,106 @@ class S {
     return Intl.message(
       'Register',
       name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register failed`
+  String get registerError {
+    return Intl.message(
+      'Register failed',
+      name: 'registerError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset your password`
+  String get resetYourPass {
+    return Intl.message(
+      'Reset your password',
+      name: 'resetYourPass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We will send a new password to your mobile phone.`
+  String get weWillSendNewPass {
+    return Intl.message(
+      'We will send a new password to your mobile phone.',
+      name: 'weWillSendNewPass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the mobile number used to register with Dmart24.com and we will contact you shortly.`
+  String get resetPassEnterPhoneNumber {
+    return Intl.message(
+      'Please enter the mobile number used to register with Dmart24.com and we will contact you shortly.',
+      name: 'resetPassEnterPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect phone number/email or password. Please check and try again.\nOr press on 'forgotten password' to reset your password.`
+  String get loginErrorIncorrectPhonePassFullMsg {
+    return Intl.message(
+      'Incorrect phone number/email or password. Please check and try again.\nOr press on \'forgotten password\' to reset your password.',
+      name: 'loginErrorIncorrectPhonePassFullMsg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect phone number/email or password. Please check and try again.`
+  String get loginErrorIncorrectPhonePass {
+    return Intl.message(
+      'Incorrect phone number/email or password. Please check and try again.',
+      name: 'loginErrorIncorrectPhonePass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or press on `
+  String get loginError1 {
+    return Intl.message(
+      'Or press on ',
+      name: 'loginError1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to reset your password.`
+  String get loginError2 {
+    return Intl.message(
+      'to reset your password.',
+      name: 'loginError2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can use this account on Dmart24.com website and mobile app.`
+  String get youCanUseThisAccountOnDmart24Web {
+    return Intl.message(
+      'You can use this account on Dmart24.com website and mobile app.',
+      name: 'youCanUseThisAccountOnDmart24Web',
       desc: '',
       args: [],
     );
@@ -1385,6 +1503,16 @@ class S {
     );
   }
 
+  /// `Phone number or email`
+  String get phoneOrEmail {
+    return Intl.message(
+      'Phone number or email',
+      name: 'phoneOrEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Address`
   String get address {
     return Intl.message(
@@ -1415,21 +1543,281 @@ class S {
     );
   }
 
-  /// `Should be more than 6 letters`
-  String get shouldBeMoreThan6Chars {
-    return Intl.message(
-      'Should be more than 6 letters',
-      name: 'shouldBeMoreThan6Chars',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Password`
   String get password {
     return Intl.message(
       'Password',
       name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password`
+  String get confirmPassword {
+    return Intl.message(
+      'Confirm password',
+      name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get passwordNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'passwordNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password must contain at least 4 characters`
+  String get passwordNote {
+    return Intl.message(
+      'Your password must contain at least 4 characters',
+      name: 'passwordNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile phone number`
+  String get mobilePhoneNumber {
+    return Intl.message(
+      'Mobile phone number',
+      name: 'mobilePhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `has already been registered. Just sign into it.`
+  String get hasBeenReg {
+    return Intl.message(
+      'has already been registered. Just sign into it.',
+      name: 'hasBeenReg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you have forgotten your password. We can reset your password securely via SMS sent to your registered mobile phone number.`
+  String get forgotPassResetMsg {
+    return Intl.message(
+      'If you have forgotten your password. We can reset your password securely via SMS sent to your registered mobile phone number.',
+      name: 'forgotPassResetMsg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile phone number and password.`
+  String get mobileNoAndPass {
+    return Intl.message(
+      'Mobile phone number and password.',
+      name: 'mobileNoAndPass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification`
+  String get verification {
+    return Intl.message(
+      'Verification',
+      name: 'verification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please input 6 digits code.`
+  String get input6digitCode {
+    return Intl.message(
+      'Please input 6 digits code.',
+      name: 'input6digitCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You should receive OTP code within 1 minute. If you experience more longer please contact us for help: 01234567`
+  String get verifyOtpNote {
+    return Intl.message(
+      'You should receive OTP code within 1 minute. If you experience more longer please contact us for help: 01234567',
+      name: 'verifyOtpNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get location {
+    return Intl.message(
+      'Location',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please note we might not be servicing all areas yet. If you can't find your address in the options below, please contact us for help: 012345678`
+  String get locationNote {
+    return Intl.message(
+      'Please note we might not be servicing all areas yet. If you can\'t find your address in the options below, please contact us for help: 012345678',
+      name: 'locationNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Street`
+  String get street {
+    return Intl.message(
+      'Street',
+      name: 'street',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `District`
+  String get district {
+    return Intl.message(
+      'District',
+      name: 'district',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gender`
+  String get gender {
+    return Intl.message(
+      'Gender',
+      name: 'gender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not to tell`
+  String get notToTell {
+    return Intl.message(
+      'Not to tell',
+      name: 'notToTell',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Male`
+  String get male {
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message(
+      'Female',
+      name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need your registration details to deliver the services you are requesting from us.`
+  String get personalDetailNote {
+    return Intl.message(
+      'We need your registration details to deliver the services you are requesting from us.',
+      name: 'personalDetailNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day`
+  String get day {
+    return Intl.message(
+      'Day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Month`
+  String get month {
+    return Intl.message(
+      'Month',
+      name: 'month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Year`
+  String get year {
+    return Intl.message(
+      'Year',
+      name: 'year',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, register me`
+  String get yesRegMe {
+    return Intl.message(
+      'Yes, register me',
+      name: 'yesRegMe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your mobile phone number is successfully registered.`
+  String get yourPhoneRegOK {
+    return Intl.message(
+      'Your mobile phone number is successfully registered.',
+      name: 'yourPhoneRegOK',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to `
+  String get welcomeTo {
+    return Intl.message(
+      'Welcome to ',
+      name: 'welcomeTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enjoy your shopping.`
+  String get enjoyShopping {
+    return Intl.message(
+      'Enjoy your shopping.',
+      name: 'enjoyShopping',
       desc: '',
       args: [],
     );
@@ -1605,30 +1993,30 @@ class S {
     );
   }
 
-  /// `Not a valid number`
+  /// `Not a valid number.`
   String get invalidNumber {
     return Intl.message(
-      'Not a valid number',
+      'Not a valid number.',
       name: 'invalidNumber',
       desc: '',
       args: [],
     );
   }
 
-  /// `Not a valid date`
+  /// `Not a valid date.`
   String get invalidDate {
     return Intl.message(
-      'Not a valid date',
+      'Not a valid date.',
       name: 'invalidDate',
       desc: '',
       args: [],
     );
   }
 
-  /// `Not a valid delivery date & time`
+  /// `Not a valid delivery date & time.`
   String get invalidDeliveryDateTime {
     return Intl.message(
-      'Not a valid delivery date & time',
+      'Not a valid delivery date & time.',
       name: 'invalidDeliveryDateTime',
       desc: '',
       args: [],
@@ -1675,41 +2063,81 @@ class S {
     );
   }
 
-  /// `Not a valid email`
+  /// `Not a valid email.`
   String get invalidEmail {
     return Intl.message(
-      'Not a valid email',
+      'Not a valid email.',
       name: 'invalidEmail',
       desc: '',
       args: [],
     );
   }
 
-  /// `Not a valid phone`
+  /// `Not a valid phone.`
   String get invalidPhone {
     return Intl.message(
-      'Not a valid phone',
+      'Not a valid phone.',
       name: 'invalidPhone',
       desc: '',
       args: [],
     );
   }
 
-  /// `Not a valid address`
+  /// `Invalid phone or email.`
+  String get invalidPhoneOrEmail {
+    return Intl.message(
+      'Invalid phone or email.',
+      name: 'invalidPhoneOrEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not a valid address.`
   String get invalidAddress {
     return Intl.message(
-      'Not a valid address',
+      'Not a valid address.',
       name: 'invalidAddress',
       desc: '',
       args: [],
     );
   }
 
-  /// `Invalid voucher!`
+  /// `Invalid voucher.`
   String get invalidVoucher {
     return Intl.message(
-      'Invalid voucher!',
+      'Invalid voucher.',
       name: 'invalidVoucher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid name.`
+  String get invalidName {
+    return Intl.message(
+      'Invalid name.',
+      name: 'invalidName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid full name.`
+  String get invalidFullName {
+    return Intl.message(
+      'Invalid full name.',
+      name: 'invalidFullName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid OTP`
+  String get invalidOTP {
+    return Intl.message(
+      'Invalid OTP',
+      name: 'invalidOTP',
       desc: '',
       args: [],
     );
@@ -1745,50 +2173,50 @@ class S {
     );
   }
 
-  /// `Verify your internet connection`
+  /// `Verify your internet connection.`
   String get verifyYourInternetConnection {
     return Intl.message(
-      'Verify your internet connection',
+      'Verify your internet connection.',
       name: 'verifyYourInternetConnection',
       desc: '',
       args: [],
     );
   }
 
-  /// `Carts refreshed successfully`
+  /// `Carts refreshed successfully.`
   String get cartsRefreshedSuccessfully {
     return Intl.message(
-      'Carts refreshed successfully',
+      'Carts refreshed successfully.',
       name: 'cartsRefreshedSuccessfully',
       desc: '',
       args: [],
     );
   }
 
-  /// `The $productName was removed from your cart`
+  /// `The $productName was removed from your cart.`
   String get productRemovedFromCart {
     return Intl.message(
-      'The \$productName was removed from your cart',
+      'The \$productName was removed from your cart.',
       name: 'productRemovedFromCart',
       desc: '',
       args: [],
     );
   }
 
-  /// `The $productName was removed from your favorite`
+  /// `The $productName was removed from your favorite.`
   String get productRemovedFromFavorite {
     return Intl.message(
-      'The \$productName was removed from your favorite',
+      'The \$productName was removed from your favorite.',
       name: 'productRemovedFromFavorite',
       desc: '',
       args: [],
     );
   }
 
-  /// `Category refreshed successfully`
+  /// `Category refreshed successfully.`
   String get categoryRefreshedSuccessfully {
     return Intl.message(
-      'Category refreshed successfully',
+      'Category refreshed successfully.',
       name: 'categoryRefreshedSuccessfully',
       desc: '',
       args: [],
@@ -2030,6 +2458,16 @@ class S {
     return Intl.message(
       'Shopping',
       name: 'shopping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start shopping`
+  String get startShopping {
+    return Intl.message(
+      'Start shopping',
+      name: 'startShopping',
       desc: '',
       args: [],
     );

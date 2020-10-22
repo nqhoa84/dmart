@@ -11,14 +11,16 @@ class Promotion extends NameImageObj{
   Promotion.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      this.nameKh = nameEn;
       description=toStringVal(jsonMap['description']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      this.nameKh = nameEn;
       description = '';
       image = new Media();
       print('Error parsing data in Promotion.fromJSON $e \n $trace');

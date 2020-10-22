@@ -1,3 +1,5 @@
+import 'package:dmart/DmState.dart';
+
 import '../../utils.dart';
 import '../models/category.dart';
 import '../models/store.dart';
@@ -12,7 +14,8 @@ class Product extends IdNameObj{
   double price;
   double discountPrice;
   Media image;
-  String description;
+  String descriptionEn = '', descriptionKh = '';
+  String get description => DmState.isKhmer ? descriptionKh : descriptionEn;
   String ingredients;
   String capacity;
   String unit;
@@ -56,10 +59,10 @@ class Product extends IdNameObj{
 //      checked = false;
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      this.nameKh = nameEn;
       price = 0.0;
       discountPrice = 0.0;
-      description = '';
       capacity = '';
       unit = '';
       packageItemsCount = 0;
@@ -83,10 +86,12 @@ class Product extends IdNameObj{
 
   convert(Map<String, dynamic> jsonMap){
     id = toInt(jsonMap['id']);
-    name = toStringVal(jsonMap['name']);
+    nameEn = toStringVal(jsonMap['name_en']);
+    nameKh = toStringVal(jsonMap['name_kh']);
     price = toDouble(jsonMap['price'], errorValue: 0.0);
     discountPrice = toDouble(jsonMap['discount_price'], errorValue: null);
-    description = jsonMap['description'] ?? '';
+    descriptionEn = jsonMap['description_en'] ?? '';
+    descriptionKh = jsonMap['description_kh'] ?? '';
     capacity = toStringVal(jsonMap['capacity']);
     unit = toStringVal(jsonMap['unit']);
     packageItemsCount = toDouble(jsonMap['package_items_count'], errorValue: 0.0);

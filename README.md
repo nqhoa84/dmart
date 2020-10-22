@@ -10,3 +10,10 @@ $ zip -r app.ipa Payload
 git add .
 git commit -m 'message'
 git push
+
+
+D:\Program Files\Android\Android Studio\jre\bin
+
+C:\Users\H\AppData\Local\Android\sdk
+
+GXrUUHmduNGmtfnLLx7v+pTCBGU=

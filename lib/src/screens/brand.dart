@@ -1,17 +1,11 @@
-//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
+import 'package:flutter/material.dart';
 
-import '../../src/repository/user_repository.dart';
-
-import '../helpers/ui_icons.dart';
 import '../../src/models/brand.dart';
 import '../../src/models/route_argument.dart';
 import '../../src/widgets/BrandHomeTabWidget.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByBrandWidget.dart';
-import '../../src/widgets/ShoppingCartButton.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BrandWidget extends StatefulWidget {
   RouteArgument routeArgument;

@@ -19,7 +19,8 @@ class Media extends IdNameObj{
   Media.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      this.nameKh = nameEn;
       url = toStringVal(jsonMap['url']);
       thumb = toStringVal(jsonMap['thumb']);
       icon = toStringVal(jsonMap['icon']);

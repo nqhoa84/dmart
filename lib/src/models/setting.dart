@@ -20,7 +20,7 @@ class Setting {
   String scaffoldColor;
   String googleMapsKey;
   ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
-  String appVersion;
+  String appVersion = '';
   bool enableVersion = true;
 
   Setting();
@@ -49,7 +49,6 @@ class Setting {
       razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
     } catch (e, trace) {
       print('Error parsing data in Setting.fromJSON $e \n $trace');
-
     }
   }
 

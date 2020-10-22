@@ -11,8 +11,6 @@ import '../../utils.dart';
 import '../helpers/helper.dart';
 import '../models/credit_card.dart';
 import '../models/order.dart';
-import '../models/order_status.dart';
-import '../models/payment.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 

@@ -74,14 +74,47 @@ String getDisplayMoney(double value) {
   return '\$ ${value != null ? value.toStringAsFixed(2) : '0.00'}';
 }
 
-bool isNullOrEmptyStr(String value) {
-  return value == null || value.trim().isEmpty;
-}
 
-bool isNullOrEmptyList(List value) {
-  return value == null || value.isEmpty;
-}
+class DmUtils {
+  static bool isEmail(String em) {
 
-bool isNullOrEmptyMap(Map value) {
-  return value == null || value.isEmpty;
+    String p = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+    RegExp regExp = new RegExp(p);
+
+    return em != null && regExp.hasMatch(em);
+  }
+
+  static bool isNullOrEmptyStr(String value) {
+    return value == null || value.trim().isEmpty;
+  }
+
+  static bool isNotNullEmptyStr(String value) {
+    return !isNullOrEmptyStr(value);
+  }
+
+  static bool isPhone(String value) {
+    String pattern = r'^(?:[+0][0-9])?[ 0-9]{8,15}[0-9]$';
+    RegExp regExp = new RegExp(pattern);
+
+    return regExp.hasMatch(value.trim());
+//    ^ beginning of a string
+//      (?:[+0][1-9])? optionally match a + or 0 followed by a digit from 0 to 9
+//    [ 0-9]{10,12} match 10 to 12 digits
+//    $ end of the string
+  }
+
+  static bool isNullOrEmptyList(List value) {
+    return value == null || value.isEmpty;
+  }
+
+  static bool isNotNullEmptyList(List value) {
+    return ! isNullOrEmptyList(value);
+  }
+
+
+  static bool isNullOrEmptyMap(Map value) {
+    return value == null || value.isEmpty;
+  }
+
 }

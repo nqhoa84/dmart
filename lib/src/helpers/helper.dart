@@ -250,21 +250,6 @@ class Helper {
     return result;
   }
 
-  ///base_url + path input
-  static Uri _getUri(String path) {
-    String _path = Uri.parse(GlobalConfiguration().getString('base_url')).path;
-    if (!_path.endsWith('/')) {
-      _path += '/';
-    }
-    Uri uri = Uri(
-        scheme: Uri.parse(GlobalConfiguration().getString('base_url')).scheme,
-        host: Uri.parse(GlobalConfiguration().getString('base_url')).host,
-        port: Uri.parse(GlobalConfiguration().getString('base_url')).port,
-        path: _path + path);
-    return uri;
-  }
-
-
   ///api_base_url + [apiName]
   static Uri getApiUri(String apiName) {
     String _path = Uri.parse(GlobalConfiguration().getString('api_base_url')).path;

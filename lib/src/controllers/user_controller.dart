@@ -12,12 +12,14 @@ import '../repository/user_repository.dart' as repository;
 
 class UserController extends ControllerMVC {
   User user = new User();
-  bool hidePassword = true;
+  bool hidePassword = true, hidePassword2 = true;
   bool loading = false;
   GlobalKey<FormState> loginFormKey;
   GlobalKey<ScaffoldState> scaffoldKey;
   FirebaseMessaging _firebaseMessaging;
   OverlayEntry loader;
+
+  Address address = new Address();
 
   UserController() {
     loader = Helper.overlayLoader(context);
@@ -27,50 +29,31 @@ class UserController extends ControllerMVC {
     _firebaseMessaging.getToken().then((String _deviceToken) {
       user.deviceToken = _deviceToken;
     }).catchError((e) {
-      print('Notification not configured');
+      print('Notification not configured $e');
     });
   }
 
+  bool isLoginError = false;
   void login() async {
+    isLoginError = false;
     FocusScope.of(context).unfocus();
     if (loginFormKey.currentState.validate()) {
       loginFormKey.currentState.save();
       Overlay.of(context).insert(loader);
 
       repository.login(user).then((value) {
-        if (value != null && value.apiToken != null) {
+        if (value != null && value.id > 0) {
           RouteGenerator.gotoPromotions(context, replaceOld: true);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text(S.of(context).wrongEmailOrPassword),
           ));
+          setState(() {
+            isLoginError = true;
+          });
         }
       }).catchError((e) {
         print(e);
-        loader.remove();
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(S.of(context).emailAccountExists),
-        ));
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
-      });
-    }
-  }
-
-  void register() async {
-    FocusScope.of(context).unfocus();
-    if (loginFormKey.currentState.validate()) {
-      loginFormKey.currentState.save();
-      Overlay.of(context).insert(loader);
-      repository.register(user).then((value) {
-        if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
-        } else {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).wrongEmailOrPassword),
-          ));
-        }
-      }).catchError((e) {
         loader.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(S.of(context).emailAccountExists),

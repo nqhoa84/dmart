@@ -12,7 +12,7 @@ import 'i_name.dart';
 
 class Order extends IdObj {
   List<ProductOrder> productOrders = [];
-  OrderStatus orderStatus = OrderStatus.Created; //create = post, cancel = put
+  OrderStatus orderStatus = OrderStatus.created; //create = post, cancel = put
 
   DateTime expectedDeliverDate;
   ///from 1-6, 8:00 to 20:00 of day.
@@ -76,7 +76,7 @@ class Order extends IdObj {
       int statusId = toInt(jsonMap['order_status_id'], errorValue: -1);
       if(statusId > 0 && statusId <= OrderStatus.values.length) {
           this.orderStatus = OrderStatus.values[statusId-1];
-      } else this.orderStatus = OrderStatus.Unknown;
+      } else this.orderStatus = OrderStatus.unknown;
 
       _tax = toDouble(jsonMap['tax'], errorValue: 0);
       _deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 0);

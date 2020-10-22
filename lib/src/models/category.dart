@@ -9,19 +9,24 @@ class Category extends NameImageObj{
   String description;
   bool selected=false;
 
-  Category({int id, String name = '', this.description=''}) : super(id: id, name: name);
+//  Category({int id, String name = '', this.description=''}) : super(id: id, name: name);
+
+  Category() {
+    this.id = -1;
+  }
 
   Category.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name_en']);
+      nameKh = toStringVal(jsonMap['name_kh']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
       description=toStringVal(jsonMap['description']);
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
       image = new Media();
       description = '';
       print('Error parsing data in Category $e \n $trace');

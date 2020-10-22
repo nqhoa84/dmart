@@ -44,8 +44,13 @@ class RouteGenerator {
   }
 
   static gotoLogin(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushNamed('/Login')
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/Login')
         : Navigator.of(context).pushNamed('/Login');
+  }
+
+  static void gotoForgetPass(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/ForgetPassword')
+        : Navigator.of(context).pushNamed('/ForgetPassword');
   }
 
   static void gotoHome(BuildContext context, {bool replaceOld = false}) {
@@ -122,9 +127,9 @@ class RouteGenerator {
       case '/Login':
         return MaterialPageRoute(builder: (_) => SignInScreen());
       case '/ForgetPassword':
-        return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
-      case '/Pages':
-        return MaterialPageRoute(builder: (_) => PagesScreen(currentTab: args));
+        return MaterialPageRoute(builder: (_) => ForgetPasswordScreen());
+//      case '/Pages':
+//        return MaterialPageRoute(builder: (_) => PagesScreen(currentTab: args));
 
       case '/Product':
         return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
@@ -195,6 +200,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ErrorScreen());
     }
   }
+
 
 
 

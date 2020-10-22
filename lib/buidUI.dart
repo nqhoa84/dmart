@@ -136,7 +136,7 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
                 InkWell(
                   onTap: () => RouteGenerator.gotoHome(context),
                   child: Container(
-                      child: Image.asset('assets/img/H_Logo_Dmart.png', width: 46, height: 46, fit: BoxFit.scaleDown)),
+                      child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
                 ),
                 Expanded(
                   child: Align(
@@ -185,7 +185,7 @@ SliverAppBar createSliverTopBar(BuildContext context) {
               InkWell(
                 onTap: () => RouteGenerator.gotoHome(context),
                 child: Container(
-                    child: Image.asset('assets/img/H_Logo_Dmart.png', width: 46, height: 46, fit: BoxFit.scaleDown)),
+                    child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
               ),
               Expanded(
                 child: Align(
@@ -243,7 +243,7 @@ SliverAppBar createSliverTopBar(BuildContext context) {
         InkWell(
           onTap: () => RouteGenerator.gotoHome(context),
           child: Container(
-              child: Image.asset('assets/img/H_Logo_Dmart.png', height: kToolbarHeight - 10, fit: BoxFit.scaleDown)),
+              child: Image.asset(DmConst.assetImgLogo, height: kToolbarHeight - 10, fit: BoxFit.scaleDown)),
         ),
         SizedBox(width: 20)
       ],

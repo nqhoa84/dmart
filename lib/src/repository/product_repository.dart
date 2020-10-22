@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/custom_trace.dart';
 import '../helpers/helper.dart';
-import '../models/address.dart';
 import '../models/favorite.dart';
 import '../models/filter.dart';
 import '../models/product.dart';
@@ -106,7 +105,7 @@ Future<Stream<Product>> searchProducts(String search, {int page = 1}) async {
 //search=aaaaaa&searchFields=name;brand.name:like;category.name:like&page=2
   //'search=name:abc;description:abc;itemsAvailable:0&searchFields=name:like;description:like;itemsAvailable:<>'
 
-  http://dmart.khmermedia.xyz/api/v1/products?search=Vegetables&searchFields=name:like;description:like;brand.name:like;category.name:like
+//  http://dmart.khmermedia.xyz/api/v1/products?search=Vegetables&searchFields=name:like;description:like;brand.name:like;category.name:like
 
   final String url =
       '${GlobalConfiguration().getString('api_base_url')}products?search=$search&page=$page&searchFields=name:like;description:like;brand.name:like;category.name:like';

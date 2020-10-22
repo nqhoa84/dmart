@@ -16,7 +16,16 @@ class Address extends IdObj {
   bool isDefault;
   int userId;
 
-  Address();
+  Address() {
+    id = -1;
+    province = '';
+    district = '';
+    ward = '';
+    street = '';
+    address = '';
+    description = '';
+    isDefault = false;
+  }
 /*{
             "id": 16,
             "description": "test address 1",

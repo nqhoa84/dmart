@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:dmart/src/models/language.dart';
 import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,11 +10,8 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
-//import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../generated/l10n.dart';
-import '../helpers/custom_trace.dart';
 import '../helpers/maps_util.dart';
 import '../models/address.dart';
 import '../models/setting.dart';
@@ -34,9 +31,6 @@ Future<Setting> initSettings() async {
   if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
     if (json.decode(response.body)['data'] != null) {
 
-
-
-
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('settings', json.encode(json.decode(response.body)['data']));
       _setting = Setting.fromJSON(json.decode(response.body)['data']);
@@ -49,7 +43,7 @@ Future<Setting> initSettings() async {
       setting.notifyListeners();
     }
   } else {
-    print(CustomTrace(StackTrace.current, message: response.body).toString());
+    print('Cannot load settings. response.statusCode != 200');
   }
 //  try {
 //
@@ -112,8 +106,8 @@ Future<Address> getCurrentLocation() async {
     deliveryAddress.value = Address.fromJSON(json.decode(prefs.getString('delivery_address')));
     return deliveryAddress.value;
   } else {
-    deliveryAddress.value = Address.fromJSON({});
-    return Address.fromJSON({});
+    deliveryAddress.value = Address();
+    return Address();
   }
 }
 
@@ -122,14 +116,17 @@ void setBrightness(Brightness brightness) async {
   brightness == Brightness.dark ? prefs.setBool("isDark", true) : prefs.setBool("isDark", false);
 }
 
-Future<void> setDefaultLanguage(String language) async {
-  if (language != null) {
+Future<void> setDefaultLanguage(String languageCode) async {
+  if (languageCode != null) {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+    await prefs.setString('language', languageCode);
+
+    setting.value.mobileLanguage.value = Locale(languageCode, '');
   }
 }
 
-Future<String> getDefaultLanguage(String defaultLanguage) async {
+Future<String> getDefaultLanguage() async {
+  String defaultLanguage = Language.khmer.code;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey('language')) {
     defaultLanguage = await prefs.get('language');

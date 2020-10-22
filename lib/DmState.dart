@@ -1,11 +1,16 @@
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/favorite.dart';
+import 'package:dmart/src/models/language.dart';
 import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 
 class DmState {
+  static bool get isKhmer {
+    return settingRepo.setting.value.mobileLanguage.value.languageCode != Language.english.code;
+  }
   static List<String> recentSearches;
   static int bottomBarSelectedIndex = 0;
   static ValueNotifier<int> amountInCart = ValueNotifier(0);
@@ -87,7 +92,7 @@ class DmState {
   }
 
   static void insertRecentSearch(String currentUserInput) {
-    if(isNullOrEmptyStr(currentUserInput)) return;
+    if(DmUtils.isNullOrEmptyStr(currentUserInput)) return;
 
     if(recentSearches == null) {
       recentSearches = [];

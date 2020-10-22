@@ -10,7 +10,7 @@ import '../models/user.dart';
 import '../repository/user_repository.dart';
 
 Future<Stream<FaqCategory>> getFaqCategories() async {
-  User _user = currentUser.value;
+//  User _user = currentUser.value;
 //  final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url = '${GlobalConfiguration().getString('api_base_url')}faq_categories?with=faqs';
 

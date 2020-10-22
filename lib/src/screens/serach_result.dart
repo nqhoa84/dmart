@@ -7,15 +7,13 @@ import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
-import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:dmart/src/widgets/SearchBar.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
 import '../../src/models/route_argument.dart';
-import '../../utils.dart';
-import 'abs_product_mvc.dart';
 
 class SearchResultScreen extends StatefulWidget {
   RouteArgument routeArgument;
@@ -164,7 +162,7 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
 
   _onTapOnSearchIcon() {
     _searchCon.search(search, onDone: (){
-      if(isNullOrEmptyList(_searchCon.products)) {
+      if(DmUtils.isNullOrEmptyList(_searchCon.products)) {
         _searchCon.showMsg(S.of(context).searchResultEmpty);
       } else {
         lastSearch = search;

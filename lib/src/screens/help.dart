@@ -10,8 +10,6 @@ import '../controllers/faq_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/DrawerWidget.dart';
 import '../widgets/FaqItem.dart';
-import '../widgets/SearchBar.dart';
-import '../widgets/ShoppingCartButton.dart';
 
 class HelpScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -36,9 +34,6 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
             child: Scaffold(
               key: widget.scaffoldKey,
               drawer: DrawerWidget(),
-              endDrawer: FilterWidget(onFilter: (filter) {
-                Navigator.of(context).pushReplacementNamed('/Pages', arguments:  DmState.bottomBarSelectedIndex);
-              }),
               appBar: createAppBar(context, widget.scaffoldKey),
               bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
               body: RefreshIndicator(

@@ -1,10 +1,8 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
-import 'package:dmart/src/widgets/ProductsByCategory.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +11,6 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../buidUI.dart';
 import '../../generated/l10n.dart';
 import '../../src/controllers/product_controller.dart';
-import '../repository/user_repository.dart';
-import '../widgets/CircularLoadingWidget.dart';
-import '../widgets/FavoriteGridItemWidget.dart';
-import '../widgets/FavoriteListItemWidget.dart';
-import '../widgets/PermissionDenied.dart';
-import '../widgets/SearchBar.dart';
 import 'abs_product_mvc.dart';
 
 class Special4UScreen extends StatefulWidget {

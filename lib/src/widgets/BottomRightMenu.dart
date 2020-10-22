@@ -1,16 +1,14 @@
+import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/language.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../buidUI.dart';
 import '../../generated/l10n.dart';
 import '../repository/settings_repository.dart';
-import '../repository/user_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
+import '../repository/user_repository.dart';
 import '../repository/user_repository.dart' as userRepo;
-import 'DmBottomNavigationBar.dart';
 
 
 class BottomRightMenu extends StatefulWidget {
@@ -120,34 +118,13 @@ class _BottomRightMenuState extends State<BottomRightMenu> {
         ),
         Divider(height: 1,thickness: 1, color: Colors.grey.shade400),
         ListTile(
-          onTap: () {
-            print('---------PRESS ON KHMER');
-
-
-            setState(() {
-              settingRepo.setDefaultLanguage(Language.khmer.code);
-              S.load(Locale.fromSubtags(languageCode: 'fr'));
-            });
-
-
-//            AppLocalization
-          },
-//            leading: ImageIcon(AssetImage('assets/img/M_Flag_Cambodia.png'), color: DmConst.primaryColor),
+          onTap: onPressOnKhmer,
           leading: Image.asset('assets/img/M_Flag_Cambodia.png', width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.of(context).langKhmer, style: TextStyle(color: DmConst.accentColor)),
         ),
         Divider(height: 1,thickness: 1, color: Colors.grey.shade400),
         ListTile(
-          onTap: () {
-            print('---------PRESS ON ENGLISH');
-
-            setState(() {
-              settingRepo.setDefaultLanguage(Language.english.code);
-              S.load(Locale.fromSubtags(languageCode: 'en'));
-            });
-
-
-          },
+          onTap: onPressOnEnglish,
 //            leading: ImageIcon(AssetImage('assets/img/M_Flag_Eng.png'), color: DmConst.primaryColor),
           leading: Image.asset('assets/img/M_Flag_Eng.png', width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.of(context).langEnglish, style: TextStyle(color: DmConst.accentColor)),
@@ -273,7 +250,7 @@ class _BottomRightMenuState extends State<BottomRightMenu> {
           setting.value.enableVersion
               ? ListTile(
             dense: true,
-            title: Text(S.of(context).version + " " + setting.value.appVersion, style: TextStyle(color: DmConst.accentColor)),
+            title: Text('${S.of(context).version} ${setting.value.appVersion}', style: TextStyle(color: DmConst.accentColor)),
             trailing: Icon(Icons.remove, color: Theme.of(context).focusColor.withOpacity(0.3)),
           )
               : SizedBox(),
@@ -282,6 +259,24 @@ class _BottomRightMenuState extends State<BottomRightMenu> {
     );
   }
 
+  void onPressOnKhmer() {
+    print('---------PRESS ON KHMER');
+    setState(() {
+//      DmState.isKhmer = true;
+      settingRepo.setDefaultLanguage(Language.khmer.code);
+      S.load(Locale.fromSubtags(languageCode: Language.khmer.code));
+    });
+  }
 
+  void onPressOnEnglish() {
+    print('---------PRESS ON ENGLISH');
+
+    setState(() {
+//      DmState.isKhmer = false;
+
+      settingRepo.setDefaultLanguage(Language.english.code);
+      S.load(Locale.fromSubtags(languageCode: Language.english.code));
+    });
+  }
 }
 

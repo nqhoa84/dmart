@@ -1,26 +1,18 @@
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/controllers/order_controller.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
-import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/order.dart';
-import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/ProductsByCategory.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
-
-import '../../DmState.dart';
-import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../DmState.dart';
 import '../../generated/l10n.dart';
-import '../controllers/checkout_controller.dart';
-import '../helpers/helper.dart';
-import '../models/route_argument.dart';
+import '../../src/helpers/ui_icons.dart';
 
 class OrderSuccessScreen extends StatefulWidget {
 //  final RouteArgument routeArgument;

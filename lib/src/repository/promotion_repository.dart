@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 
-import '../../src/helpers/custom_trace.dart';
-import 'package:global_configuration/global_configuration.dart';
+import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+
 import '../../src/helpers/helper.dart';
-import '../models/user.dart';
-import '../repository/user_repository.dart';
 import '../models/promotion.dart';
 
 Future<Stream<Promotion>> getPromotions() async {

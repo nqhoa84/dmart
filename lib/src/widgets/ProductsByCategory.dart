@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
 import '../../src/controllers/product_controller.dart';
 import '../../src/models/category.dart';
 import '../../src/models/product.dart';
 import '../../src/widgets/CircularLoadingWidget.dart';
 import '../../src/widgets/ProductItemHigh.dart';
-import '../helpers/ui_icons.dart';
 
 class ProductsByCategory extends StatefulWidget {
   Category category;

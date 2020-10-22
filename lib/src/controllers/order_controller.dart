@@ -47,13 +47,13 @@ class OrderController extends Controller {
         setState(() {
           historyOrders.add(_order);
           switch(_order.orderStatus) {
-            case OrderStatus.Created :
+            case OrderStatus.created :
               pendingOrders.add(_order);
               break;
-            case OrderStatus.Approved :
-            case OrderStatus.Preparing :
-            case OrderStatus.Delivering :
-            case OrderStatus.DeliverFailed :
+            case OrderStatus.approved :
+            case OrderStatus.preparing :
+            case OrderStatus.delivering :
+            case OrderStatus.deliverFailed :
             confirmedOrders.add(_order);
               break;
           }

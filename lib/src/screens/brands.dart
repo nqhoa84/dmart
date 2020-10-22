@@ -3,19 +3,13 @@ import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
+import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
-import '../../src/controllers/brand_controller.dart';
-import '../../src/widgets/CircularLoadingWidget.dart';
 import '../../generated/l10n.dart';
-import '../repository/user_repository.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
-import '../../src/widgets/BrandGridWidget.dart';
+import '../../src/controllers/brand_controller.dart';
 import '../../src/widgets/DrawerWidget.dart';
-import '../../src/widgets/SearchBar.dart';
-import '../../src/widgets/ShoppingCartButton.dart';
-import 'package:flutter/material.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
 
 class BrandsWidget extends StatefulWidget {
   const BrandsWidget({

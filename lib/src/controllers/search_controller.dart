@@ -62,7 +62,7 @@ class SearchController extends Controller {
   int searchIdx = 0;
 
   Future<void> search(String search, {Function() onDone, bool nextPage = false}) async {
-    if (isNullOrEmptyStr(search)) return;
+    if (DmUtils.isNullOrEmptyStr(search)) return;
 
     if (nextPage) {
       searchIdx++;

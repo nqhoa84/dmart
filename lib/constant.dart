@@ -38,4 +38,8 @@ class DmConst {
 
   ///'assets/img/H_User_Icon.png'
   static const String assetImgUserIcon = 'assets/img/H_User_Icon.png';
+
+  ///'assets/img/H_User_Icon.png'
+  static const String assetImgUserThumbUp = 'assets/img/ThumUp.png';
+
 }

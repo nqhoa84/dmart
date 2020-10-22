@@ -275,15 +275,15 @@ class _OrdersScreenState extends StateMVC<OrdersScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Approved),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Approved),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Approved),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.approved),
               ),
             ],
           ),
@@ -308,19 +308,19 @@ class _OrdersScreenState extends StateMVC<OrdersScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Created),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.created),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Approved),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.approved),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Rejected),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.rejected),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.Canceled),
+                child: buildOrderItem(order: Order()..orderStatus = OrderStatus.canceled),
               ),
             ],
           ),
@@ -401,27 +401,27 @@ class _OrdersScreenState extends StateMVC<OrdersScreen> {
 
   String getStatusName(OrderStatus orderStatus) {
     switch(orderStatus) {
-      case OrderStatus.Created:
+      case OrderStatus.created:
         return S.of(context).created;
-      case OrderStatus.Canceled:
+      case OrderStatus.canceled:
         return S.of(context).canceled;
-      case OrderStatus.Denied:
+      case OrderStatus.denied:
         return S.of(context).denied;
-      case OrderStatus.Approved:
+      case OrderStatus.approved:
         return S.of(context).approved;
-      case OrderStatus.DeliverFailed:
+      case OrderStatus.deliverFailed:
         return S.of(context).deliverFailed;
-      case OrderStatus.Delivering:
+      case OrderStatus.delivering:
         return S.of(context).delivering;
-      case OrderStatus.Preparing:
+      case OrderStatus.preparing:
         return S.of(context).preparing;
-      case OrderStatus.Delivered:
+      case OrderStatus.delivered:
         return S.of(context).delivered;
-      case OrderStatus.Confirmed:
+      case OrderStatus.confirmed:
         return S.of(context).confirmed;
-      case OrderStatus.Rejected:
+      case OrderStatus.rejected:
         return S.of(context).rejected;
-      case OrderStatus.Unknown:
+      case OrderStatus.unknown:
         return S.of(context).unknown;
       default: return '';
     }

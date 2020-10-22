@@ -65,28 +65,28 @@ class _DmartState extends State<Dmart> {
       supportedLocales: S.delegate.supportedLocales,
       //localeListResolutionCallback: S.delegate.listResolution(fallback: const Locale('en', '')),
       theme: ThemeData(
-          brightness: Brightness.light,// then the primary color = white
-          accentColor: DmConst.accentColor,
+        brightness: Brightness.light,// then the primary color = white
+        accentColor: DmConst.accentColor,
 //        primaryColor: DmConst.,
 //        backgroundColor: clrPri,
 //        dividerColor: clrPri,
-          iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
-          buttonTheme: ButtonThemeData(minWidth: 25, height: 25,
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
+        buttonTheme: ButtonThemeData(minWidth: 25, height: 25,
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
 //            shape: StadiumBorder(),
-              shape: RoundedRectangleBorder(
+            shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
 //                side: BorderSide(color: Colors.red)
-              ),
-              buttonColor: DmConst.accentColor,
-              textTheme: ButtonTextTheme.primary
-          ),
-          textTheme: TextTheme(
-            button: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w300,
-                color: DmConst.homePromotionColor),
-          )
+            ),
+            buttonColor: DmConst.accentColor,
+            textTheme: ButtonTextTheme.primary
+        ),
+        textTheme: TextTheme(
+          button: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w300,
+              color: DmConst.homePromotionColor),
+        )
 //        textTheme: TextTheme(
 //          headline1: TextStyle(
 //              fontSize: 26.0,

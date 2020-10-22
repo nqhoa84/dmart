@@ -1,6 +1,7 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
+import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/src/repository/user_repository.dart' as userRepo;
 import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       });
 
       settingRepo.listenOrderSetting().then((value) {
-        DmState.orderSetting = value;
+        DmState.orderSetting = value?? OrderSetting();
         print('Order Setting: $value');
       }).whenComplete(() {
         _settingLoaded = true;

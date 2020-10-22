@@ -1,9 +1,5 @@
-//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/DmState.dart';
-import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
-import 'package:dmart/src/models/ProductType.dart';
-import 'package:dmart/src/models/brand.dart';
 import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';

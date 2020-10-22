@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../../src/helpers/custom_trace.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,7 +11,7 @@ import '../repository/user_repository.dart' as userRepo;
 
 Future<Stream<Notification>> getNotifications() async {
   User _user = userRepo.currentUser.value;
-  if (_user.apiToken == null) {
+  if (_user.isNotLogin) {
     return new Stream.value(null);
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';

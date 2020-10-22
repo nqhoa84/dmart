@@ -27,12 +27,11 @@ class ProductItemWide extends StatefulWidget {
 
 //  Function(int) onPressedOnRemoveIcon;
 
-  ProductItemWide({Key key, @required Product product, String heroTag, this.showRemoveIcon = false})
-      : super(key: key) {
+  ProductItemWide({Key key, @required Product product, String heroTag, this.showRemoveIcon = false}) : super(key: key) {
     if (showRemoveIcon) _removeIconSize = 25;
 
     this.product = product;
-    this.heroStr = '${heroTag??''}_W_${product.id}.${unique++}';
+    this.heroStr = '${heroTag ?? ''}_W_${product.id}.${unique++}';
 //    print('heroTag $heroStr');
 
     this.amountInCart = DmState.countQuantityInCarts(product.id);
@@ -46,10 +45,10 @@ class ProductItemWide extends StatefulWidget {
 }
 
 class _ProductItemWideState extends StateMVC<ProductItemWide> {
-  static const double _width = 550.0, _height = 192.0;
-  static const double _tagSize = 50.0 / 550 * _width,
-      _photoWid = 200.0 / 550 * _width,
-      _icFavWSize = 34.0 / 550 * _width;
+//  static const double _width = 550.0, _height = 192.0;
+//  static const double _tagSize = 50.0 / 550 * _width,
+//      _photoWid = 200.0 / 550 * _width,
+//      _icFavWSize = 34.0 / 550 * _width;
   ProductController _con;
 
   _ProductItemWideState() : super(ProductController()) {
@@ -69,8 +68,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
         Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(
-                id: widget.product.id, param: [widget.product, widget.heroStr]));
+            arguments: new RouteArgument(id: widget.product.id, param: [widget.product, widget.heroStr]));
       },
       child: Stack(
         children: <Widget>[
@@ -104,10 +102,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                                     flex: 1,
                                     child: Image.asset(widget.product.getTagAssetImage(), fit: BoxFit.scaleDown),
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(),
-                                  ),
+                                  Expanded(flex: 2, child: Container()),
                                 ],
                               ),
                             )
@@ -163,11 +158,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                     child: Container(
                         padding: EdgeInsets.all(0),
                         color: Theme.of(context).accentColor,
-                        child: Icon(
-                          Icons.close,
-                          size: widget._removeIconSize,
-                          color: Colors.white,
-                        )),
+                        child: Icon(Icons.close, size: widget._removeIconSize, color: Colors.white)),
                     onTap: _onTapIconRemove,
                   ))
               : SizedBox(width: 0)
@@ -287,7 +278,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   void addCart(int quantity) {
-    if(_isDoing) return;
+    if (_isDoing) return;
     if (currentUser.value.isLogin) {
       _con.addCartGeneral(widget.product.id, quantity, onDone: (isOK) {
         _isDoing = false;
@@ -297,7 +288,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
         });
       });
     } else {
-      RouteGenerator.gotoLogin(context, replaceOld: true);
+      RouteGenerator.gotoLogin(context, replaceOld: false);
     }
 //    _isDoing = false;
   }
@@ -320,7 +311,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
     });
 
     if (widget.isFavorite) {
-      _con.addToFavorite(widget.product, onDone: (isOK){
+      _con.addToFavorite(widget.product, onDone: (isOK) {
 //        setState(() {
 //          widget.isFavorite = DmState.isFavorite(productId: widget.product?.id);
 //        });

@@ -3,7 +3,7 @@ import 'package:dmart/utils.dart';
 import '../models/media.dart';
 import 'i_name.dart';
 
-class Field extends IdNameObj{
+class Field extends IdNameObj {
   String description;
   Media image;
   bool selected;
@@ -13,18 +13,21 @@ class Field extends IdNameObj{
   Field.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      nameKh = nameEn;
       description = jsonMap['description'];
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+          ? Media.fromJSON(jsonMap['media'][0])
+          : new Media();
       selected = jsonMap['selected'] ?? false;
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      nameKh = nameEn;
       description = '';
       image = new Media();
       selected = false;
       print('Error parsing data in Field $e \n $trace');
-
     }
   }
 

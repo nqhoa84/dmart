@@ -1,5 +1,3 @@
-import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/controllers/cart_controller.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
@@ -10,8 +8,8 @@ import '../../buidUI.dart';
 import '../../generated/l10n.dart';
 import '../models/route_argument.dart';
 import '../widgets/EmptyCart.dart';
-import 'abs_product_mvc.dart';
 import '../widgets/cart_bottom_button.dart';
+import 'abs_product_mvc.dart';
 import 'delivery_to.dart';
 
 class CartsScreen extends StatefulWidget {

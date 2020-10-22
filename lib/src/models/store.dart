@@ -22,7 +22,8 @@ class Store extends IdNameObj{
   Store.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = toStringVal(jsonMap['name']);
+      nameEn = toStringVal(jsonMap['name']);
+      this.nameKh = nameEn;
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
@@ -40,7 +41,8 @@ class Store extends IdNameObj{
 //      distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      this.nameKh = nameEn;
       image = new Media();
       rate = '0';
       deliveryFee = 0.0;

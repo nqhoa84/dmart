@@ -95,7 +95,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             }),
         _con.bestSaleProducts.isEmpty
             ? ProductsGridViewLoading()
-            : HomeProductsListView(ps: _con.bestSaleProducts, animationOpacity: animationOpacity,
+            : HomeProductsListView(products: _con.bestSaleProducts, animationOpacity: animationOpacity,
               hero: 'home_best_sale',
         ),
 //            : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
@@ -112,7 +112,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             }),
         _con.newArrivalProducts.isEmpty
             ? ProductsGridViewLoading()
-            : HomeProductsListView(ps: _con.newArrivalProducts, animationOpacity: animationOpacity,
+            : HomeProductsListView(products: _con.newArrivalProducts, animationOpacity: animationOpacity,
           hero: 'home_new_arrival',),
         //specialForYou
         _createHeader(
@@ -122,7 +122,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             }),
         _con.special4UProducts.isEmpty
             ? ProductsGridViewLoading()
-            : HomeProductsListView(ps: _con.special4UProducts, animationOpacity: animationOpacity,
+            : HomeProductsListView(products: _con.special4UProducts, animationOpacity: animationOpacity,
           hero: 'home_spe4U',),
       ],
     );

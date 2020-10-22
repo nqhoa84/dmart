@@ -53,22 +53,75 @@ Future<User> login(User user) async {
   return currentUser.value;
 }
 
-Future<User> register(User user) async {
+///return OTP if register ok. if not, return nullOrEmpty
+Future<String> register(User user) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}register';
   final client = new http.Client();
   final response = await client.post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(user.toMap()),
+    body: json.encode(user.toMapReg()),
   );
-  if (response.statusCode == 200) {
-    setCurrentUser(response.body);
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+
+  print('register ${response.body}');
+  dynamic js = json.decode(response.body);
+  /**
+   * {
+      "success": true,
+      "data": {
+      "phone": "0123456790",
+      "OTP": "145321",
+      "expired": 300
+      },
+      "message": "Successfully! Please verify by OTP code has been received in your phone!"
+      }
+   */
+
+  if (js["success"] != null && js["success"] == true) {
+    return toStringVal(js['data']['OTP']);
   } else {
-    throw new Exception(response.body);
+    return null;
   }
-  return currentUser.value;
 }
+
+///Verify Otp to complete registration.
+///This will also automatic login for customer.
+Future<User> verifyOtp(String phone, String otp) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/verify';
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode({'phone': phone, 'OTP': otp}),
+  );
+
+  print('verifyOtp ${response.body}');
+  dynamic js = json.decode(response.body);
+  /**
+   * {
+      "success": true,
+      "data": {
+        "user:{},
+        "token":xxxx
+      },
+      "message": "Successfully! Please verify by OTP code has been received in your phone!"
+      }
+   */
+
+  if (js["success"] != null && js["success"] == true) {
+    String token = toStringVal(js['data']['token']);
+    currentUser.value = User.fromJSON(js['data']['user']);
+    currentUser.value.apiToken = token;
+    print(json.encode(currentUser.value.toMap()));
+    setCurrentUser(json.encode(currentUser.value.toMap()));
+    print('user: ${currentUser.value.toStringIdName()}');
+    print('token: ${currentUser.value.apiToken}');
+    print('-----------------------------------');
+    return currentUser.value;
+  }else{
+    return null;
+  }
+}
+
 
 Future<bool> resetPassword(User user) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}send_reset_link_email';
@@ -172,7 +225,7 @@ Future<Address> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}';
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/add';
   final client = new http.Client();
   final response = await client.post(
     url,

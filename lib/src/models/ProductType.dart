@@ -12,11 +12,13 @@ class ProductType extends IdNameObj {
   ProductType.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      name = jsonMap['name'] ?? '';
+      nameEn = jsonMap['name'] ?? '';
+      nameKh = nameEn;
       description=jsonMap['description'] ?? '';
     } catch (e, trace) {
       id = -1;
-      name = '';
+      nameEn = '';
+      nameKh = nameEn;
       description = '';
       print('Error parsing data in ProductType.fromJSON $e \n $trace');
 

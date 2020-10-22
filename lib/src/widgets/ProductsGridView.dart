@@ -2,7 +2,6 @@ import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../../constant.dart';
 import '../../src/models/product.dart';
 import '../../src/widgets/ProductItemHigh.dart';
 

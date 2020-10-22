@@ -190,7 +190,7 @@ class _DmAppBarState extends State<DmAppBar> {
                   InkWell(
                     onTap: () => RouteGenerator.gotoHome(context),
                     child: Container(
-                        child: Image.asset('assets/img/H_Logo_Dmart.png', width: 46, height: 46, fit: BoxFit.scaleDown)),
+                        child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
                   ),
                   Expanded(
                     child: Align(

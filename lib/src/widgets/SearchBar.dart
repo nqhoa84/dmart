@@ -48,7 +48,7 @@ class _SearchBarState extends StateMVC<SearchBar> {
   _onTapOnSearchIcon() {
     _con.search(textToSearch, onDone: (){
       print("_con.products ${_con.products?.length}");
-      if(isNullOrEmptyList(_con.products)) {
+      if(DmUtils.isNullOrEmptyList(_con.products)) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(S.of(context).searchResultEmpty),
         ));

@@ -1,4 +1,6 @@
+import 'package:dmart/src/controllers/reset_pass_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
@@ -14,9 +16,9 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
-  UserController _con;
+  ResetPassController _con;
 
-  _ForgetPasswordScreenState() : super(UserController()) {
+  _ForgetPasswordScreenState() : super(ResetPassController()) {
     _con = controller;
   }
 
@@ -57,38 +59,29 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: createRoundedBorderBoxDecoration(),
       child: Form(
-        key: _con.loginFormKey,
+        key: _con.resetPassFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).weWillSendNewPass),
-            SizedBox(height: 15),
+//            Text(S.of(context).weWillSendNewPass),
+//            SizedBox(height: 15),
 
             Text(S.of(context).resetPassEnterPhoneNumber),
-            SizedBox(height: 15),
+            SizedBox(height: DmConst.masterHorizontalPad),
 
             Container(
               padding: EdgeInsets.symmetric(horizontal: 5),
 //                height: DmConst.appBarHeight * 0.7,
-              decoration: BoxDecoration(
-                  color: DmConst.bgrColorSearchBar,
-                  border: Border.all(
-                    color: Theme.of(context).focusColor.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(7)),
+              decoration: buildBoxDecorationForTextField(context),
+
               child: TextFormField(
                 style: TextStyle(color: DmConst.accentColor),
-                keyboardType: TextInputType.phone,
+                textAlignVertical: TextAlignVertical.center,
+                keyboardType: TextInputType.number,
                 onSaved: (input) {
-                  if (DmUtils.isNullOrEmptyStr(input)) return;
-                  input = input.trim();
-                  if (DmUtils.isEmail(input)) {
-                    _con.user.email = input;
-                  } else {
-                    _con.user.phone = input;
-                  }
+                  _con.user.phone = input;
                 },
-//                validator: _phoneOrEmailValidate,
+                validator: (value) => !DmUtils.isPhone(value) ? S.of(context).invalidPhone : null,
                 decoration: new InputDecoration(
                   hintText: S.of(context).phone,
                   hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
@@ -97,10 +90,12 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                   focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
                   prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
                 ),
-              ),
+                inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+
+            ),
             ),
 
-            SizedBox(height: 30),
+            SizedBox(height: DmConst.masterHorizontalPad * 2),
 
             Row(
               children: [
@@ -123,131 +118,8 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
     );
   }
 
-  Widget _build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        key: _con.scaffoldKey,
-        backgroundColor: Theme.of(context).accentColor,
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 65, horizontal: 40),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).primaryColor.withOpacity(0.6),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 85, horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).primaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Theme.of(context).hintColor.withOpacity(0.2), offset: Offset(0, 10), blurRadius: 20)
-                      ],
-                    ),
-                    child: Form(
-                      key: _con.loginFormKey,
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 25),
-                          Text(S.of(context).emailToResetPass, style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize:20,))),
-                          SizedBox(height: 60),
-                          new TextFormField(
-                            style: TextStyle(color: Theme.of(context).accentColor),
-                            keyboardType: TextInputType.emailAddress,
-                            onSaved: (input) => _con.user.email = input,
-                            validator: (input) => !input.contains('@') ? S.of(context).shouldBeValidEmail : null,
-                            decoration: new InputDecoration(
-                              hintText: S.of(context).emailAddress,
-                              hintStyle: Theme.of(context).textTheme.bodyText2.merge(
-                                TextStyle(color: Theme.of(context).accentColor),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Theme.of(context).accentColor.withOpacity(0.2))),
-                              focusedBorder:
-                              UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                              prefixIcon: Icon(
-                                UiIcons.envelope,
-                                color: Theme.of(context).accentColor,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 70),
-                          FlatButton(
-                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 60),
-                            onPressed: () {
-                              _con.resetPassword();
-                            },
-                            child: Text(
-                              S.of(context).sendLink,
-                              style: Theme.of(context).textTheme.headline6.merge(
-                                TextStyle(color: Theme.of(context).primaryColor),
-                              ),
-                            ),
-                            color: Theme.of(context).accentColor,
-                            shape: StadiumBorder(),
-                          ),
-                          SizedBox(height: 80),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/Login');
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        style: Theme.of(context).textTheme.headline6.merge(
-                          TextStyle(fontSize:16,color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
-                        ),
-                        children: [
-                          TextSpan(text: 'i_remember_my_password_return_to_login'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/SignUp');
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        style: Theme.of(context).textTheme.headline6.merge(
-                          TextStyle(fontSize:16,color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
-                        ),
-                        children: [
-                          TextSpan(text: S.of(context).dontHaveAccount),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                ],
-
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void onPressResetPass() {
     print('------onPressResetPass');
+    _con.resetPassword();
   }
 }

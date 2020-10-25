@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,13 @@ class Controller extends ControllerMVC {
 
   void showErr(String msg) {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text('$msg'),
+      content: Text('$msg', style: TextStyle(color: DmConst.colorFavorite)),
     ));
   }
 
   void showMsg(String msg) {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text('$msg'),
+      content: Text('$msg', style: TextStyle(color: DmConst.accentColor)),
     ));
   }
 

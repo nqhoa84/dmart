@@ -38,7 +38,7 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
       return NameImageItemGridViewLoading();
     } else
     {
-      return NameImageItemGridView(items: _con.brands);
+      return CategoriesGridView(items: _con.brands);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }

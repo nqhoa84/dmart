@@ -101,20 +101,4 @@ class CartController extends ControllerMVC {
     }
   }
 
-  void goCheckout(BuildContext context) {
-    if (!currentUser.value.profileCompleted()) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).completeYourProfileDetailsToContinue),
-        action: SnackBarAction(
-          label: S.of(context).settings,
-          textColor: Theme.of(context).accentColor,
-          onPressed: () {
-            Navigator.of(context).pushNamed('/Settings');
-          },
-        ),
-      ));
-    } else {
-      Navigator.of(context).pushNamed('/DeliveryPickup');
-    }
-  }
 }

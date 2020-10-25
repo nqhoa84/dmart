@@ -12,9 +12,12 @@ import '../repository/user_repository.dart' as repository;
 
 class UserController extends ControllerMVC {
   User user = new User();
+  String resetPassPhone;
   bool hidePassword = true, hidePassword2 = true;
   bool loading = false;
   GlobalKey<FormState> loginFormKey;
+  GlobalKey<FormState> resetPassFormKey;
+  GlobalKey<FormState> newPassFormKey;
   GlobalKey<ScaffoldState> scaffoldKey;
   FirebaseMessaging _firebaseMessaging;
   OverlayEntry loader;
@@ -24,6 +27,9 @@ class UserController extends ControllerMVC {
   UserController() {
     loader = Helper.overlayLoader(context);
     loginFormKey = new GlobalKey<FormState>();
+    resetPassFormKey = GlobalKey<FormState>();
+    newPassFormKey = GlobalKey<FormState>();
+
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.getToken().then((String _deviceToken) {
@@ -43,7 +49,7 @@ class UserController extends ControllerMVC {
 
       repository.login(user).then((value) {
         if (value != null && value.id > 0) {
-          RouteGenerator.gotoPromotions(context, replaceOld: true);
+          RouteGenerator.gotoPromotions(context);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text(S.of(context).wrongEmailOrPassword),
@@ -58,35 +64,6 @@ class UserController extends ControllerMVC {
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(S.of(context).emailAccountExists),
         ));
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
-      });
-    }
-  }
-
-  void resetPassword() {
-    FocusScope.of(context).unfocus();
-    if (loginFormKey.currentState.validate()) {
-      loginFormKey.currentState.save();
-      Overlay.of(context).insert(loader);
-      repository.resetPassword(user).then((value) {
-        if (value != null && value == true) {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).resetLinkHasBeenSentToEmail),
-            action: SnackBarAction(
-              label: S.of(context).login,
-              onPressed: () {
-                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Login');
-              },
-            ),
-            duration: Duration(seconds: 10),
-          ));
-        } else {
-          loader.remove();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).errorVerifyEmail),
-          ));
-        }
       }).whenComplete(() {
         Helper.hideLoader(loader);
       });

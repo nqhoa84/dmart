@@ -35,7 +35,7 @@ Future<User> login(User user) async {
       print('=============');
       print(json.encode(currentUser.value.toMap()));
       print('=============');
-      setCurrentUser(json.encode(currentUser.value.toMap()));
+      saveUserToShare(currentUser.value);
       print('-----------------------------------');
       print('user: ${currentUser.value.toStringIdName()}');
       print('token: ${currentUser.value.apiToken}');
@@ -84,6 +84,31 @@ Future<String> register(User user) async {
   }
 }
 
+
+Future<String> resendOtp(String phone) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/resend';
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode({'phone': phone}),
+  );
+
+  print('resendOtp ${response.body}');
+  dynamic js = json.decode(response.body);
+  /**
+   * {
+      "success": false,
+      "message": "User is not exist or activated"
+      }
+
+   */
+
+  if(js["success"] != null && js["success"] == true) {
+    return js['data']['OTP'];
+  } else {
+    return null;
+  }
+}
 ///Verify Otp to complete registration.
 ///This will also automatic login for customer.
 Future<User> verifyOtp(String phone, String otp) async {
@@ -100,8 +125,8 @@ Future<User> verifyOtp(String phone, String otp) async {
    * {
       "success": true,
       "data": {
-        "user:{},
-        "token":xxxx
+      "user:{},
+      "token":xxxx
       },
       "message": "Successfully! Please verify by OTP code has been received in your phone!"
       }
@@ -112,29 +137,31 @@ Future<User> verifyOtp(String phone, String otp) async {
     currentUser.value = User.fromJSON(js['data']['user']);
     currentUser.value.apiToken = token;
     print(json.encode(currentUser.value.toMap()));
-    setCurrentUser(json.encode(currentUser.value.toMap()));
+    saveUserToShare(currentUser.value);
     print('user: ${currentUser.value.toStringIdName()}');
     print('token: ${currentUser.value.apiToken}');
     print('-----------------------------------');
     return currentUser.value;
-  }else{
+  } else {
     return null;
   }
 }
 
-
-Future<bool> resetPassword(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}send_reset_link_email';
-  final client = new http.Client();
-  final response = await client.post(
+///return the OTP send to client.
+Future<String> resetPassword(String phone) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}reset_pass_by_sms';
+  final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(user.toMap()),
+    body: json.encode({'phone': phone}),
   );
-  if (response.statusCode == 200) {
-    return true;
+  print('resetPassword ${response.body}');
+  dynamic js = json.decode(response.body);
+
+  if (js["success"] != null && js["success"] == true) {
+    return toStringVal(js['data']['OTP']);
   } else {
-    throw new Exception(response.body);
+    return null;
   }
 }
 
@@ -144,14 +171,15 @@ Future<void> logout() async {
   await prefs.remove('current_user');
 }
 
-void setCurrentUser(jsonString) async {
+void saveUserToShare(User u) async {
 //  if (json.decode(jsonString)['data'] != null) {
 //    SharedPreferences prefs = await SharedPreferences.getInstance();
 //    await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
 //  }
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('current_user', jsonString);
+  if (u != null) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('current_user', json.encode(u.toMap4SharePreference()));
+  }
 }
 
 Future<void> setCreditCard(CreditCard creditCard) async {
@@ -176,8 +204,6 @@ Future<User> getCurrentUser() async {
   return currentUser.value;
 }
 
-
-
 Future<CreditCard> getCreditCard() async {
   CreditCard _creditCard = new CreditCard();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -188,22 +214,29 @@ Future<CreditCard> getCreditCard() async {
 }
 
 Future<User> update(User user) async {
-  final String _apiToken = 'api_token=${currentUser.value.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}users/${currentUser.value.id}?$_apiToken';
-  final client = new http.Client();
-  final response = await client.post(
+  final String url = '${GlobalConfiguration().getString('api_base_url')}profile/update';
+
+  print("update User - $url");
+  print(user.toMap());
+  final response = await http.Client().post(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
     body: json.encode(user.toMap()),
   );
-  setCurrentUser(response.body);
-  currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+  dynamic js = json.decode(response.body);
+  print(response.body);
+  if (js["success"] != null && js["success"] == true) {
+    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+    saveUserToShare(user);
+  } else {
+    return null;
+  }
+
   return currentUser.value;
 }
 
 Future<Stream<Address>> getAddresses() async {
-  final String url =
-      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?'
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?'
       'search=user_id:${userRepo.currentUser.value.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
   print(url);
   var req = http.Request('get', Uri.parse(url));
@@ -221,18 +254,103 @@ Future<Stream<Address>> getAddresses() async {
   });
 }
 
+Future<List<Province>> getProvinces() async {
+//  final String url = '${GlobalConfiguration().getString('api_base_url')}provinces';
+//  print(url);
+//  var req = http.Request('get', Uri.parse(url));
+//  req.headers.addAll(createHeadersRepo());
+//  final streamedRest = await http.Client().send(req);
+//
+//  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
+//    return Helper.getData(data);
+//  }).expand((data) {
+////        print(' ------------ $data');
+//    return data as List;
+//  }).map((data) {
+//    return Address.fromJSON(data);
+//  });
+  List<Province> re = [];
+
+  try {
+    final String url = '${GlobalConfiguration().getString('api_base_url')}provinces';
+    print('getProvinces $url');
+    final response = await http.Client().get(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    print('getProvinces ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      (js['data'] as List).forEach((element) {
+        re.add(Province.fromJSON(element));
+      });
+    }
+  } catch (e, trace) {
+    print('$e \n $trace');
+  }
+  return re;
+}
+
+Future<List<District>> getDistricts(int provinceId) async {
+  List<District> re = [];
+  try {
+    final String url = '${GlobalConfiguration().getString('api_base_url')}districts?province_id=$provinceId';
+    print('getDistricts $url');
+    final response = await http.Client().get( url );
+    print('getDistricts ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      (js['data'] as List).forEach((element) {
+        re.add(District.fromJSON(element));
+      });
+    }
+  } catch (e, trace) {
+    print('$e \n $trace');
+  }
+  return re;
+}
+
+Future<List<Ward>> getWards(int districtId) async {
+  List<Ward> re = [];
+  try {
+    final String url = '${GlobalConfiguration().getString('api_base_url')}wards?district_id=$districtId';
+    print('getWards $url');
+    final response = await http.Client().get( url );
+    print('getWards ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      (js['data'] as List).forEach((element) {
+        re.add(Ward.fromJSON(element));
+      });
+    }
+  } catch (e, trace) {
+    print('$e \n $trace');
+  }
+  return re;
+}
+
 Future<Address> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
-  final String _apiToken = 'api_token=${_user.apiToken}';
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/add';
-  final client = new http.Client();
-  final response = await client.post(
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses';
+  print('addAddress $url');
+  print(address.toMap());
+  final response = await http.Client().post(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
     body: json.encode(address.toMap()),
   );
-  return Address.fromJSON(json.decode(response.body)['data']);
+//  return Address.fromJSON(json.decode(response.body)['data']);
+
+  print(response.body);
+
+  dynamic js = json.decode(response.body);
+
+  if (js["success"] != null && js["success"] == true) {
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } else {
+    return null;
+  }
 }
 
 Future<Address> updateAddress(Address address) async {

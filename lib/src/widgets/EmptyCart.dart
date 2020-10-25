@@ -79,7 +79,7 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
               !loading
                   ? FlatButton(
                 onPressed: () {
-                  RouteGenerator.gotoHome(context, replaceOld: true);
+                  RouteGenerator.gotoHome(context);
                 },
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
                 color: Theme.of(context).accentColor.withOpacity(1),

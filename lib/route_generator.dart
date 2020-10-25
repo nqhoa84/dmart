@@ -1,3 +1,4 @@
+import 'package:dmart/src/screens/ProfileUpdated.dart';
 import 'package:dmart/src/screens/bottom_right_menu.dart';
 import 'package:dmart/src/screens/contactus.dart';
 import 'package:dmart/src/screens/delivery_to.dart';
@@ -6,11 +7,11 @@ import 'package:dmart/src/screens/home2.dart';
 import 'package:dmart/src/screens/new_arrival.dart';
 import 'package:dmart/src/screens/notifications.dart';
 import 'package:dmart/src/screens/orders.dart';
-import 'package:dmart/src/screens/place_order.dart';
 import 'package:dmart/src/screens/promotions.dart';
 import 'package:flutter/material.dart';
 
 import 'src/models/route_argument.dart';
+import 'src/screens/ProfileInfoScreen.dart';
 import 'src/screens/best_sale.dart';
 import 'src/screens/brand.dart';
 import 'src/screens/brands.dart';
@@ -23,15 +24,12 @@ import 'src/screens/delivery_addresses.dart';
 import 'src/screens/favorites.dart';
 import 'src/screens/forget_password.dart';
 import 'src/screens/help.dart';
-import 'src/screens/order_success.dart';
-import 'src/screens/pages.dart';
 import 'src/screens/payment_methods.dart';
 import 'src/screens/paypal_payment.dart';
 import 'src/screens/product_detail.dart';
 import 'src/screens/promotion.dart';
 import 'src/screens/razorpay_payment.dart';
 import 'src/screens/reviews.dart';
-import 'src/screens/settings.dart';
 import 'src/screens/signin.dart';
 import 'src/screens/signup.dart';
 import 'src/screens/special_4U.dart';
@@ -53,25 +51,27 @@ class RouteGenerator {
         : Navigator.of(context).pushNamed('/ForgetPassword');
   }
 
-  static void gotoHome(BuildContext context, {bool replaceOld = false}) {
-    Navigator.of(context).pushReplacementNamed('/Home');
+  ///This will remove all route, except /Home
+  static void gotoHome(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+//    Navigator.of(context).pushReplacementNamed('/Home');
   }
   static void gotoCategories(BuildContext context) {
-//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
-    Navigator.of(context).pushReplacementNamed('/Categories');
+    Navigator.of(context).pushNamedAndRemoveUntil('/Categories', (Route<dynamic> route) => false);
+
+//    Navigator.of(context).pushReplacementNamed('/Categories');
   }
-  static void gotoPromotions(BuildContext context, {bool replaceOld = false}) {
-//    replaceOld ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2)
-//        : Navigator.of(context).pushNamed('/Pages', arguments: 2);
-    Navigator.of(context).pushReplacementNamed('/Promotions');
+  static void gotoPromotions(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil('/Promotions', (Route<dynamic> route) => false);
+//    Navigator.of(context).pushReplacementNamed('/Promotions');
   }
   static void gotoNotifications(BuildContext context) {
-//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
-    Navigator.of(context).pushReplacementNamed('/Notifications');
+    Navigator.of(context).pushNamedAndRemoveUntil('/Notifications', (Route<dynamic> route) => false);
+//    Navigator.of(context).pushReplacementNamed('/Notifications');
   }
   static void gotoMenu(BuildContext context) {
-//    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 4);
-    Navigator.of(context).pushReplacementNamed('/BottomRightMenu');
+    Navigator.of(context).pushNamedAndRemoveUntil('/BottomRightMenu', (Route<dynamic> route) => false);
+//    Navigator.of(context).pushReplacementNamed('/BottomRightMenu');
   }
 
   static void gotoBestSale(BuildContext context, {bool replaceOld = false}) {
@@ -91,7 +91,8 @@ class RouteGenerator {
 
 
   static void gotoMyOrders(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders') : Navigator.of(context).pushNamed('/MyOrders');
+    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders')
+        : Navigator.of(context).pushNamed('/MyOrders');
   }
 
   static void gotoCart(BuildContext context, {bool replaceOld = false}) {
@@ -113,6 +114,16 @@ class RouteGenerator {
     replaceOld ? Navigator.of(context).pushReplacementNamed('/ContactUs')
         : Navigator.of(context).pushNamed('/ContactUs') ;
   }
+
+  static void gotoProfileUpdatedScreen(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil('/ProfileUpdated', (Route<dynamic> route) => false);
+  }
+
+  static gotoProfileInfo(BuildContext context, {bool replaceOld = false}) {
+    replaceOld ? Navigator.of(context).pushNamedAndRemoveUntil('/ProfileInfo', (Route<dynamic> route) => false)
+        : Navigator.of(context).pushNamed('/ProfileInfo') ;
+  }
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -163,8 +174,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
      case '/Help':
         return MaterialPageRoute(builder: (_) => HelpScreen());
-      case '/Settings':
-        return MaterialPageRoute(builder: (_) => SettingsWidget());
+      case '/ProfileInfo':
+        return MaterialPageRoute(builder: (_) => ProfileInfoScreen());
 
       case '/MyFavorites':
         return MaterialPageRoute(builder: (_) => FavoritesScreen());
@@ -193,17 +204,14 @@ class RouteGenerator {
       case '/Special4U':
         return MaterialPageRoute(builder: (_) => Special4UScreen());
 
-
+      case '/ProfileUpdated':
+        return MaterialPageRoute(builder: (_) => ProfileUpdatedScreen());
 
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => ErrorScreen());
     }
   }
-
-
-
-
 
 
 }

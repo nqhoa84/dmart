@@ -63,56 +63,52 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
 
 Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
   if (user.isLogin) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(currentUser.value.image.thumb),
-//          child: Image.network(currentUser.value.image.thumb),
-//          child: Image.network(
-//            '${user.image.thumb}',
-//            loadingBuilder: (ctx, wid, event) {
-//              return Center(child: CircularProgressIndicator());
-//            },
-//            errorBuilder: (ctx, obj, trace) {
-//              return Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown);
-//            },
-//          ),
-//        child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
+    return InkWell(
+      onTap: () => RouteGenerator.gotoProfileInfo(context),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage: NetworkImage(currentUser.value.image.thumb),
+//              child: createNetworkImage(url: currentUser.value.image.thumb),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
-          child: Column(
+          Padding(
+            padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(user.name ?? S.of(context).unknown),
+                Text('${S.of(context).credit}: ${currentUser.value.credit}',
+                    style: TextStyle(color: DmConst.textColorForTopBarCredit)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    return InkWell(
+      onTap: () => RouteGenerator.gotoLogin(context),
+      child: Row(
+        children: <Widget>[
+          CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
+          ),
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(user.name ?? S.of(context).unknown),
-              Text('${S.of(context).credit}: ${currentUser.value.credit}',
-                  style: TextStyle(color: DmConst.textColorForTopBarCredit)),
+              Text(S.of(context).guest),
+              Text('${S.of(context).credit}:'),
             ],
           ),
-        ),
-      ],
-    );
-  } else {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          backgroundColor: Colors.transparent,
-          child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(S.of(context).guest),
-            Text('${S.of(context).credit}:'),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -481,4 +477,13 @@ Widget createGridViewOfProducts(BuildContext context, List<Product> products, {S
       },
     ),
   );
+}
+
+BoxDecoration buildBoxDecorationForTextField(BuildContext context) {
+  return BoxDecoration(
+      color: DmConst.bgrColorSearchBar,
+      border: Border.all(
+        color: Theme.of(context).focusColor.withOpacity(0.2),
+      ),
+      borderRadius: BorderRadius.circular(7));
 }

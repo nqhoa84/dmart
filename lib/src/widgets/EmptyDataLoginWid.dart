@@ -126,7 +126,7 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
   }
 
   void _onPressHome(BuildContext context) {
-    RouteGenerator.gotoHome(context, replaceOld: true);
+    RouteGenerator.gotoHome(context);
   }
 
 

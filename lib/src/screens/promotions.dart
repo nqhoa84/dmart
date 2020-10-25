@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:dmart/src/controllers/promotion_controller.dart';
 import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
@@ -49,10 +50,6 @@ with SingleTickerProviderStateMixin
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: 2),
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
-      endDrawerEnableOpenDragGesture: true,
       drawerEnableOpenDragGesture: true,
       body: SafeArea(
         child: CustomScrollView(slivers: <Widget>[
@@ -65,7 +62,9 @@ with SingleTickerProviderStateMixin
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              buildContent(context),
+              Container(
+                  padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+                  child: buildContent(context)),
             ]),
           )
         ]),

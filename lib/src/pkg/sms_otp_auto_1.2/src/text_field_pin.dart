@@ -245,7 +245,7 @@ class _TextFieldPinState extends State<TextFieldPin> {
               fillColor: widget.filledColor,
               isDense: true,
               counterText: ""),
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.number,
           onChanged: onTextChange,
           controller: textEditingController,
           inputFormatters: <TextInputFormatter>[

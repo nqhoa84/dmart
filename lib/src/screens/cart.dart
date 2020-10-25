@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
@@ -60,9 +61,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
   Widget buildContent(BuildContext context) {
     if (DmState.carts.isEmpty) {
       return EmptyCartGrid();
-//      return ProductsGridViewLoading(isList: true);
     } else {
-//      print('DmState.carts ${DmState.carts.length}');
       List<Product>  ps = [];
       DmState.carts.forEach((cart) {
         if(!ps.contains(cart.product)) {
@@ -105,7 +104,9 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
                   createSilverTopMenu(context, haveBackIcon: true, title: getTitle(context)),
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      buildContent(context),
+                      Container(
+                        padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+                          child: buildContent(context)),
                       SizedBox(height: 80),
                     ]),
                   )

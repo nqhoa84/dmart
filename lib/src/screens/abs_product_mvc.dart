@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
+import '../../constant.dart';
 import '../../src/widgets/DrawerWidget.dart';
 
 abstract class ProductStateMVC<T extends StatefulWidget> extends StateMVC<StatefulWidget>
@@ -93,7 +94,9 @@ with SingleTickerProviderStateMixin
               createSilverTopMenu(context, haveBackIcon: true, title: getTitle(context)),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  buildContent(context),
+                  Container(
+                      padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+                      child: buildContent(context)),
                 ]),
               )
             ],

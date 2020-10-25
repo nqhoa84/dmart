@@ -1,6 +1,7 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/language.dart';
+import 'package:dmart/src/repository/user_repository.dart';
 import 'package:dmart/src/widgets/BottomRightMenu.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,12 @@ class BottomRightMenuScreen extends StatelessWidget {
         ),
 
         ListTile(
-          onTap: () => RouteGenerator.gotoHelp(context),
+          onTap: () {
+            if(currentUser.value.isLogin)
+              RouteGenerator.gotoProfileInfo(context);
+            else
+              RouteGenerator.gotoLogin(context);
+          },
 //            leading: ImageIcon(AssetImage('assets/img/H_User_Icon.png'), color: DmConst.primaryColor),
           leading: Image.asset('assets/img/H_User_Icon.png', width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.of(context).myAccount),

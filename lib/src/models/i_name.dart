@@ -4,7 +4,7 @@ import 'package:dmart/utils.dart';
 import 'media.dart';
 
 class IdObj {
-  int id;
+  int id = 0;
 
   IdObj({this.id = 0});
 
@@ -15,13 +15,10 @@ class IdObj {
   @override
   bool operator ==(dynamic other) {
     return this.isValid && other.id == this.id;
-
-//    if(this.id >= 0)  {
-//      return this.id >= 0 && other.id == this.id;
-//    } else {
-//      return this. == other;
-//    }
   }
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class IdNameObj extends IdObj {
@@ -59,6 +56,12 @@ class IdNameObj extends IdObj {
   String toStringIdName() {
     return '{id: $id, name: $name}';
   }
+
+  @override
+  String toString() {
+    return 'IdNameObj {id: $id, name: $name}';
+  }
+
 }
 
 class NameImageObj extends IdNameObj {

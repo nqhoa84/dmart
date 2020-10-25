@@ -10,7 +10,17 @@ class User extends IdNameObj{
   String apiToken;
   String deviceToken;
   String _phone;
+
+  Gender gender;
+
+  DateTime birthday;
+
+  int point;
+
+  String facebookId;
+
   String get phone => _phone;
+
   set phone(String value) {
     if(value == null) {
       _phone = '';
@@ -48,21 +58,14 @@ class User extends IdNameObj{
       email = toStringVal(jsonMap['email']);
       apiToken = toStringVal(jsonMap['token']);
       deviceToken = toStringVal(jsonMap['device_token']);
-      try {
-        phone = toStringVal(jsonMap['custom_fields']['phone']['view']);
-      } catch (e, trace) {
-        phone = "";
-      }
-      try {
-        address = toStringVal(jsonMap['custom_fields']['address']['view']);
-      } catch (e, trace) {
-        address = "";
-      }
-      try {
-        bio = toStringVal(jsonMap['custom_fields']['bio']['view']);
-      } catch (e, trace) {
-        bio = "";
-      }
+      int i = toInt(jsonMap['gender']);
+      gender = i >=0 && i <= 2 ? Gender.values[i] : null;
+      birthday = toDateTime(jsonMap['birthday'], errorValue: null);
+      credit = toDouble(jsonMap['credit'], errorValue: 0);
+      point = toInt(jsonMap['point'], errorValue: 0);
+      phone = toStringVal(jsonMap['phone']);
+      email = toStringVal(jsonMap['email']);
+      facebookId = toStringVal(jsonMap['facebook_id']);
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
@@ -81,7 +84,23 @@ class User extends IdNameObj{
     map["password"] = password;
     map["device_token"] = deviceToken??'';
     map["address"] = address;
+    map["gender"] = gender != null?  gender.index: Gender.Others.index;
+    map["birthday"] = birthday != null? toDateStr(birthday) : '';
+//    map["bio"] = bio;
+    map["media"] = [image?.toMap()];
+    return map;
+  }
+
+  Map toMap4SharePreference() {
+    var map = new Map<String, dynamic>();
+    map["id"] = id.toString();
+    map["email"] = email??'';
+    map["phone"] = phone??'';
+    map["name"] = name??'';
+    map["password"] = password;
+    map["address"] = address;
     map["bio"] = bio;
+    map["token"] = apiToken;
     map["media"] = [image?.toMap()];
     return map;
   }
@@ -103,3 +122,5 @@ class User extends IdNameObj{
     return address != null && address != '' && phone != null && phone != '';
   }
 }
+
+enum Gender {Female, Male, Others}

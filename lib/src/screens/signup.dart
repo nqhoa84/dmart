@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/register_controller.dart';
+import 'package:dmart/src/models/address.dart';
+import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/sms_retrieved.dart';
 import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/text_field_pin.dart';
@@ -20,6 +22,8 @@ import 'package:flutter/material.dart';
 import '../../utils.dart';
 import '../controllers/user_controller.dart';
 import '../../generated/l10n.dart';
+import '../repository/user_repository.dart' as userRepo;
+
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -31,7 +35,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
   int _stepIdx = 0;
 
   int _otpCodeLength = 6;
-  String _otpCode = "";
+  String _userEnteredOtp = "";
 
   _SignUpScreenState() : super(RegController()) {
     _con = controller;
@@ -40,6 +44,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
   @override
   void initState() {
     super.initState();
+    _con.getProvinces();
     _getSignatureCode();
   }
 
@@ -50,8 +55,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
   }
 
   _onOtpCallBack(String otpCode, bool isAutofill) async {
-    print("_onOtpCallBack $otpCode -- $isAutofill");
-    this._otpCode = otpCode;
+//    print("_onOtpCallBack $otpCode -- $isAutofill");
+    this._userEnteredOtp = otpCode;
     if (otpCode.length == this._otpCodeLength) {
       await verifyOtp();
     }
@@ -65,13 +70,15 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: this._stepIdx >= 2 ? null : InkWell(
-            onTap: () {
-              if (Navigator.of(context).canPop()) Navigator.pop(context);
-            },
-            child: Icon(UiIcons.return_icon, color: DmConst.accentColor)),
+        leading: this._stepIdx >= 2
+            ? null
+            : InkWell(
+                onTap: () {
+                  if (Navigator.of(context).canPop()) Navigator.pop(context);
+                },
+                child: Icon(UiIcons.return_icon, color: DmConst.accentColor)),
         title: InkWell(
-            onTap: () => RouteGenerator.gotoHome(context, replaceOld: true),
+            onTap: () => RouteGenerator.gotoHome(context),
             child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
         centerTitle: true,
         bottom: PreferredSize(
@@ -280,17 +287,13 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     child: FlatButton(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                       onPressed: _con.loading ? null : onPressNext2VerifyStep,
-                      child: Text(S.of(context).next,
+                      child: Text(_con.loading == false? S.of(context).next : S.of(context).processing,
                           style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                       color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
                     ),
                   ),
                 ],
-              ),
-              Offstage(
-                offstage: _con.loading == false,
-                child: Text(S.of(context).processing),
               ),
             ],
           ),
@@ -299,7 +302,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
     );
   }
 
-  Column buildVerificationWidget(BuildContext context) {
+  Widget buildVerificationWidget(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -331,14 +334,14 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         ),
         SizedBox(height: 10),
         Text(S.of(context).verifyOtpNote, style: txtStyleGrey),
-        SizedBox(height: 20),
+        buildOtpExpiredWidget(context),
         Row(
           children: [
             Expanded(
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressNext2LocationStep,
-                child: Text(S.of(context).next,
+                child: Text(S.of(context).register,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -348,6 +351,24 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         ),
       ],
     );
+  }
+
+  Widget buildOtpExpiredWidget(BuildContext context) {
+    return Offstage(
+      offstage: _con.otpExpInSeconds == null,
+      child: Row(children: [
+        Text('${S.of(context).otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
+            style: txtStyleGrey),
+        FlatButton(onPressed: _con.otpExpInSeconds != null && _con.otpExpInSeconds > 0 ?
+            null
+            : resendOtp,
+            child: Text(S.of(context).resend))
+      ]),
+    );
+  }
+
+  void resendOtp() {
+    _con.resendOtp();
   }
 
   Widget buildRegOkWidget(BuildContext context) {
@@ -360,18 +381,19 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           leading: Image.asset(DmConst.assetImgUserThumbUp),
           title: Wrap(
             alignment: WrapAlignment.start,
-              children: [
-            Text(S.of(context).yourPhoneRegOK),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(S.of(context).welcomeTo),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text("Dmart24.com", style: TextStyle(color: DmConst.accentColor)),
-            ),
-            Text(S.of(context).enjoyShopping),
-          ],),
+            children: [
+              Text(S.of(context).yourPhoneRegOK),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(S.of(context).welcomeTo),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text("Dmart24.com", style: TextStyle(color: DmConst.accentColor)),
+              ),
+              Text(S.of(context).enjoyShopping),
+            ],
+          ),
         ),
         SizedBox(height: 10),
         Row(
@@ -380,7 +402,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: () {
-                  RouteGenerator.gotoHome(context, replaceOld: true);
+                  RouteGenerator.gotoHome(context);
                 },
                 child: Text(S.of(context).startShopping,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
@@ -391,7 +413,6 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           ],
         ),
         SizedBox(height: 20),
-
         TitleDivider(title: S.of(context).personalDetails),
         SizedBox(height: 10),
         Text(S.of(context).personalDetailNote),
@@ -401,7 +422,9 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             Expanded(
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                onPressed: onPressSaveLocation,
+                onPressed: () {
+                  setState(() {_stepIdx++;});
+                },
                 child: Text(S.of(context).next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
@@ -410,7 +433,6 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             ),
           ],
         )
-
       ],
     );
   }
@@ -427,132 +449,93 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         SizedBox(height: 10),
         Text(S.of(context).locationNote, style: txtStyleGrey),
         Form(
-          key: _con.locationFormKey,
-            child: Column(children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: buildBoxDecorationForTextField(context),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.address = input.trim(),
-                            validator: (input) => DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                            decoration: buildInputDecorationForLocation(context, S.of(context).houseNo),
+            key: _con.locationFormKey,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: txtStyleAccent,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => _con.address.address = input.trim(),
+                              validator: (input) =>
+                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.of(context).houseNo),
+                            ),
                           ),
                         ),
-                      ),
-                      VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-    //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.street = input.trim(),
-                            validator: (input) => DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                            decoration: buildInputDecorationForLocation(context, S.of(context).streetName),
+                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: txtStyleAccent,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => _con.address.street = input.trim(),
+                              validator: (input) =>
+                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.of(context).streetName),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: buildBoxDecorationForTextField(context),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.ward = input.trim(),
-                            validator: (input) => DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                            decoration: buildInputDecorationForLocation(context, S.of(context).commune),
-                          ),
+                buildProvincesDropDown(),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: buildDistrictsDropDown(),
                         ),
-                      ),
-                      VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-    //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.district = input.trim(),
-                            validator: (input) => DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                            decoration: buildInputDecorationForLocation(context, S.of(context).district),
-                          ),
+                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
+                        Expanded(
+                          child: buildWardsDropDown(),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: buildBoxDecorationForTextField(context),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            textAlignVertical: TextAlignVertical.center,
-                            enabled: false,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.province = S.of(context).phnompenh,
-                            validator: (input) => DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                            decoration: buildInputDecorationForLocation(context, S.of(context).phnompenh),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: txtStyleAccent,
+                              maxLines: 2,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => _con.address.description = input.trim(),
+                              decoration: buildInputDecorationForLocation(context, S.of(context).note),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: buildBoxDecorationForTextField(context),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: TextFormField(
-                            style: txtStyleAccent,
-                            maxLines: 2,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
-                            onSaved: (input) => _con.address.description = input.trim(),
-                            decoration: buildInputDecorationForLocation(context, S.of(context).note),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],)
-        ),
-
+                )
+              ],
+            )),
         SizedBox(height: 10),
         Row(
           children: [
@@ -560,7 +543,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressSaveLocation,
-                child: Text(S.of(context).save,
+                child: Text(S.of(context).next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -570,15 +553,6 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         ),
       ],
     );
-  }
-
-  BoxDecoration buildBoxDecorationForTextField(BuildContext context) {
-    return BoxDecoration(
-        color: DmConst.bgrColorSearchBar,
-        border: Border.all(
-          color: Theme.of(context).focusColor.withOpacity(0.2),
-        ),
-        borderRadius: BorderRadius.circular(7));
   }
 
   InputDecoration buildInputDecorationForLocation(BuildContext context, String hintText) {
@@ -600,57 +574,71 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 10),
-        buildGenderDropdown(),
-        SizedBox(height: 10),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          decoration: buildBoxDecorationForTextField(context),
-          child: TextFormField(
-            style: txtStyleAccent,
-            textAlignVertical: TextAlignVertical.center,
-            keyboardType: TextInputType.text,
-            onSaved: (input) {
-              if (DmUtils.isNullOrEmptyStr(input)) return;
-              input = input.trim();
-              _con.user.name = input;
-            },
-            validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
-            decoration: buildInputDecorationForLocation(context, S.of(context).fullName),
-          ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          decoration: buildBoxDecorationForTextField(context),
-          child: TextFormField(
-            style: txtStyleAccent,
-            textAlignVertical: TextAlignVertical.center,
-            keyboardType: TextInputType.text,
-            onSaved: (input) {
-              _con.user.email = input.trim();
-            },
-            validator: (value) => !DmUtils.isEmail(value) ? S.of(context).invalidEmail : null,
-            decoration: buildInputDecorationForLocation(context, S.of(context).email),
-          ),
-        ),
+        Form(
+            key: _con.personalFormKey,
+            child: Column(
+              children: [
+                buildGenderDropdown(),
+                SizedBox(height: 10),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  child: TextFormField(
+                    style: txtStyleAccent,
+                    textAlignVertical: TextAlignVertical.center,
+                    keyboardType: TextInputType.text,
+                    onSaved: (input) {
+//                      if (DmUtils.isNullOrEmptyStr(input)) return;
+//                      input = input.trim();
+                      _con.user.name = input.trim();
+                    },
+                    validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
+                    decoration: buildInputDecorationForLocation(context, S.of(context).fullName),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  child: TextFormField(
+                    style: txtStyleAccent,
+                    textAlignVertical: TextAlignVertical.center,
+                    keyboardType: TextInputType.text,
+                    onSaved: (input) {
+                      _con.user.email = input.trim();
+                    },
+                    validator: (value) => !DmUtils.isEmail(value) ? S.of(context).invalidEmail : null,
+                    decoration: buildInputDecorationForLocation(context, S.of(context).email),
+                  ),
+                ),
+              ],
+            )),
+
         SizedBox(height: 10),
         Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
         InkWell(
           onTap: () {
             print('tap to select birthday');
             DatePicker.showDatePicker(context,
-                showTitleActions: false,
-                minTime: DateTime(2018, 3, 5),
-                maxTime: DateTime(2019, 6, 7),
-                theme: DatePickerTheme(
+              showTitleActions: false,
+              minTime: DateTime(1930, 1, 1),
+              maxTime: DateTime.now().subtract(Duration(days: 3650)),
+              theme: DatePickerTheme(
 //                          headerColor: Colors.orange,
-                    backgroundColor: DmConst.accentColor,
-                    itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                    doneStyle: TextStyle(color: Colors.white, fontSize: 16)), onChanged: (date) {
-              print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-            }, onConfirm: (date) {
-              print('confirm $date');
-            }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  backgroundColor: DmConst.accentColor,
+                  itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
+              onConfirm: (date) {
+                _con.user.birthday = date;
+                print('confirm $date');
+              },
+              onChanged: (date) {
+                setState(() {
+                  _con.user.birthday = date;
+                });
+              },
+              currentTime: _con.user.birthday,
+              locale: LocaleType.en);
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -661,30 +649,33 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                 children: [
                   Expanded(
                       child: TextFormField(
-                        textAlign: TextAlign.center,
-                        style: txtStyleAccent,
-                        textAlignVertical: TextAlignVertical.center,
-                        enabled: false,
-                    decoration:buildInputDecorationForLocation(context, S.of(context).day),
+                    textAlign: TextAlign.center,
+                    style: txtStyleAccent,
+                    textAlignVertical: TextAlignVertical.center,
+                    enabled: false,
+                    decoration: buildInputDecorationForLocation(context,
+                        _con.user.birthday != null ? _con.user.birthday.day.toString(): S.of(context).day),
                   )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
                       child: TextFormField(
-                        textAlign: TextAlign.center,
-                        style: txtStyleAccent,
-                        textAlignVertical: TextAlignVertical.center,
-                        enabled: false,
-                        decoration:buildInputDecorationForLocation(context, S.of(context).month),
-                      )),
+                    textAlign: TextAlign.center,
+                    style: txtStyleAccent,
+                    textAlignVertical: TextAlignVertical.center,
+                    enabled: false,
+                    decoration: buildInputDecorationForLocation(context,
+                        _con.user.birthday != null ? _con.user.birthday.month.toString() : S.of(context).month),
+                  )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
                       child: TextFormField(
-                        textAlign: TextAlign.center,
-                        style: txtStyleAccent,
-                        textAlignVertical: TextAlignVertical.center,
-                        enabled: false,
-                        decoration:buildInputDecorationForLocation(context, S.of(context).year),
-                      )),
+                    textAlign: TextAlign.center,
+                    style: txtStyleAccent,
+                    textAlignVertical: TextAlignVertical.center,
+                    enabled: false,
+                    decoration: buildInputDecorationForLocation(context,
+                        _con.user.birthday != null ? _con.user.birthday.year.toString(): S.of(context).year),
+                  )),
                 ],
               ),
             ),
@@ -693,13 +684,14 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         SizedBox(height: 10),
 //        Text(S.of(context).personalDetailNote, textAlign: TextAlign.center),
 //        SizedBox(height: 10),
+        //button Save.
         Row(
           children: [
             Expanded(
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressYesRegMe,
-                child: Text(S.of(context).save,
+                child: Text(S.of(context).yesRegMe,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -749,18 +741,19 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
   }
 
   Future<void> onPressNext2LocationStep() async {
-    if (this._otpCode.length == this._otpCodeLength) {
+    if (this._userEnteredOtp.length == this._otpCodeLength) {
       await verifyOtp();
     }
   }
 
   void verifyOtp() async {
     print('void verifyOtp() async');
-    if (this._otpCode == _con.OTP) {
+    if (this._userEnteredOtp == _con.OTP) {
       User u = await _con.verifyOtp();
-      if(u != null && u.isValid) {
+      if (u != null && u.isValid) {
         // login suggest.
         setState(() {
+          _con.getProvinces();
           this._stepIdx++;
         });
       } else {
@@ -771,67 +764,135 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
     }
   }
 
-  void onPressSaveLocation() {
-    _con.addAddress();
-    setState(() {
-      this._stepIdx++;
-    });
+  void onPressSaveLocation() async {
+    //this step will now call api to save data.
+    _con.locationFormKey.currentState.save();
+    if (_con.locationFormKey.currentState.validate()) {
+      setState(() {
+        this._stepIdx++;
+      });
+    }
+//    bool saveOK = await _con.addAddress();
   }
 
-  void onPressYesRegMe() {}
+  void onPressYesRegMe() async {
+    _con.personalFormKey.currentState.save();
+    if (_con.personalFormKey.currentState.validate()) {
+      _con.address.phone = _con.user.phone;
+      _con.address.fullName = _con.user.name;
+      _con.address.userId = _con.user.id;
+      _con.address.isDefault = true;
 
-  String _currentSelectedValue;
+      print('--start add address');
+//      bool a = await _con.addAddress();
+      print('--start _con.updateUser()');
+      bool b = await _con.updateUser();
+      if(b) {
+        //to thank you page.
+        RouteGenerator.gotoProfileUpdatedScreen(context);
+      } else {
+        _con.showMsg(S.of(context).generalErrorMessage);
+      }
+    }
+  }
 
   Widget buildGenderDropdown() {
-    var genders = [
+    var _genders = [
       S.of(context).notToTell,
       S.of(context).male,
       S.of(context).female,
     ];
+    List<DropdownMenuItem> its = [
+      DropdownMenuItem<Gender>(value: Gender.Others, child: Text(S.of(context).notToTell,
+          style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Male, child: Text(S.of(context).male,
+          style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Female, child: Text(S.of(context).female,
+          style: this.txtStyleAccent)),
+    ];
+//    _genders.forEach((pro) {
+////      print(pro);
+//      its.add(DropdownMenuItem<Gender>(value: Gender.Female, child: Text(pro, style: this.txtStyleAccent)));
+//    });
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       decoration: buildBoxDecorationForTextField(context),
       child: DropdownButtonFormField(
-        items: genders.map((String category) {
-          return new DropdownMenuItem(
-              value: category,
-              child: Text(category, style: this.txtStyleAccent)
-          );
-        }).toList(),
+        items: its,
         onChanged: (newValue) {
-          // do other stuff with _category
-          setState(() => _currentSelectedValue = newValue);
+          setState(() => _con.user.gender = newValue);
         },
-        value: _currentSelectedValue,
+//        value: _con.address.province,
+        onSaved: (value) => _con.user.gender = value,
+        validator: (value) => value == null ? S.of(context).invalidGender : null,
         decoration: buildInputDecorationForLocation(context, S.of(context).gender),
       ),
     );
+  }
 
-    return FormField<String>(
-      builder: (FormFieldState<String> state) {
-        return InputDecorator(
-          decoration: buildInputDecorationForLocation(context, S.of(context).gender),
-          isEmpty: _currentSelectedValue == '',
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: _currentSelectedValue,
-              isDense: true,
-              onChanged: (String newValue) {
-                setState(() {
-                  _currentSelectedValue = newValue;
-                  state.didChange(newValue);
-                });
-              },
-              items: genders.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        );
+  Widget buildProvincesDropDown() {
+    List<DropdownMenuItem> its = [];
+    _con.provinces.forEach((pro) {
+//      print(pro);
+      its.add(DropdownMenuItem<Province>(value: pro, child: Text(pro.name, style: this.txtStyleAccent)));
+    });
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: buildBoxDecorationForTextField(context),
+      child: DropdownButtonFormField(
+        items: its,
+        onChanged: (newValue) async {
+          setState(() => _con.address.province = newValue);
+          await _con.getDistricts(_con.address.province.id);
+          setState(() {
+            _con.wards.clear();
+            _con.address.district = null;
+            _con.address.ward = null;
+          });
+        },
+        value: _con.address.province,
+        onSaved: (value) => _con.address.province = value,
+        validator: (value) => value == null ? S.of(context).invalidProvince : null,
+        decoration: buildInputDecorationForLocation(context, S.of(context).province),
+      ),
+    );
+  }
+
+  Widget buildDistrictsDropDown() {
+    List<DropdownMenuItem> its = [];
+    _con.districts.forEach((dis) {
+      its.add(DropdownMenuItem(value: dis, child: Text(dis.name, style: this.txtStyleAccent)));
+    });
+    return DropdownButtonFormField(
+      items: its,
+      onChanged: (newValue) async {
+        // do other stuff with _category
+        setState(() => _con.address.district = newValue);
+        await _con.getWards(_con.address.district.id);
+        setState(() => _con.address.ward = null);
       },
+      value: _con.address.district,
+      onSaved: (value) => _con.address.district = value,
+      validator: (value) => value == null ? S.of(context).invalidDistrict : null,
+      decoration: buildInputDecorationForLocation(context, S.of(context).district),
+    );
+  }
+
+  Widget buildWardsDropDown() {
+    List<DropdownMenuItem> its = [];
+    _con.wards.forEach((w) {
+      its.add(DropdownMenuItem(value: w, child: Text(w.name, style: this.txtStyleAccent)));
+    });
+    return DropdownButtonFormField(
+      items: its,
+      onChanged: (newValue) {
+        _con.address.ward = newValue;
+//        setState(() => _con.address.ward = newValue);
+      },
+      value: _con.address.ward,
+      onSaved: (value) => _con.address.ward = value,
+      validator: (value) => value == null ? S.of(context).invalidWard : null,
+      decoration: buildInputDecorationForLocation(context, S.of(context).commune),
     );
   }
 }

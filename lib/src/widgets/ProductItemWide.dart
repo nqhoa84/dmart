@@ -73,7 +73,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       child: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+//            margin: EdgeInsets.only(right: widget.amountInCart > 0 ? 6 : 0),
             decoration: _createDecoration(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -192,8 +192,9 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
               BoxShadow(
                   color: DmConst.productShadowColor,
 //                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(6, 6))
+//                  blurRadius: 0,
+                  offset: Offset(5, 5),
+              )
             ],
           )
         : BoxDecoration(

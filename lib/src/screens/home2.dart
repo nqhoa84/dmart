@@ -5,12 +5,12 @@ import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
+import 'package:dmart/src/widgets/HomeProductsListView.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../../route_generator.dart';
-import '../../src/widgets/HomeProductsByCategory.dart';
 import '../../src/widgets/HomePromotionsSlider.dart';
 import '../../src/widgets/ProductsGridViewLoading.dart';
 
@@ -77,7 +77,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             title: S.of(context).promotions,
             backgroundColor: DmConst.homePromotionColor,
             onTap: () {
-              RouteGenerator.gotoPromotions(context, replaceOld: true);
+              RouteGenerator.gotoPromotions(context);
             }),
 
         HomePromotionsSlider(),

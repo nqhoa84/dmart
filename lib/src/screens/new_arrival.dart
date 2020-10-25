@@ -1,4 +1,5 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
@@ -60,7 +61,6 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
     if (proCon.newArrivalProducts.isEmpty) {
       return ProductsGridViewLoading(isList: true);
     } else {
-      print('_con.newArrivalProducts ${proCon.newArrivalProducts.length}');
       return FadeTransition(
           opacity: this.animationOpacity,
           child: ProductGridView(products: proCon.newArrivalProducts, heroTag: 'newArrivals'),);

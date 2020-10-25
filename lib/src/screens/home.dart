@@ -9,7 +9,7 @@
 //import '../../route_generator.dart';
 //import '../../src/controllers/home_controller.dart';
 //import '../../src/helpers/ui_icons.dart';
-//import '../../src/widgets/HomeProductsByCategory.dart';
+//import '../../src/widgets/HomeProductsListView.dart';
 //import '../../src/widgets/HomePromotionsSlider.dart';
 //import '../../src/widgets/ProductsGridViewLoading.dart';
 //import '../../src/widgets/SearchBar.dart';

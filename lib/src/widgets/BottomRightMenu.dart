@@ -96,7 +96,12 @@ class _BottomRightMenuState extends State<BottomRightMenu> {
         ),
 
         ListTile(
-          onTap: () => RouteGenerator.gotoHelp(context),
+          onTap: () {
+            if(currentUser.value.isLogin)
+              RouteGenerator.gotoProfileInfo(context);
+            else
+              RouteGenerator.gotoLogin(context);
+          },
 //            leading: ImageIcon(AssetImage('assets/img/H_User_Icon.png'), color: DmConst.primaryColor),
           leading: Image.asset('assets/img/H_User_Icon.png', width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.of(context).myAccount, style: TextStyle(color: DmConst.accentColor)),

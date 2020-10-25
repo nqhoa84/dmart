@@ -1013,6 +1013,16 @@ class S {
     );
   }
 
+  /// `Please enter OTP sent to your phone number, and new passwords`
+  String get resetPassOtpSent {
+    return Intl.message(
+      'Please enter OTP sent to your phone number, and new passwords',
+      name: 'resetPassOtpSent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Incorrect phone number/email or password. Please check and try again.\nOr press on 'forgotten password' to reset your password.`
   String get loginErrorIncorrectPhonePassFullMsg {
     return Intl.message(
@@ -1663,6 +1673,36 @@ class S {
     );
   }
 
+  /// `Your OTP expired in`
+  String get otpExpiredIn {
+    return Intl.message(
+      'Your OTP expired in',
+      name: 'otpExpiredIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend`
+  String get resend {
+    return Intl.message(
+      'Resend',
+      name: 'resend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OTP resent`
+  String get resendOtpSuccess {
+    return Intl.message(
+      'OTP resent',
+      name: 'resendOtpSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Location`
   String get location {
     return Intl.message(
@@ -1698,6 +1738,16 @@ class S {
     return Intl.message(
       'District',
       name: 'district',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Province`
+  String get province {
+    return Intl.message(
+      'Province',
+      name: 'province',
       desc: '',
       args: [],
     );
@@ -2103,6 +2153,46 @@ class S {
     );
   }
 
+  /// `Invalid province`
+  String get invalidProvince {
+    return Intl.message(
+      'Invalid province',
+      name: 'invalidProvince',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid district`
+  String get invalidDistrict {
+    return Intl.message(
+      'Invalid district',
+      name: 'invalidDistrict',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid ward`
+  String get invalidWard {
+    return Intl.message(
+      'Invalid ward',
+      name: 'invalidWard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid gender`
+  String get invalidGender {
+    return Intl.message(
+      'Invalid gender',
+      name: 'invalidGender',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Invalid voucher.`
   String get invalidVoucher {
     return Intl.message(
@@ -2273,6 +2363,16 @@ class S {
     );
   }
 
+  /// `Your information updated.`
+  String get accountInfoUpdated {
+    return Intl.message(
+      'Your information updated.',
+      name: 'accountInfoUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Wrong email or password`
   String get wrongEmailOrPassword {
     return Intl.message(
@@ -2333,16 +2433,6 @@ class S {
     );
   }
 
-  /// `Long press to edit item, swipe item to delete it`
-  String get long_press_to_edit_item_swipe_item_to_delete_it {
-    return Intl.message(
-      'Long press to edit item, swipe item to delete it',
-      name: 'long_press_to_edit_item_swipe_item_to_delete_it',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Add Shipping Address`
   String get addDeliveryAddress {
     return Intl.message(
@@ -2383,41 +2473,11 @@ class S {
     );
   }
 
-  /// `Email to reset password`
-  String get emailToResetPass {
-    return Intl.message(
-      'Email to reset password',
-      name: 'emailToResetPass',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Send link`
   String get sendLink {
     return Intl.message(
       'Send link',
       name: 'sendLink',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your reset link has been sent to your email`
-  String get resetLinkHasBeenSentToEmail {
-    return Intl.message(
-      'Your reset link has been sent to your email',
-      name: 'resetLinkHasBeenSentToEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Error! Verify email settings`
-  String get errorVerifyEmail {
-    return Intl.message(
-      'Error! Verify email settings',
-      name: 'errorVerifyEmail',
       desc: '',
       args: [],
     );
@@ -2703,16 +2763,6 @@ class S {
     );
   }
 
-  /// `We are sending OTP to validate your mobile number. Hang on!`
-  String get weAreSendingOTP {
-    return Intl.message(
-      'We are sending OTP to validate your mobile number. Hang on!',
-      name: 'weAreSendingOTP',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Product Reviews`
   String get productReviews {
     return Intl.message(
@@ -2738,16 +2788,6 @@ class S {
     return Intl.message(
       'Unpaid',
       name: 'unpaid',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Complete your profile details to continue`
-  String get completeYourProfileDetailsToContinue {
-    return Intl.message(
-      'Complete your profile details to continue',
-      name: 'completeYourProfileDetailsToContinue',
       desc: '',
       args: [],
     );

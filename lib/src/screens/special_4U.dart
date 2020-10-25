@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
+import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../../src/controllers/product_controller.dart';
 import 'abs_product_mvc.dart';
@@ -52,7 +53,7 @@ class _Special4UScreenState extends ProductStateMVC<Special4UScreen> {
     if (proCon.special4UProducts.isEmpty) {
       return ProductsGridViewLoading(isList: true);
     } else {
-      print('_con.special4UProducts ${proCon.special4UProducts.length}');
+//      print('_con.special4UProducts ${proCon.special4UProducts.length}');
       return FadeTransition(
         opacity: this.animationOpacity,
         child: ProductGridView(products: proCon.special4UProducts, heroTag: 'spe4U'),

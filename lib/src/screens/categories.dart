@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
+import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../../src/controllers/category_controller.dart';
 import '../../src/widgets/DrawerWidget.dart';
@@ -41,7 +42,7 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
       return NameImageItemGridViewLoading();
     } else
     {
-      return NameImageItemGridView(items: _con.categories);
+      return CategoriesGridView(items: _con.categories);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }
@@ -63,7 +64,9 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
           createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).categories),
           SliverList(
             delegate: SliverChildListDelegate([
-              buildContent(context),
+              Container(
+                  padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+                  child: buildContent(context)),
               ]),
           )
         ]),

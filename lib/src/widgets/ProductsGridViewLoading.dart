@@ -14,8 +14,8 @@ class ProductsGridViewLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad,
-      vertical: DmConst.masterHorizontalPad/2),
+//      padding: EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad,
+//      vertical: DmConst.masterHorizontalPad/2),
       child: Wrap(
         children: <Widget>[
           Offstage(
@@ -25,33 +25,18 @@ class ProductsGridViewLoading extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               crossAxisCount: 1,
-              crossAxisSpacing: 1.5,
+              crossAxisSpacing: DmConst.masterHorizontalPad,
+              mainAxisSpacing: DmConst.masterHorizontalPad,
               childAspectRatio: 337.0 / 120,
               // 120 / 337,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: DmConst.masterHorizontalPad/2),
-                  child: Container(
-                    decoration: BoxDecoration(
-                          border: Border.all(color: DmConst.accentColor),
-                        image: DecorationImage(
-                            image: AssetImage('assets/img/loading.gif'), fit: BoxFit.cover
-                        )
-                    ),
-                  ),
+              children: List.generate(4, (index) => Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: DmConst.accentColor),
+                    image: DecorationImage(
+                        image: AssetImage('assets/img/loading.gif'), fit: BoxFit.cover
+                    )
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: DmConst.masterHorizontalPad/2),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: DmConst.accentColor),
-                        image: DecorationImage(
-                            image: AssetImage('assets/img/loading.gif'), fit: BoxFit.cover
-                        )
-                    ),
-                  ),
-                ),
-              ],
+              )).toList(),
             ),
           ),
           Offstage(
@@ -72,8 +57,8 @@ class ProductsGridViewLoading extends StatelessWidget {
               },
 //                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
               staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
-              mainAxisSpacing: 15.0,
-              crossAxisSpacing: 15.0,
+              mainAxisSpacing: DmConst.masterHorizontalPad,
+              crossAxisSpacing: DmConst.masterHorizontalPad,
             ),
           ),
         ],
@@ -125,3 +110,4 @@ class ProductsGridViewLoading extends StatelessWidget {
         ));
   }
 }
+

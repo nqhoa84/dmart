@@ -6,12 +6,12 @@ import '../models/credit_card.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as repository;
 
-class SettingsController extends ControllerMVC {
+class ProfileInfoController extends ControllerMVC {
   CreditCard creditCard = new CreditCard();
   GlobalKey<FormState> loginFormKey;
   GlobalKey<ScaffoldState> scaffoldKey;
 
-  SettingsController() {
+  ProfileInfoController() {
     loginFormKey = new GlobalKey<FormState>();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }

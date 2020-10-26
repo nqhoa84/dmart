@@ -853,6 +853,46 @@ class S {
     );
   }
 
+  /// `Current password`
+  String get currentPassword {
+    return Intl.message(
+      'Current password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New password`
+  String get newPassword {
+    return Intl.message(
+      'New password',
+      name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm new password`
+  String get confirmNewPass {
+    return Intl.message(
+      'Confirm new password',
+      name: 'confirmNewPass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password changed`
+  String get passwordChanged {
+    return Intl.message(
+      'Password changed',
+      name: 'passwordChanged',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please note we may not be servicing all areas yet. If you can't find your address in the options below contact us for help: $phoneNumber or Chat.`
   String get limitedServiceCoverageNote {
     return Intl.message(

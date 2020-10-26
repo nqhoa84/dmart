@@ -81,7 +81,7 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(user.name ?? S.of(context).unknown),
+                Text(user.nameShort ?? S.of(context).unknown),
                 Text('${S.of(context).credit}: ${currentUser.value.credit}',
                     style: TextStyle(color: DmConst.textColorForTopBarCredit)),
               ],
@@ -205,48 +205,6 @@ SliverAppBar createSliverTopBar(BuildContext context) {
       ),
     ),
   );
-  return SliverAppBar(
-    automaticallyImplyLeading: false,
-    backgroundColor: Colors.transparent,
-    elevation: 10,
-//    leading: _createUserInfoRowOnTopBar(context, user),
-    leading: Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: CircleAvatar(
-          backgroundColor: Colors.transparent, backgroundImage: NetworkImage(currentUser.value.image.thumb)),
-    ),
-    actions: [
-      Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ShoppingCartButton(),
-      )
-    ],
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              S.of(context).guest,
-              style: Theme.of(context).textTheme.caption.copyWith(color: DmConst.accentColor),
-            ),
-            Text('${S.of(context).credit}:',
-                style: Theme.of(context).textTheme.caption.copyWith(color: DmConst.textColorForTopBarCredit)),
-          ],
-        ),
-        InkWell(
-          onTap: () => RouteGenerator.gotoHome(context),
-          child: Container(
-              child: Image.asset(DmConst.assetImgLogo, height: kToolbarHeight - 10, fit: BoxFit.scaleDown)),
-        ),
-        SizedBox(width: 20)
-      ],
-    ),
-    centerTitle: false,
-    floating: true,
-  );
 }
 
 SliverAppBar createSliverSearch(BuildContext context) {
@@ -271,12 +229,6 @@ Widget createSilverTopMenu(BuildContext context,
     String title = ''}) {
   TextStyle ts = Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
 
-
-  ExpandableController _controller = ExpandableController(initialExpanded: false);
-
-  onTapOnType() {
-    print('onTapOnType');
-  }
 
   List<Widget> _buildMenu() {
 //    TextStyle ts = Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white);
@@ -486,4 +438,13 @@ BoxDecoration buildBoxDecorationForTextField(BuildContext context) {
         color: Theme.of(context).focusColor.withOpacity(0.2),
       ),
       borderRadius: BorderRadius.circular(7));
+}
+
+InputDecoration buildInputDecoration(BuildContext context, String hintText) {
+  return InputDecoration(
+    hintText: hintText,
+    hintStyle: TextStyle(color: DmConst.accentColor),
+    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+  );
 }

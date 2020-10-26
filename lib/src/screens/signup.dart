@@ -190,8 +190,6 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     keyboardType: TextInputType.number,
                     onSaved: (input) {
-//                    if (DmUtils.isNullOrEmptyStr(input)) return;
-//                    input = input.trim();
                       _con.user.phone = input;
                     },
                     validator: _phoneValidate,

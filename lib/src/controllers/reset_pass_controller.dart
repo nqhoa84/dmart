@@ -21,23 +21,45 @@ class ResetPassController extends Controller {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void resetPassword() async {
+  Future<bool> sendOtpForgotPass() async {
+    resetPassFormKey.currentState.save();
     if (resetPassFormKey.currentState.validate()) {
-      resetPassFormKey.currentState.save();
-      this.loading = true;
+      setState(() => this.loading = true);
       try {
-        this.otp = await repository.resetPassword(user.phone);
-        setState((){});
+        this.otp = await repository.sendOtpForgotPass(user.phoneWith855);
 
         if(otp != null) {
           showMsg(S.of(context).resetPassOtpSent);
+          return true;
         } else {
           showErrGeneral();
         }
       } on Exception catch (e) {
         showErrGeneral();
       }
-      this.loading = false;
+      setState(() => this.loading = false);
     }
+    return false;
+  }
+
+  Future<bool> saveNewPasses(String userEnterOtp) async {
+    if(this.otp != userEnterOtp) {
+      showErr(S.of(context).invalidOTP);
+      return false;
+    }
+    bool re = false;
+    newPassFormKey.currentState.save();
+    if (this.newPassFormKey.currentState.validate()) {
+      setState(() => this.loading = true);
+      try {
+        re = await repository.resetPassword(user.phoneWith855, userEnterOtp, user.password);
+      } on Exception catch (e) {
+        showErrGeneral();
+      }
+      setState(() => this.loading = false);
+      return re;
+
+    }
+
   }
 }

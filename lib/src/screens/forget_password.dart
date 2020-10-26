@@ -1,4 +1,9 @@
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/reset_pass_controller.dart';
+import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/sms_retrieved.dart';
+import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/text_field_pin.dart';
+import 'package:dmart/src/widgets/profile/profile_common.dart';
+import 'package:dmart/src/widgets/toolbars/LogoOnlyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -23,20 +28,26 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _getSignatureCode();
+  }
+  _getSignatureCode() async {
+    String signature = await SmsRetrieved.getAppSignature();
+    print("signature $signature");
+  }
+
+  @override
+  void dispose() {
+  SmsRetrieved.stopListening();
+
+  super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      appBar: AppBar(
-//        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(4),
-          child: Divider(height: 4, thickness: 2, color: DmConst.accentColor),
-        ),
-      ),
+      appBar: LogoOnlyAppBar(),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
@@ -55,71 +66,114 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
   Widget buildContent(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+      margin: EdgeInsets.all(DmConst.masterHorizontalPad),
       decoration: createRoundedBorderBoxDecoration(),
-      child: Form(
-        key: _con.resetPassFormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+      child: Wrap(
+        children: [
+          Offstage(
+            offstage: this.haveOtp,
+            child: Form(
+              key: _con.resetPassFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
 //            Text(S.of(context).weWillSendNewPass),
 //            SizedBox(height: 15),
 
-            Text(S.of(context).resetPassEnterPhoneNumber),
-            SizedBox(height: DmConst.masterHorizontalPad),
+                  Text(S.of(context).resetPassEnterPhoneNumber),
+                  SizedBox(height: DmConst.masterHorizontalPad),
+                  PhoneNoWid(onSaved: (value) => _con.user.phone = value),
 
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-//                height: DmConst.appBarHeight * 0.7,
-              decoration: buildBoxDecorationForTextField(context),
+                  SizedBox(height: DmConst.masterHorizontalPad * 2),
 
-              child: TextFormField(
-                style: TextStyle(color: DmConst.accentColor),
-                textAlignVertical: TextAlignVertical.center,
-                keyboardType: TextInputType.number,
-                onSaved: (input) {
-                  _con.user.phone = input;
-                },
-                validator: (value) => !DmUtils.isPhone(value) ? S.of(context).invalidPhone : null,
-                decoration: new InputDecoration(
-                  hintText: S.of(context).phone,
-                  hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                  enabledBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                  prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
-                ),
-                inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-
-            ),
-            ),
-
-            SizedBox(height: DmConst.masterHorizontalPad * 2),
-
-            Row(
-              children: [
-                Expanded(
-                  child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                    onPressed: onPressResetPass,
-                    child: Text(S.of(context).resetPassword,
-                        style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-                    color: DmConst.colorFavorite,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FlatButton(
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          onPressed: onPressResetPass,
+                          child: Text(S.of(context).resetPassword,
+                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                          color: DmConst.colorFavorite,
 //                    shape: StadiumBorder(),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+
+                ],
+              ),
             ),
-             
-          ],
-        ),
+          ),
+
+          Offstage(
+            offstage: this.haveOtp == false,
+            child: Form(
+              key: _con.newPassFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(S.of(context).verifyOtpNote),
+                  TextFieldPin(
+                    filled: true,
+                    filledColor: DmConst.bgrColorSearchBar,
+                    codeLength: 6,
+                    boxSize: 40,
+                    margin: 2,
+                    filledAfterTextChange: false,
+                    textStyle: TextStyle(color: DmConst.accentColor).copyWith(fontSize: 20),
+                    borderStyle: OutlineInputBorder(
+                        borderSide: BorderSide(color: DmConst.accentColor), borderRadius: BorderRadius.circular(5)),
+                    borderStyeAfterTextChange: OutlineInputBorder(
+                        borderSide: BorderSide(color: DmConst.accentColor), borderRadius: BorderRadius.circular(5)),
+                    onOtpCallback: (code, isAutofill) => _onOtpCallBack(code, isAutofill),
+                  ),
+                  SizedBox(height: DmConst.masterHorizontalPad),
+
+                  PasswordWid(onSaved: (value) => _con.user.password = value),
+                  SizedBox(height: DmConst.masterHorizontalPad),
+                  PasswordConfirmWid(onValidate: (value) => value == _con.user.password ? null : S.of(context).passwordNotMatch),
+                  SizedBox(height: DmConst.masterHorizontalPad),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FlatButton(
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          onPressed: onPressSaveNewPass,
+                          child: Text(S.of(context).resetPassword,
+                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                          color: DmConst.colorFavorite,
+//                    shape: StadiumBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
 
-  void onPressResetPass() {
+  String userEnterOtp;
+  _onOtpCallBack(String otpCode, bool isAutofill) async {
+    this.userEnterOtp = otpCode;
+  }
+
+  bool haveOtp = false;
+  void onPressResetPass() async {
     print('------onPressResetPass');
-    _con.resetPassword();
+    bool re = await _con.sendOtpForgotPass();
+    setState(() {this.haveOtp = re;});
+  }
+
+  void onPressSaveNewPass() async {
+    print('------onPressResetPass');
+    bool re = await _con.saveNewPasses(this.userEnterOtp);
+    if(re == true)
+      RouteGenerator.gotoProfileUpdatedScreen(context);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:http/http.dart' as http;
 
@@ -99,40 +100,43 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
                 ),
               ),
             ),
-
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-//                height: DmConst.appBarHeight * 0.7,
-              decoration: BoxDecoration(
-                  color: DmConst.bgrColorSearchBar,
-                  border: Border.all(
-                    color: Theme.of(context).focusColor.withOpacity(0.2),
-                  ),
-                  borderRadius: BorderRadius.circular(7)),
-              child: TextFormField(
-                style: txtStyleAccent,
-                textAlignVertical: TextAlignVertical.center,
-                keyboardType: TextInputType.text,
-                onSaved: (input) {
-                  if (DmUtils.isNullOrEmptyStr(input)) return;
-                  input = input.trim();
-                  if (DmUtils.isEmail(input)) {
-                    _con.user.email = input;
-                  } else {
-                    _con.user.phone = input;
-                  }
-                },
-                validator: _phoneOrEmailValidate,
-                decoration: new InputDecoration(
-                  hintText: S.of(context).phoneOrEmail,
-                  hintStyle: txtStyleAccent,
-                  enabledBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                  prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
-                ),
-              ),
-            ),
+            PhoneNoWid(
+              onSaved: (value) {
+                _con.user.phone = value;
+              }),
+//            Container(
+//              padding: EdgeInsets.symmetric(horizontal: 5),
+////                height: DmConst.appBarHeight * 0.7,
+//              decoration: BoxDecoration(
+//                  color: DmConst.bgrColorSearchBar,
+//                  border: Border.all(
+//                    color: Theme.of(context).focusColor.withOpacity(0.2),
+//                  ),
+//                  borderRadius: BorderRadius.circular(7)),
+//              child: TextFormField(
+//                style: txtStyleAccent,
+//                textAlignVertical: TextAlignVertical.center,
+//                keyboardType: TextInputType.text,
+//                onSaved: (input) {
+//                  if (DmUtils.isNullOrEmptyStr(input)) return;
+//                  input = input.trim();
+//                  if (DmUtils.isEmail(input)) {
+//                    _con.user.email = input;
+//                  } else {
+//                    _con.user.phone = input;
+//                  }
+//                },
+//                validator: _phoneOrEmailValidate,
+//                decoration: new InputDecoration(
+//                  hintText: S.of(context).phoneOrEmail,
+//                  hintStyle: txtStyleAccent,
+//                  enabledBorder:
+//                  UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+//                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+//                  prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
+//                ),
+//              ),
+//            ),
 
             SizedBox(height: 10),
 

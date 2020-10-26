@@ -177,11 +177,23 @@ class RegController extends Controller {
 
   Future<bool> updateUser() async {
     if (loading) return false;
-    loading = true;
-    User u = await userRepo.update(user);
-    loading = false;
-    return u.isValid;
+    User re;
+    try {
+      loading = true;
+      re = await userRepo.update(user);
+      loading = false;
+      if (re != null) {
+        showMsg(S.of(context).accountInfoUpdated);
+        this.user = re;
+        return true;
+      } else {
+        showErrGeneral();
+      }
+    } on Exception catch (e, trace) {
+      loading = false;
+      print("$e $trace");
+      showErrGeneral();
+    }
+    return false;
   }
-
-
 }

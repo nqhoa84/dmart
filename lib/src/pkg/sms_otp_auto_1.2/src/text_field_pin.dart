@@ -1,7 +1,7 @@
 import 'dart:collection';
+import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/sms_retrieved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sms_otp_auto_verify/src/sms_retrieved.dart';
 
 ///your listData length must be equals otp code length.
 

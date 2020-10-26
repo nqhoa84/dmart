@@ -85,12 +85,8 @@ class DmUtils {
     return em != null && regExp.hasMatch(em);
   }
 
-  static bool isNullOrEmptyStr(String value) {
-    return value == null || value.trim().isEmpty;
-  }
-
-  static bool isNotNullEmptyStr(String value) {
-    return !isNullOrEmptyStr(value);
+  static isNotEmail(String value) {
+    return !isEmail(value);
   }
 
   static bool isPhone(String value) {
@@ -103,6 +99,21 @@ class DmUtils {
 //    [ 0-9]{10,12} match 10 to 12 digits
 //    $ end of the string
   }
+
+  static isNotPhoneNo(String value) {
+    return !isPhone(value);
+  }
+
+
+  static bool isNullOrEmptyStr(String value) {
+    return value == null || value.trim().isEmpty;
+  }
+
+  static bool isNotNullEmptyStr(String value) {
+    return !isNullOrEmptyStr(value);
+  }
+
+
 
   static bool isNullOrEmptyList(List value) {
     return value == null || value.isEmpty;

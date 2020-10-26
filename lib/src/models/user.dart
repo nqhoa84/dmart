@@ -19,7 +19,27 @@ class User extends IdNameObj{
 
   String facebookId;
 
-  String get phone => _phone;
+  String get phone {
+    if(_phone == null) return '';
+    if(_phone.startsWith("855")) {
+      return _phone.replaceFirst('855', '0');
+    }
+    return _phone;
+  }
+
+  String get phoneWith855 {
+    return _phone;
+  }
+
+  String get fullNameWithTitle {
+    if(gender == null || gender == Gender.Others) {
+      return name;
+    }
+    if(gender == Gender.Female) {
+      return "Mrs $name";
+    }
+    return "Mr $name";
+  }
 
   set phone(String value) {
     if(value == null) {
@@ -79,15 +99,25 @@ class User extends IdNameObj{
     var map = new Map<String, dynamic>();
     map["id"] = id.toString();
     map["email"] = email??'';
-    map["phone"] = phone??'';
+    map["phone"] = _phone??'';
     map["name"] = name??'';
     map["password"] = password;
     map["device_token"] = deviceToken??'';
     map["address"] = address;
     map["gender"] = gender != null?  gender.index: Gender.Others.index;
     map["birthday"] = birthday != null? toDateStr(birthday) : '';
-//    map["bio"] = bio;
     map["media"] = [image?.toMap()];
+    return map;
+  }
+
+  Map toMapUpdateInfo() {
+    var map = new Map<String, dynamic>();
+    map["id"] = id.toString();
+//    map["phone"] = phone??'';
+    map["gender"] = gender != null?  gender.index: Gender.Others.index;
+    map["name"] = name??'';
+    map["birthday"] = birthday != null? toDateStr(birthday) : '';
+    map["email"] = email??'';
     return map;
   }
 
@@ -95,19 +125,20 @@ class User extends IdNameObj{
     var map = new Map<String, dynamic>();
     map["id"] = id.toString();
     map["email"] = email??'';
-    map["phone"] = phone??'';
+    map["phone"] = _phone??'';
     map["name"] = name??'';
     map["password"] = password;
-    map["address"] = address;
-    map["bio"] = bio;
-    map["token"] = apiToken;
+    map["gender"] = gender != null?  gender.index: Gender.Others.index;
+    map["birthday"] = birthday != null? toDateTimeStr(birthday) : '';
     map["media"] = [image?.toMap()];
+
+    map["token"] = apiToken;
     return map;
   }
 
   Map toMapReg() {
     var map = new Map<String, dynamic>();
-    map["phone"] = phone??'';
+    map["phone"] = _phone??'';
     map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
     map["password"] = password;
     return map;

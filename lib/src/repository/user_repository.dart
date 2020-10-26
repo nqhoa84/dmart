@@ -148,20 +148,54 @@ Future<User> verifyOtp(String phone, String otp) async {
 }
 
 ///return the OTP send to client.
-Future<String> resetPassword(String phone) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}reset_pass_by_sms';
+Future<String> sendOtpForgotPass(String phone) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}forgot_password';
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode({'phone': phone}),
   );
-  print('resetPassword ${response.body}');
+  print('forgot_password ${response.body}');
   dynamic js = json.decode(response.body);
 
   if (js["success"] != null && js["success"] == true) {
     return toStringVal(js['data']['OTP']);
   } else {
     return null;
+  }
+}
+
+Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String password) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}reset_password';
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode({'phone': phoneWith855, 'OTP': userEnterOtp, 'password': password}),
+  );
+  print('reset_password ${response.body}');
+  dynamic js = json.decode(response.body);
+
+  if (js["success"] != null && js["success"] == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> changePwd(String phoneWith855, String currentPass, String newPass) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}change_password';
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode({'phone': phoneWith855, 'current_pass': currentPass, 'new_pass': newPass}),
+  );
+  print('change_password ${response.body}');
+  dynamic js = json.decode(response.body);
+
+  if (js["success"] != null && js["success"] == true) {
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -222,6 +256,28 @@ Future<User> update(User user) async {
     url,
     headers: createHeadersRepo(),
     body: json.encode(user.toMap()),
+  );
+  dynamic js = json.decode(response.body);
+  print(response.body);
+  if (js["success"] != null && js["success"] == true) {
+    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+    saveUserToShare(user);
+  } else {
+    return null;
+  }
+
+  return currentUser.value;
+}
+
+Future<User> updatePersonalDetail(User user) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}profile/update';
+
+  print("update User - $url");
+  print(user.toMapUpdateInfo());
+  final response = await http.Client().post(
+    url,
+    headers: createHeadersRepo(),
+    body: json.encode(user.toMapUpdateInfo()),
   );
   dynamic js = json.decode(response.body);
   print(response.body);

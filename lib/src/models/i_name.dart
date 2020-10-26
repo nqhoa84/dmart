@@ -40,6 +40,12 @@ class IdNameObj extends IdObj {
     }
   }
 
+  String get nameShort {
+    String n = this.name;
+    if(n.length > 7) return '...${n.substring(n.length - 5)}';
+    else return n;
+  }
+
   set name (String value) {
     this.nameEn = DmUtils.isNotNullEmptyStr(value) ? value.trim() : '';
     this.nameKh = nameEn;

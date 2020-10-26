@@ -1,7 +1,18 @@
+import 'package:dmart/DmState.dart';
+import 'package:dmart/src/models/address.dart';
+import 'package:dmart/src/models/user.dart';
+import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:dmart/src/widgets/DrawerWidget.dart';
+import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../buidUI.dart';
+import '../../constant.dart';
 import '../../generated/l10n.dart';
+import '../../utils.dart';
 import '../controllers/settings_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/PaymentSettingsDialog.dart';
@@ -10,7 +21,6 @@ import '../widgets/SearchBar.dart';
 import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
 import '../helpers/ui_icons.dart';
-
 
 class ProfileInfoScreen extends StatefulWidget {
   @override
@@ -24,305 +34,584 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     _con = controller;
   }
 
+  User u;
+
+  @override
+  void initState() {
+    u = currentUser.value;
+    _con.user = u;
+    super.initState();
+
+    _con.getAddrs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
+      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      drawer: DrawerWidget(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            createSliverTopBar(context),
+            createSliverSearch(context),
+            createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myAccount),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(padding: const EdgeInsets.all(DmConst.masterHorizontalPad), child: buildContent(context)),
+              ]),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildContent(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          trailing: CircleAvatar(backgroundImage: NetworkImage(u.image.thumb)),
           title: Text(
-            S.of(context).settings,
-            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
-          ),
-          leading: new IconButton(
-            icon: new Icon(UiIcons.return_icon,
-                color: Theme.of(context).hintColor),
-            onPressed: () => Navigator.of(context).pop(),
+            '${S.of(context).welcome} ${u.fullNameWithTitle}',
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        body:  true //currentUser.value.id == null
-            ? CircularLoadingWidget(height: 500)
-            : SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 7),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBar(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              children: <Widget>[
-                                Text(
-                                  currentUser.value.name,
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.headline3,
-                                ),
-                                Text(
-                                  currentUser.value.email,
-                                  style: Theme.of(context).textTheme.caption,
-                                )
-                              ],
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                            ),
-                          ),
-                          SizedBox(
-                              width: 55,
-                              height: 55,
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(300),
-                                onTap: () {
-                                  Navigator.of(context).pushNamed('/Pages', arguments: 1);
-                                },
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(currentUser.value.image.thumb),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context).hintColor.withOpacity(0.15),
-                              offset: Offset(0, 3),
-                              blurRadius: 10)
-                        ],
-                      ),
-                      child: ListView(
-                        shrinkWrap: true,
-                        primary: false,
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(UiIcons.user_1),
-                            title: Text(
-                              S.of(context).profileSettings,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            trailing: ButtonTheme(
-                              padding: EdgeInsets.all(0),
-                              minWidth: 50.0,
-                              height: 25.0,
-                              child: ProfileSettingsDialog(user: currentUser.value, onChanged: () {_con.update(currentUser.value);},
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).fullName,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              currentUser.value.name,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).email,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              currentUser.value.email,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).phone,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              currentUser.value.phone,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).address,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              Helper.limitString(currentUser.value.address),
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).about,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              Helper.limitString(currentUser.value.bio),
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context).hintColor.withOpacity(0.15),
-                              offset: Offset(0, 3),
-                              blurRadius: 10)
-                        ],
-                      ),
-                      child: ListView(
-                        shrinkWrap: true,
-                        primary: false,
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(Icons.credit_card),
-                            title: Text('payments_settings',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            trailing: ButtonTheme(
-                              padding: EdgeInsets.all(0),
-                              minWidth: 50.0,
-                              height: 25.0,
-                              child: PaymentSettingsDialog(
-                                creditCard: _con.creditCard,
-                                onChanged: () {
-                                  _con.updateCreditCard(_con.creditCard);
-                                  //setState(() {});
-                                },
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            dense: true,
-                            title: Text('default_credit_card',
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              _con.creditCard.number.isNotEmpty
-                                  ? _con.creditCard.number.replaceRange(0, _con.creditCard.number.length - 4, '...')
-                                  : '',
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context).hintColor.withOpacity(0.15),
-                              offset: Offset(0, 3),
-                              blurRadius: 10)
-                        ],
-                      ),
-                      child: ListView(
-                        shrinkWrap: true,
-                        primary: false,
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(UiIcons.settings_1),
-                            title: Text('app_settings',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/Languages');
-                            },
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Icon(
-                                  UiIcons.planet_earth,
-                                  size: 22,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  S.of(context).languages,
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              ],
-                            ),
-                            trailing: Text(
-                              S.of(context).langEnglish,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/DeliveryAddresses');
-                            },
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Icon(
-                                  UiIcons.map,
-                                  size: 22,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  S.of(context).deliveryAddresses,
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              ],
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/Help');
-                            },
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Icon(
-                                  UiIcons.information,
-                                  size: 22,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  S.of(context).helpAndSupports,
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+        buildPersonalDetailStack(context),
+        SizedBox(height: DmConst.masterHorizontalPad),
+        buildChangePassStack(context),
+      ],
+    );
+  }
+
+  final txtStyleBold = TextStyle(fontWeight: FontWeight.bold);
+  final txtStyleGrey = TextStyle(color: Colors.grey);
+  final txtStyleAccent = TextStyle(color: DmConst.accentColor);
+
+  Stack buildPersonalDetailStack(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 10),
+          decoration: createRoundedBorderBoxDecoration(),
+          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+//          width: double.infinity,
+          child: Form(
+            key: _con.personalDetailFormKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(S.of(context).fullName, style: txtStyleBold),
+                Row(
+                  children: [
+                    SizedBox(width: 100, child: buildGenderDropdown()),
+                    SizedBox(width: DmConst.masterHorizontalPad),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        decoration: buildBoxDecorationForTextField(context),
+                        child: TextFormField(
+                          style: txtStyleAccent,
+                          textAlignVertical: TextAlignVertical.center,
+                          keyboardType: TextInputType.text,
+                          onSaved: (input) {
+                            u.name = input.trim();
+                          },
+                          onChanged: (value) {
+                            setState(() { _con.isPersonalChange = true;});
+                          },
+                          initialValue: u.name,
+                          validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
+                          decoration: buildInputDecoration(context, S.of(context).fullName),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ));
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).dateOfBirth, style: txtStyleBold),
+                InkWell(
+                  onTap: () {
+                    print('tap to select birthday');
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: false,
+                        minTime: DateTime(1930, 1, 1),
+                        maxTime: DateTime.now().subtract(Duration(days: 3650)),
+                        theme: DatePickerTheme(
+//                          headerColor: Colors.orange,
+                            backgroundColor: DmConst.accentColor,
+                            itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                            doneStyle: TextStyle(color: Colors.white, fontSize: 16)), onConfirm: (date) {
+                      u.birthday = date;
+                    }, onChanged: (date) {
+                      setState(() {
+                        u.birthday = date;
+                      });
+                    }, currentTime: u.birthday, locale: LocaleType.en);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: buildBoxDecorationForTextField(context),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: TextFormField(
+                            textAlign: TextAlign.center,
+                            style: txtStyleAccent,
+                            textAlignVertical: TextAlignVertical.center,
+                            enabled: false,
+                            decoration: buildInputDecoration(
+                                context, u.birthday != null ? u.birthday.day.toString() : S.of(context).day),
+                          )),
+                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          Expanded(
+                              child: TextFormField(
+                            textAlign: TextAlign.center,
+                            style: txtStyleAccent,
+                            textAlignVertical: TextAlignVertical.center,
+                            enabled: false,
+                            decoration: buildInputDecoration(
+                                context, u.birthday != null ? u.birthday.month.toString() : S.of(context).month),
+                          )),
+                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          Expanded(
+                              child: TextFormField(
+                            textAlign: TextAlign.center,
+                            style: txtStyleAccent,
+                            textAlignVertical: TextAlignVertical.center,
+                            enabled: false,
+                            decoration: buildInputDecoration(
+                                context, u.birthday != null ? u.birthday.year.toString() : S.of(context).year),
+                          )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).mobilePhoneNumber, style: txtStyleBold),
+                PhoneNoWid(initValue: u.phone, onSaved: (value) => u.phone = value, enable: false),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).email, style: txtStyleBold),
+                EmailWid(initValue: u.email,
+                    onSaved: (value) {
+                      u.email = value;
+                      print('current email value');
+                    },
+                    onChanged: (value) {
+                      setState(() { _con.isPersonalChange = true;});
+                    }),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        onPressed: _con.loading || _con.isPersonalChange == false ? null : onPressSavePersonDetail,
+                        child: Text(_con.loading == false? S.of(context).save : S.of(context).processing,
+                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        color: DmConst.accentColor,
+                        disabledColor: DmConst.accentColor.withOpacity(0.8),
+                        disabledTextColor: Colors.grey,
+//                    shape: StadiumBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        buildTitle(context, S.of(context).personalDetails)
+      ],
+    );
+  }
+
+  Stack buildAddressDetailStack(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 10),
+          decoration: createRoundedBorderBoxDecoration(),
+          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+//          width: double.infinity,
+          child: Form(
+            key: _con.addressFormKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(S.of(context).fullName, style: txtStyleBold),
+                Row(
+                  children: [
+                    SizedBox(width: 100, child: buildGenderDropdown()),
+                    SizedBox(width: DmConst.masterHorizontalPad),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        decoration: buildBoxDecorationForTextField(context),
+                        child: TextFormField(
+                          style: txtStyleAccent,
+                          textAlignVertical: TextAlignVertical.center,
+                          keyboardType: TextInputType.text,
+                          onSaved: (input) {
+                            u.name = input.trim();
+                          },
+                          onChanged: (value) {
+                            setState(() { _con.isPersonalChange = true;});
+                          },
+                          initialValue: u.name,
+                          validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
+                          decoration: buildInputDecoration(context, S.of(context).fullName),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).dateOfBirth, style: txtStyleBold),
+                InkWell(
+                  onTap: () {
+                    print('tap to select birthday');
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: false,
+                        minTime: DateTime(1930, 1, 1),
+                        maxTime: DateTime.now().subtract(Duration(days: 3650)),
+                        theme: DatePickerTheme(
+//                          headerColor: Colors.orange,
+                            backgroundColor: DmConst.accentColor,
+                            itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                            doneStyle: TextStyle(color: Colors.white, fontSize: 16)), onConfirm: (date) {
+                          u.birthday = date;
+                        }, onChanged: (date) {
+                          setState(() {
+                            u.birthday = date;
+                          });
+                        }, currentTime: u.birthday, locale: LocaleType.en);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: buildBoxDecorationForTextField(context),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                style: txtStyleAccent,
+                                textAlignVertical: TextAlignVertical.center,
+                                enabled: false,
+                                decoration: buildInputDecoration(
+                                    context, u.birthday != null ? u.birthday.day.toString() : S.of(context).day),
+                              )),
+                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          Expanded(
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                style: txtStyleAccent,
+                                textAlignVertical: TextAlignVertical.center,
+                                enabled: false,
+                                decoration: buildInputDecoration(
+                                    context, u.birthday != null ? u.birthday.month.toString() : S.of(context).month),
+                              )),
+                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          Expanded(
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                style: txtStyleAccent,
+                                textAlignVertical: TextAlignVertical.center,
+                                enabled: false,
+                                decoration: buildInputDecoration(
+                                    context, u.birthday != null ? u.birthday.year.toString() : S.of(context).year),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).mobilePhoneNumber, style: txtStyleBold),
+                PhoneNoWid(initValue: u.phone, onSaved: (value) => u.phone = value, enable: false),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).email, style: txtStyleBold),
+                EmailWid(initValue: u.email,
+                    onSaved: (value) {
+                      u.email = value;
+                      print('current email value');
+                    },
+                    onChanged: (value) {
+                      setState(() { _con.isPersonalChange = true;});
+                    }),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        onPressed: _con.loading || _con.isPersonalChange == false ? null : onPressSavePersonDetail,
+                        child: Text(_con.loading == false? S.of(context).save : S.of(context).processing,
+                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        color: DmConst.accentColor,
+                        disabledColor: DmConst.accentColor.withOpacity(0.8),
+                        disabledTextColor: Colors.grey,
+//                    shape: StadiumBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        buildTitle(context, S.of(context).personalDetails)
+      ],
+    );
+  }
+
+  Stack buildChangePassStack(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 10),
+          decoration: createRoundedBorderBoxDecoration(),
+          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+//          width: double.infinity,
+          child: Form(
+            key: _con.changePassFormKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(S.of(context).currentPassword, style: txtStyleBold),
+                PasswordWid(onSaved: (value) => _con.currentPass = value),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).mobilePhoneNumber, style: txtStyleBold),
+                PhoneNoWid(initValue: u.phone, enable: false),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).newPassword, style: txtStyleBold),
+                PasswordWid(onSaved: (value) => _con.newPass = value),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Text(S.of(context).confirmNewPass, style: txtStyleBold),
+                PasswordConfirmWid(onValidate: (value) => _con.newPass == value ? null : S.of(context).passwordNotMatch),
+                SizedBox(height: DmConst.masterHorizontalPad),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        onPressed: _con.loading ? null : onPressChangePass,
+                        child: Text(_con.loading == false? S.of(context).save : S.of(context).processing,
+                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        color: DmConst.accentColor,
+                        disabledColor: DmConst.accentColor.withOpacity(0.8),
+                        disabledTextColor: Colors.grey,
+//                    shape: StadiumBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        buildTitle(context, S.of(context).changePassword)
+      ],
+    );
+  }
+
+
+  Align buildTitle(BuildContext context, String title) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget buildGenderDropdown() {
+    List<DropdownMenuItem> its = [
+      DropdownMenuItem<Gender>(value: Gender.Others, child: Text('N/A', style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Male, child: Text('Mr', style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Female, child: Text('Mrs', style: this.txtStyleAccent)),
+    ];
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: buildBoxDecorationForTextField(context),
+      child: DropdownButtonFormField(
+        items: its,
+        onChanged: (newValue) {
+          setState(() {
+            u.gender = newValue;
+            _con.isPersonalChange = true;
+          });
+        },
+        value: u.gender,
+        onSaved: (value) => u.gender = value,
+//        validator: (value) => value == null ? S.of(context).invalidGender : null,
+        decoration: buildInputDecoration(context, S.of(context).gender),
+      ),
+    );
+  }
+
+  Future<void> onPressSavePersonDetail() async {
+    print('onPressSavePersonDetail --');
+    _con.personalDetailFormKey.currentState.save();
+    if (_con.personalDetailFormKey.currentState.validate()) {
+      bool re = await _con.updatePersonDetail();
+      if(re) {
+        _con.showMsg(S.of(context).accountInfoUpdated);
+      }
+    }
+  }
+
+  Future<void> onPressChangePass() async {
+    print('onPressChangePass --');
+    _con.changePassFormKey.currentState.save();
+    if (_con.changePassFormKey.currentState.validate()) {
+      bool re = await _con.changePwd();
+      setState(() {
+        u.password = '';
+        _con.newPass = '';
+      });
+      if(re) {
+        _con.showMsg(S.of(context).passwordChanged);
+      }
+    }
+  }
+}
+
+class AddressWid extends StatefulWidget {
+  GlobalKey<FormState> formKey;
+  Address address;
+  List<Province>
+  AddressWid({this.formKey, this.address, this})
+  @override
+  _AddressWidState createState() => _AddressWidState();
+}
+
+class _AddressWidState extends State<AddressWid> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Form(
+            key: widget.formKey,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: TextStyle(color: DmConst.accentColor),
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => widget.address.address = input.trim(),
+                              validator: (input) =>
+                              DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
+                              decoration: buildInputDecoration(context, S.of(context).houseNo),
+                            ),
+                          ),
+                        ),
+                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: TextStyle(color: DmConst.accentColor),
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => widget.address.street = input.trim(),
+                              validator: (input) =>
+                              DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
+                              decoration: buildInputDecoration(context, S.of(context).streetName),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                buildProvincesDropDown(),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: buildDistrictsDropDown(),
+                        ),
+                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
+                        Expanded(
+                          child: buildWardsDropDown(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: buildBoxDecorationForTextField(context),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              style: txtStyleAccent,
+                              maxLines: 2,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.text,
+                              onSaved: (input) => _con.address.description = input.trim(),
+                              decoration: buildInputDecorationForLocation(context, S.of(context).note),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            )),
+        SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: FlatButton(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                onPressed: onPressSaveLocation,
+                child: Text(S.of(context).next,
+                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                color: DmConst.accentColor,
+//                    shape: StadiumBorder(),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

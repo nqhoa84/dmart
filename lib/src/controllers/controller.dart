@@ -8,6 +8,8 @@ import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
 class Controller extends ControllerMVC {
+  bool loading = false;
+
   GlobalKey<ScaffoldState> scaffoldKey;
   Controller({this.scaffoldKey});
 

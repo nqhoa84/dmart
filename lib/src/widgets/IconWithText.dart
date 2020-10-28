@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:flutter/material.dart';
 
 class IconWithText extends StatelessWidget {
@@ -6,7 +7,8 @@ class IconWithText extends StatelessWidget {
   final Color color;
   final TextStyle style;
 
-  const IconWithText({Key key, this.title, this.icon, this.color, this.style}) : super(key: key);
+  const IconWithText({Key key, this.title = '', this.icon = Icons.info_outline,
+    this.color = DmConst.accentColor, this.style = const TextStyle(color: DmConst.accentColor)}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +16,15 @@ class IconWithText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Icon(icon, color: color),
-        SizedBox(width: 5),
-        Text(
-          title,
-          style: this.style.copyWith(color: this.color)
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(icon, color: color),
+        ),
+        Expanded(
+          child: Text(
+            title,
+            style: this.style.copyWith(color: this.color)
+          ),
         ),
       ],
     );

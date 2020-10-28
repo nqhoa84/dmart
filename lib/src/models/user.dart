@@ -42,17 +42,18 @@ class User extends IdNameObj{
   }
 
   set phone(String value) {
-    if(value == null) {
-      _phone = '';
-    } else {
-      _phone = value.replaceAll(RegExp(r"[^0-9]"), '');
-      while(_phone.startsWith('0')) {
-        _phone = _phone.substring(1);
-      }
-      if(!_phone.startsWith('855')) {
-        _phone = '855$_phone';
-      }
-    }
+    _phone = DmUtils.addCountryCode(phone: value);
+//    if(value == null) {
+//      _phone = '';
+//    } else {
+//      _phone = value.replaceAll(RegExp(r"[^0-9]"), '');
+//      while(_phone.startsWith('0')) {
+//        _phone = _phone.substring(1);
+//      }
+//      if(!_phone.startsWith('855')) {
+//        _phone = '855$_phone';
+//      }
+//    }
   }
 
   String address;

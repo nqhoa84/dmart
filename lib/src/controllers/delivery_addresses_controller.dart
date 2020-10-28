@@ -1,3 +1,5 @@
+import 'package:dmart/src/controllers/controller.dart';
+import 'package:dmart/src/models/address.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -8,18 +10,33 @@ import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
-class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
-  List<model.Address> addresses = <model.Address>[];
+class DeliveryAddressesController extends Controller
+//    with ChangeNotifier
+{
+  GlobalKey<FormState> formKey;
   GlobalKey<ScaffoldState> scaffoldKey;
-  Cart cart;
+
+  List<Address> addresses;
+  Address address;
+
+  static List<Province> PROVINCES;
+  List<Province> get provinces => PROVINCES??[];
+  static Map<int, List<District>> _mapDistricts = {};
+  List<District> districts = [];
+  static Map<int, List<Ward>> _mapWards = {};
+  List<Ward> wards = [];
 
   DeliveryAddressesController() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    listenForAddresses();
-    listenForCart();
+    scaffoldKey = new GlobalKey<ScaffoldState>();
+    formKey = GlobalKey<FormState>();
   }
 
   void listenForAddresses({String message}) async {
+    if(this.addresses == null) {
+      this.addresses = [];
+    } else {
+      this.addresses.clear();
+    }
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
       setState(() {
@@ -27,22 +44,11 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
+      showErr(S.of(context).verifyYourInternetConnection);
     }, onDone: () {
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
+        showMsg(message);
       }
-    });
-  }
-
-  void listenForCart() async {
-    final Stream<Cart> stream = await getCarts();
-    stream.listen((Cart _cart) {
-      cart = _cart;
     });
   }
 
@@ -67,16 +73,16 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
     settingRepo.deliveryAddress.notifyListeners();
   }
 
-  void addAddress(model.Address address) {
-    userRepo.addAddress(address).then((value) {
-      setState(() {
-        this.addresses.insert(0, value);
-      });
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).newAddressAdded),
-      ));
-    });
-  }
+//  void addAddress(model.Address address) {
+//    userRepo.addAddress(address).then((value) {
+//      setState(() {
+//        this.addresses.insert(0, value);
+//      });
+//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//        content: Text(S.of(context).newAddressAdded),
+//      ));
+//    });
+//  }
 
   void chooseDeliveryAddress(model.Address address) {
     setState(() {
@@ -98,9 +104,90 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
       setState(() {
         this.addresses.remove(address);
       });
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).deliveryAddressRemovedSuccessfully),
-      ));
+      showMsg(S.of(context).deliveryAddressRemovedSuccessfully);
     });
+  }
+
+  void getProvinces() async {
+    if(PROVINCES != null) return;
+    if(loading) return;
+    setState(() {
+      loading = true;
+    });
+
+    PROVINCES = await userRepo.getProvinces();
+
+    setState(() {
+      loading = false;
+    });
+    setState((){});
+  }
+
+  void getDistricts(int provinceId) async {
+    if(_mapDistricts.containsKey(provinceId)) {
+      districts = _mapDistricts[provinceId];
+      return;
+    }
+    if(loading) return;
+    setState(() {
+      loading = true;
+    });
+
+    List<District> dis = await userRepo.getDistricts(provinceId);
+    _mapDistricts[provinceId] = dis;
+
+    setState(() {
+      this.districts = dis;
+      loading = false;
+    });
+
+  }
+
+  void getWards(int districtId) async {
+    if(_mapWards.containsKey(districtId)) {
+      this.wards = _mapWards[districtId];
+      return;
+    }
+    if(loading) return;
+    setState(() {
+      loading = true;
+    });
+
+    List<Ward> ws = await userRepo.getWards(districtId);
+    _mapWards[districtId] = ws;
+    setState(() {
+      this.wards = ws;
+      loading = false;
+    });
+
+  }
+
+  Future<bool> saveAddress() async {
+    bool re = false;
+    this.formKey.currentState.save();
+    if(this.formKey.currentState.validate()) {
+//      if(loading) return false;
+      setState(() {
+        loading = true;
+      });
+      if(this.address.id <= 0) {
+        List<Address> a = await userRepo.addAddress(this.address);
+        if(a != null) {
+          setState(() { this.addresses = a;});
+          re = true;
+        }
+        showMsg(S.of(context).newAddressAdded);
+      } else {
+        List<Address> a = await userRepo.updateAddress(this.address);
+
+        showMsg(S.of(context).addressUpdated);
+      }
+
+      setState(() {
+        loading = false;
+      });
+    }
+
+    return re;
   }
 }

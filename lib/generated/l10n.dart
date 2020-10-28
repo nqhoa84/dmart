@@ -2143,6 +2143,16 @@ class S {
     );
   }
 
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email Address`
   String get emailAddress {
     return Intl.message(
@@ -2473,11 +2483,51 @@ class S {
     );
   }
 
-  /// `Add Shipping Address`
+  /// `Add Delivery Address`
   String get addDeliveryAddress {
     return Intl.message(
-      'Add Shipping Address',
+      'Add Delivery Address',
       name: 'addDeliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have any delivery address.`
+  String get addressesEmpty {
+    return Intl.message(
+      'You don\'t have any delivery address.',
+      name: 'addressesEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Default delivery address`
+  String get defaultDeliveryAddress {
+    return Intl.message(
+      'Default delivery address',
+      name: 'defaultDeliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
       desc: '',
       args: [],
     );

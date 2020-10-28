@@ -21,8 +21,10 @@ class ProfileInfoController extends Controller {
   String newPass;
   String currentPass;
 
-  Address addr;
+  Address defaultAddress;
   List<Address> _allAddrs = [];
+
+//  Address defaultAddress;
 
   ProfileInfoController() {
     personalDetailFormKey = GlobalKey<FormState>();
@@ -87,13 +89,13 @@ class ProfileInfoController extends Controller {
   getAddrs() async {
     final Stream<Address> stream = await userRepo.getAddresses();
     this._allAddrs.clear();
-    this.addr = null;
+    this.defaultAddress = null;
     stream.listen(
       (Address a) {
         if (a.isValid) {
           _allAddrs.add(a);
-          if (a.isDefault && this.addr == null) {
-            setState((){this.addr = a;});
+          if (a.isDefault && this.defaultAddress == null) {
+            setState((){this.defaultAddress = a;});
           }
         }
       },
@@ -101,8 +103,8 @@ class ProfileInfoController extends Controller {
         print(a);
       },
       onDone: () {
-        if (_allAddrs.length > 0 && this.addr == null) {
-          setState((){this.addr = _allAddrs[0];});
+        if (_allAddrs.length > 0 && this.defaultAddress == null) {
+          setState((){this.defaultAddress = _allAddrs[0];});
         }
       },
     );

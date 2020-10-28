@@ -94,7 +94,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
               RouteGenerator.gotoBestSale(context);
             }),
         _con.bestSaleProducts.isEmpty
-            ? ProductsGridViewLoading()
+            ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.bestSaleProducts, animationOpacity: animationOpacity,
               hero: 'home_best_sale',
         ),
@@ -111,7 +111,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
               RouteGenerator.gotoNewArrivals(context);
             }),
         _con.newArrivalProducts.isEmpty
-            ? ProductsGridViewLoading()
+            ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.newArrivalProducts, animationOpacity: animationOpacity,
           hero: 'home_new_arrival',),
         //specialForYou
@@ -121,7 +121,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
               RouteGenerator.gotoSpecial4U(context);
             }),
         _con.special4UProducts.isEmpty
-            ? ProductsGridViewLoading()
+            ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.special4UProducts, animationOpacity: animationOpacity,
           hero: 'home_spe4U',),
       ],

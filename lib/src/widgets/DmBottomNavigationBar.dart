@@ -9,7 +9,12 @@ class DmBottomNavigationBar extends StatelessWidget {
   Function(int i) onTap;
 
   DmBottomNavigationBar({this.currentIndex, this.onTap, Key key}) : super(key: key) {
-    DmState.bottomBarSelectedIndex = currentIndex;
+    if(currentIndex == null) {
+      currentIndex = DmState.bottomBarSelectedIndex;
+    } else {
+      DmState.bottomBarSelectedIndex = currentIndex;
+    }
+
   }
 
   void _defaultOnTap(int selectedIndex, BuildContext context) {
@@ -53,7 +58,8 @@ class DmBottomNavigationBar extends StatelessWidget {
 
 //      selectedIconTheme: IconThemeData(size: 25),
 //        unselectedItemColor: Theme.of(context).hintColor.withOpacity(1),
-        currentIndex: currentIndex != null ? currentIndex : DmState.bottomBarSelectedIndex,
+//        currentIndex: currentIndex != null ? currentIndex : DmState.bottomBarSelectedIndex,
+        currentIndex: currentIndex,
         onTap: onTap != null ? onTap : (int i) {_defaultOnTap (i, context);},
         // this will be set when a new tab is tapped
         items: [

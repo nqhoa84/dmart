@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import './src/repository/user_repository.dart' as userRepo;
 
@@ -98,6 +99,22 @@ class DmUtils {
 //      (?:[+0][1-9])? optionally match a + or 0 followed by a digit from 0 to 9
 //    [ 0-9]{10,12} match 10 to 12 digits
 //    $ end of the string
+  }
+
+  static String addCountryCode({@required String phone, String code = '855'}) {
+    String _phone;
+    if(phone == null) {
+      _phone = '';
+    } else {
+      _phone = phone.replaceAll(RegExp(r"[^0-9]"), '');
+      while(_phone.startsWith('0')) {
+        _phone = _phone.substring(1);
+      }
+      if(!_phone.startsWith(code)) {
+        _phone = '$code$_phone';
+      }
+    }
+    return _phone;
   }
 
   static isNotPhoneNo(String value) {

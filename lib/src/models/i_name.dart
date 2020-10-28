@@ -19,6 +19,7 @@ class IdObj {
 
   @override
   int get hashCode => id.hashCode;
+  
 }
 
 class IdNameObj extends IdObj {
@@ -67,7 +68,6 @@ class IdNameObj extends IdObj {
   String toString() {
     return 'IdNameObj {id: $id, name: $name}';
   }
-
 }
 
 class NameImageObj extends IdNameObj {

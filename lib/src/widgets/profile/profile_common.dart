@@ -5,6 +5,54 @@ import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+// ignore: must_be_immutable
+class TextEditWid extends StatefulWidget {
+  Function(String) onSaved;
+  Function(String) onChanged;
+  Function(String) validator;
+  String initValue;
+  final bool enable;
+  String hintText;
+  IconData prefixIcon;
+
+
+  TextEditWid({Key key, this.onSaved, this.onChanged, this.validator,
+    this.initValue, this.hintText, this.prefixIcon, this.enable = true}) : super(key: key);
+
+  @override
+  _TextEditWidState createState() => _TextEditWidState();
+}
+
+class _TextEditWidState extends State<TextEditWid> {
+  final TextStyle txtStyleAccent = TextStyle(color: DmConst.accentColor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: buildBoxDecorationForTextField(context),
+      child: TextFormField(
+        style: txtStyleAccent,
+        textAlignVertical: TextAlignVertical.center,
+        keyboardType: TextInputType.text,
+        onSaved: widget.onSaved,
+        onChanged: widget.onChanged,
+        initialValue: widget.initValue,
+        enabled: widget.enable,
+        validator: widget.validator,
+        decoration: new InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: txtStyleAccent,
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+          prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: DmConst.accentColor) : null
+        ),
+      ),
+    );
+  }
+}
+
 // ignore: must_be_immutable
 class PhoneNoWid extends StatefulWidget {
   Function(String) onSaved;

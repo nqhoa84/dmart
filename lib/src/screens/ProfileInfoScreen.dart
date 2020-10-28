@@ -1,6 +1,9 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/route_generator.dart';
+import 'package:dmart/src/controllers/delivery_addresses_controller.dart';
 import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/user.dart';
+import 'package:dmart/src/screens/addressesScreen.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/profile/profile_common.dart';
@@ -48,6 +51,7 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _con.scaffoldKey,
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: SafeArea(
@@ -78,6 +82,12 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
           ),
         ),
         buildPersonalDetailStack(context),
+        SizedBox(height: DmConst.masterHorizontalPad),
+        buildAddressDetailStack(context),
+//        FlatButton(
+//          onPressed: _onPressAddressesButton,
+//          child: Text('lasfklsdf'),
+//          color: DmConst.accentColor),
         SizedBox(height: DmConst.masterHorizontalPad),
         buildChangePassStack(context),
       ],
@@ -153,7 +163,6 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     decoration: buildBoxDecorationForTextField(context),
-                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: IntrinsicHeight(
                       child: Row(
                         children: [
@@ -226,12 +235,13 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
             ),
           ),
         ),
-        buildTitle(context, S.of(context).personalDetails)
+        buildTitle(context, title: S.of(context).personalDetails)
       ],
     );
   }
 
   Stack buildAddressDetailStack(BuildContext context) {
+
     return Stack(
       children: [
         Container(
@@ -240,140 +250,15 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
           padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
               DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
 //          width: double.infinity,
-          child: Form(
-            key: _con.addressFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(S.of(context).fullName, style: txtStyleBold),
-                Row(
-                  children: [
-                    SizedBox(width: 100, child: buildGenderDropdown()),
-                    SizedBox(width: DmConst.masterHorizontalPad),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        decoration: buildBoxDecorationForTextField(context),
-                        child: TextFormField(
-                          style: txtStyleAccent,
-                          textAlignVertical: TextAlignVertical.center,
-                          keyboardType: TextInputType.text,
-                          onSaved: (input) {
-                            u.name = input.trim();
-                          },
-                          onChanged: (value) {
-                            setState(() { _con.isPersonalChange = true;});
-                          },
-                          initialValue: u.name,
-                          validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
-                          decoration: buildInputDecoration(context, S.of(context).fullName),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: DmConst.masterHorizontalPad),
-                Text(S.of(context).dateOfBirth, style: txtStyleBold),
-                InkWell(
-                  onTap: () {
-                    print('tap to select birthday');
-                    DatePicker.showDatePicker(context,
-                        showTitleActions: false,
-                        minTime: DateTime(1930, 1, 1),
-                        maxTime: DateTime.now().subtract(Duration(days: 3650)),
-                        theme: DatePickerTheme(
-//                          headerColor: Colors.orange,
-                            backgroundColor: DmConst.accentColor,
-                            itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                            doneStyle: TextStyle(color: Colors.white, fontSize: 16)), onConfirm: (date) {
-                          u.birthday = date;
-                        }, onChanged: (date) {
-                          setState(() {
-                            u.birthday = date;
-                          });
-                        }, currentTime: u.birthday, locale: LocaleType.en);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    decoration: buildBoxDecorationForTextField(context),
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: TextFormField(
-                                textAlign: TextAlign.center,
-                                style: txtStyleAccent,
-                                textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                decoration: buildInputDecoration(
-                                    context, u.birthday != null ? u.birthday.day.toString() : S.of(context).day),
-                              )),
-                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-                          Expanded(
-                              child: TextFormField(
-                                textAlign: TextAlign.center,
-                                style: txtStyleAccent,
-                                textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                decoration: buildInputDecoration(
-                                    context, u.birthday != null ? u.birthday.month.toString() : S.of(context).month),
-                              )),
-                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-                          Expanded(
-                              child: TextFormField(
-                                textAlign: TextAlign.center,
-                                style: txtStyleAccent,
-                                textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                decoration: buildInputDecoration(
-                                    context, u.birthday != null ? u.birthday.year.toString() : S.of(context).year),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
-                SizedBox(height: DmConst.masterHorizontalPad),
-                Text(S.of(context).mobilePhoneNumber, style: txtStyleBold),
-                PhoneNoWid(initValue: u.phone, onSaved: (value) => u.phone = value, enable: false),
-                SizedBox(height: DmConst.masterHorizontalPad),
-                Text(S.of(context).email, style: txtStyleBold),
-                EmailWid(initValue: u.email,
-                    onSaved: (value) {
-                      u.email = value;
-                      print('current email value');
-                    },
-                    onChanged: (value) {
-                      setState(() { _con.isPersonalChange = true;});
-                    }),
-                SizedBox(height: DmConst.masterHorizontalPad),
-                Row(
-                  children: [
-                    Expanded(
-                      child: FlatButton(
-                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                        onPressed: _con.loading || _con.isPersonalChange == false ? null : onPressSavePersonDetail,
-                        child: Text(_con.loading == false? S.of(context).save : S.of(context).processing,
-                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-                        color: DmConst.accentColor,
-                        disabledColor: DmConst.accentColor.withOpacity(0.8),
-                        disabledTextColor: Colors.grey,
-//                    shape: StadiumBorder(),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          child: AddressInfoWid(address: _con.defaultAddress),
         ),
-        buildTitle(context, S.of(context).personalDetails)
+        buildTitle(context, title: '${S.of(context).deliveryAddresses} >>',
+        onPressedOnTitle: _onPressAddressesButton)
       ],
     );
   }
 
+  String userEnterPass;
   Stack buildChangePassStack(BuildContext context) {
     return Stack(
       children: [
@@ -389,7 +274,7 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(S.of(context).currentPassword, style: txtStyleBold),
-                PasswordWid(onSaved: (value) => _con.currentPass = value),
+                PasswordWid(initValue: "",onSaved: (value) => _con.currentPass = value),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.of(context).mobilePhoneNumber, style: txtStyleBold),
                 PhoneNoWid(initValue: u.phone, enable: false),
@@ -420,22 +305,24 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
             ),
           ),
         ),
-        buildTitle(context, S.of(context).changePassword)
+        buildTitle(context, title: S.of(context).changePassword)
       ],
     );
   }
 
-
-  Align buildTitle(BuildContext context, String title) {
+  Align buildTitle(BuildContext context, {String title, Function() onPressedOnTitle}) {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor),
-          textAlign: TextAlign.center,
+        child: InkWell(
+          onTap: onPressedOnTitle,
+          child: Text(
+            title??'',
+            style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
@@ -466,7 +353,7 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     );
   }
 
-  Future<void> onPressSavePersonDetail() async {
+  void onPressSavePersonDetail() async {
     print('onPressSavePersonDetail --');
     _con.personalDetailFormKey.currentState.save();
     if (_con.personalDetailFormKey.currentState.validate()) {
@@ -477,141 +364,24 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     }
   }
 
-  Future<void> onPressChangePass() async {
+  void onPressChangePass() async {
     print('onPressChangePass --');
     _con.changePassFormKey.currentState.save();
     if (_con.changePassFormKey.currentState.validate()) {
       bool re = await _con.changePwd();
-      setState(() {
-        u.password = '';
-        _con.newPass = '';
-      });
-      if(re) {
-        _con.showMsg(S.of(context).passwordChanged);
-      }
+      _con.changePassFormKey.currentState.reset();
+//      setState(() {
+//        u.password = '';
+//        _con.newPass = '';
+//      });
+//      if(re) {
+//        _con.showMsg(S.of(context).passwordChanged);
+//      }
     }
   }
-}
 
-class AddressWid extends StatefulWidget {
-  GlobalKey<FormState> formKey;
-  Address address;
-  List<Province>
-  AddressWid({this.formKey, this.address, this})
-  @override
-  _AddressWidState createState() => _AddressWidState();
-}
-
-class _AddressWidState extends State<AddressWid> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Form(
-            key: widget.formKey,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: buildBoxDecorationForTextField(context),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: TextFormField(
-                              style: TextStyle(color: DmConst.accentColor),
-                              textAlignVertical: TextAlignVertical.center,
-                              keyboardType: TextInputType.text,
-                              onSaved: (input) => widget.address.address = input.trim(),
-                              validator: (input) =>
-                              DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecoration(context, S.of(context).houseNo),
-                            ),
-                          ),
-                        ),
-                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
-                        Expanded(
-                          child: Container(
-                            child: TextFormField(
-                              style: TextStyle(color: DmConst.accentColor),
-                              textAlignVertical: TextAlignVertical.center,
-                              keyboardType: TextInputType.text,
-                              onSaved: (input) => widget.address.street = input.trim(),
-                              validator: (input) =>
-                              DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecoration(context, S.of(context).streetName),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                buildProvincesDropDown(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: buildBoxDecorationForTextField(context),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: buildDistrictsDropDown(),
-                        ),
-                        VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-                        //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
-                        Expanded(
-                          child: buildWardsDropDown(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: buildBoxDecorationForTextField(context),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: TextFormField(
-                              style: txtStyleAccent,
-                              maxLines: 2,
-                              textAlignVertical: TextAlignVertical.center,
-                              keyboardType: TextInputType.text,
-                              onSaved: (input) => _con.address.description = input.trim(),
-                              decoration: buildInputDecorationForLocation(context, S.of(context).note),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )),
-        SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: FlatButton(
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                onPressed: onPressSaveLocation,
-                child: Text(S.of(context).next,
-                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-                color: DmConst.accentColor,
-//                    shape: StadiumBorder(),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
+  void _onPressAddressesButton() {
+    print('_onPressAddressesButton');
+    RouteGenerator.gotoAddressesScreen(context);
   }
 }

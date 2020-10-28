@@ -37,29 +37,29 @@ class DeliveryPickupController extends CartController {
   }
 
   void addAddress(model.Address address) {
-    userRepo.addAddress(address).then((value) {
-      setState(() {
-        settingRepo.deliveryAddress.value = value;
-        this.deliveryAddress = value;
-      });
-    }).whenComplete(() {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).newAddressAdded),
-      ));
-    });
+//    userRepo.addAddress(address).then((value) {
+//      setState(() {
+//        settingRepo.deliveryAddress.value = value;
+//        this.deliveryAddress = value;
+//      });
+//    }).whenComplete(() {
+//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//        content: Text(S.of(context).newAddressAdded),
+//      ));
+//    });
   }
 
   void updateAddress(model.Address address) {
-    userRepo.updateAddress(address).then((value) {
-      setState(() {
-        settingRepo.deliveryAddress.value = value;
-        this.deliveryAddress = value;
-      });
-    }).whenComplete(() {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).addressUpdated),
-      ));
-    });
+//    userRepo.updateAddress(address).then((value) {
+//      setState(() {
+//        settingRepo.deliveryAddress.value = value;
+//        this.deliveryAddress = value;
+//      });
+//    }).whenComplete(() {
+//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//        content: Text(S.of(context).addressUpdated),
+//      ));
+//    });
   }
 
   /*@override

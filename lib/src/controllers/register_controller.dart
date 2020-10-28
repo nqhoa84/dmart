@@ -159,9 +159,9 @@ class RegController extends Controller {
     if (loading) return false;
     try {
       loading = true;
-      this.address = await userRepo.addAddress(address);
+      List a = await userRepo.addAddress(address);
       loading = false;
-      if (this.address != null) {
+      if (a != null) {
         showMsg(S.of(context).newAddressAdded);
         return true;
       } else {

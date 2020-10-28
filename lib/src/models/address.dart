@@ -6,16 +6,43 @@ import '../../generated/l10n.dart';
 import '../../utils.dart';
 
 class Address extends IdObj {
-  String fullName = '', phone = '';
-  String street = '', address = 'A215, duong C8, f Tay thanh, Q. tan phu ';
+  String fullName = '';
+  String street = '', address = '';
   String description = '';
-  IdNameObj province , district, ward;
+  Province province;
+  District district;
+  Ward ward;
 
 //  String address; //fullAddress
   double latitude;
   double longitude;
   bool isDefault = false;
   int userId = 0;
+
+  String _phone = '';
+  set phone (String v) => _phone = DmUtils.addCountryCode(phone: v);
+  String get phone {
+    if(_phone == null) return '';
+    if(_phone.startsWith("855")) {
+      return _phone.replaceFirst('855', '0');
+    }
+    return _phone;
+  }
+
+  Address clone() {
+    Address a = Address();
+    a.address = this.address;
+    a.fullName = this.fullName;
+    a.phone = this.phone;
+    a.street = this.street;
+    a.description = this.description;
+    a.isDefault = this.isDefault;
+    a.userId = this.userId;
+    a.province = this.province != null ? this.province.clone() : null;
+    a.district = this.district!= null ? this.district.clone() : null;
+    a.ward = this.ward!= null ? this.ward.clone() : null;
+    return a;
+  }
 
   Address() {
     id = 0;
@@ -43,11 +70,7 @@ class Address extends IdObj {
       id = toInt(map['id']);
       description = map["description"] ?? '';
       address = map["address"] ?? '';
-      try {
-        province = Province.fromJSON(map["province"]);
-      } on Exception catch (e) {
-        province = Province();
-      }
+      province = map["province"] != null ? Province.fromJSON(map["province"]) : Province();
       try {
         district = District.fromJSON(map["district"]);
       } on Exception catch (e) {
@@ -63,7 +86,7 @@ class Address extends IdObj {
       fullName = map["full_name"] ?? '';
       latitude = toDouble(map["latitude"], errorValue: null);
       longitude = toDouble(map["longitude"], errorValue: null);
-      isDefault = map["isDefault"] ?? false;
+      isDefault = map["is_default"] ?? false;
     } catch (e, trace) {
       print('Error parsing data in Address $e \n $trace');
     }
@@ -73,8 +96,8 @@ class Address extends IdObj {
       '${isNullOrEmpty(street) ? '' : ', $street'}'
       '${ward == null ? '' : ', ${ward.name}'}'
       '${district == null ? '' : ', ${district.name}'}'
-      '${province == null ? '' : ', ${province.name}'}'
-      '${isNullOrEmpty(description) ? '' : ', \n$description'}'
+      '${province == null ? '' : ', ${province.name}.'}'
+      '${isNullOrEmpty(description) ? '' : '\n$description'}'
   ;
 
   bool isNullOrEmpty(String str) {
@@ -93,7 +116,7 @@ class Address extends IdObj {
     map["street"] = street??'';
     map["address"] = address??'';
     map["full_name"] = this.fullName??'';
-    map["phone"] = phone??'';
+    map["phone"] = _phone??'';
     map["description"] = description??'';
     map["is_default"] = isDefault??false;
     map["user_id"] = userId;
@@ -116,8 +139,17 @@ class Province extends IdNameObj{
 
   Province.fromJSON(Map<String, dynamic> jsonMap) {
     id = toInt(jsonMap['id']);
-    nameEn = toStringVal(jsonMap['name']);
-    nameKh = nameEn;
+    nameEn = toStringVal(jsonMap['name_en']);
+    nameKh = toStringVal(jsonMap['name_kh']);
+  }
+
+  Province clone() {
+    Province p = Province();
+    p.id = this.id;
+    p.nameEn = this.nameEn;
+    p.nameKh = this.nameKh;
+    p.description = this.description;
+    return p;
   }
 }
 
@@ -129,9 +161,18 @@ class District extends IdNameObj{
 
   District.fromJSON(Map<String, dynamic> jsonMap) {
     id = toInt(jsonMap['id']);
-    nameEn = toStringVal(jsonMap['name']);
-    nameKh = nameEn;
+    nameEn = toStringVal(jsonMap['name_en']);
+    nameKh = toStringVal(jsonMap['name_kh']);
     provinceId = toInt(jsonMap['province_id']);
+  }
+
+  District clone() {
+    District p = District();
+    p.id = this.id;
+    p.nameEn = this.nameEn;
+    p.nameKh = this.nameKh;
+    p.description = this.description;
+    return p;
   }
 }
 
@@ -143,8 +184,17 @@ class Ward extends IdNameObj{
 
   Ward.fromJSON(Map<String, dynamic> jsonMap) {
     id = toInt(jsonMap['id']);
-    nameEn = toStringVal(jsonMap['name']);
-    nameKh = nameEn;
+    nameEn = toStringVal(jsonMap['name_en']);
+    nameKh = toStringVal(jsonMap['name_kh']);
     districtId = toInt(jsonMap['district_id']);
+  }
+
+  Ward clone() {
+    Ward p = Ward();
+    p.id = this.id;
+    p.nameEn = this.nameEn;
+    p.nameKh = this.nameKh;
+    p.description = this.description;
+    return p;
   }
 }

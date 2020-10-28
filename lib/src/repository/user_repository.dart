@@ -186,8 +186,8 @@ Future<bool> changePwd(String phoneWith855, String currentPass, String newPass) 
   final String url = '${GlobalConfiguration().getString('api_base_url')}change_password';
   final response = await http.Client().post(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({'phone': phoneWith855, 'current_pass': currentPass, 'new_pass': newPass}),
+    headers: createHeadersRepo(),
+    body: json.encode({'old_password': currentPass, 'new_password': newPass}),
   );
   print('change_password ${response.body}');
   dynamic js = json.decode(response.body);
@@ -291,40 +291,10 @@ Future<User> updatePersonalDetail(User user) async {
   return currentUser.value;
 }
 
-Future<Stream<Address>> getAddresses() async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?'
-      'search=user_id:${userRepo.currentUser.value.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
-  print(url);
-  var req = http.Request('get', Uri.parse(url));
-  req.headers.addAll(createHeadersRepo());
-  final streamedRest = await http.Client().send(req);
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
-//    print(' --+++++++--- $data');
-    return Helper.getData(data);
-  }).expand((data) {
-//        print(' ------------ $data');
-    return data as List;
-  }).map((data) {
-    return Address.fromJSON(data);
-  });
-}
 
 Future<List<Province>> getProvinces() async {
-//  final String url = '${GlobalConfiguration().getString('api_base_url')}provinces';
-//  print(url);
-//  var req = http.Request('get', Uri.parse(url));
-//  req.headers.addAll(createHeadersRepo());
-//  final streamedRest = await http.Client().send(req);
-//
-//  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
-//    return Helper.getData(data);
-//  }).expand((data) {
-////        print(' ------------ $data');
-//    return data as List;
-//  }).map((data) {
-//    return Address.fromJSON(data);
-//  });
+
   List<Province> re = [];
 
   try {
@@ -385,10 +355,31 @@ Future<List<Ward>> getWards(int districtId) async {
   return re;
 }
 
-Future<Address> addAddress(Address address) async {
+Future<Stream<Address>> getAddresses() async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses';
+  print(url);
+  var req = http.Request('get', Uri.parse(url));
+  req.headers.addAll(createHeadersRepo());
+  final streamedRest = await http.Client().send(req);
+
+  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
+//    print(' --+++++++--- $data');
+    return Helper.getData(data);
+  }).expand((data) {
+//        print(' ------------ $data');
+    return data as List;
+  }).map((data) {
+//    print('address data: $data');
+    Address a = Address.fromJSON(data);
+//    print('address obj: $a');
+    return a;
+  });
+}
+
+Future<List<Address>> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/add';
   print('addAddress $url');
   print(address.toMap());
   final response = await http.Client().post(
@@ -396,41 +387,44 @@ Future<Address> addAddress(Address address) async {
     headers: createHeadersRepo(),
     body: json.encode(address.toMap()),
   );
-//  return Address.fromJSON(json.decode(response.body)['data']);
 
   print(response.body);
 
   dynamic js = json.decode(response.body);
-
+  List<Address> re = [];
   if (js["success"] != null && js["success"] == true) {
-    return Address.fromJSON(json.decode(response.body)['data']);
-  } else {
-    return null;
+    (js['data'] as List).forEach((element) {
+      re.add(Address.fromJSON(element));
+    });
   }
+  return re;
 }
 
-Future<Address> updateAddress(Address address) async {
+Future<List<Address>> updateAddress(Address address) async {
   User _user = userRepo.currentUser.value;
-  final String _apiToken = 'api_token=${_user.apiToken}';
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}?$_apiToken';
-  final client = new http.Client();
-  final response = await client.put(
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
+  final response = await http.Client().put(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
     body: json.encode(address.toMap()),
   );
-  return Address.fromJSON(json.decode(response.body)['data']);
+  dynamic js = json.decode(response.body);
+  List<Address> re = [];
+  if (js["success"] != null && js["success"] == true) {
+    (js['data'] as List).forEach((element) {
+      re.add(Address.fromJSON(element));
+    });
+  }
+  return re;
 }
 
-Future<Address> removeDeliveryAddress(Address address) async {
-  User _user = userRepo.currentUser.value;
-  final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}?$_apiToken';
-  final client = new http.Client();
-  final response = await client.delete(
+Future<bool> removeDeliveryAddress(Address address) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
+  final response = await http.Client().delete(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersRepo(),
   );
-  return Address.fromJSON(json.decode(response.body)['data']);
+  dynamic js = json.decode(response.body);
+  return js["success"] != null && js["success"] == true;
 }

@@ -56,11 +56,11 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                       myLocationButtonEnabled: true,
                       //resultCardAlignment: Alignment.bottomCenter,
                     );
-                    _con.addAddress(new Address.fromJSON({
-                      'address': result.address,
-                      'latitude': result.latLng.latitude,
-                      'longitude': result.latLng.longitude,
-                    }));
+//                    _con.addAddress(new Address.fromJSON({
+//                      'address': result.address,
+//                      'latitude': result.latLng.latitude,
+//                      'longitude': result.latLng.longitude,
+//                    }));
                     print("result = $result");
                     // Navigator.of(widget.scaffoldKey.currentContext).pop();
                   },

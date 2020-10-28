@@ -20,7 +20,7 @@ import 'src/screens/categories.dart';
 import 'src/screens/category.dart';
 import 'src/screens/checkout.dart';
 import 'src/screens/debug.dart';
-import 'src/screens/delivery_addresses.dart';
+import 'src/screens/addressesScreen.dart';
 import 'src/screens/favorites.dart';
 import 'src/screens/forget_password.dart';
 import 'src/screens/help.dart';
@@ -124,6 +124,11 @@ class RouteGenerator {
         : Navigator.of(context).pushNamed('/ProfileInfo') ;
   }
 
+  static gotoAddressesScreen(BuildContext context) {
+    Navigator.of(context).pushNamed('/Addresses');
+//    replaceOld ? Navigator.of(context).pushNamedAndRemoveUntil('/A', (Route<dynamic> route) => false)
+//        : Navigator.of(context).pushNamed('/Addresses') ;
+  }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -164,8 +169,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ReviewsWidget(routeArgument: args as RouteArgument));
       case '/PaymentMethod':
         return MaterialPageRoute(builder: (_) => PaymentMethodsWidget());
-      case '/DeliveryAddresses':
-        return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
+      case '/Addresses':
+        return MaterialPageRoute(builder: (_) => AddressesScreen());
       case '/Checkout'://todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/PayPal':
@@ -212,6 +217,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ErrorScreen());
     }
   }
+
+
 
 
 }

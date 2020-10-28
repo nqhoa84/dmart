@@ -39,7 +39,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
 
   @override
   void dispose() {
-  SmsRetrieved.stopListening();
+//  SmsRetrieved.stopListening();
 
   super.dispose();
   }

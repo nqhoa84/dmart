@@ -15,6 +15,7 @@ import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByCategory.dart';
 import 'abs_product_mvc.dart';
 
+// ignore: must_be_immutable
 class CategoryScreen extends StatefulWidget {
   RouteArgument routeArgument;
   Category _category;
@@ -68,10 +69,13 @@ class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
     int pre = proCon.categoriesProducts != null ? proCon.categoriesProducts.length : 0;
-    proCon.listenForProductsByCategory(id: this.category.id, nextPage: true);
+
+    await proCon.listenForProductsByCategory(id: this.category.id, nextPage: true);
     canLoadMore = proCon.categoriesProducts != null && proCon.categoriesProducts.length > pre;
+//    isLoading = false;
+    print('category can load more: $canLoadMore');
   }
 }
 

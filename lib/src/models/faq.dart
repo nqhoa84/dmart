@@ -21,8 +21,8 @@ class Faq extends IdObj{
       id = toInt(jsonMap['id']);
       questionEn = toStringVal(jsonMap['question_en']);
       questionKh = toStringVal(jsonMap['question_kh']);
-      answerEn = toStringVal(jsonMap['question_en']);
-      answerKh = toStringVal(jsonMap['question_kh']);
+      answerEn = toStringVal(jsonMap['answer_en']);
+      answerKh = toStringVal(jsonMap['answer_kh']);
     } catch (e, trace) {
       id = -1;
       questionEn = '';

@@ -16,10 +16,10 @@ class ProductGridView extends StatefulWidget {
 
   ProductGridView(
       {@required this.products,
-      this.heroTag = 'product',
-      this.isList = true,
-      this.showRemoveIcon = false,
-      this.scrollDirection = Axis.vertical});
+        this.heroTag = 'product',
+        this.isList = true,
+        this.showRemoveIcon = false,
+        this.scrollDirection = Axis.vertical});
 
   @override
   _ProductGridViewState createState() => _ProductGridViewState();
@@ -60,46 +60,46 @@ class _ProductGridViewState extends State<ProductGridView> {
     return Container(
       child: widget.isList == true
           ? RefreshIndicator(
-              onRefresh: onRefresh,
-              child: GridView.count(
-                controller: _controller,
-                primary: false,
-                shrinkWrap: true,
-                scrollDirection: widget.scrollDirection,
-                crossAxisCount: 1,
-                crossAxisSpacing: DmConst.masterHorizontalPad,
-                mainAxisSpacing: DmConst.masterHorizontalPad,
-                childAspectRatio: 337.0 / 120,
-                // 120 / 337,
-                children: List.generate(
-                  widget.products.length,
-                  (index) {
-                    Product product = widget.products.elementAt(index);
-                    return ProductItemWide(
-                        product: product, heroTag: '${widget.heroTag}', showRemoveIcon: widget.showRemoveIcon);
-                  },
-                ),
-              ),
-            )
+        onRefresh: onRefresh,
+        child: GridView.count(
+          controller: _controller,
+          primary: false,
+          shrinkWrap: true,
+          scrollDirection: widget.scrollDirection,
+          crossAxisCount: 1,
+          crossAxisSpacing: DmConst.masterHorizontalPad,
+          mainAxisSpacing: DmConst.masterHorizontalPad,
+          childAspectRatio: 337.0 / 120,
+          // 120 / 337,
+          children: List.generate(
+            widget.products.length,
+                (index) {
+              Product product = widget.products.elementAt(index);
+              return ProductItemWide(
+                  product: product, heroTag: '${widget.heroTag}', showRemoveIcon: widget.showRemoveIcon);
+            },
+          ),
+        ),
+      )
           : StaggeredGridView.countBuilder(
-              scrollDirection: widget.scrollDirection,
-              primary: false,
-              shrinkWrap: true,
-              crossAxisCount: 4,
-              itemCount: widget.products.length,
-              itemBuilder: (BuildContext context, int index) {
-                Product product = widget.products.elementAt(index);
-                //todo this is legacy class, need customer to design UI.
-                return ProductItemHigh(
-                  product: product,
-                  heroTag: '${widget.heroTag}',
-                );
-              },
-              //                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
-              staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
-              mainAxisSpacing: 15.0,
-              crossAxisSpacing: 15.0,
-            ),
+        scrollDirection: widget.scrollDirection,
+        primary: false,
+        shrinkWrap: true,
+        crossAxisCount: 4,
+        itemCount: widget.products.length,
+        itemBuilder: (BuildContext context, int index) {
+          Product product = widget.products.elementAt(index);
+          //todo this is legacy class, need customer to design UI.
+          return ProductItemHigh(
+            product: product,
+            heroTag: '${widget.heroTag}',
+          );
+        },
+        //                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
+        staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
+        mainAxisSpacing: 15.0,
+        crossAxisSpacing: 15.0,
+      ),
     );
   }
 

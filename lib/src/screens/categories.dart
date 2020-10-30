@@ -2,6 +2,7 @@ import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -52,24 +53,25 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: 1),
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
-      endDrawerEnableOpenDragGesture: true,
       drawerEnableOpenDragGesture: true,
-      body: SafeArea(
-        child: CustomScrollView(slivers: <Widget>[
-          createSliverTopBar(context),
-          createSliverSearch(context),
-          createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).categories),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Container(
-                  padding: EdgeInsets.all(DmConst.masterHorizontalPad),
-                  child: buildContent(context)),
-              ]),
-          )
-        ]),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: CustomScrollView(slivers: <Widget>[
+            createSliverTopBar(context),
+            createSliverSearch(context),
+            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).categories),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(
+                    padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+                    child: buildContent(context)),
+                ]),
+            )
+          ]),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
+        ),
       ),
     );
   }

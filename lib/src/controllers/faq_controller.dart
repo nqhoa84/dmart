@@ -7,16 +7,15 @@ import '../models/faq_category.dart';
 import '../repository/faq_repository.dart';
 
 class FaqController extends Controller {
-  List<FaqCategory> faqs = <FaqCategory>[];
-  GlobalKey<ScaffoldState> scaffoldKey;
+  List<FaqCategory> faqs;
 
   FaqController() {
     scaffoldKey = new GlobalKey<ScaffoldState>();
-    listenForFaqs();
   }
 
   void listenForFaqs({String message}) async {
     final Stream<FaqCategory> stream = await getFaqCategories();
+    if(faqs == null) faqs = [];
     stream.listen((FaqCategory _faq) {
       setState(() {
         faqs.add(_faq);
@@ -26,15 +25,13 @@ class FaqController extends Controller {
       showErrNoInternet();
     }, onDone: () {
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
+        showMsg(message);
       }
     });
   }
 
   Future<void> refreshFaqs() async {
-    faqs.clear();
+    if(faqs != null) faqs.clear();
     listenForFaqs();
   }
 }

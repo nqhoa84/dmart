@@ -4,6 +4,7 @@ import 'package:dmart/src/models/language.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:dmart/src/widgets/BottomRightMenu.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 
 import '../../buidUI.dart';
@@ -132,18 +133,23 @@ class BottomRightMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: 4),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            createSliverTopBar(context),
-            createSliverSearch(context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                BottomRightMenu(),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              createSliverTopBar(context),
+              createSliverSearch(context),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  BottomRightMenu(),
 //                SliverToBoxAdapter(child: BottomRightMenu()),
-              ]),
-            )
-          ],
+                ]),
+              )
+            ],
+          ),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
         ),
       ),
     );

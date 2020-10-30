@@ -115,9 +115,7 @@ class _BottomRightMenuState extends State<BottomRightMenu> {
         ),
         Divider(height: 1,thickness: 1, color: Colors.grey.shade400),
         ListTile(
-          onTap: () {
-            Navigator.of(context).pushNamed('/Help');
-          },
+          onTap: () => RouteGenerator.gotoHelp(context),
           leading: Icon(Icons.help_outline, color: DmConst.accentColor),
           title: Text(S.of(context).help, style: TextStyle(color: DmConst.accentColor)),
         ),

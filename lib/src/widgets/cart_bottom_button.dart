@@ -17,7 +17,7 @@ class CartBottomButton extends StatelessWidget {
     return Container(
       color: DmConst.colorFavorite.withOpacity(0.96),
 //      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
 //      decoration: BoxDecoration(
 ////                color: Theme.of(context).primaryColor,
 //          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
@@ -30,31 +30,25 @@ class CartBottomButton extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ValueListenableBuilder(
-                    valueListenable: DmState.amountInCart,
+                ValueListenableBuilder(
+                  valueListenable: DmState.amountInCart,
+                  builder: (context, value, child) {
+                  return IconWithText(
+                      title: '${DmState.amountInCart.value}',
+                      icon: UiIcons.shopping_cart,
+                      color: Colors.white,
+                      style: Theme.of(context).textTheme.headline6);
+                  },
+                ),
+                ValueListenableBuilder(
+                    valueListenable: DmState.cartsValue,
                     builder: (context, value, child) {
                     return IconWithText(
-                        title: '${DmState.amountInCart.value}',
-                        icon: UiIcons.shopping_cart,
-                        color: Colors.white,
-                        style: Theme.of(context).textTheme.headline6);
+                      title: '${DmState.cartsValue.value.toStringAsFixed(2)}',
+                      icon: UiIcons.money,
+                      color: Colors.white,
+                      style: Theme.of(context).textTheme.headline6);
                     },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8, right: 8, left: 8),
-                  child: ValueListenableBuilder(
-                      valueListenable: DmState.cartsValue,
-                      builder: (context, value, child) {
-                      return IconWithText(
-                        title: '${DmState.cartsValue.value.toStringAsFixed(2)}',
-                        icon: UiIcons.money,
-                        color: Colors.white,
-                        style: Theme.of(context).textTheme.headline6);
-                      },
-                  ),
                 ),
               ],
               crossAxisAlignment: CrossAxisAlignment.start,

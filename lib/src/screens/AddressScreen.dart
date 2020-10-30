@@ -25,25 +25,25 @@ import '../repository/user_repository.dart';
 import '../helpers/ui_icons.dart';
 
 // ignore: must_be_immutable
-class AddressWid extends StatefulWidget {
+class AddressScreen extends StatefulWidget {
   Address _address;
   final List<Province> provinces;
 
   ///This widget will handle address.
-  AddressWid({Key key, Address address, this.provinces}) : super(key: key) {
+  AddressScreen({Key key, Address address, this.provinces}) : super(key: key) {
     this._address = address != null ? address.clone() : Address();
   }
 
   @override
-  _AddressWidState createState() => _AddressWidState(this._address);
+  _AddressScreenState createState() => _AddressScreenState(this._address);
 }
 
-class _AddressWidState extends StateMVC<AddressWid> {
+class _AddressScreenState extends StateMVC<AddressScreen> {
   DeliveryAddressesController _con;
 
   var txtStyleAccent = TextStyle(color: DmConst.accentColor);
 
-  _AddressWidState(Address a) : super(DeliveryAddressesController()) {
+  _AddressScreenState(Address a) : super(DeliveryAddressesController()) {
     _con = controller;
     _con.address = a;
   }

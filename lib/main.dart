@@ -1,3 +1,4 @@
+import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
@@ -33,14 +34,11 @@ class _DmartState extends State<Dmart> {
 
   @override
   void initState() {
-    settingRepo.initSettings().whenComplete(() {
+    settingRepo.initLanguageSettings().whenComplete(() {
       setState(() {
 
       });
     });
-//    settingRepo.getCurrentLocation();
-
-
     super.initState();
   }
 
@@ -55,7 +53,7 @@ class _DmartState extends State<Dmart> {
       initialRoute: '/Splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      locale: settingRepo.setting.value.mobileLanguage.value,
+      locale: DmState.mobileLanguage.value,
 //      locale: Locale('en', ''),
       localizationsDelegates: [
         S.delegate,
@@ -71,13 +69,14 @@ class _DmartState extends State<Dmart> {
 //        backgroundColor: clrPri,
 //        dividerColor: clrPri,
           iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
-          buttonTheme: ButtonThemeData(minWidth: 25, height: 25,
+          buttonTheme: ButtonThemeData(minWidth: 60, height: 25,
               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
 //            shape: StadiumBorder(),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
-//                side: BorderSide(color: Colors.red)
+//                side: BorderSide(color: DmConst.accentColor)
               ),
+
               buttonColor: DmConst.accentColor,
               textTheme: ButtonTextTheme.primary
           ),
@@ -251,7 +250,7 @@ class _DmartState extends State<Dmart> {
                   initialRoute: '/Splash',
                   onGenerateRoute: RouteGenerator.generateRoute,
                   debugShowCheckedModeBanner: false,
-                  locale: _setting.mobileLanguage.value,
+                  locale: DmState.mobileLanguage.value,
                   localizationsDelegates: [
                     S.delegate,
                     GlobalMaterialLocalizations.delegate,

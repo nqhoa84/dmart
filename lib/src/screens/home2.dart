@@ -6,6 +6,7 @@ import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/HomeProductsListView.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -137,18 +138,23 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
         print('selected filter: $f');
       }),
       endDrawerEnableOpenDragGesture: false,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: onRefresh,
-          child: CustomScrollView(slivers: <Widget>[
-            createSliverTopBar(context),
-            createSliverSearch(context),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                _buildContent(context)
-              ]),
-            )
-          ]),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: CustomScrollView(slivers: <Widget>[
+              createSliverTopBar(context),
+              createSliverSearch(context),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  _buildContent(context)
+                ]),
+              )
+            ]),
+          ),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
         ),
       ),
     );

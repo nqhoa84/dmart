@@ -33,6 +33,36 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Processing`
   String get processing {
     return Intl.message(
@@ -198,6 +228,86 @@ class S {
     return Intl.message(
       'Social network',
       name: 'socialNetwork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whatapp may not be installed yet.`
+  String get errorOpenWhatapp {
+    return Intl.message(
+      'Whatapp may not be installed yet.',
+      name: 'errorOpenWhatapp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wechat may not be installed yet.`
+  String get errorOpenWechat {
+    return Intl.message(
+      'Wechat may not be installed yet.',
+      name: 'errorOpenWechat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Viber may not be installed yet.`
+  String get errorOpenViber {
+    return Intl.message(
+      'Viber may not be installed yet.',
+      name: 'errorOpenViber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instagram may not be installed yet.`
+  String get errorOpenInstagram {
+    return Intl.message(
+      'Instagram may not be installed yet.',
+      name: 'errorOpenInstagram',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Telegram may not be installed yet.`
+  String get errorOpenTelegram {
+    return Intl.message(
+      'Telegram may not be installed yet.',
+      name: 'errorOpenTelegram',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Facebook may not be installed yet.`
+  String get errorOpenFb {
+    return Intl.message(
+      'Facebook may not be installed yet.',
+      name: 'errorOpenFb',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Facebook Messenger may not be installed yet.`
+  String get errorOpenFbMess {
+    return Intl.message(
+      'Facebook Messenger may not be installed yet.',
+      name: 'errorOpenFbMess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Line may not be installed yet.`
+  String get errorOpenLine {
+    return Intl.message(
+      'Line may not be installed yet.',
+      name: 'errorOpenLine',
       desc: '',
       args: [],
     );
@@ -568,6 +678,16 @@ class S {
     return Intl.message(
       'Discount',
       name: 'discount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount voucher`
+  String get discountVoucher {
+    return Intl.message(
+      'Discount voucher',
+      name: 'discountVoucher',
       desc: '',
       args: [],
     );
@@ -1368,6 +1488,16 @@ class S {
     return Intl.message(
       'Help & Supports',
       name: 'helpAndSupports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no Faq now. We will update soon. Stay tuned.`
+  String get faqEmpty {
+    return Intl.message(
+      'There is no Faq now. We will update soon. Stay tuned.',
+      name: 'faqEmpty',
       desc: '',
       args: [],
     );
@@ -2453,6 +2583,26 @@ class S {
     );
   }
 
+  /// `Use this address`
+  String get useThisAddr {
+    return Intl.message(
+      'Use this address',
+      name: 'useThisAddr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select delivery address`
+  String get selectDeliveryAddress {
+    return Intl.message(
+      'Please select delivery address',
+      name: 'selectDeliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add`
   String get add {
     return Intl.message(
@@ -2508,26 +2658,6 @@ class S {
     return Intl.message(
       'Default delivery address',
       name: 'defaultDeliveryAddress',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Yes`
-  String get yes {
-    return Intl.message(
-      'Yes',
-      name: 'yes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No`
-  String get no {
-    return Intl.message(
-      'No',
-      name: 'no',
       desc: '',
       args: [],
     );
@@ -2878,6 +3008,16 @@ class S {
     return Intl.message(
       'Unpaid',
       name: 'unpaid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap back again to quit`
+  String get tapBackAgainToQuit {
+    return Intl.message(
+      'Tap back again to quit',
+      name: 'tapBackAgainToQuit',
       desc: '',
       args: [],
     );

@@ -61,7 +61,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
 //    int pre = proCon.favorites != null ? proCon.favorites.length : 0;
 //    proCon.listenForFavorites(nextPage: true);
 //    canLoadMore = proCon.favorites != null

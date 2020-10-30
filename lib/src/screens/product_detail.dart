@@ -81,21 +81,22 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   Widget _createPriceForBottomBar(BuildContext context) {
     if (_con.product == null) return Container();
     if (_con.product.isPromotion) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text('${_con.product.getDisplayPromotionPrice}', style: TextStyle(color: DmConst.textColorPromotionPrice)),
           Text(
             '${_con.product.getDisplayOriginalPrice}',
             style: TextStyle(
                 decoration: TextDecoration.lineThrough,
                 decorationThickness: 2.0,
                 decorationColor: DmConst.textColorPromotionPrice),
-          )
+          ),
+          SizedBox(width: 20),
+          Text('${_con.product.getDisplayPromotionPrice}', style: TextStyle(color: DmConst.textColorPromotionPrice)),
         ],
       );
     } else {
-      return Column(
+      return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[Text('${_con.product.getDisplayOriginalPrice}')],
       );
@@ -106,81 +107,6 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      drawer: DrawerWidget(),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: DmConst.bgrColorBottomBarProductDetail.withOpacity(0.9),
-          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(color: DmConst.productShadowColor.withOpacity(0.7), blurRadius: 5, offset: Offset(0, -2)),
-          ],
-        ),
-        child: SizedBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      '${_con.product?.name}',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                  ),
-                  _createPriceForBottomBar(context),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FloatingActionButton(
-                    child: createFavoriteIcon(context, isFav),
-                    backgroundColor: DmConst.accentColor,
-                    onPressed: _onPressOnFav,
-                  ),
-                  Expanded(child: SizedBox(width: 10)),
-                  Expanded(
-                    child: amountInCart > 0
-                        ? Row( 
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              IconButton(
-                                  onPressed: _onPressIconDecrement,
-                                  iconSize: 40,
-                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                  icon: Icon(Icons.remove_circle_outline)),
-                              ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minWidth: 20
-                                  ),
-                                  child: Text('${amountInCart}',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.subtitle1)),
-                              IconButton(
-                                  onPressed: _onPressIconIncrement,
-                                  iconSize: 40,
-                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                  icon: Icon(Icons.add_circle_outline))
-                            ],
-                          )
-                        : FlatButton(
-                            onPressed: _onPressAdd2Cart,
-                            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                            color: DmConst.accentColor,
-                            shape: StadiumBorder(),
-                            child: Text(S.of(context).addToCart, textAlign: TextAlign.center),
-                          ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
       body: SafeArea(child: _buildContent(context)),
     );
   }
@@ -271,265 +197,219 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   ExpandableController _controller;
 
   Widget _createInfoWidget(BuildContext context) {
-
-    var them =  ExpandableThemeData(
+    var them = ExpandableThemeData(
         headerAlignment: ExpandablePanelHeaderAlignment.center,
         tapBodyToExpand: true,
         tapBodyToCollapse: false,
         tapHeaderToExpand: true,
         hasIcon: true,
         iconColor: DmConst.accentColor,
-        useInkWell: true
-    );
+        useInkWell: true);
     TextStyle ts = Theme.of(context).textTheme.bodyText2;
 
     return ExpandableNotifier(
         child: ScrollOnExpand(
-          scrollOnExpand: false,
-          scrollOnCollapse: false,
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: <Widget>[
-                //Product information panel
-                ExpandablePanel(
-                  controller: _controller,
-                  theme: them,
-                  header: Container(
-                    decoration: BoxDecoration(
-                      border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))
-                    ),
-                      child: _createNameRow(context)),
-                  expanded: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: Table(
-//                      defaultVerticalAlignment: TableCellVerticalAlignment.fill,
-                        columnWidths: {0: FlexColumnWidth(1),
-                          1: FlexColumnWidth(3),
-                        },
-                      children: [
-                      TableRow( children: [
-                        Text(S.of(context).category, style: ts),
-                        Text(_con.product.name, style: ts),
-                      ]),
-                        TableRow( children: [
-                          Text(S.of(context).brand, style: ts),
-                          Text('${_con.product.brand?.name}', style: ts),
-                        ]),
-                        TableRow( children: [
-                          Text(S.of(context).available, style: ts),
-                          Text('${_con.product.itemsAvailable??''}', style: ts),
-                        ]),
-                        TableRow( children: [
-                          Text(S.of(context).unit, style: ts),
-                          Text('${_con.product.unit??''}', style: ts),
-                        ]),
-                        TableRow( children: [
-                          Text(S.of(context).description, style: ts),
-                          Helper.applyHtml(context, _con.product.description??''),
-//                          Text('${_con.product.description??''}', style: ts),
-                        ])
-                    ],),
-                  ),
-                ),
-                SizedBox(height: 10),
-                //related product panel
-                ExpandablePanel(
-                  theme: them,
-                  header: TitleDivider(title: S.of(context).relatedProducts),
-                  expanded: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: _con.relatedProducts != null
-                      ? ProductGridView(
-                        products: _con.relatedProducts, heroTag: 'related_',)
-                    : Container(),
-                  ),
+      scrollOnExpand: false,
+      scrollOnCollapse: false,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: <Widget>[
+            //Product information panel
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+//                            border: Border.all(color: DmConst.accentColor)
+                          border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
+                      child: _createPriceForBottomBar(context)),
                 ),
               ],
             ),
-          ),
-        ));
-  }
-
-
-
-  Widget _createInfoSpace(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        //Product name and options.
-        Offstage(
-          offstage: 0 != _tabIndex,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(2),
-                child: _createNameRow(context),
+            ExpandablePanel(
+              controller: _controller,
+              theme: them,
+              header: Container(
+                decoration: BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
+                child: _createNameAddCartRow(context),
               ),
-              Divider(color: DmConst.accentColor, indent: 10, endIndent: 10, height: 2),
-              //Options label
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                child: ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                  leading: Icon(
-                    Icons.add_circle,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  title: Text(
-                    S.of(context).options,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  subtitle: Text(
-                    'select_options_to_add_them_on_the_product',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-              ),
-              //Options and price from DB.
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _con.product.optionGroups == null
-                        ? CircularLoadingWidget(height: 100)
-                        : ListView.separated(
-                            padding: EdgeInsets.all(0),
-                            itemBuilder: (context, optionGroupIndex) {
-                              var optionGroup = _con.product.optionGroups.elementAt(optionGroupIndex);
-                              return Wrap(
-                                children: <Widget>[
-                                  ListTile(
-                                    dense: true,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                    leading: Icon(
-                                      Icons.add_circle_outline,
-                                      color: Theme.of(context).hintColor,
-                                    ),
-                                    title: Text(
-                                      optionGroup.name,
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ),
-                                  ListView.separated(
-                                    padding: EdgeInsets.all(0),
-                                    itemBuilder: (context, optionIndex) {
-                                      return OptionItemWidget(
-                                        option: _con.product.options
-                                            .where((option) => option.optionGroupId == optionGroup.id)
-                                            .elementAt(optionIndex),
-//                                        onChanged: _con.calculateTotal,
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return SizedBox(height: 20);
-                                    },
-                                    itemCount: _con.product.options
-                                        .where((option) => option.optionGroupId == optionGroup.id)
-                                        .length,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                  ),
-                                ],
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(height: 10);
-                            },
-                            itemCount: _con.product.optionGroups.length,
-                            primary: false,
-                            shrinkWrap: true,
-                          ),
-                    SizedBox(height: 10),
-                    //SelectColorWidget()
+              expanded: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                child: Table(
+//                      defaultVerticalAlignment: TableCellVerticalAlignment.fill,
+                  columnWidths: {
+                    0: FlexColumnWidth(1),
+                    1: FlexColumnWidth(3),
+                  },
+                  children: [
+                    TableRow(children: [
+                      Text(S.of(context).category, style: ts),
+                      Text(_con.product.name, style: ts),
+                    ]),
+                    TableRow(children: [
+                      Text(S.of(context).brand, style: ts),
+                      Text('${_con.product.brand?.name}', style: ts),
+                    ]),
+                    TableRow(children: [
+                      Text(S.of(context).available, style: ts),
+                      Text('${_con.product.itemsAvailable ?? ''}', style: ts),
+                    ]),
+                    TableRow(children: [
+                      Text(S.of(context).unit, style: ts),
+                      Text('${_con.product.unit ?? ''}', style: ts),
+                    ]),
+                    TableRow(children: [
+                      Text(S.of(context).description, style: ts),
+                      Helper.applyHtml(context, _con.product.description ?? ''),
+//                          Text('${_con.product.description??''}', style: ts),
+                    ])
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        //Product details
-        Offstage(
-          offstage: 1 != _tabIndex,
-          child: Column(
-            children: <Widget>[
-              ProductDetailsTabWidget(
-                product: _con.product,
-              )
-            ],
-          ),
-        ),
+            ),
+            SizedBox(height: 10),
 
-        Offstage(
-          offstage: 2 != _tabIndex,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                  leading: Icon(
-                    UiIcons.chat_1,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  title: Text(
-                    S.of(context).productReviews,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-              ),
-              ReviewsListWidget(
-                product: _con.product,
-              )
-            ],
-          ),
-        )
-      ]),
-    );
+            //related product panel
+            TitleDivider(title: S.of(context).relatedProducts),
+            Padding(
+              padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+              child: _con.relatedProducts != null
+                  ? ProductGridView(
+                      products: _con.relatedProducts,
+                      heroTag: 'related_',
+                    )
+                  : Container(),
+            ),
+//                ExpandablePanel(
+//                  theme: them,
+//                  header: TitleDivider(title: S.of(context).relatedProducts),
+//                  expanded: Padding(
+//                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+//                    child: _con.relatedProducts != null
+//                      ? ProductGridView(
+//                        products: _con.relatedProducts, heroTag: 'related_',)
+//                    : Container(),
+//                  ),
+//                ),
+          ],
+        ),
+      ),
+    ));
   }
 
   Row _createNameRow(BuildContext context) {
     return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  _con.product.getTagAssetImage() != null
-                  ? IconButton(padding: EdgeInsets.all(5),
-                      onPressed: null,
-                      icon: Image.asset(_con.product.getTagAssetImage()))
-                  : Container(width: 10),
-                  Expanded(
-                    child: Align( alignment: Alignment.centerLeft,
-                      child: Text(
-                        _con.product.name,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        _con.product.getTagAssetImage() != null
+            ? IconButton(
+                padding: EdgeInsets.all(5), onPressed: null, icon: Image.asset(_con.product.getTagAssetImage()))
+            : Container(width: 10),
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              _con.product.name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+        ),
+        Chip(
+          padding: EdgeInsets.all(0),
+          label: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(_con.product.rate,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor)),
+              Icon(
+                Icons.star_border,
+                color: DmConst.accentColor,
+                size: 16,
+              ),
+            ],
+          ),
+          shape: StadiumBorder(),
+        ),
+      ],
+    );
+  }
+
+  Widget _createNameAddCartRow(BuildContext context) {
+    Widget addToCart2() {
+      if (amountInCart > 0) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            InkWell(
+              onTap: _onPressIconDecrement,
+              child: Container(
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: DmConst.accentColor, width: 2),
+                    shape: BoxShape.rectangle,
                   ),
-                  Chip(
-                    padding: EdgeInsets.all(0),
-                    label: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(_con.product.rate,
-                            style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor)),
-                        Icon(
-                          Icons.star_border,
-                          color: DmConst.accentColor,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                    shape: StadiumBorder(),
+                  child: Center(child: Icon(Icons.remove))),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text('${amountInCart}'),
+            ),
+            InkWell(
+              onTap: _onPressIconIncrement,
+              child: Container(
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: DmConst.accentColor, width: 2),
+                    shape: BoxShape.rectangle,
                   ),
-                ],
-              );
+                  child: Center(child: Icon(Icons.add))),
+            )
+          ],
+        );
+      } else {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 80, minHeight: 25),
+              child: FlatButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(S.of(context).add),
+                color: DmConst.accentColor,
+                onPressed: _onPressAdd2Cart,
+              ),
+            ),
+          ],
+        );
+      }
+    }
+
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _con.product.getTagAssetImage() != null
+                ? IconButton(
+                    padding: EdgeInsets.all(5), onPressed: null, icon: Image.asset(_con.product.getTagAssetImage()))
+                : Container(width: 10),
+            Expanded(
+              child: Text(
+                _con.product.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+          ],
+        ),
+        addToCart2(),
+        SizedBox(height: 8),
+      ],
+    );
   }
 
   void _onTapOnPhoto(Media media) {
@@ -548,7 +428,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     if (_con.product.medias == null || _con.product.medias.isEmpty) return Container();
     return CarouselSlider(
       options: CarouselOptions(
-        autoPlay: true,
+        autoPlay: _con.product.medias != null && _con.product.medias.length > 1,
         autoPlayInterval: Duration(seconds: 4),
         aspectRatio: 1 / 1,
         viewportFraction: 1.0,
@@ -585,16 +465,14 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   Widget _buildContent(BuildContext context) {
     return _con.product == null
         ? CircularLoadingWidget(height: 500)
-        : CustomScrollView(
-            slivers: <Widget>[
-              _createImageSpace(context),
+        : CustomScrollView(slivers: <Widget>[
+            _createImageSpace(context),
 //              _createInfoSpace(context),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                    _createInfoWidget(context),
-                      ])),
-            ]
-          );
+            SliverList(
+                delegate: SliverChildListDelegate([
+              _createInfoWidget(context),
+            ])),
+          ]);
   }
 
   void _onPressOnFav() {
@@ -604,18 +482,18 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
       setState(() {
         this.isFav = !this.isFav;
       });
-      if(isFav) {
+      if (isFav) {
         _con.addToFavorite(_con.product);
       } else {
         Favorite mark;
         DmState.favorites.forEach((element) {
-          if(element.product.id == productId) {
+          if (element.product.id == productId) {
             mark = element;
             _con.removeFromFavorite(element);
           }
         });
 
-        if(mark != null) DmState.favorites.remove(mark);
+        if (mark != null) DmState.favorites.remove(mark);
       }
     }
   }
@@ -624,10 +502,11 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     addCart(1);
   }
 
-  void _onPressIconDecrement () {
+  void _onPressIconDecrement() {
     addCart(-1);
   }
-  void _onPressIconIncrement () {
+
+  void _onPressIconIncrement() {
     addCart(1);
   }
 

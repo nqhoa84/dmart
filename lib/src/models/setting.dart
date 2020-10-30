@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class Setting {
+
   String appName = '';
   double defaultTax;
   String defaultCurrency;
@@ -19,8 +20,8 @@ class Setting {
   String scaffoldDarkColor;
   String scaffoldColor;
   String googleMapsKey;
-  ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
-  String appVersion = '';
+//  ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
+  String appVersion = '0.2.0';
   bool enableVersion = true;
 
   Setting();
@@ -37,7 +38,7 @@ class Setting {
       scaffoldDarkColor = jsonMap['scaffold_dark_color'] ?? '';
       scaffoldColor = jsonMap['scaffold_color'] ?? '';
       googleMapsKey = jsonMap['google_maps_key'] ?? null;
-      mobileLanguage.value = Locale(jsonMap['mobile_language'] ?? "en", '');
+//      mobileLanguage.value = Locale(jsonMap['mobile_language'] ?? "en", '');
       appVersion = jsonMap['app_version'] ?? '';
       distanceUnit = jsonMap['distance_unit'] ?? 'km';
       enableVersion = jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0' ? false : true;
@@ -68,7 +69,7 @@ class Setting {
     map["enable_paypal"] = payPalEnabled;
     map["enable_stripe"] = stripeEnabled;
     map["enable_razorpay"] = razorPayEnabled;
-    map["mobile_language"] = mobileLanguage.value.languageCode;
+//    map["mobile_language"] = mobileLanguage.value.languageCode;
     return map;
   }
 }

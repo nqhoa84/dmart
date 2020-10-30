@@ -49,19 +49,19 @@ with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  void _onScroll() {
+  Future<void> _onScroll() async {
     if (!_scrollCon.hasClients || isLoading || !canLoadMore) return;
     final thresholdReached = _scrollCon.position.extentAfter < _endReachedThreshold;
     if (thresholdReached) {
       isLoading = true;
-      loadMore();
+      await loadMore();
       isLoading = false;
     }
   }
 
   String getTitle(BuildContext context);
 
-  void loadMore();
+  void loadMore() ;
 
   Future<void> _refresh() async {
     isLoading = true;

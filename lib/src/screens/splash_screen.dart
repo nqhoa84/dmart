@@ -32,7 +32,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   void initState() {
     super.initState();
 //    loadData();
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(Duration(seconds: 1), () async {
       userRepo.getCurrentUser().whenComplete(() {
         _userLoaded = true;
         if (_userLoaded && _settingLoaded) {
@@ -40,29 +40,22 @@ class SplashScreenState extends StateMVC<SplashScreen> {
         }
       });
 
-      settingRepo.listenOrderSetting().then((value) {
-        DmState.orderSetting = value?? OrderSetting();
-        print('Order Setting: $value');
-      }).whenComplete(() {
+      settingRepo.initSettings().whenComplete(() {
         _settingLoaded = true;
         if(_userLoaded && _settingLoaded) {
           RouteGenerator.gotoHome(context);
         }
       });
-//      DmState.orderSetting = await settingRepo.listenOrderSetting();
-//      print('Order Setting: ${DmState.orderSetting}');
-//      _settingLoaded = true;
-//      if (_userLoaded && _settingLoaded) {
-//        RouteGenerator.gotoHome(context);
-//      }
+
     });
   }
 
   void onError(FlutterErrorDetails errDetail) {
+    print(errDetail);
     _con.showErr(S.of(context).verifyYourInternetConnection);
   }
 
-  void loadData() {
+  void _loadData() {
     _con.progress.addListener(() {
       double progress = 0;
       _con.progress.value.values.forEach((_progress) {

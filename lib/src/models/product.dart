@@ -1,4 +1,5 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/src/models/unit.dart';
 
 import '../../utils.dart';
 import '../models/category.dart';
@@ -18,7 +19,7 @@ class Product extends IdNameObj{
   String get description => DmState.isKhmer ? descriptionKh : descriptionEn;
   String ingredients;
   String capacity;
-  String unit;
+  Unit unit;
   double packageItemsCount;
   String itemsAvailable;
   bool featured;
@@ -64,7 +65,6 @@ class Product extends IdNameObj{
       price = 0.0;
       discountPrice = 0.0;
       capacity = '';
-      unit = '';
       packageItemsCount = 0;
       featured = false;
       deliverable = false;
@@ -93,7 +93,11 @@ class Product extends IdNameObj{
     descriptionEn = jsonMap['description_en'] ?? '';
     descriptionKh = jsonMap['description_kh'] ?? '';
     capacity = toStringVal(jsonMap['capacity']);
-    unit = toStringVal(jsonMap['unit']);
+    try {
+      unit = jsonMap['unit'] != null ? Unit.fromJSON(jsonMap['unit']) : null;
+    } on Exception catch (e) {
+//      print(e);
+    }
     packageItemsCount = toDouble(jsonMap['package_items_count'], errorValue: 0.0);
     featured = jsonMap['featured'] ?? false;
     deliverable = jsonMap['deliverable'] ?? false;
@@ -168,9 +172,10 @@ class Product extends IdNameObj{
   int get hashCode => super.hashCode;
 
   String get getDisplayOriginalPrice =>
-      '$currency ${price.toStringAsFixed(2)} / $unit';
+      '$currency ${price.toStringAsFixed(2)} ${unit != null ? '/ $unit' : ''}';
+
   String get getDisplayPromotionPrice => discountPrice != null
-      ? '$currency ${discountPrice.toStringAsFixed(2)} / $unit'
+      ? '$currency ${discountPrice.toStringAsFixed(2)} ${unit != null ? '/ $unit' : ''}'
       : '';
 
   String getTagAssetImage() {

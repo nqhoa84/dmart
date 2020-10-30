@@ -58,49 +58,52 @@ class _OrdersScreenState extends StateMVC<OrdersScreen> {
 //        appBar: createAppBar(context, _con.scaffoldKey),
         bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
         drawer: DrawerWidget(),
-        body: SafeArea(
-          child: RefreshIndicator(
-              onRefresh: _con.refreshOrders,
-              child: CustomScrollView(
-                slivers: [
-                  createSliverTopBar(context),
-                  createSliverSearch(context),
-                  createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myOrders),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      ExpansionPanelList(
-                        expansionCallback: (int idx, bool expanded) {
-                          setState(() {
-                            if (idx == 0)
-                              expPending = !expPending;
-                            else if (idx == 1)
-                              expConfirm = !expConfirm;
-                            else if (idx == 2) expHistory = !expHistory;
-                          });
-                        },
+        body: WillPopScope(
+          onWillPop: () async => false,
+          child: SafeArea(
+            child: RefreshIndicator(
+                onRefresh: _con.refreshOrders,
+                child: CustomScrollView(
+                  slivers: [
+                    createSliverTopBar(context),
+                    createSliverSearch(context),
+                    createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myOrders),
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        ExpansionPanelList(
+                          expansionCallback: (int idx, bool expanded) {
+                            setState(() {
+                              if (idx == 0)
+                                expPending = !expPending;
+                              else if (idx == 1)
+                                expConfirm = !expConfirm;
+                              else if (idx == 2) expHistory = !expHistory;
+                            });
+                          },
 //                      expandedHeaderPadding: EdgeInsets.all(0),
-                        animationDuration: Duration(seconds: 1),
-                        children: [
+                          animationDuration: Duration(seconds: 1),
+                          children: [
 //                          _buildPendingOrders(),
-                          _buildOrders(_con.pendingOrders, S.of(context).pendingOrders,
-                              S.of(context).yourPendingOrdersEmpty, expPending),
+                            _buildOrders(_con.pendingOrders, S.of(context).pendingOrders,
+                                S.of(context).yourPendingOrdersEmpty, expPending),
 //                          _buildConfirmOrders(),
-                          _buildOrders(_con.confirmedOrders, S.of(context).confirmedOrders,
-                              S.of(context).yourConfirmedOrdersEmpty, expConfirm),
+                            _buildOrders(_con.confirmedOrders, S.of(context).confirmedOrders,
+                                S.of(context).yourConfirmedOrdersEmpty, expConfirm),
 //                          _buildHistory(),
-                          _buildOrders(_con.historyOrders, S.of(context).history,
-                              S.of(context).yourOrdersEmpty, expHistory),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-                        child: TitleDivider(title: S.of(context).boughtProducts),
-                      ),
-                      buildBoughPro(),
-                    ]),
-                  )
-                ],
-              )),
+                            _buildOrders(_con.historyOrders, S.of(context).history,
+                                S.of(context).yourOrdersEmpty, expHistory),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                          child: TitleDivider(title: S.of(context).boughtProducts),
+                        ),
+                        buildBoughPro(),
+                      ]),
+                    )
+                  ],
+                )),
+          ),
         ));
   }
 

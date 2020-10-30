@@ -6,6 +6,7 @@ class IconWithText extends StatelessWidget {
   final IconData icon;
   final Color color;
   final TextStyle style;
+//  final EdgeInsets padding;
 
   const IconWithText({Key key, this.title = '', this.icon = Icons.info_outline,
     this.color = DmConst.accentColor, this.style = const TextStyle(color: DmConst.accentColor)}) : super(key: key);

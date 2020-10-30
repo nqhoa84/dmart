@@ -64,7 +64,7 @@ class _PromotionScreenState extends ProductStateMVC<PromotionScreen> {
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
     int pre = proCon.promotionProducts != null ? proCon.promotionProducts.length : 0;
     proCon.listenForPromoProducts(promo.id, nextPage: true);
     canLoadMore = proCon.promotionProducts != null && proCon.promotionProducts.length > pre;

@@ -78,7 +78,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
 //    int pre = proCon.newArrivalProducts != null ? proCon.newArrivalProducts.length : 0;
 //    proCon.listenForNewArrivals(nextPage: true);
 //    canLoadMore = proCon.newArrivalProducts != null

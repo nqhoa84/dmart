@@ -127,7 +127,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                       color: Theme.of(context).focusColor,
                       borderRadius: BorderRadius.circular(24)),
                   child: Text(
-                    widget.product.capacity + " " + widget.product.unit,
+                    '${widget.product.capacity} ${widget.product.unit}',
                     style: Theme.of(context).textTheme.caption.merge(
                         TextStyle(color: Theme.of(context).primaryColor)),
                   )),

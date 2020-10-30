@@ -139,7 +139,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           _createSummaryRow(context, S.of(context).deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).discount, getDisplayMoney(_con.order.voucherDiscount)),
+          _createSummaryRow(context, S.of(context).discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           _createSummaryRow(context, S.of(context).total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),

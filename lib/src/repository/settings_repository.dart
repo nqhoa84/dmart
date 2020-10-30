@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/language.dart';
 import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/utils.dart';
@@ -22,36 +23,35 @@ final navigatorKey = GlobalKey<NavigatorState>();
 LocationData locationData;
 
 
-Future<Setting> initSettings() async {
-  Setting _setting;
+Future<bool> initSettings() async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}settings';
   print('initSettings $url');
-  final response = await http.get(url, headers: createHeadersRepo());
+//  final response = await http.get(url, headers: createHeadersRepo());
+  final response = await http.get(url);
 //  print('response.body ${response.body}');
   if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
     if (json.decode(response.body)['data'] != null) {
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('settings', json.encode(json.decode(response.body)['data']));
-      _setting = Setting.fromJSON(json.decode(response.body)['data']);
-      print('language from share = [${prefs.get('language')}]');
-      if (prefs.containsKey('language')) {
-        _setting.mobileLanguage = new ValueNotifier(Locale(prefs.get('language'), ''));
-      }
-      setting.value = _setting;
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      setting.notifyListeners();
+      DmState.orderSetting = OrderSetting.fromJSON(json.decode(response.body)['data']);
+//
+//      setting.value = _setting;
+//      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+//      setting.notifyListeners();
     }
+    return true;
   } else {
     print('Cannot load settings. response.statusCode != 200');
+    return false;
   }
-//  try {
-//
-//  } catch (e, trace) {
-//    print(CustomTrace(StackTrace.current, message: e).toString());
-//    return Setting.fromJSON({});
-//  }
-  return setting.value;
+}
+
+Future<bool> initLanguageSettings() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print('language from share = [${prefs.get('language')}]');
+  if (prefs.containsKey('language')) {
+    DmState.mobileLanguage.value = Locale(prefs.get('language'), '');
+//    DmState.mobileLanguage.notifyListeners();
+  }
+  return true;
 }
 
 Future<OrderSetting> listenOrderSetting() async {
@@ -121,7 +121,7 @@ Future<void> setDefaultLanguage(String languageCode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', languageCode);
 
-    setting.value.mobileLanguage.value = Locale(languageCode, '');
+    DmState.mobileLanguage.value = Locale(languageCode, '');
   }
 }
 

@@ -62,7 +62,7 @@ class _Special4UScreenState extends ProductStateMVC<Special4UScreen> {
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
     print('loadMore on Spec4U');
     int pre = proCon.special4UProducts != null ? proCon.special4UProducts.length : 0;
     proCon.listenForSpecial4U(nextPage: true);

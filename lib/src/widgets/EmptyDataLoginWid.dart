@@ -6,8 +6,8 @@ import '../../generated/l10n.dart';
 import '../repository/user_repository.dart' as userRepo;
 
 class EmptyDataLoginWid extends StatefulWidget {
-  IconData iconData;
-  String message;
+  final IconData iconData;
+  final String message;
   EmptyDataLoginWid({Key key,
     this.iconData = Icons.info_outline,
     this.message = ''

@@ -3,6 +3,7 @@ import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -93,17 +94,22 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: 3),
       drawer: DrawerWidget(),
       drawerEnableOpenDragGesture: true,
-      body: SafeArea(
-        child: CustomScrollView(slivers: <Widget>[
-          createSliverTopBar(context),
-          createSliverSearch(context),
-          createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).notifications),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              buildContent(context),
-            ]),
-          )
-        ]),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: CustomScrollView(slivers: <Widget>[
+            createSliverTopBar(context),
+            createSliverSearch(context),
+            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).notifications),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                buildContent(context),
+              ]),
+            )
+          ]),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
+        ),
       ),
     );
   }

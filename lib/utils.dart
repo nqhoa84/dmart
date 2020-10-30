@@ -5,6 +5,7 @@ import 'package:dmart/src/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import './src/repository/user_repository.dart' as userRepo;
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
 
 /// Parse a object to double. if error return the [errorValue] data.
@@ -145,4 +146,21 @@ class DmUtils {
     return value == null || value.isEmpty;
   }
 
+  static Future<bool> launchUrl(
+      {@required String webUrl, String deepLinkAn, String deepLinkIos}) async {
+    String deep = Platform.isIOS ? deepLinkIos : deepLinkAn;
+    try {
+      bool ok = await launcher.launch(deep, forceSafariVC: false);
+      if (!ok) {
+        if (await launcher.canLaunch(webUrl)) {
+          return await launcher.launch(webUrl, forceSafariVC: false);
+        } else {
+          return false;
+        }
+      }
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
 }

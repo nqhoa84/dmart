@@ -195,17 +195,35 @@ class ProductController extends ControllerMVC {
   int _cateProductsPageIdx = 1;
   ///if [nextPage] is true, this will load the next page, store on [categoriesProducts] and move pageIndex one step up.
   ///if [nextPage] is FALSE, this will refresh the [categoriesProducts].
-  void listenForProductsByCategory({int id, String message,bool nextPage = false}) async {
+  ///if [id] is less then 0, then load all products
+  Future<bool> listenForProductsByCategory({int id, String message,bool nextPage = false}) async {
     _cateProductsPageIdx = nextPage == false ? 1 : _cateProductsPageIdx + 1;
-    final Stream<Product> stream = await getProductsByCategory(id, _cateProductsPageIdx);
-    stream.listen((Product _product) {
-      setState(() {
-        if(_product.isValid)
-          categoriesProducts.add(_product);
-      });
-    }, onError: (a) {
-      print(a);
+    final List<Product> ps = await getProductsByCategory2(id, _cateProductsPageIdx);
+    setState(() {
+      ps.forEach((element) {categoriesProducts.add(element);});
     });
+    return true;
+//    if(id > 0) {
+//      final Stream<Product> stream = await getProductsByCategory(id, _cateProductsPageIdx);
+//      stream.listen((Product _product) {
+//        setState(() {
+//          if (_product.isValid)
+//            categoriesProducts.add(_product);
+//        });
+//      }, onError: (a) {
+//        print(a);
+//      });
+//    } else {
+//      final Stream<Product> stream = await getProducts(page: _cateProductsPageIdx);
+//      stream.listen((Product _product) {
+//        setState(() {
+//          if (_product.isValid)
+//            categoriesProducts.add(_product);
+//        });
+//      }, onError: (a) {
+//        print(a);
+//      });
+//    }
   }
 
   ///Listen for all carts from server.

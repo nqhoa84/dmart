@@ -100,7 +100,7 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           OrderSummaryRow(S.of(context).deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).discount, getDisplayMoney(_con.order.voucherDiscount)),
+          OrderSummaryRow(S.of(context).discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
           OrderSummaryRow(S.of(context).total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),

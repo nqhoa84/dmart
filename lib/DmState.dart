@@ -8,14 +8,17 @@ import 'dart:math' as math;
 import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 
 class DmState {
+  static ValueNotifier<Locale> mobileLanguage = ValueNotifier(Locale(Language.english.code));
   static bool get isKhmer {
-    return settingRepo.setting.value.mobileLanguage.value.languageCode != Language.english.code;
+    return  mobileLanguage.value.languageCode != Language.english.code;
   }
   static List<String> recentSearches;
   static int bottomBarSelectedIndex = 0;
   static ValueNotifier<int> amountInCart = ValueNotifier(0);
   static ValueNotifier<double> cartsValue = ValueNotifier(0.0);
   static List<Cart> carts = [];
+
+  static List<Favorite> favorites = [];
 
   static OrderSetting orderSetting = OrderSetting();
 
@@ -74,7 +77,6 @@ class DmState {
     return re;
   }
 
-  static List<Favorite> favorites = [];
   static void refreshFav({List<Favorite> fav}) {
     favorites.clear();
     if(fav != null) favorites.addAll(fav);

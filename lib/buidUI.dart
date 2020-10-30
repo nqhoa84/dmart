@@ -448,3 +448,12 @@ InputDecoration buildInputDecoration(BuildContext context, String hintText) {
     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
   );
 }
+
+Container createEmptyContainer({String imageUrl}) {
+  return Container(decoration: BoxDecoration(
+      image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover
+      )
+  ));
+}

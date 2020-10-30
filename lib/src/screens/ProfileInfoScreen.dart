@@ -1,7 +1,5 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/controllers/delivery_addresses_controller.dart';
-import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/screens/addressesScreen.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
@@ -17,13 +15,7 @@ import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../../utils.dart';
 import '../controllers/settings_controller.dart';
-import '../widgets/CircularLoadingWidget.dart';
-import '../widgets/PaymentSettingsDialog.dart';
-import '../widgets/ProfileSettingsDialog.dart';
-import '../widgets/SearchBar.dart';
-import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
-import '../helpers/ui_icons.dart';
 
 class ProfileInfoScreen extends StatefulWidget {
   @override

@@ -61,9 +61,10 @@ class _BestSaleScreenState extends ProductStateMVC<BestSaleScreen> {
   }
 
   @override
-  void loadMore() {
+  Future<void> loadMore() async {
     int pre = proCon.bestSaleProducts != null ? proCon.bestSaleProducts.length : 0;
     proCon.listenForBestSaleProducts(nextPage: true);
     canLoadMore = proCon.bestSaleProducts != null && proCon.bestSaleProducts.length > pre;
+//    return void;
   }
 }

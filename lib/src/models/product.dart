@@ -1,4 +1,5 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/models/unit.dart';
 
 import '../../utils.dart';
@@ -16,6 +17,7 @@ class Product extends IdNameObj{
   double discountPrice;
   Media image;
   String descriptionEn = '', descriptionKh = '';
+
   String get description => DmState.isKhmer ? descriptionKh : descriptionEn;
   String ingredients;
   String capacity;
@@ -39,6 +41,7 @@ class Product extends IdNameObj{
 
   bool isNewArrival, isBestSale;
   double totalSale;
+  String country, code, barCode;
 
   Product();
 
@@ -95,7 +98,7 @@ class Product extends IdNameObj{
     capacity = toStringVal(jsonMap['capacity']);
     try {
       unit = jsonMap['unit'] != null ? Unit.fromJSON(jsonMap['unit']) : null;
-    } on Exception catch (e) {
+    } catch (e) {
 //      print(e);
     }
     packageItemsCount = toDouble(jsonMap['package_items_count'], errorValue: 0.0);
@@ -189,5 +192,28 @@ class Product extends IdNameObj{
       return 'assets/img/Tag_Special4u.png';
     else
       return null;
+  }
+
+  bool match(FilterCondition conditions) {
+    if(conditions.isBestSale != null && conditions.isBestSale != this.isBestSale)
+      return false;
+    if(conditions.isPromotion != null && conditions.isPromotion != this.isPromotion)
+      return false;
+    if(conditions.isNewArrival != null && conditions.isNewArrival != this.isNewArrival)
+      return false;
+
+    if(DmUtils.isNotNullEmptyList(conditions.cates)) {
+      if(!conditions.cates.contains(this.category))
+        return false;
+    }
+    if(DmUtils.isNotNullEmptyList(conditions.brands)) {
+      if(!conditions.brands.contains(this.brand))
+        return false;
+    }
+    if(DmUtils.isNotNullEmptyList(conditions.countries)) {
+      if(!conditions.countries.contains(this.country))
+        return false;
+    }
+    return true;
   }
 }

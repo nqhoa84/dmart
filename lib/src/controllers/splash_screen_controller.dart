@@ -19,7 +19,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
   SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super(scaffoldKey: scaffoldKey);
 
   @override
-  void initState() {
+  void _initState() {
     super.initState();
     firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
     configureFirebase(firebaseMessaging);
@@ -40,6 +40,11 @@ class SplashScreenController extends Controller with ChangeNotifier {
         content: Text(S.of(context).verifyYourInternetConnection),
       ));
     });
+  }
+
+  void initFireBase() {
+    firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
+    configureFirebase(firebaseMessaging);
   }
 
   void configureFirebase(FirebaseMessaging _firebaseMessaging) {
@@ -82,6 +87,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
   }
 
   Future notificationOnMessage(Map<String, dynamic> message) async {
+    print('OnMessage: $message');
     Fluttertoast.showToast(
       msg: message['notification']['title'],
       toastLength: Toast.LENGTH_LONG,

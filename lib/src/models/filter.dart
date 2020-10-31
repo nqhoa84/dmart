@@ -1,6 +1,11 @@
+import 'package:dmart/src/models/category.dart';
+
+import '../../utils.dart';
 import '../models/field.dart';
+import 'brand.dart';
 
 class Filter {
+
   bool delivery;
   bool open;
   List<Field> fields;
@@ -87,4 +92,95 @@ class Filter {
     query['searchJoin'] = 'and';
     return query;
   }
+}
+
+class FilterCondition {
+  List<Category> cates;
+  List<Brand> brands;
+  List<String> countries;
+  ///null means customer doesn't care<br/>
+  bool isPromotion;
+  ///null means customer doesn't care<br/>
+  bool isNewArrival;
+  ///null means customer doesn't care<br/>
+  bool isBestSale;
+
+  ///null means customer doesn't care<br/>
+  ///true: price from low to high, other wise false.
+  bool isPriceUp;
+  ///null means customer doesn't care<br/>
+  ///true: latest first. false: oldest first.
+  bool isLatest;
+
+  addCate(Category cat) {
+    if(this.cates == null) cates = [];
+    if(!this.cates.contains(cat))
+      this.cates.add(cat);
+  }
+
+  removeCate(Category cat) {
+    if(this.cates == null) cates = [];
+    if(this.cates.contains(cat))
+      this.cates.remove(cat);
+  }
+
+  addBrand(Brand brand) {
+    if(this.brands == null) brands = [];
+    if(!this.brands.contains(brand))
+      this.brands.add(brand);
+  }
+
+  removeBrand(Brand brand) {
+    if(this.brands == null) brands = [];
+    if(this.brands.contains(brand))
+      this.brands.remove(brand);
+  }
+
+  addCountry(String country) {
+    if(this.countries == null) countries = [];
+    if(!this.countries.contains(country))
+      this.countries.add(country);
+  }
+
+  removeCountry(String country) {
+    if(this.countries == null) countries = [];
+    if(this.countries.contains(country))
+      this.countries.remove(country);
+  }
+
+  void clear() {
+    cates = null;
+    brands = null;
+    countries = null;
+    this.isLatest = null;
+    this.isPriceUp = null;
+    this.isPromotion = null;
+    this.isNewArrival = null;
+    this.isBestSale = null;
+  }
+
+  bool get haveCondition {
+    return DmUtils.isNotNullEmptyList(cates)
+        || DmUtils.isNotNullEmptyList(brands)
+        || DmUtils.isNotNullEmptyList(countries)
+        || isLatest != null
+        || isPriceUp != null
+        || isPromotion != null
+        || isNewArrival != null
+        || isLatest != null
+        || isBestSale != null;
+  }
+
+  void copyFrom(FilterCondition filter) {
+    this.cates = filter.cates;
+    this.brands= filter.brands;
+    this.countries= filter.countries;
+    this.isLatest = filter.isLatest;
+    this.isPriceUp = filter.isPriceUp;
+    this.isPromotion= filter.isPromotion;
+    this.isNewArrival = filter.isNewArrival;
+    this.isLatest = filter.isLatest;
+    this.isBestSale = filter.isBestSale;
+  }
+
 }

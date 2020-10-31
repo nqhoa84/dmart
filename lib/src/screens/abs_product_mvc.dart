@@ -74,14 +74,16 @@ with SingleTickerProviderStateMixin
 
   Widget buildContent(BuildContext context);
 
+  Widget buildFilter(BuildContext context) {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: bottomIdx),
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
+      endDrawer: buildFilter(context),
       endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
         child: RefreshIndicator(

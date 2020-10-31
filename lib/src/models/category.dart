@@ -33,9 +33,9 @@ class Category extends NameImageObj{
 
     }
   }
+
+  @override
+  String toString() {
+    return 'Cate {id: $id, name: $name}';
+  }
 }
-
-
-
-
-

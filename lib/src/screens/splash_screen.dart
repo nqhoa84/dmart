@@ -33,6 +33,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     super.initState();
 //    loadData();
     Future.delayed(Duration(seconds: 1), () async {
+      _con.initFireBase();
+
       userRepo.getCurrentUser().whenComplete(() {
         _userLoaded = true;
         if (_userLoaded && _settingLoaded) {

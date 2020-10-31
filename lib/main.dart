@@ -70,6 +70,7 @@ class _DmartState extends State<Dmart> {
 //        dividerColor: clrPri,
           iconTheme: IconThemeData(size: 25, color: DmConst.accentColor),
           buttonTheme: ButtonThemeData(minWidth: 60, height: 25,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
 //            shape: StadiumBorder(),
               shape: RoundedRectangleBorder(

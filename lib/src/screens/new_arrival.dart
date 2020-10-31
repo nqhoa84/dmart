@@ -3,6 +3,7 @@ import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
@@ -61,9 +62,14 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
     if (proCon.newArrivalProducts.isEmpty) {
       return ProductsGridViewLoading(isList: true);
     } else {
+//      bool haveFilter = this.filter.haveCondition;
+      List<Product> ftPros = this.filter.haveCondition ?
+        doFilter(products: proCon.newArrivalProducts, conditions: this.filter)
+          : proCon.newArrivalProducts;
+
       return FadeTransition(
           opacity: this.animationOpacity,
-          child: ProductGridView(products: proCon.newArrivalProducts, heroTag: 'newArrivals'),);
+          child: ProductGridView(products: ftPros, heroTag: 'newArrivals'),);
     }
   }
 
@@ -73,5 +79,21 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
     await proCon.listenForNewArrivals(nextPage: true);
     canLoadMore = proCon.newArrivalProducts != null
         && proCon.newArrivalProducts.length > pre;
+  }
+
+  var filter = FilterCondition();
+  @override
+  Widget buildFilter(BuildContext context) {
+    return FilterWidget(products: proCon.newArrivalProducts, filter: this.filter);
+  }
+
+  List<Product> doFilter({List<Product> products, FilterCondition conditions}) {
+    List<Product> re = [];
+    products.forEach((p) {
+      if(p.match(conditions)) {
+        re.add(p);
+      }
+    });
+    return re;
   }
 }

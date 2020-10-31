@@ -25,5 +25,9 @@ class Brand extends NameImageObj{
       description = '';
       print('Error parsing data in Brand $e \n $trace');
     }
-  } 
+  }
+  @override
+  String toString() {
+    return 'Brand {id: $id, name: $name}';
+  }
 }

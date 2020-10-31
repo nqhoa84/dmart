@@ -71,19 +71,25 @@ class ProductController extends ControllerMVC {
   int _newArrivalPageIdx = 1;
   ///if [nextPage] is true, this will load the next page, store on [newArrivalProducts] and move pageIndex one step up.
   ///if [nextPage] is FALSE, this will refresh the [newArrivalProducts].
-  void listenForNewArrivals({bool nextPage = false}) async {
+  Future<bool> listenForNewArrivals({bool nextPage = false}) async {
       _newArrivalPageIdx = nextPage == false ? 1 : _newArrivalPageIdx + 1;
 
-    final Stream<Product> stream = await getNewArrivals(_newArrivalPageIdx);
-    stream.listen((Product _product) {
+      final List<Product> ps = await getNewArrivals2(_newArrivalPageIdx);
       setState(() {
-        if(_product.isValid)
-          newArrivalProducts.add(_product);
+        ps.forEach((element) {newArrivalProducts.add(element);});
       });
-//      print('new arrival, pro id =${_product.id}, name=${_product.name}');
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+      return true;
+//    final Stream<Product> stream = await getNewArrivals(_newArrivalPageIdx);
+//    stream.listen((Product _product) {
+//      setState(() {
+//        if(_product.isValid)
+//          newArrivalProducts.add(_product);
+//      });
+////      print('new arrival, pro id =${_product.id}, name=${_product.name}');
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+//    return true;
   }
 
   int _spe4UPageIdx = 1;

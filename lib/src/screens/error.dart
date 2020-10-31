@@ -51,13 +51,18 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: FlatButton(
-                  onPressed: () {
-                    RouteGenerator.gotoSplash(context);
-                  },
-                  shape: StadiumBorder(),
-                  color: DmConst.accentColor,
-                  child: Text(S.of(context).reset)),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: 20
+                ),
+                child: FlatButton(
+                    onPressed: () {
+                      RouteGenerator.gotoSplash(context);
+                    },
+                    shape: StadiumBorder(),
+                    color: DmConst.accentColor,
+                    child: Text(S.of(context).reset)),
+              ),
             ),
           ],
         ),

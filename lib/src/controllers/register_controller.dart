@@ -1,17 +1,10 @@
 import 'dart:async';
 
 import 'package:dmart/src/models/address.dart';
-import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/src/repository/user_repository.dart';
-import 'package:dmart/utils.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
-import '../../route_generator.dart';
-import '../helpers/helper.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'controller.dart';

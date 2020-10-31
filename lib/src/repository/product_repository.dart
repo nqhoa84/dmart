@@ -221,7 +221,7 @@ Future<List<Product>> getProductsByCategory2(int categoryId, int pageIdx) async 
       headers: queryParameters,
     );
 
-    print('getProductsByCategory2 ${response.body}');
+//    print('getProductsByCategory2 ${response.body}');
     dynamic js = json.decode(response.body);
     if (js["success"] != null && js["success"] == true) {
       (js['data']['data'] as List).forEach((element) {
@@ -341,6 +341,33 @@ Future<Stream<Product>> getNewArrivals(int pageIdx) async {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
   }
+}
+
+Future<List<Product>> getNewArrivals2(int pageIdx) async {
+  print('---getNewArrivals2 called in Product repository');
+  final String url = '${GlobalConfiguration().getString('api_base_url')}new_arrival';
+  print('url: $url pageIdx $pageIdx');
+  var queryParameters = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    'page': '$pageIdx',
+  };
+
+  List<Product> re = [];
+
+  try {
+    final response = await http.Client().get(url, headers: queryParameters);
+
+//    print('getNewArrivals2 ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      (js['data']['data'] as List).forEach((element) {
+        re.add(Product.fromJSON(element));
+      });
+    }
+  } catch (e, trace) {
+    print('$e \n $trace');
+  }
+  return re;
 }
 
 Future<Stream<Product>> getSpecial4U(int pageIdx) async {

@@ -1353,6 +1353,26 @@ class S {
     );
   }
 
+  /// `Price increasing`
+  String get priceIncreasing {
+    return Intl.message(
+      'Price increasing',
+      name: 'priceIncreasing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Latest date`
+  String get latestDate {
+    return Intl.message(
+      'Latest date',
+      name: 'latestDate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Checkout`
   String get checkout {
     return Intl.message(
@@ -1918,6 +1938,16 @@ class S {
     return Intl.message(
       'Province',
       name: 'province',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Country`
+  String get country {
+    return Intl.message(
+      'Country',
+      name: 'country',
       desc: '',
       args: [],
     );

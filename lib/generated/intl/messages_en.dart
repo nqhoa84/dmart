@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "processing" : MessageLookupByLibrary.simpleMessage("Processing"),
     "product" : MessageLookupByLibrary.simpleMessage("Product"),
     "productAdded2Cart" : MessageLookupByLibrary.simpleMessage("This product was added to cart"),
+    "productCode" : MessageLookupByLibrary.simpleMessage("Product code"),
     "productRemovedFromCart" : MessageLookupByLibrary.simpleMessage("The \$productName was removed from your cart."),
     "productRemovedFromFavorite" : MessageLookupByLibrary.simpleMessage("The \$productName was removed from your favorite."),
     "productReviews" : MessageLookupByLibrary.simpleMessage("Product Reviews"),

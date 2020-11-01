@@ -29,6 +29,7 @@
   "errorOpenLine": "Line may not be installed yet.",  "hotline": "ទូរសព្ទ័បន្ទាន់",
   "generalErrorMessage": "មានកំហុសកើតឡើងសូមអភ័យទោសចំពោះភាពរអាក់រអួលរបស់អ្នក។",
   "product": "ផលិតផល",
+  "productCode": "លេខកូដផលិតផល",
   "products": "ផលិតផល",
   "detail": "លម្អិត",
   "review": "ពិនិត្យឡើងវិញ",

@@ -30,6 +30,7 @@ class Product extends IdNameObj{
   Brand brand;
   Store store;
   Category category;
+  ProductType productType;
   List<Option> options;
   List<Media> medias;
   List<OptionGroup> optionGroups;
@@ -98,6 +99,7 @@ class Product extends IdNameObj{
     capacity = toStringVal(jsonMap['capacity']);
     try {
       unit = jsonMap['unit'] != null ? Unit.fromJSON(jsonMap['unit']) : null;
+      this.productType = jsonMap['type'] != null ? ProductType.fromJSON(jsonMap['unit']) : null;
     } catch (e) {
 //      print(e);
     }
@@ -112,7 +114,9 @@ class Product extends IdNameObj{
     brand = jsonMap['brand'] != null
         ? Brand.fromJSON(jsonMap['brand'])
         : new Brand();
-
+    code = toStringVal(jsonMap['code']);
+    country = toStringVal(jsonMap['country_code']);
+    barCode = toStringVal(jsonMap['barcode']);
 //    store = jsonMap['store'] != null
 //        ? Store.fromJSON(jsonMap['store'])
 //        : new Store();
@@ -216,4 +220,10 @@ class Product extends IdNameObj{
     }
     return true;
   }
+
+  String get cateName => this.category != null ? this.category.name??'' : '';
+  String get typeName => this.productType != null ? this.productType.name??'' : '';
+  String get brandName => this.brand != null ? this.brand.name??'' : '';
+  String get storeName => this.store != null ? this.store.name??'' : '';
+  String get unitName => this.unit != null ? this.unit.name??'' : '';
 }

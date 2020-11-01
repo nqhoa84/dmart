@@ -343,6 +343,16 @@ class S {
     );
   }
 
+  /// `Product code`
+  String get productCode {
+    return Intl.message(
+      'Product code',
+      name: 'productCode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Products`
   String get products {
     return Intl.message(

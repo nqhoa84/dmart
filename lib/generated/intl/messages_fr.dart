@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "processing" : MessageLookupByLibrary.simpleMessage("ដំណើរការ"),
     "product" : MessageLookupByLibrary.simpleMessage("ផលិតផល"),
     "productAdded2Cart" : MessageLookupByLibrary.simpleMessage("ផលិតផលនេះត្រូវបានបន្ថែមទៅក្នុងរទេះ"),
+    "productCode" : MessageLookupByLibrary.simpleMessage("លេខកូដផលិតផល"),
     "productRemovedFromCart" : MessageLookupByLibrary.simpleMessage("ឈ្មោះ \$ productName ត្រូវបានយកចេញពីកន្ត្រកទំនិញរបស់អ្នក"),
     "productRemovedFromFavorite" : MessageLookupByLibrary.simpleMessage("\$ productName ត្រូវបានយកចេញពីចំណូលចិត្តរបស់អ្នក"),
     "productReviews" : MessageLookupByLibrary.simpleMessage("ការពិនិត្យផលិតផល"),

@@ -19,7 +19,6 @@ class UserController extends ControllerMVC {
   GlobalKey<FormState> resetPassFormKey;
   GlobalKey<FormState> newPassFormKey;
   GlobalKey<ScaffoldState> scaffoldKey;
-  FirebaseMessaging _firebaseMessaging;
   OverlayEntry loader;
 
   Address address = new Address();
@@ -31,12 +30,7 @@ class UserController extends ControllerMVC {
     newPassFormKey = GlobalKey<FormState>();
 
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    _firebaseMessaging = FirebaseMessaging();
-    _firebaseMessaging.getToken().then((String _deviceToken) {
-      user.deviceToken = _deviceToken;
-    }).catchError((e) {
-      print('Notification not configured $e');
-    });
+
   }
 
   bool isLoginError = false;

@@ -1,3 +1,4 @@
+import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/address.dart';
 
 import '../../utils.dart';
@@ -103,7 +104,8 @@ class User extends IdNameObj{
     map["phone"] = _phone??'';
     map["name"] = name??'';
     map["password"] = password;
-    map["device_token"] = deviceToken??'';
+    // map["device_token"] = deviceToken??'';
+    map["device_token"] = DmConst.deviceToken??'';
     map["address"] = address;
     map["gender"] = gender != null?  gender.index: Gender.Others.index;
     map["birthday"] = birthday != null? toDateStr(birthday) : '';
@@ -119,6 +121,7 @@ class User extends IdNameObj{
     map["name"] = name??'';
     map["birthday"] = birthday != null? toDateStr(birthday) : '';
     map["email"] = email??'';
+    map["device_token"] = DmConst.deviceToken??'';
     return map;
   }
 
@@ -132,7 +135,6 @@ class User extends IdNameObj{
     map["gender"] = gender != null?  gender.index: Gender.Others.index;
     map["birthday"] = birthday != null? toDateTimeStr(birthday) : '';
     map["media"] = [image?.toMap()];
-
     map["token"] = apiToken;
     return map;
   }
@@ -142,6 +144,7 @@ class User extends IdNameObj{
     map["phone"] = _phone??'';
     map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
     map["password"] = password;
+    map["device_token"] = DmConst.deviceToken??'';
     return map;
   }
 

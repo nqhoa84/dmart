@@ -7,6 +7,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constant.dart';
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/credit_card.dart';
@@ -170,7 +171,8 @@ Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String pass
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({'phone': phoneWith855, 'OTP': userEnterOtp, 'password': password}),
+    body: json.encode({'phone': phoneWith855, 'OTP': userEnterOtp, 'password': password,
+      'device_token': DmConst.deviceToken??''}),
   );
   print('reset_password ${response.body}');
   dynamic js = json.decode(response.body);

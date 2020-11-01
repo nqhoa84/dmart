@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dmart/constant.dart';
+
 import '../../src/helpers/custom_trace.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +47,11 @@ class SplashScreenController extends Controller with ChangeNotifier {
   void initFireBase() {
     firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
     configureFirebase(firebaseMessaging);
+    FirebaseMessaging().getToken().then((String _deviceToken) {
+      DmConst.deviceToken = _deviceToken;
+    }).catchError((e) {
+      print('Notification not configured $e');
+    });
   }
 
   void configureFirebase(FirebaseMessaging _firebaseMessaging) {
@@ -55,8 +62,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
         onResume: notificationOnResume,
       );
     } catch (e, trace) {
-      print(trace);
-      print(CustomTrace(StackTrace.current, message: 'Error Config firebase').toString());
+      print('$e, $trace');
     }
   }
 

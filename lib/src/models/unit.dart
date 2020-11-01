@@ -5,7 +5,6 @@ import '../models/media.dart';
 
 class Unit extends IdNameObj{
   String description;
-  bool selected=false;
 
   Unit();
 
@@ -17,7 +16,7 @@ class Unit extends IdNameObj{
     } catch (e, trace) {
       id = -1;
       name = '';
-      print('Error parsing data in Brand $e \n $trace');
+      print('Error parsing data in Unit $e \n $trace');
     }
   }
 
@@ -26,3 +25,26 @@ class Unit extends IdNameObj{
     return name;
   }
 }
+
+class ProductType extends IdNameObj{
+  String description;
+  ProductType();
+
+  ProductType.fromJSON(Map<String, dynamic> jsonMap) {
+    try {
+      id = toInt(jsonMap['id']);
+      nameEn = toStringVal(jsonMap['name_en']);
+      nameKh = toStringVal(jsonMap['name_kh']);
+    } catch (e, trace) {
+      id = -1;
+      name = '';
+      print('Error parsing data in ProductType $e \n $trace');
+    }
+  }
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+

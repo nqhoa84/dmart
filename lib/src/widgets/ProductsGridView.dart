@@ -1,5 +1,6 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/widgets/ProductItemWide.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -57,6 +58,7 @@ class _ProductGridViewState extends State<ProductGridView> {
 
   @override
   Widget build(BuildContext context) {
+    if(DmUtils.isNullOrEmptyList(widget.products)) return Container();
     return Container(
       child: widget.isList == true
           ? RefreshIndicator(
@@ -71,8 +73,7 @@ class _ProductGridViewState extends State<ProductGridView> {
           mainAxisSpacing: DmConst.masterHorizontalPad,
           childAspectRatio: 337.0 / 120,
           // 120 / 337,
-          children: List.generate(
-            widget.products.length,
+          children: List.generate( widget.products.length,
                 (index) {
               Product product = widget.products.elementAt(index);
               return ProductItemWide(

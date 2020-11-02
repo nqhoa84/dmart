@@ -229,6 +229,8 @@
   "yourPendingOrdersEmpty": "You have no pending order.",
   "yourConfirmedOrdersEmpty": "You have no confirmed order.",
   "yourOrdersEmpty": "You have no order.",
+  "productListEmpty": "There is no products.",
+  "filteredProductListEmpty": "There is no products qualified with your criteria.",
   "searchResultEmpty": "Search result is empty.",
   "invalidNumber": "Not a valid number.",
   "invalidDate": "Not a valid date.",

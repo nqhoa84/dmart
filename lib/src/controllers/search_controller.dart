@@ -73,44 +73,59 @@ class SearchController extends Controller {
       saveRecentSearch();
     }
 
-    final Stream<Product> stream = await searchProducts(search, page: searchIdx);
-    stream.listen(
-      (Product _product) {
-        print('search result ${_product.toStringIdName()}');
-        if (_product.isValid) {
-          print('search result ${_product.toStringIdName()} is VALID');
-          products.add(_product);
-//        setState(() => products.add(_product));
-        }
-      },
-      onError: (a) {
-        print(a);
-      },
-      onDone: () {
-        print("_con.products 1 == ${products.length}");
-        if (onDone != null) onDone();
-      },
-    );
+    final List<Product> stream = await searchProducts2(search, page: searchIdx);
+    setState((){
+      stream.forEach((element) {
+        if(element.isValid)
+          products.add(element);
+      });
+    });
+
+    if (onDone != null) onDone();
+
+//    stream.listen(
+//      (Product _product) {
+//        print('search result ${_product.toStringIdName()}');
+//        if (_product.isValid) {
+//          print('search result ${_product.toStringIdName()} is VALID');
+//          products.add(_product);
+////        setState(() => products.add(_product));
+//        }
+//      },
+//      onError: (a) {
+//        print(a);
+//      },
+//      onDone: () {
+//        print("_con.products 1 == ${products.length}");
+//        if (onDone != null) onDone();
+//      },
+//    );
   }
 
   void listenForProducts({String search, Function() onComplete}) async {
-    final Stream<Product> stream = await searchProducts(search);
-    stream.listen(
-      (Product _product) {
-        print('search result ${_product.toStringIdName()}');
-        if (_product.isValid) {
-          print('search result ${_product.toStringIdName()} is VALID');
-          products.add(_product);
-//        setState(() => products.add(_product));
-        }
-      },
-      onError: (a) {
-        print(a);
-      },
-      onDone: () {
-        print("_con.products 1 ${products?.length}");
-        if (onComplete != null) onComplete();
-      },
-    );
+    final List<Product> stream = await searchProducts2(search);
+    setState((){
+      stream.forEach((element) {
+        if(element.isValid)
+          products.add(element);
+      });
+    });
+//    stream.listen(
+//      (Product _product) {
+//        print('search result ${_product.toStringIdName()}');
+//        if (_product.isValid) {
+//          print('search result ${_product.toStringIdName()} is VALID');
+//          products.add(_product);
+////        setState(() => products.add(_product));
+//        }
+//      },
+//      onError: (a) {
+//        print(a);
+//      },
+//      onDone: () {
+//        print("_con.products 1 ${products?.length}");
+//        if (onComplete != null) onComplete();
+//      },
+//    );
   }
 }

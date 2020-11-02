@@ -46,6 +46,7 @@ class _SearchBarState extends StateMVC<SearchBar> {
   }
 
   _onTapOnSearchIcon() {
+    print('---_SearchBarState._onTapOnSearchIcon');
     _con.search(textToSearch, onDone: (){
       print("_con.products ${_con.products?.length}");
       if(DmUtils.isNullOrEmptyList(_con.products)) {

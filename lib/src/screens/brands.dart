@@ -48,9 +48,9 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
+//      endDrawer: FilterWidget(onFilter: (Filter f) {
+//        print('selected filter: $f');
+//      }),
       endDrawerEnableOpenDragGesture: true,
       drawerEnableOpenDragGesture: true,
       body: SafeArea(

@@ -228,6 +228,8 @@
   "yourPendingOrdersEmpty": "អ្នកគ្មានការបញ្ជាទិញដែលមិនទាន់សម្រេចទេ។",
   "yourConfirmedOrdersEmpty": "អ្នកមិនមានការបញ្ជាទិញត្រឹមត្រូវទេ។",
   "yourOrdersEmpty": "អ្នកគ្មានសណ្តាប់ធ្នាប់ទេ។",
+  "productListEmpty": "មិនមានផលិតផលទេ។",
+  "filteredProductListEmpty": "មិនមានផលិតផលណាដែលមានលក្ខណៈវិនិច្ឆ័យរបស់អ្នកទេ។",
   "searchResultEmpty": "លទ្ធផលស្វែងរកគឺទទេ",
   "invalidNumber": "មិនមែនជាលេខត្រឹមត្រូវ",
   "invalidDate": "មិនមែនជាកាលបរិច្ឆេទត្រឹមត្រូវទេ",

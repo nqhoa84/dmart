@@ -18,7 +18,6 @@ import '../../src/widgets/DrawerWidget.dart';
 import 'abs_product_mvc.dart';
 
 class NewArrivalsScreen extends StatefulWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   RouteArgument routeArgument;
 
@@ -58,20 +57,23 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
   }
 
   @override
-  Widget buildContent(BuildContext context) {
-    if (proCon.newArrivalProducts.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
-    } else {
-//      bool haveFilter = this.filter.haveCondition;
-      List<Product> ftPros = this.filter.haveCondition ?
-        doFilter(products: proCon.newArrivalProducts, conditions: this.filter)
-          : proCon.newArrivalProducts;
-
-      return FadeTransition(
-          opacity: this.animationOpacity,
-          child: ProductGridView(products: ftPros, heroTag: 'newArrivals'),);
-    }
-  }
+//  Widget buildContent(BuildContext context) {
+//    if (proCon.newArrivalProducts.isEmpty) {
+//      return ProductsGridViewLoading(isList: true);
+//    } else {
+//      return FadeTransition(
+//          opacity: this.animationOpacity,
+//          child: ValueListenableBuilder(
+//              valueListenable: this.filterNotifier,
+//              builder: (context, filter, widget) {
+////                List<Product> ftPros = filter.haveCondition ?
+////                doFilter(products: proCon.newArrivalProducts, conditions: filter)
+////                    : proCon.newArrivalProducts;
+//
+//                return ProductGridView(products: filteredProducts, heroTag: 'newArrivals');
+//              }));
+//    }
+//  }
 
   @override
   Future<void> loadMore() async {
@@ -81,19 +83,6 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
         && proCon.newArrivalProducts.length > pre;
   }
 
-  var filter = FilterCondition();
   @override
-  Widget buildFilter(BuildContext context) {
-    return FilterWidget(products: proCon.newArrivalProducts, filter: this.filter);
-  }
-
-  List<Product> doFilter({List<Product> products, FilterCondition conditions}) {
-    List<Product> re = [];
-    products.forEach((p) {
-      if(p.match(conditions)) {
-        re.add(p);
-      }
-    });
-    return re;
-  }
+  List<Product> get lstProducts => proCon.newArrivalProducts;
 }

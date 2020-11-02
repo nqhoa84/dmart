@@ -13,11 +13,14 @@ import '../models/brand.dart';
 import 'i_name.dart';
 
 class Product extends IdNameObj{
+  static Comparator<Product> priceComparatorUp = (a, b) => a.paidPrice?.compareTo(b.paidPrice);
+  static Comparator<Product> priceComparatorDown = (a, b) => b.paidPrice?.compareTo(a.paidPrice);
+  static Comparator<Product> dateComparatorUp = (a, b) => a.updatedAt?.compareTo(b.updatedAt);
+  static Comparator<Product> dateComparatorDown = (a, b) => b.updatedAt?.compareTo(a.updatedAt);
   double price;
   double discountPrice;
   Media image;
   String descriptionEn = '', descriptionKh = '';
-
   String get description => DmState.isKhmer ? descriptionKh : descriptionEn;
   String ingredients;
   String capacity;
@@ -43,6 +46,8 @@ class Product extends IdNameObj{
   bool isNewArrival, isBestSale;
   double totalSale;
   String country, code, barCode;
+  
+  DateTime updatedAt;
 
   Product();
 
@@ -58,8 +63,9 @@ class Product extends IdNameObj{
   }
 
   Product.fromJSON(Map<String, dynamic> jsonMap) {
-//    convert(jsonMap);
     try {
+//      print('---------------------');
+//      print(jsonMap);
       convert(jsonMap);
 //      checked = false;
     } catch (e, trace) {
@@ -98,10 +104,12 @@ class Product extends IdNameObj{
     descriptionKh = jsonMap['description_kh'] ?? '';
     capacity = toStringVal(jsonMap['capacity']);
     try {
-      unit = jsonMap['unit'] != null ? Unit.fromJSON(jsonMap['unit']) : null;
-      this.productType = jsonMap['type'] != null ? ProductType.fromJSON(jsonMap['unit']) : null;
-    } catch (e) {
-//      print(e);
+      unit = jsonMap['unit'] != null && jsonMap['unit'] is Map<String, dynamic>
+          ? Unit.fromJSON(jsonMap['unit']) : null;
+      this.productType = jsonMap['type'] != null && jsonMap['type'] is Map<String, dynamic>
+          ? ProductType.fromJSON(jsonMap['type']) : null;
+    } catch (e, trace) {
+      print('$e $trace');
     }
     packageItemsCount = toDouble(jsonMap['package_items_count'], errorValue: 0.0);
     featured = jsonMap['featured'] ?? false;
@@ -111,19 +119,28 @@ class Product extends IdNameObj{
     totalSale = toDouble(jsonMap['total_sale'], errorValue: 0.0);
     rate = toStringVal(jsonMap['rate']);
     itemsAvailable = toStringVal(jsonMap['itemsAvailable']);
-    brand = jsonMap['brand'] != null
-        ? Brand.fromJSON(jsonMap['brand'])
-        : new Brand();
+    try {
+      brand = jsonMap['brand'] != null && jsonMap['brand'] is Map<String, dynamic>
+          ? Brand.fromJSON(jsonMap['brand'])
+          : new Brand();
+    } on Exception catch (e, trace) {
+      print('$e $trace');
+    }
     code = toStringVal(jsonMap['code']);
     country = toStringVal(jsonMap['country_code']);
     barCode = toStringVal(jsonMap['barcode']);
+    updatedAt = toDateTime(jsonMap['updated_at']);
 //    store = jsonMap['store'] != null
 //        ? Store.fromJSON(jsonMap['store'])
 //        : new Store();
 
-    category = jsonMap['category'] != null
-        ? Category.fromJSON(jsonMap['category'])
-        : new Category();
+    try {
+      category = jsonMap['category'] != null && jsonMap['category'] is Map<String, dynamic>
+          ? Category.fromJSON(jsonMap['category'])
+          : new Category();
+    } on Exception catch (e, trace) {
+      print('$e $trace');
+    }
 
     medias = jsonMap['media'] != null &&
         (jsonMap['media'] as List).length > 0
@@ -199,6 +216,7 @@ class Product extends IdNameObj{
   }
 
   bool match(FilterCondition conditions) {
+    if(conditions == null) return true;
     if(conditions.isBestSale != null && conditions.isBestSale != this.isBestSale)
       return false;
     if(conditions.isPromotion != null && conditions.isPromotion != this.isPromotion)
@@ -226,4 +244,6 @@ class Product extends IdNameObj{
   String get brandName => this.brand != null ? this.brand.name??'' : '';
   String get storeName => this.store != null ? this.store.name??'' : '';
   String get unitName => this.unit != null ? this.unit.name??'' : '';
+
+
 }

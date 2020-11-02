@@ -2243,6 +2243,26 @@ class S {
     );
   }
 
+  /// `There is no products.`
+  String get productListEmpty {
+    return Intl.message(
+      'There is no products.',
+      name: 'productListEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no products qualified with your criteria.`
+  String get filteredProductListEmpty {
+    return Intl.message(
+      'There is no products qualified with your criteria.',
+      name: 'filteredProductListEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search result is empty.`
   String get searchResultEmpty {
     return Intl.message(

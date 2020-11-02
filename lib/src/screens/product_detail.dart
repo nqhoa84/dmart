@@ -111,6 +111,18 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     );
   }
 
+  Widget _buildContent(BuildContext context) {
+    return _con.product == null
+        ? CircularLoadingWidget(height: 500)
+        : CustomScrollView(slivers: <Widget>[
+      _createImageSpace(context),
+      SliverList(
+          delegate: SliverChildListDelegate([
+            _createInfoWidget(context),
+          ])),
+    ]);
+  }
+
   Widget _createImageSpace(BuildContext context) {
     return SliverAppBar(
       backgroundColor: Colors.transparent,
@@ -206,82 +218,80 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
         iconColor: DmConst.accentColor,
         useInkWell: true);
     TextStyle ts = Theme.of(context).textTheme.bodyText2;
-
+    TableRow _createRowInfo(String left, String right) {
+      return TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Text(left??'', style: ts),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Text(right??'', style: ts),
+        ),
+      ]);
+    }
     return ExpandableNotifier(
         child: ScrollOnExpand(
       scrollOnExpand: false,
       scrollOnCollapse: false,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: <Widget>[
-            //Product information panel
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-//                            border: Border.all(color: DmConst.accentColor)
-                          border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
-                      child: _createPriceForBottomBar(context)),
-                ),
-              ],
-            ),
-            ExpandablePanel(
-              controller: _controller,
-              theme: them,
-              header: Container(
-                decoration: BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
-                child: _createNameAddCartRow(context),
+      child: Column(
+        children: <Widget>[
+          //Product information panel
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
+                    child: _createPriceForBottomBar(context)),
               ),
-              expanded: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                child: Table(
+            ],
+          ),
+          ExpandablePanel(
+            controller: _controller,
+            theme: them,
+            header: Container(
+              decoration: BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: DmConst.accentColor))),
+              child: _createNameAddCartRow(context),
+            ),
+            expanded: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: Table(
 //                      defaultVerticalAlignment: TableCellVerticalAlignment.fill,
-                  columnWidths: {
-                    0: FlexColumnWidth(1),
-                    1: FlexColumnWidth(3),
-                  },
-                  children: [
-                    TableRow(children: [
-                      Text(S.of(context).category, style: ts),
-                      Text(_con.product.name, style: ts),
-                    ]),
-                    TableRow(children: [
-                      Text(S.of(context).brand, style: ts),
-                      Text('${_con.product.brand?.name}', style: ts),
-                    ]),
-                    TableRow(children: [
-                      Text(S.of(context).available, style: ts),
-                      Text('${_con.product.itemsAvailable ?? ''}', style: ts),
-                    ]),
-                    TableRow(children: [
-                      Text(S.of(context).unit, style: ts),
-                      Text('${_con.product.unit ?? ''}', style: ts),
-                    ]),
-                    TableRow(children: [
-                      Text(S.of(context).description, style: ts),
-                      Helper.applyHtml(context, _con.product.description ?? ''),
+                columnWidths: {
+                  0: FlexColumnWidth(1),
+                  1: FlexColumnWidth(3),
+                },
+                children: [
+                  _createRowInfo(S.of(context).productCode, _con.product.code),
+                  _createRowInfo(S.of(context).category, _con.product.cateName),
+                  _createRowInfo(S.of(context).brand, _con.product.brandName),
+                  _createRowInfo(S.of(context).unit, _con.product.unitName),
+                  _createRowInfo(S.of(context).country, _con.product.country),
+                  _createRowInfo(S.of(context).available, _con.product.itemsAvailable),
+
+                  TableRow(children: [
+                    Text(S.of(context).description, style: ts),
+                    Helper.applyHtml(context, _con.product.description ?? ''),
 //                          Text('${_con.product.description??''}', style: ts),
-                    ])
-                  ],
-                ),
+                  ])
+                ],
               ),
             ),
-            SizedBox(height: 10),
-
-            //related product panel
-            TitleDivider(title: S.of(context).relatedProducts),
-            Padding(
-              padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-              child: _con.relatedProducts != null
-                  ? ProductGridView(
-                      products: _con.relatedProducts,
-                      heroTag: 'related_',
-                    )
-                  : Container(),
-            ),
+          ),
+          SizedBox(height: 10),
+          //related product panel
+          TitleDivider(title: S.of(context).relatedProducts),
+          Padding(
+            padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+            child: _con.relatedProducts != null //? Container(color: Colors.green)
+                ? ProductGridView(
+                    products: _con.relatedProducts,
+                    heroTag: 'related_'
+                  )
+                : Container(color: Colors.red),
+          ),
 //                ExpandablePanel(
 //                  theme: them,
 //                  header: TitleDivider(title: S.of(context).relatedProducts),
@@ -293,8 +303,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 //                    : Container(),
 //                  ),
 //                ),
-          ],
-        ),
+        ],
       ),
     ));
   }
@@ -462,18 +471,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    return _con.product == null
-        ? CircularLoadingWidget(height: 500)
-        : CustomScrollView(slivers: <Widget>[
-            _createImageSpace(context),
-//              _createInfoSpace(context),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              _createInfoWidget(context),
-            ])),
-          ]);
-  }
+
 
   void _onPressOnFav() {
     if (currentUser.value.isLogin == false) {

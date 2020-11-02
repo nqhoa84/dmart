@@ -1,7 +1,13 @@
+import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
+import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
+import 'package:dmart/src/widgets/ProductsGridView.dart';
+import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -72,10 +78,55 @@ with SingleTickerProviderStateMixin
 
   Future<void> onRefresh();
 
-  Widget buildContent(BuildContext context);
+//  Widget buildContent(BuildContext context);
+  Widget buildContent(BuildContext context) {
+    if (this.lstProducts == null) {
+      return ProductsGridViewLoading(isList: true);
+    } else if (this.lstProducts.isEmpty) {
+      return EmptyDataLoginWid(message: S.of(context).productListEmpty);
+    } else{
+      return FadeTransition(
+          opacity: this.animationOpacity,
+          child: ValueListenableBuilder(
+              valueListenable: this.filterNotifier,
+              builder: (context, filter, widget) {
+                var filteredProducts = doFilter(products: lstProducts, conditions: filterNotifier.value);
+                if(DmUtils.isNullOrEmptyList(filteredProducts)) {
+                  return EmptyDataLoginWid(message: S.of(context).filteredProductListEmpty);
+                } else {
+                  return ProductGridView(products: filteredProducts, heroTag: '');
+                }
+              }));
+    }
+  }
+
+  ValueNotifier<FilterCondition> filterNotifier = ValueNotifier(FilterCondition());
+
+  List<Product> get lstProducts;
+
+//  List<Product> get filteredProducts => doFilter(products: lstProducts, conditions: filterNotifier.value);
+
+  List<Product> doFilter({List<Product> products, FilterCondition conditions}) {
+    List<Product> re = [];
+    if(products == null) return re;
+    products.forEach((p) {
+      if(p.match(conditions)) {
+        re.add(p);
+      }
+    });
+    if(conditions.isPriceUp != null) {
+      re.sort(conditions.isPriceUp ? Product.priceComparatorUp : Product.priceComparatorDown);
+    }
+
+    if(conditions.isLatest != null) {
+      re.sort(conditions.isLatest ? Product.dateComparatorDown : Product.dateComparatorUp);
+    }
+    return re;
+  }
 
   Widget buildFilter(BuildContext context) {
-    return null;
+    return FilterWidget(products: lstProducts,
+        filterNotifier: this.filterNotifier);
   }
 
   @override

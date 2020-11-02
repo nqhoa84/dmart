@@ -1,5 +1,6 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
@@ -48,83 +49,27 @@ class _Special4UScreenState extends ProductStateMVC<Special4UScreen> {
     canLoadMore = true;
   }
 
-  @override
-  Widget buildContent(BuildContext context) {
-    if (proCon.special4UProducts.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
-    } else {
-//      print('_con.special4UProducts ${proCon.special4UProducts.length}');
-      return FadeTransition(
-        opacity: this.animationOpacity,
-        child: ProductGridView(products: proCon.special4UProducts, heroTag: 'spe4U'),
-      );
-    }
-  }
+//  @override
+//  Widget buildContent(BuildContext context) {
+//    if (proCon.special4UProducts.isEmpty) {
+//      return ProductsGridViewLoading(isList: true);
+//    } else {
+////      print('_con.special4UProducts ${proCon.special4UProducts.length}');
+//      return FadeTransition(
+//        opacity: this.animationOpacity,
+//        child: ProductGridView(products: proCon.special4UProducts, heroTag: 'spe4U'),
+//      );
+//    }
+//  }
 
   @override
   Future<void> loadMore() async {
-    print('loadMore on Spec4U');
+//    print('loadMore on Spec4U');
     int pre = proCon.special4UProducts != null ? proCon.special4UProducts.length : 0;
-    proCon.listenForSpecial4U(nextPage: true);
+    await proCon.listenForSpecial4U(nextPage: true);
     canLoadMore = proCon.special4UProducts != null && proCon.special4UProducts.length > pre;
   }
-}
-
-class _Special4UScreenStateOld extends StateMVC<Special4UScreen> {
-  ProductController _con;
-
-  _Special4UScreenStateOld() : super(ProductController()) {
-    _con = controller;
-  }
 
   @override
-  void initState() {
-    _con.listenForSpecial4U();
-    super.initState();
-  }
-
-  void dispose() {
-    super.dispose();
-  }
-
-  Widget buildContent(BuildContext context) {
-    if (_con.special4UProducts.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
-    } else {
-      print('_con.newArrivalProducts ${_con.special4UProducts.length}');
-      return ProductGridView(products: _con.special4UProducts, heroTag: 'spe4U');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
-      drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
-      endDrawerEnableOpenDragGesture: false,
-      body: SafeArea(
-        child: CustomScrollView(slivers: <Widget>[
-          createSliverTopBar(context),
-          createSliverSearch(context),
-          createSilverTopMenu(
-            context, haveBackIcon: true, title: S.of(context).specialForYou,
-//              types: [ProductType()],
-//              cates: [Category()],
-//              sorts: [SortBy.nameAsc],
-//              brands: [Brand()]
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              buildContent(context),
-//              ProductsByCategory(category: widget._category),
-//              Text('this is the best sale screen')
-            ]),
-          )
-        ]),
-      ),
-    );
-  }
+  List<Product> get lstProducts => proCon.special4UProducts;
 }

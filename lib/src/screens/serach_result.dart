@@ -1,4 +1,5 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/search_controller.dart';
 import 'package:dmart/src/models/filter.dart';
@@ -93,9 +94,10 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
       key: _searchCon.scaffoldKey,
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
+//TODO apply filter here
+//      endDrawer: FilterWidget(onFilter: (Filter f) {
+//        print('selected filter: $f');
+//      }),
       endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
         child: RefreshIndicator(
@@ -108,7 +110,10 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
               createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).search),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  buildContent(context),
+                  Padding(
+                    padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+                    child: buildContent(context),
+                  ),
                 ]),
               )
             ],
@@ -161,6 +166,7 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
   }
 
   _onTapOnSearchIcon() {
+    print('------_onTapOnSearchIcon-------');
     _searchCon.search(search, onDone: (){
       if(DmUtils.isNullOrEmptyList(_searchCon.products)) {
         _searchCon.showMsg(S.of(context).searchResultEmpty);

@@ -67,4 +67,13 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
 //    canLoadMore = proCon.favorites != null
 //        && proCon.favorites.length > pre;
   }
+
+  @override
+  List<Product> get lstProducts {
+    List<Product> lp = [];
+    DmState.favorites.forEach((element) {
+      lp.add(element.product);
+    });
+    return lp;
+  }
 }

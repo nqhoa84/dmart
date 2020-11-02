@@ -16,7 +16,7 @@ import '../repository/product_repository.dart';
 class ProductController extends ControllerMVC {
   Product product;
   List<Product> relatedProducts = [];
-  List<Product> bestSaleProducts = [];
+  List<Product> bestSaleProducts;
   List<Product> newArrivalProducts = [];
   List<Product> special4UProducts = [];
   List<Cart> carts = [];
@@ -56,16 +56,25 @@ class ProductController extends ControllerMVC {
   ///if [nextPage] is FALSE, this will refresh the [bestSaleProducts].
   void listenForBestSaleProducts({bool nextPage = false}) async {
     _bestSalePageIdx = nextPage == false ? 1 : _bestSalePageIdx + 1;
-    final Stream<Product> stream = await getBestSale(_bestSalePageIdx);
-    stream.listen((Product _product) {
+    if(this.bestSaleProducts == null)
+      bestSaleProducts = [];
+//    final Stream<Product> stream = await getBestSale(_bestSalePageIdx);
+//    stream.listen((Product _product) {
+//      setState(() {
+//        if(_product.isValid)
+//          bestSaleProducts.add(_product);
+//      });
+////      print('best sale, pro id = ${_product.id}');
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+    var pros = await getBestSale2(_bestSalePageIdx);
+    pros.forEach((p) {
       setState(() {
-        if(_product.isValid)
-          bestSaleProducts.add(_product);
+        if(p.isValid)
+          bestSaleProducts.add(p);
       });
-//      print('best sale, pro id = ${_product.id}');
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+    });
   }
 
   int _newArrivalPageIdx = 1;
@@ -97,21 +106,25 @@ class ProductController extends ControllerMVC {
   ///if [nextPage] is FALSE, this will refresh the [special4UProducts].
   void listenForSpecial4U({bool nextPage = false}) async {
     _spe4UPageIdx = nextPage == false ? 1 : _spe4UPageIdx + 1;
-
-    final Stream<Product> stream = await getSpecial4U(_spe4UPageIdx);
-    stream.listen((Product _product) {
-      setState(() {
-        if(_product.isValid) {
-          _product.isSpecial4U = true;
-          special4UProducts.add(_product);
-        }
-      });
-//      print('special for U, pro id = ${_product.id}');
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {
-      print('getSpecial4U special4UProducts.length = ${special4UProducts.length}');
+    final List<Product> ps = await getSpecial4U2(_spe4UPageIdx);
+    setState(() {
+      ps.forEach((element) {special4UProducts.add(element);});
     });
+
+//    final Stream<Product> stream = await getSpecial4U(_spe4UPageIdx);
+//    stream.listen((Product _product) {
+//      setState(() {
+//        if(_product.isValid) {
+//          _product.isSpecial4U = true;
+//          special4UProducts.add(_product);
+//        }
+//      });
+////      print('special for U, pro id = ${_product.id}');
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {
+//      print('getSpecial4U special4UProducts.length = ${special4UProducts.length}');
+//    });
   }
 
   int _favPageIdx = 1;
@@ -144,15 +157,32 @@ class ProductController extends ControllerMVC {
 
   ///Get related products of one product [id], the results is stored on [relatedProducts] property of this object.
   void listenForRelatedProducts({int productId}) async {
-    final Stream<Product> stream = await getRelatedProducts(productId);
-    relatedProducts.clear();
-    stream.listen((Product _product) {
-      if (_product!= null && _product.isValid) {
-        setState(() => relatedProducts.add(_product));
-      }
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
+    try {
+//      final List<Product> stream = await getRelatedProducts2(productId);
+      var ps = await getRelatedProducts2(productId);
+
+      setState((){
+        this.relatedProducts.clear();
+        ps.forEach((element) {
+          if(element.isValid) {
+            relatedProducts.add(element);
+          } else {
+            print('-------------INVALID---------------');
+            print(element);
+          }
+        });
+      });
+//      relatedProducts.a
+//      stream.listen((Product _product) {
+//        if (_product!= null && _product.isValid) {
+//          setState(() => relatedProducts.add(_product));
+//        }
+//      }, onError: (a) {
+//        print(a);
+//      }, onDone: () {});
+    } catch (e, trace) {
+      print('$e, $trace');
+    }
   }
 
   ///Listen for full inform from server, and the result will be store on [product] property of this controller.
@@ -182,20 +212,24 @@ class ProductController extends ControllerMVC {
   int _promoPageIdx = 1;
   ///if [nextPage] is true, this will load the next page, store on [promotionProducts] and move pageIndex one step up.
   ///if [nextPage] is FALSE, this will refresh the [promotionProducts].
-  Future<void> listenForPromoProducts(int id, {bool nextPage = false}) async {
+  void listenForPromoProducts(int promoId, {bool nextPage = false}) async {
     _promoPageIdx = nextPage == false ? 1 : _promoPageIdx + 1;
-    final Stream<Product> stream = await getProductsByPromotion(id, _promoPageIdx);
-    promotionProducts.clear();
-    stream.listen((Product _product) {
-      setState(() {
-        promotionProducts.add(_product);
-      });
-    }, onError: (a) {
-      print(a);
-    }, onDone: (){
-      print(' onDone boughtProducts ${promotionProducts.length}');
-    }
-    );
+    final List<Product> ps = await getProductsByPromotion2(promoId, _promoPageIdx);
+    setState(() {
+      ps.forEach((element) {promotionProducts.add(element);});
+    });
+    final Stream<Product> stream = await getProductsByPromotion(promoId, _promoPageIdx);
+//    promotionProducts.clear();
+//    stream.listen((Product _product) {
+//      setState(() {
+//        promotionProducts.add(_product);
+//      });
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: (){
+//      print(' onDone boughtProducts ${promotionProducts.length}');
+//    }
+//    );
   }
 
   int _cateProductsPageIdx = 1;

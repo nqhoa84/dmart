@@ -15,10 +15,9 @@ import '../models/filter.dart';
 
 class FilterWidget extends StatefulWidget {
   List<Product> products;
-  FilterCondition filter;
-  final ValueChanged<Filter> onFilter;
+  final ValueNotifier<FilterCondition> filterNotifier;
 
-  FilterWidget({Key key, this.onFilter, this.products, this.filter}) : super(key: key);
+  FilterWidget({Key key, this.filterNotifier, this.products}) : super(key: key);
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
@@ -72,7 +71,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
 
   @override
   void initState() {
-    filter.copyFrom(widget.filter);
+    filter.copyFrom(widget.filterNotifier.value);
     super.initState();
   }
 
@@ -94,115 +93,117 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
 
     return Drawer(
       child: SafeArea(
-        child: Column(
-          children: <Widget>[
-            //header: Filter - clear
-            Container(
-              padding: const EdgeInsets.all(8),
-              color: DmConst.accentColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(S.of(context).filter),
-                  OutlineButton(
-                    onPressed: onPressClearFilter,
-                    child: Text(S.of(context).clear, style: TextStyle(color: Colors.white)),
-                  )
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              //header: Filter - clear
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: DmConst.accentColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(S.of(context).filter),
+                    OutlineButton(
+                      onPressed: onPressClearFilter,
+                      child: Text(S.of(context).clear, style: TextStyle(color: Colors.white)),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              createTitleRow(S.of(context).categories),
+              _createCateExpansion(),
+              Divider(thickness: 1),
+              createTitleRow(S.of(context).brands),
+              _createBrandExpansion(),
+              Divider(thickness: 1),
+              DmUtils.isNotNullEmptyList(this.countries) ? createTitleRow(S.of(context).country) : SizedBox(),
+              _createCountryExpansion(),
+              DmUtils.isNotNullEmptyList(this.countries) ? Divider(thickness: 1) : SizedBox(),
+              Row(
+                children: [
+                  Expanded(
+                    child: createCheckbox(
+                        label: S.of(context).promotion,
+                        tristate: true,
+                        isChecked: filter.isPromotion,
+                        onChanged: (v) {
+                          setState(() {
+                            filter.isPromotion = v;
+                          });
+                        }
+                    ),
+                  ),
+                  Expanded(
+                    child: createCheckbox(
+                        label: S.of(context).bestSale,
+                        tristate: true,
+                        isChecked: filter.isBestSale,
+                        onChanged: (v) {
+                          setState(() {
+                            filter.isBestSale = v;
+                          });
+                        }
+                    ),
+                  ),
                 ],
               ),
-            ),
-            SizedBox(height: 10),
-            createTitleRow(S.of(context).categories),
-            _createCateExpansion(),
-            Divider(thickness: 1),
-            createTitleRow(S.of(context).brands),
-            _createBrandExpansion(),
-            Divider(thickness: 1),
-            DmUtils.isNotNullEmptyList(this.countries) ? createTitleRow(S.of(context).country) : SizedBox(),
-            _createCountryExpansion(),
-            DmUtils.isNotNullEmptyList(this.countries) ? Divider(thickness: 1) : SizedBox(),
-            Row(
-              children: [
-                Expanded(
-                  child: createCheckbox(
-                      label: S.of(context).promotion,
-                      tristate: true,
-                      isChecked: filter.isPromotion,
-                      onChanged: (v) {
-                        setState(() {
-                          filter.isPromotion = v;
-                        });
-                      }
+              Row(
+                children: [
+                  Expanded(
+                    child: createCheckbox(
+                        label: S.of(context).newArrival,
+                        tristate: true,
+                        isChecked: filter.isNewArrival,
+                        onChanged: (v) {
+                          setState(() {
+                            filter.isNewArrival = v;
+                          });
+                        }
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: createCheckbox(
-                      label: S.of(context).bestSale,
-                      tristate: true,
-                      isChecked: filter.isBestSale,
-                      onChanged: (v) {
-                        setState(() {
-                          filter.isBestSale = v;
-                        });
-                      }
+                ],
+              ),
+              Divider(thickness: 1),
+              createTitleRow(S.of(context).sortBy),
+              Row(
+                children: [
+                  Expanded(
+                    child: createCheckbox(
+                        label: S.of(context).priceIncreasing,
+                        tristate: true,
+                        isChecked: filter.isPriceUp,
+                        onChanged: (v) {
+                          setState(() {
+                            filter.isPriceUp = v;
+                          });
+                        }
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: createCheckbox(
-                      label: S.of(context).newArrival,
-                      tristate: true,
-                      isChecked: filter.isNewArrival,
-                      onChanged: (v) {
-                        setState(() {
-                          filter.isNewArrival = v;
-                        });
-                      }
+                  Expanded(
+                    child: createCheckbox(
+                        label: S.of(context).latestDate,
+                        tristate: true,
+                        isChecked: filter.isLatest,
+                        onChanged: (v) {
+                          setState(() {
+                            filter.isLatest = v;
+                          });
+                        }
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Divider(thickness: 1),
-            createTitleRow(S.of(context).sortBy),
-            Row(
-              children: [
-                Expanded(
-                  child: createCheckbox(
-                      label: S.of(context).priceIncreasing,
-                      tristate: true,
-                      isChecked: filter.isPriceUp,
-                      onChanged: (v) {
-                        setState(() {
-                          filter.isPriceUp = v;
-                        });
-                      }
-                  ),
-                ),
-                Expanded(
-                  child: createCheckbox(
-                      label: S.of(context).latestDate,
-                      tristate: true,
-                      isChecked: filter.isLatest,
-                      onChanged: (v) {
-                        setState(() {
-                          filter.isLatest = v;
-                        });
-                      }
-                  ),
-                ),
-              ],
-            ),
-            Divider(thickness: 1),
-            FlatButton(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              onPressed: onPressApply,
-              child: Text(S.of(context).applyFilters),
-              color: DmConst.accentColor,
-            ),
-          ],
+                ],
+              ),
+              Divider(thickness: 1),
+              FlatButton(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                onPressed: onPressApply,
+                child: Text(S.of(context).applyFilters),
+                color: DmConst.accentColor,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -553,9 +554,11 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
   }
 
   void onPressApply() {
-    setState(() {
-      widget.filter.copyFrom(this.filter);
-    });
+//    setState(() {
+//      widget.filter.copyFrom(this.filter);
+//      print(widget.filter);
+//    });
+    widget.filterNotifier?.value = this.filter;
     Navigator.of(context).pop();
   }
 

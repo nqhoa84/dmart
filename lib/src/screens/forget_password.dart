@@ -129,6 +129,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                         borderSide: BorderSide(color: DmConst.accentColor), borderRadius: BorderRadius.circular(5)),
                     onOtpCallback: (code, isAutofill) => _onOtpCallBack(code, isAutofill),
                   ),
+                  Text('${_con.otp}'),
                   SizedBox(height: DmConst.masterHorizontalPad),
 
                   PasswordWid(onSaved: (value) => _con.user.password = value),

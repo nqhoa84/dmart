@@ -1,5 +1,6 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/models/promotion.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
@@ -50,25 +51,27 @@ class _PromotionScreenState extends ProductStateMVC<PromotionScreen> {
     canLoadMore = true;
   }
 
-  @override
-  Widget buildContent(BuildContext context) {
-    if (proCon.promotionProducts.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
-    } else {
-      print('_con.promotionProducts ${proCon.promotionProducts.length}');
-      return FadeTransition(
-        opacity: this.animationOpacity,
-        child: ProductGridView(products: proCon.promotionProducts, heroTag: 'promo.${promo.id}'),
-      );
-    }
-  }
+//  @override
+//  Widget buildContent(BuildContext context) {
+//    if (proCon.promotionProducts.isEmpty) {
+//      return ProductsGridViewLoading(isList: true);
+//    } else {
+//      return FadeTransition(
+//        opacity: this.animationOpacity,
+//        child: ProductGridView(products: proCon.promotionProducts, heroTag: 'promo.${promo.id}'),
+//      );
+//    }
+//  }
 
   @override
   Future<void> loadMore() async {
     int pre = proCon.promotionProducts != null ? proCon.promotionProducts.length : 0;
-    proCon.listenForPromoProducts(promo.id, nextPage: true);
+    await proCon.listenForPromoProducts(promo.id, nextPage: true);
     canLoadMore = proCon.promotionProducts != null && proCon.promotionProducts.length > pre;
   }
+
+  @override
+  List<Product> get lstProducts => proCon.promotionProducts;
 }
 
 class _PromotionScreenStateOld extends StateMVC<PromotionScreen>

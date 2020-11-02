@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/DmState.dart';
 import 'package:dmart/utils.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
@@ -16,36 +17,30 @@ import '../models/review.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Product>> getTrendingProducts() async {
-  Uri uri = Helper.getApiUri('products');
-  Map<String, dynamic> _queryParams = {};
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
-  filter.delivery = false;
-  filter.open = false;
-  _queryParams['limit'] = '6';
-  _queryParams['trending'] = 'week';
-  _queryParams['search'] = 'itemsAvailable:0';
-  _queryParams['searchFields'] = 'itemsAvailable:<>';
-  _queryParams['searchJoin'] = 'and';
-  _queryParams.addAll(filter.toQuery());
-  uri = uri.replace(queryParameters: _queryParams);
+///if json doest have 'success' as the first. -> return empty list. <br/>
+///List of product must in json['data']['data'] scope. <br/>
+///if (js["success"] != null && js["success"] == true) {<br/>
+///     (js['data']['data'] as List).forEach((element) {<br/>
+///       re.add(Product.fromJSON(element));<br/>
+///      });<br/>
+///}<br/>
+Future<List<Product>> _getProducts(dynamic urlOrUri, {String firstData = 'data', String secondData = 'data'}) async {
+  List<Product> re = [];
   try {
-    final client = new http.Client();
-    final streamedRest = await client.send(http.Request('get', uri));
+//    final response = await http.Client().get(url, headers: queryParameters);
+    final response = await http.Client().get(urlOrUri);
 
-    return streamedRest.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .map((data) => Helper.getData(data))
-        .expand((data) => (data as List))
-        .map((data) {
-      return Product.fromJSON(data);
-    });
+//    print('getNewArrivals2 ${response.body}');
+    dynamic js = json.decode(response.body);
+    if (js["success"] != null && js["success"] == true) {
+      (js['$firstData']['$secondData'] as List).forEach((element) {
+        re.add(Product.fromJSON(element));
+      });
+    }
   } catch (e, trace) {
     print('$e \n $trace');
-    return new Stream.value(new Product.fromJSON({}));
   }
+  return re;
 }
 
 Future<Stream<Product>> getProducts({int page = 1}) async {
@@ -74,12 +69,13 @@ Future<Stream<Product>> getProducts({int page = 1}) async {
 
 Future<Stream<Product>> getProduct(int productId) async {
   Uri uri = Helper.getApiUri('products/$productId');
-  uri = uri.replace(queryParameters: {
-    'with': 'store;category;brand;options;optionGroups;productReviews;productReviews.user',
-    'search': 'itemsAvailable:0',
-    'searchFields': 'itemsAvailable:<>'
-  });
+//  uri = uri.replace(queryParameters: {
+//    'with': 'store;category;brand;options;optionGroups;productReviews;productReviews.user',
+//    'search': 'itemsAvailable:0',
+//    'searchFields': 'itemsAvailable:<>'
+//  });
 
+  print(uri);
 
   try {
     final client = new http.Client();
@@ -93,12 +89,11 @@ Future<Stream<Product>> getProduct(int productId) async {
     });
   } catch (e, trace) {
     print('$e \n $trace');
-    return new Stream.value(new Product.fromJSON({}));
+    return new Stream.value(Product());
   }
 }
 
-Future<Stream<Product>> searchProducts(String search, {int page = 1}) async {
-
+Future<Stream<Product>> _searchProducts(String search, {int page = 1}) async {
 //  Uri uri = Helper.getApiUri('products');
 //  uri = uri.replace(queryParameters: {
 //    'search': '$search',
@@ -135,11 +130,37 @@ Future<Stream<Product>> searchProducts(String search, {int page = 1}) async {
     return new Stream.value(new Product.fromJSON({}));
   }
 }
+Future<List<Product>> searchProducts2(String search, {int page = 1}) async {
+//  final String url =
+//      '${GlobalConfiguration().getString('api_base_url')}products?search=$search
+//      &page=$page&searchFields=name:like;description:like;brand.name:like;category.name:like';
+
+  Uri uri = Helper.getApiUri('products');
+
+  if(DmState.isKhmer) {
+    uri = uri.replace(queryParameters: {
+      'search': '$search',
+      'page': '$page',
+      'searchFields': 'name_kh:like;description_kh:like;brand.name_kh:like;category.name_kh:like',
+      'searchJoin': 'or'
+    });
+  } else {
+    uri = uri.replace(queryParameters: {
+      'search': '$search',
+      'page': '$page',
+      'searchFields': 'name_en:like;description_en:like;brand.name_en:like;category.name_en:like',
+      'searchJoin': 'or'
+    });
+  }
+  print(uri);
+
+  return _getProducts(uri);
+}
 
 Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async {
   print('---getProductsByCategory called in Product repository');
   Uri uri = Helper.getApiUri('products');
-  final String url = '${GlobalConfiguration().getString('api_base_url')}provinces';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}products';
   if(categoryId > 0) {
     uri = uri.replace(queryParameters: {
       'page': '$pageIdx',
@@ -193,45 +214,26 @@ Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async
 }
 
 Future<List<Product>> getProductsByCategory2(int categoryId, int pageIdx) async {
-  print('---getProductsByCategory called in Product repository');
-  final String url = '${GlobalConfiguration().getString('api_base_url')}products';
-  print('url: $url pageIdx $pageIdx');
-  var queryParameters ;
+  Uri uri = Helper.getApiUri('products');
   if(categoryId > 0) {
-    queryParameters = {
-      HttpHeaders.contentTypeHeader: 'application/json',
+    uri = uri.replace(queryParameters: {
       'page': '$pageIdx',
       'search': 'category_id:$categoryId;itemsAvailable:0',
       'searchFields': 'category_id:=;itemsAvailable:<>',
       'searchJoin': 'and'
-    };
+    });
+
   } else {
-    queryParameters = {
-      HttpHeaders.contentTypeHeader: 'application/json',
+    uri = uri.replace(queryParameters: {
       'page': '$pageIdx',
       'search': 'itemsAvailable:0',
       'searchFields': 'itemsAvailable:<>',
       'searchJoin': 'and'
-    };
+    });
   }
-  List<Product> re = [];
+  print(uri);
+  return _getProducts(uri);
 
-  try {
-    final response = await http.Client().get(url,
-      headers: queryParameters,
-    );
-
-//    print('getProductsByCategory2 ${response.body}');
-    dynamic js = json.decode(response.body);
-    if (js["success"] != null && js["success"] == true) {
-      (js['data']['data'] as List).forEach((element) {
-        re.add(Product.fromJSON(element));
-      });
-    }
-  } catch (e, trace) {
-    print('$e \n $trace');
-  }
-  return re;
 }
 
 
@@ -266,7 +268,38 @@ Future<Stream<Product>> getProductsByPromotion(int promotionId, int pageIdx) asy
   }
 }
 
-Future<Stream<Product>> getRelatedProducts(int productId) async {
+Future<List<Product>> getProductsByPromotion2(int promotionId, int pageIdx) async {
+  Uri uri = Helper.getApiUri('promotions/$promotionId');
+  uri = uri.replace(queryParameters: {'page': pageIdx.toString()});
+  print('$uri \n ${uri.queryParameters}');
+  return _getProducts(uri, secondData: 'products');
+//  try {
+//    final client = new http.Client();
+//    StreamedResponse streamedRest = await client.send(http.Request('get', uri));
+//
+//    return streamedRest.stream
+//        .transform(utf8.decoder)
+//        .transform(json.decoder)
+//        .map((data) {
+////          print('data $data');
+//      return Helper.getData(data);
+////      return data['data']['products'];
+//    })
+//        .map((event) {
+////      print('event $event');
+//      return Helper.getProducts(event);
+//    })
+//        .expand((data) => (data as List))
+//        .map((data) {
+//      return Product.fromJSON(data);
+//    });
+//  } catch (e, trace) {
+//    print('$e \n $trace');
+//    return new Stream.value(new Product.fromJSON({}));
+//  }
+}
+
+Future<Stream<Product>> _getRelatedProducts(int productId) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}related_products/$productId';
   print('getRelatedProducts $url');
 
@@ -284,7 +317,25 @@ Future<Stream<Product>> getRelatedProducts(int productId) async {
   });
 }
 
-Future<Stream<Product>> getBestSale(int pageIdx) async {
+Future<List<Product>> getRelatedProducts2(int productId) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}related_products/$productId';
+  print('getRelatedProducts $url');
+
+//  var req = http.Request('get', Uri.parse(url));
+//  req.headers.addAll(createHeadersRepo());
+  List<Product> re = [];
+  final response = await http.Client().get(url);
+  dynamic js = json.decode(response.body);
+  if (js["success"] != null && js["success"] == true) {
+    (js['data'] as List).forEach((element) {
+
+      re.add(Product.fromJSON(element));
+    });
+  }
+  return re;
+}
+
+Future<Stream<Product>> _getBestSale(int pageIdx) async {
   Uri uri = Helper.getApiUri('best_sale');
   uri = uri.replace(queryParameters: {'page': pageIdx.toString()});
   print('$uri \n ${uri.queryParameters}');
@@ -313,6 +364,13 @@ Future<Stream<Product>> getBestSale(int pageIdx) async {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
   }
+}
+
+Future<List<Product>> getBestSale2(int pageIdx) async {
+  Uri uri = Helper.getApiUri('best_sale');
+  uri = uri.replace(queryParameters: {'page': pageIdx.toString()});
+  print(uri);
+  return _getProducts(uri);
 }
 
 Future<Stream<Product>> getNewArrivals(int pageIdx) async {
@@ -344,30 +402,9 @@ Future<Stream<Product>> getNewArrivals(int pageIdx) async {
 }
 
 Future<List<Product>> getNewArrivals2(int pageIdx) async {
-  print('---getNewArrivals2 called in Product repository');
-  final String url = '${GlobalConfiguration().getString('api_base_url')}new_arrival';
-  print('url: $url pageIdx $pageIdx');
-  var queryParameters = {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    'page': '$pageIdx',
-  };
-
-  List<Product> re = [];
-
-  try {
-    final response = await http.Client().get(url, headers: queryParameters);
-
-//    print('getNewArrivals2 ${response.body}');
-    dynamic js = json.decode(response.body);
-    if (js["success"] != null && js["success"] == true) {
-      (js['data']['data'] as List).forEach((element) {
-        re.add(Product.fromJSON(element));
-      });
-    }
-  } catch (e, trace) {
-    print('$e \n $trace');
-  }
-  return re;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}new_arrival?page=$pageIdx';
+  print('url: $url');
+  return _getProducts(url);
 }
 
 Future<Stream<Product>> getSpecial4U(int pageIdx) async {
@@ -395,6 +432,11 @@ Future<Stream<Product>> getSpecial4U(int pageIdx) async {
     print('$e \n $trace');
     return new Stream.value(new Product.fromJSON({}));
   }
+}
+Future<List<Product>> getSpecial4U2(int pageIdx) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}special_offer?page=$pageIdx';
+  print('url: $url');
+  return _getProducts(url);
 }
 
 Future<Stream<Product>> getProductsByBrand(brandId) async {
@@ -622,5 +664,37 @@ Future<Stream<Review>> getProductReviews(int id) async {
   } catch (e, trace) {
     print('$e \n $trace');
     return new Stream.value(new Review.fromJSON({}));
+  }
+}
+
+Future<Stream<Product>> getTrendingProducts() async {
+  Uri uri = Helper.getApiUri('products');
+  Map<String, dynamic> _queryParams = {};
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
+  filter.delivery = false;
+  filter.open = false;
+  _queryParams['limit'] = '6';
+  _queryParams['trending'] = 'week';
+  _queryParams['search'] = 'itemsAvailable:0';
+  _queryParams['searchFields'] = 'itemsAvailable:<>';
+  _queryParams['searchJoin'] = 'and';
+  _queryParams.addAll(filter.toQuery());
+  uri = uri.replace(queryParameters: _queryParams);
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) {
+      return Product.fromJSON(data);
+    });
+  } catch (e, trace) {
+    print('$e \n $trace');
+    return new Stream.value(new Product.fromJSON({}));
   }
 }

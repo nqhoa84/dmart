@@ -1,6 +1,7 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
@@ -55,18 +56,18 @@ class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
     canLoadMore = true;
   }
 
-  @override
-  Widget buildContent(BuildContext context) {
-    if (proCon.categoriesProducts.isEmpty) {
-      return ProductsGridViewLoading(isList: true);
-    } else {
-//      print('_con.categoriesProducts ${proCon.categoriesProducts.length}');
-      return FadeTransition(
-        opacity: this.animationOpacity,
-        child: ProductGridView(products: proCon.categoriesProducts, heroTag: 'cate_${category?.id}'),
-      );
-    }
-  }
+//  @override
+//  Widget buildContent(BuildContext context) {
+//    if (proCon.categoriesProducts.isEmpty) {
+//      return ProductsGridViewLoading(isList: true);
+//    } else {
+////      print('_con.categoriesProducts ${proCon.categoriesProducts.length}');
+//      return FadeTransition(
+//        opacity: this.animationOpacity,
+//        child: ProductGridView(products: proCon.categoriesProducts, heroTag: 'cate_${category?.id}'),
+//      );
+//    }
+//  }
 
   @override
   Future<void> loadMore() async {
@@ -77,4 +78,7 @@ class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
 //    isLoading = false;
     print('category can load more: $canLoadMore');
   }
+
+  @override
+  List<Product> get lstProducts => proCon.categoriesProducts;
 }

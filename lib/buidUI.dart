@@ -208,6 +208,9 @@ SliverAppBar createSliverTopBar(BuildContext context) {
 }
 
 SliverAppBar createSliverSearch(BuildContext context) {
+  IconThemeData it = IconThemeData(
+    color: DmConst.accentColor
+  );
   return SliverAppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       automaticallyImplyLeading: false,
@@ -217,7 +220,9 @@ SliverAppBar createSliverSearch(BuildContext context) {
       ),
       centerTitle: true,
       pinned: true,
-      floating: true);
+      floating: true,
+    iconTheme: it,
+  );
 }
 
 Widget createSilverTopMenu(BuildContext context,

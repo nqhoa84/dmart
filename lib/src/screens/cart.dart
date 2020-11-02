@@ -139,4 +139,8 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
 
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => DeliveryToScreen()));
   }
+
+  @override
+  // TODO: implement lstProducts
+  List<Product> get lstProducts => throw UnimplementedError();
 }

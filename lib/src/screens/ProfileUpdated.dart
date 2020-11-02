@@ -84,10 +84,9 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
   }
 
   Widget buildBestSale(BuildContext context) {
-    if (_con.bestSaleProducts.isEmpty) {
+    if (DmUtils.isNullOrEmptyList(_con.bestSaleProducts)) {
       return ProductsGridViewLoading(isList: true);
     } else {
-      print('_con.bestSaleProducts ${_con.bestSaleProducts.length}');
 //      return FadeTransition(
 //        opacity: this.animationOpacity,
 //        child: ProductGridView(products: _con.bestSaleProducts, heroTag: 'bestSale'),

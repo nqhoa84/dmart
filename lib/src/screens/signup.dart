@@ -117,9 +117,9 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               Container(),
           currentStep: _stepIdx,
           onStepTapped: (index) {
-            setState(() {
-              _stepIdx = index;
-            });
+//            setState(() {
+//              _stepIdx = index;
+//            });
           },
           steps: [
             Step(
@@ -333,6 +333,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         SizedBox(height: 10),
         Text(S.of(context).verifyOtpNote, style: txtStyleGrey),
         buildOtpExpiredWidget(context),
+        Text('${_con.OTP}', style: TextStyle(color: Colors.grey.shade400)),
         Row(
           children: [
             Expanded(
@@ -357,6 +358,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       child: Row(children: [
         Text('${S.of(context).otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
             style: txtStyleGrey),
+
         FlatButton(onPressed: _con.otpExpInSeconds != null && _con.otpExpInSeconds > 0 ?
             null
             : resendOtp,

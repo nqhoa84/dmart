@@ -14,6 +14,7 @@ import '../../generated/l10n.dart';
 import '../../route_generator.dart';
 import '../../src/widgets/HomePromotionsSlider.dart';
 import '../../src/widgets/ProductsGridViewLoading.dart';
+import '../../utils.dart';
 
 class Home2Screen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -68,8 +69,36 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     animationController.dispose();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: DmBottomNavigationBar(currentIndex: 0),
+      drawer: DrawerWidget(),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: CustomScrollView(slivers: <Widget>[
+              createSliverTopBar(context),
+              createSliverSearch(context),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  _buildContent(context)
+                ]),
+              )
+            ]),
+          ),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
+        ),
+      ),
+    );
+  }
+
   Widget _buildContent(BuildContext context) {
-   return Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -94,10 +123,10 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
 //                      heroTag: "bestSale_"));
               RouteGenerator.gotoBestSale(context);
             }),
-        _con.bestSaleProducts.isEmpty
+        DmUtils.isNullOrEmptyList(_con.bestSaleProducts)
             ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.bestSaleProducts, animationOpacity: animationOpacity,
-              hero: 'home_best_sale',
+          hero: 'home_best_sale',
         ),
 //            : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
         // Heading (Brands)
@@ -126,37 +155,6 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             : HomeProductsListView(products: _con.special4UProducts, animationOpacity: animationOpacity,
           hero: 'home_spe4U',),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: 0),
-      drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (Filter f) {
-        print('selected filter: $f');
-      }),
-      endDrawerEnableOpenDragGesture: false,
-      body: DoubleBackToCloseApp(
-        child: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: onRefresh,
-            child: CustomScrollView(slivers: <Widget>[
-              createSliverTopBar(context),
-              createSliverSearch(context),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  _buildContent(context)
-                ]),
-              )
-            ]),
-          ),
-        ),
-        snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
-        ),
-      ),
     );
   }
 

@@ -167,7 +167,6 @@ class FilterCondition {
         || isPriceUp != null
         || isPromotion != null
         || isNewArrival != null
-        || isLatest != null
         || isBestSale != null;
   }
 
@@ -179,8 +178,14 @@ class FilterCondition {
     this.isPriceUp = filter.isPriceUp;
     this.isPromotion= filter.isPromotion;
     this.isNewArrival = filter.isNewArrival;
-    this.isLatest = filter.isLatest;
     this.isBestSale = filter.isBestSale;
+  }
+
+  @override
+  String toString() {
+    return 'FilterCondition {cates: $cates, brands: $brands, countries: $countries, '
+        'isLatest: $isLatest, isPriceUp: $isPriceUp, isPromotion: $isPromotion, '
+        'isNewArrival: $isNewArrival, isBestSale: $isBestSale}';
   }
 
 }

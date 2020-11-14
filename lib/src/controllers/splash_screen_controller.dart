@@ -49,6 +49,8 @@ class SplashScreenController extends Controller with ChangeNotifier {
     configureFirebase(firebaseMessaging);
     FirebaseMessaging().getToken().then((String _deviceToken) {
       DmConst.deviceToken = _deviceToken;
+      print(' DmConst.deviceToken--${DmConst.deviceToken}');
+      print('------------------------');
     }).catchError((e) {
       print('Notification not configured $e');
     });
@@ -95,7 +97,8 @@ class SplashScreenController extends Controller with ChangeNotifier {
   Future notificationOnMessage(Map<String, dynamic> message) async {
     print('OnMessage: $message');
     Fluttertoast.showToast(
-      msg: message['notification']['title'],
+//      msg: message['notification']['title'],
+      msg: '$message',
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 5,

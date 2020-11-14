@@ -81,17 +81,17 @@ class HomeController extends ControllerMVC
 
 
 
-  void requestForCurrentLocation (BuildContext context) {
-    OverlayEntry loader = Helper.overlayLoader(context);
-    Overlay.of(context).insert(loader);
-    setCurrentLocation().then((_address) async {
-      deliveryAddress.value = _address;
-      await refreshHome();
-      loader.remove();
-    }).catchError((e) {
-      loader.remove();
-    });
-  }
+//  void requestForCurrentLocation (BuildContext context) {
+//    OverlayEntry loader = Helper.overlayLoader(context);
+//    Overlay.of(context).insert(loader);
+//    setCurrentLocation().then((_address) async {
+//      deliveryAddress.value = _address;
+//      await refreshHome();
+//      loader.remove();
+//    }).catchError((e) {
+//      loader.remove();
+//    });
+//  }
 
   Future<void> refreshHome () async {
     setState(() {

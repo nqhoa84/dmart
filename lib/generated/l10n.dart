@@ -33,6 +33,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Please enter phone number, then tap send OTP to verify it.`
+  String get providePhoneNoAndTapSendOtpToVerify {
+    return Intl.message(
+      'Please enter phone number, then tap send OTP to verify it.',
+      name: 'providePhoneNoAndTapSendOtpToVerify',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Yes`
   String get yes {
     return Intl.message(
@@ -1228,6 +1238,16 @@ class S {
     return Intl.message(
       'to reset your password.',
       name: 'loginError2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fail to login to FB. Please check your Facebook account`
+  String get loginFbError {
+    return Intl.message(
+      'Fail to login to FB. Please check your Facebook account',
+      name: 'loginFbError',
       desc: '',
       args: [],
     );

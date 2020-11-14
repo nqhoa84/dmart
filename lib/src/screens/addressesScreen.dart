@@ -7,8 +7,8 @@ import '../../buidUI.dart';
 import '../../constant.dart';
 import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_map_location_picker/google_map_location_picker.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';

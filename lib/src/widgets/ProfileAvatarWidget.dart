@@ -53,7 +53,7 @@ class ProfileAvatarWidget extends StatelessWidget {
 //                    ),
 //                    errorWidget: (context, url, error) => Icon(Icons.error),
 //                  ),
-                    child: createNetworkImage(url: user.image?.url, width: 135, height: 135)
+                    child: createNetworkImage(url: user.avatarUrl, width: 135, height: 135)
                 ),
 //              SizedBox(
 //                width: 50,

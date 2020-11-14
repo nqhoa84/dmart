@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
@@ -46,36 +46,36 @@ class Helper {
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
   }
 
-  static Future<Marker> getMarker(Map<String, dynamic> res) async {
-    final Uint8List markerIcon = await getBytesFromAsset('assets/img/marker.png', 120);
-    final Marker marker = Marker(
-        markerId: MarkerId(res['id']),
-        icon: BitmapDescriptor.fromBytes(markerIcon),
-//        onTap: () {
-//          //print(res.name);
-//        },
-        anchor: Offset(0.5, 0.5),
-        infoWindow: InfoWindow(
-            title: res['name'],
-            snippet: res['distance'].toStringAsFixed(2) + ' mi',
-            onTap: () {
-              print('infowi tap');
-            }),
-        position: LatLng(double.parse(res['latitude']), double.parse(res['longitude'])));
+//  static Future<Marker> getMarker(Map<String, dynamic> res) async {
+//    final Uint8List markerIcon = await getBytesFromAsset('assets/img/marker.png', 120);
+//    final Marker marker = Marker(
+//        markerId: MarkerId(res['id']),
+//        icon: BitmapDescriptor.fromBytes(markerIcon),
+////        onTap: () {
+////          //print(res.name);
+////        },
+//        anchor: Offset(0.5, 0.5),
+//        infoWindow: InfoWindow(
+//            title: res['name'],
+//            snippet: res['distance'].toStringAsFixed(2) + ' mi',
+//            onTap: () {
+//              print('infowi tap');
+//            }),
+//        position: LatLng(double.parse(res['latitude']), double.parse(res['longitude'])));
+//
+//    return marker;
+//  }
 
-    return marker;
-  }
-
-  static Future<Marker> getMyPositionMarker(double latitude, double longitude) async {
-    final Uint8List markerIcon = await getBytesFromAsset('assets/img/my_marker.png', 120);
-    final Marker marker = Marker(
-        markerId: MarkerId(Random().nextInt(100).toString()),
-        icon: BitmapDescriptor.fromBytes(markerIcon),
-        anchor: Offset(0.5, 0.5),
-        position: LatLng(latitude, longitude));
-
-    return marker;
-  }
+//  static Future<Marker> getMyPositionMarker(double latitude, double longitude) async {
+//    final Uint8List markerIcon = await getBytesFromAsset('assets/img/my_marker.png', 120);
+//    final Marker marker = Marker(
+//        markerId: MarkerId(Random().nextInt(100).toString()),
+//        icon: BitmapDescriptor.fromBytes(markerIcon),
+//        anchor: Offset(0.5, 0.5),
+//        position: LatLng(latitude, longitude));
+//
+//    return marker;
+//  }
 
   static List<Icon> getStarsList(double rate, {double size = 18}) {
     var list = <Icon>[];

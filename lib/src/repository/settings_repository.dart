@@ -8,10 +8,10 @@ import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'package:location/location.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../helpers/maps_util.dart';
 import '../models/address.dart';
@@ -20,7 +20,7 @@ import '../models/setting.dart';
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
 final navigatorKey = GlobalKey<NavigatorState>();
-LocationData locationData;
+//LocationData locationData;
 
 
 Future<bool> initSettings() async {
@@ -70,29 +70,29 @@ Future<OrderSetting> listenOrderSetting() async {
   }
 }
 
-Future<dynamic> setCurrentLocation() async {
-  var location = new Location();
-  MapsUtil mapsUtil = new MapsUtil();
-  final whenDone = new Completer();
-  Address _address = Address.fromJSON({'address': 'S.current.unknown'});
-  location.requestService().then((value) async {
-    location.getLocation().then((_locationData) async {
-      String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
-      _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('delivery_address', json.encode(_address.toMap()));
-      whenDone.complete(_address);
-    }).timeout(Duration(seconds: 10), onTimeout: () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('delivery_address', json.encode(_address.toMap()));
-      whenDone.complete(_address);
-      return null;
-    }).catchError((e) {
-      whenDone.complete(_address);
-    });
-  });
-  return whenDone.future;
-}
+//Future<dynamic> setCurrentLocation() async {
+//  var location = new Location();
+//  MapsUtil mapsUtil = new MapsUtil();
+//  final whenDone = new Completer();
+//  Address _address = Address.fromJSON({'address': 'S.current.unknown'});
+//  location.requestService().then((value) async {
+//    location.getLocation().then((_locationData) async {
+//      String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
+//      _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
+//      SharedPreferences prefs = await SharedPreferences.getInstance();
+//      await prefs.setString('delivery_address', json.encode(_address.toMap()));
+//      whenDone.complete(_address);
+//    }).timeout(Duration(seconds: 10), onTimeout: () async {
+//      SharedPreferences prefs = await SharedPreferences.getInstance();
+//      await prefs.setString('delivery_address', json.encode(_address.toMap()));
+//      whenDone.complete(_address);
+//      return null;
+//    }).catchError((e) {
+//      whenDone.complete(_address);
+//    });
+//  });
+//  return whenDone.future;
+//}
 
 Future<Address> changeCurrentLocation(Address _address) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

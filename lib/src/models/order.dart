@@ -94,11 +94,15 @@ class Order extends IdObj {
       updatedAt = toDateTime(jsonMap['updated_at'], errorValue: null);
       createdDate = toDateTime(jsonMap['created_at'], errorValue: null);
 //      voucherCode = toStringVal(jsonMap['tax']);
-      deliveryAddress =
-          jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : new Address();
-      productOrders = jsonMap['product_orders'] != null
-          ? List.from(jsonMap['product_orders']).map((element) => ProductOrder.fromJSON(element)).toList()
-          : [];
+      if(jsonMap.containsKey('delivery_address') && jsonMap['delivery_address'] != null) {
+        deliveryAddress = Address.fromJSON(jsonMap['delivery_address']);
+      }
+
+      if(jsonMap.containsKey('product_orders') && jsonMap['product_orders'] != null) {
+        productOrders = List.from(jsonMap['product_orders']).map((element) => ProductOrder.fromJSON(element)).toList();
+      } else {
+        productOrders = [];
+      }
 
       _totalItems = 0;
 //      _orderVal = 0;

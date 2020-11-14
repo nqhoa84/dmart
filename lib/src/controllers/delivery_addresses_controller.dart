@@ -65,13 +65,13 @@ class DeliveryAddressesController extends Controller
     settingRepo.deliveryAddress.notifyListeners();
   }
 
-  Future<void> changeDeliveryAddressToCurrentLocation() async {
-    model.Address _address = await settingRepo.setCurrentLocation();
-    setState(() {
-      settingRepo.deliveryAddress.value = _address;
-    });
-    settingRepo.deliveryAddress.notifyListeners();
-  }
+//  Future<void> changeDeliveryAddressToCurrentLocation() async {
+//    model.Address _address = await settingRepo.setCurrentLocation();
+//    setState(() {
+//      settingRepo.deliveryAddress.value = _address;
+//    });
+//    settingRepo.deliveryAddress.notifyListeners();
+//  }
 
 //  void addAddress(model.Address address) {
 //    userRepo.addAddress(address).then((value) {

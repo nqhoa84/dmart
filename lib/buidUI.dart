@@ -62,6 +62,9 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
 }
 
 Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
+  print('_createUserInfoRowOnTopBar-----------');
+  print('fb ${user.fbAvatar}');
+  print('avatarUrl ${user.avatarUrl}');
   if (user.isLogin) {
     return InkWell(
       onTap: () => RouteGenerator.gotoProfileInfo(context),
@@ -71,7 +74,7 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
             padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
             child: CircleAvatar(
               backgroundColor: Colors.transparent,
-              backgroundImage: NetworkImage(currentUser.value.image.thumb),
+              backgroundImage: NetworkImage(user.avatarUrl),
 //              child: createNetworkImage(url: currentUser.value.image.thumb),
             ),
           ),
@@ -159,6 +162,30 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
           ],
         ),
       ),
+    ),
+  );
+}
+
+///Create appbar with logo and back button if need.
+AppBar createAppBarLogo(BuildContext context, {bool haveBackIcon = true}) {
+  return AppBar(
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    leading: haveBackIcon == false
+        ? null
+        : InkWell(
+            onTap: () {
+              if (Navigator.of(context).canPop()) Navigator.pop(context);
+            },
+            child: Icon(UiIcons.return_icon, color: DmConst.accentColor)),
+    title: InkWell(
+        onTap: () => RouteGenerator.gotoHome(context),
+        child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
+    centerTitle: true,
+    bottom: PreferredSize(
+      preferredSize: Size.fromHeight(4),
+      child: Divider(height: 4, thickness: 2, color: DmConst.accentColor),
     ),
   );
 }

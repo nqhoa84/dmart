@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/src/models/api_result.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -52,6 +53,42 @@ Future<User> login(User user) async {
 //    throw new Exception(response.body);
 //  }
   return currentUser.value;
+}
+
+Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, String name, String avatarUrl}) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}login/facebook';
+  var paras = {
+    'facebook_id': '$fbId',
+    'access_token': '$accessToken',
+    'name': '$name',
+    'avatar_url': '$avatarUrl',
+    'device_token': '${DmConst.deviceToken}'
+  };
+
+  print(url);
+  print(paras);
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+//      body: user.toMap(),
+    body: json.encode(paras),
+  );
+  print('login ${response.body}');
+
+  ApiResult<User> re = ApiResult<User>();
+  if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
+    dynamic js = json.decode(response.body);
+    re.setMsgAndStatus(js);
+    if(re.isSuccess) {
+      String token = toStringVal(js['data']['token']);
+      re.data = User.fromJSON(js['data']['user']);
+      currentUser.value = re.data;
+      currentUser.value.apiToken = token;
+    }
+  } else {
+    re.isNoJson = true;
+  }
+  return re;
 }
 
 ///return OTP if register ok. if not, return nullOrEmpty
@@ -292,8 +329,6 @@ Future<User> updatePersonalDetail(User user) async {
 
   return currentUser.value;
 }
-
-
 
 Future<List<Province>> getProvinces() async {
 

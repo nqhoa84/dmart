@@ -39,7 +39,7 @@ class ReviewItemWidget extends StatelessWidget {
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                  child: createNetworkImage(url: review.user?.image?.thumb ?? '', width: 65, height: 65),
+                  child: createNetworkImage(url: review.user?.avatarUrl ?? '', width: 65, height: 65),
               ),
               SizedBox(width: 15),
               Flexible(

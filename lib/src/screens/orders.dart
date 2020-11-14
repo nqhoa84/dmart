@@ -369,7 +369,10 @@ class _OrdersScreenState extends StateMVC<OrdersScreen> {
                     ),
                     _con.boughtProducts.isEmpty
                         ? Center(child: CircularProgressIndicator())
-                        : ProductGridView(products: _con.boughtProducts, heroTag: 'boughPro')
+                        : Padding(
+                          padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+                          child: ProductGridView(products: _con.boughtProducts, heroTag: 'boughPro'),
+                        )
                   ]),
                 )
 //            ExpansionPanelList(

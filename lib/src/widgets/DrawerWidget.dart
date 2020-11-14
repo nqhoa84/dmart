@@ -23,7 +23,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
         style: TextStyle(color: DmConst.textColorForTopBarCredit),),
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).accentColor,
-          backgroundImage: NetworkImage(currentUser.value.image.thumb),
+          backgroundImage: NetworkImage(currentUser.value.avatarUrl),
         ),
       );
     } else {

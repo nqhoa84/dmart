@@ -113,7 +113,7 @@ class _DmAppBarState extends State<DmAppBar> {
               padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(currentUser.value.image.thumb),
+                backgroundImage: NetworkImage(currentUser.value.avatarUrl),
 //          child: Image.network(currentUser.value.image.thumb),
 //          child: Image.network(
 //            '${user.image.thumb}',

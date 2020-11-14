@@ -34,29 +34,6 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
   }
 
   @override
-  Widget _build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            createSliverTopBar(context),
-            createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).helpAndSupports),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                    padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-                    child: buildContent(context)),
-              ]),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     Widget body;
     if(_con.faqs == null) {

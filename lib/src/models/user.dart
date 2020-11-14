@@ -19,6 +19,7 @@ class User extends IdNameObj{
   int point;
 
   String facebookId;
+  String fbAvatar;
 
   String get phone {
     if(_phone == null) return '';
@@ -62,6 +63,17 @@ class User extends IdNameObj{
   String bio;
   Media image;
 
+  String get avatarUrl {
+
+    if(DmUtils.isNotNullEmptyStr(fbAvatar)) {
+      return fbAvatar;
+    }
+    if(image != null && image.thumb != null) {
+      return image.thumb;
+    }
+    return 'http://dmartdev2.khmermedia.xyz/images/image_default.png';
+  }
+
   /// Used for indicate if client logged in or not. This is the token value returned from BD
   bool get isLogin => this.apiToken != null && this.apiToken.length > 10;
   bool get isNotLogin => isLogin == false;
@@ -88,6 +100,10 @@ class User extends IdNameObj{
       phone = toStringVal(jsonMap['phone']);
       email = toStringVal(jsonMap['email']);
       facebookId = toStringVal(jsonMap['facebook_id']);
+      if(jsonMap.containsKey('fb_avatar')) {
+        fbAvatar = toStringVal(jsonMap['fb_avatar']);
+      }
+
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
           ? Media.fromJSON(jsonMap['media'][0])
           : new Media();
@@ -95,7 +111,6 @@ class User extends IdNameObj{
       print('Error parsing data in User.fromJSON $e \n $trace');
     }
   }
-
 
   Map toMap() {
     var map = new Map<String, dynamic>();
@@ -105,7 +120,7 @@ class User extends IdNameObj{
     map["name"] = name??'';
     map["password"] = password;
     // map["device_token"] = deviceToken??'';
-    map["device_token"] = DmConst.deviceToken??'';
+    map["device_token"] = '${DmConst.deviceToken}';
     map["address"] = address;
     map["gender"] = gender != null?  gender.index: Gender.Others.index;
     map["birthday"] = birthday != null? toDateStr(birthday) : '';
@@ -136,6 +151,9 @@ class User extends IdNameObj{
     map["birthday"] = birthday != null? toDateTimeStr(birthday) : '';
     map["media"] = [image?.toMap()];
     map["token"] = apiToken;
+    map["facebook_id"] = facebookId;
+    map["fb_avatar"] = fbAvatar;
+
     return map;
   }
 
@@ -153,6 +171,7 @@ class User extends IdNameObj{
     var map = this.toMap();
     return map.toString();
   }
+
   bool profileCompleted() {
     return address != null && address != '' && phone != null && phone != '';
   }

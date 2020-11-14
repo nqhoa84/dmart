@@ -204,21 +204,20 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
             ),
             SizedBox(height: 15),
             //Facebook button.
-            //TODO enable this
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.center,
-//              children: [
-//                Padding(
-//                  padding: const EdgeInsets.only(right: 15),
-//                  child: Text(S.of(context).orSignInWith),
-//                ),
-//                InkWell(
-//                  onTap: onPressFbLogin,
-//                  child: Image.asset('assets/img/C_Facebook.png', width: 40, fit: BoxFit.scaleDown),
-//                ),
-//              ],
-//            ),
-//            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Text(S.of(context).orSignInWith),
+                ),
+                InkWell(
+                  onTap: onPressFbLogin,
+                  child: Image.asset('assets/img/C_Facebook.png', width: 40, fit: BoxFit.scaleDown),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
             Divider(thickness: 2, height: 2),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -272,7 +271,7 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
 
   Future<void> onPressFbLogin() async {
     print('Press on FB login.');
-    await loginFb3();
+//    await loginFb3();
 
     // Log in
     final res = await widget.fb.logIn(permissions: [
@@ -283,9 +282,7 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
 // Check result status
     switch (res.status) {
       case FacebookLoginStatus.Success:
-      // Logged in
-
-      // Send access token to server for validation and auth
+      // Logged in, Send access token to server for validation and auth
         final FacebookAccessToken accessToken = res.accessToken;
         print('Access token: ${accessToken.token}');
 
@@ -303,13 +300,15 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
         if (email != null)
           print('And your email is $email');
 
+        _con.loginFb(fbId: profile.userId, accessToken: accessToken.token, name: profile.name, avatarUrl: imageUrl);
+
         break;
       case FacebookLoginStatus.Cancel:
       // User cancel log in
         break;
       case FacebookLoginStatus.Error:
       // Log in failed
-        print('Error while log in: ${res.error}');
+        _con.showErr(S.of(context).loginFbError);
         break;
     }
   }

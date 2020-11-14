@@ -67,7 +67,7 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     return Column(
       children: [
         ListTile(
-          trailing: CircleAvatar(backgroundImage: NetworkImage(u.image.thumb)),
+          trailing: CircleAvatar(backgroundImage: NetworkImage(u.avatarUrl)),
           title: Text(
             '${S.of(context).welcome} ${u.fullNameWithTitle}',
             style: Theme.of(context).textTheme.headline6,

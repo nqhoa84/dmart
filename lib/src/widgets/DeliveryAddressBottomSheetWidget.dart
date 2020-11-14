@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_map_location_picker/google_map_location_picker.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -46,22 +46,22 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
               children: <Widget>[
                 InkWell(
                   onTap: () async {
-                    LocationResult result = await showLocationPicker(
-                      context,
-                      setting.value.googleMapsKey,
-                      initialCenter:
-                          LatLng(deliveryAddress.value?.latitude ?? 0, deliveryAddress.value?.longitude ?? 0),
-                      //automaticallyAnimateToCurrentLocation: true,
-                      //mapStylePath: 'assets/mapStyle.json',
-                      myLocationButtonEnabled: true,
-                      //resultCardAlignment: Alignment.bottomCenter,
-                    );
+//                    LocationResult result = await showLocationPicker(
+//                      context,
+//                      setting.value.googleMapsKey,
+//                      initialCenter:
+//                          LatLng(deliveryAddress.value?.latitude ?? 0, deliveryAddress.value?.longitude ?? 0),
+//                      //automaticallyAnimateToCurrentLocation: true,
+//                      //mapStylePath: 'assets/mapStyle.json',
+//                      myLocationButtonEnabled: true,
+//                      //resultCardAlignment: Alignment.bottomCenter,
+//                    );
 //                    _con.addAddress(new Address.fromJSON({
 //                      'address': result.address,
 //                      'latitude': result.latLng.latitude,
 //                      'longitude': result.latLng.longitude,
 //                    }));
-                    print("result = $result");
+//                    print("result = $result");
                     // Navigator.of(widget.scaffoldKey.currentContext).pop();
                   },
                   child: Row(
@@ -110,9 +110,9 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                 SizedBox(height: 25),
                 InkWell(
                   onTap: () {
-                    _con.changeDeliveryAddressToCurrentLocation().then((value) {
-                      Navigator.of(widget.scaffoldKey.currentContext).pop();
-                    });
+//                    _con.changeDeliveryAddressToCurrentLocation().then((value) {
+//                      Navigator.of(widget.scaffoldKey.currentContext).pop();
+//                    });
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

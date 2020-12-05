@@ -1,5 +1,8 @@
 {
+  "code": "Code",
   "providePhoneNoAndTapSendOtpToVerify": "Please enter phone number, then tap send OTP to verify it.",
+  "sendOtp": "Send OTP",
+  "requestOtp": "Request OTP",
   "yes": "Yes",
   "no": "No",
   "ok": "OK",

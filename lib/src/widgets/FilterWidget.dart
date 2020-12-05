@@ -312,7 +312,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                       },
                       child: Icon(
                           this._cateExpCtrl.expanded == true ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                          color: DmConst.accentColor),
+                          ),
                     ),
                   ),
                 ),

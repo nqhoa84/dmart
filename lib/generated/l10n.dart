@@ -33,11 +33,41 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Code`
+  String get code {
+    return Intl.message(
+      'Code',
+      name: 'code',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please enter phone number, then tap send OTP to verify it.`
   String get providePhoneNoAndTapSendOtpToVerify {
     return Intl.message(
       'Please enter phone number, then tap send OTP to verify it.',
       name: 'providePhoneNoAndTapSendOtpToVerify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send OTP`
+  String get sendOtp {
+    return Intl.message(
+      'Send OTP',
+      name: 'sendOtp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request OTP`
+  String get requestOtp {
+    return Intl.message(
+      'Request OTP',
+      name: 'requestOtp',
       desc: '',
       args: [],
     );

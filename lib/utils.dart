@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import './src/repository/user_repository.dart' as userRepo;
 import 'package:url_launcher/url_launcher.dart' as launcher;
+import 'package:http/http.dart' as http;
 
 
 /// Parse a object to double. if error return the [errorValue] data.
@@ -56,24 +60,54 @@ String toStringVal(var obj, {String errorValue = ''}) {
   return obj.toString();
 }
 
-
-
   Map<String, String> createHeaders(User u) {
     Map<String, String> header = Map();
     //HttpHeaders.contentTypeHeader: 'application/json'
     header[HttpHeaders.contentTypeHeader] = 'application/json';
     header['Authorization'] = 'Bearer ${u.apiToken}';
-//    header['device-token'] = AppState.udid;
-//    header['device-type'] = Platform.isIOS ? 'iOS' : 'Android';
+    header['Language'] = DmState.getCurrentLanguage();
     return header;
   }
+
+  ///Create a minimal header with [HttpHeaders.contentTypeHeader] and ['Language'] value;
+Map<String, String> createHeadersMinimal() {
+  Map<String, String> header = Map();
+  header[HttpHeaders.contentTypeHeader] = 'application/json';
+  header['Language'] = DmState.getCurrentLanguage();
+  return header;
+}
 
 Map<String, String> createHeadersRepo() {
   return createHeaders(userRepo.currentUser.value);
 }
 
+dynamic httpPost({@required String url, Map bodyParams}) async {
+  printLog('httpPost: $url');
+  printLog('bodyParams: $bodyParams');
+
+  return await http.Client().post(
+    url,
+    headers: createHeadersRepo(),
+    body: json.encode(bodyParams??{}),
+  );
+}
+
+dynamic httpPut({@required String url, Map bodyParams}) async {
+  printLog('httpPut: $url');
+  printLog('bodyParams: $bodyParams');
+  return await http.Client().put(
+    url,
+    headers: createHeadersRepo(),
+    body: json.encode(bodyParams??{}),
+  );
+}
+
 String getDisplayMoney(double value) {
   return '\$ ${value != null ? value.toStringAsFixed(2) : '0.00'}';
+}
+
+printLog(dynamic obj) {
+  if(DmConst.printDebug) print(obj);
 }
 
 
@@ -92,7 +126,8 @@ class DmUtils {
   }
 
   static bool isPhone(String value) {
-    String pattern = r'^(?:[+0][0-9])?[ 0-9]{8,15}[0-9]$';
+    // String pattern = r'^(?:[+0][0-9])?[ 0-9]{8,15}[0-9]$';
+    String pattern = r'^(?:[+0][0-9])?[0-9]{9,10}$';
     RegExp regExp = new RegExp(pattern);
 
     return regExp.hasMatch(value.trim());
@@ -122,7 +157,6 @@ class DmUtils {
     return !isPhone(value);
   }
 
-
   static bool isNullOrEmptyStr(String value) {
     return value == null || value.trim().isEmpty;
   }
@@ -131,8 +165,6 @@ class DmUtils {
     return !isNullOrEmptyStr(value);
   }
 
-
-
   static bool isNullOrEmptyList(List value) {
     return value == null || value.isEmpty;
   }
@@ -140,7 +172,6 @@ class DmUtils {
   static bool isNotNullEmptyList(List value) {
     return ! isNullOrEmptyList(value);
   }
-
 
   static bool isNullOrEmptyMap(Map value) {
     return value == null || value.isEmpty;
@@ -162,5 +193,19 @@ class DmUtils {
       return false;
     }
     return true;
+  }
+
+  ///Determine is the api request return in json format
+  ///
+  /// 404	Not Found (page or other resource doesn’t exist)
+  ///    401	Not authorized (not logged in)
+  ///    403	Logged in but access to requested area is forbidden
+  ///    400	Bad request (something wrong with URL or parameters)
+  ///    422	Unprocessable Entity (validation failed)
+  ///    500	General server error
+  static bool isApiReturnedJson(Response response) {
+    return true;
+    // printLog('response.statusCode ${response.statusCode}');
+    // return response.statusCode != 404 && response.statusCode != 400;
   }
 }

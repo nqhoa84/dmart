@@ -221,7 +221,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                   onPressed: onPressCancel,
                   child: Text(S.of(context).cancel,
                       style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.red)),
-//                    shape: StadiumBorder(),
+                  borderSide: BorderSide(color: DmConst.accentColor),
                 ),
               ),
               Expanded(
@@ -308,10 +308,9 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
   }
 
   Future<void> onPressSave() async {
-    print('_AddressWidState.onPressSave');
     bool re = await _con.saveAddress();
     if(re == true && Navigator.canPop(context)) {
-      print('-----pop, re.length = ${_con.addresses.length}');
+      print('-----pop, re.length = ${_con.addresses?.length}');
       Navigator.pop<List<Address>>(context, _con.addresses);
     }
   }

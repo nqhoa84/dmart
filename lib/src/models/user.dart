@@ -1,5 +1,6 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/address.dart';
+import 'package:global_configuration/global_configuration.dart';
 
 import '../../utils.dart';
 import '../models/media.dart';
@@ -20,6 +21,7 @@ class User extends IdNameObj{
 
   String facebookId;
   String fbAvatar;
+  String fbAccessToken;
 
   String get phone {
     if(_phone == null) return '';
@@ -68,10 +70,11 @@ class User extends IdNameObj{
     if(DmUtils.isNotNullEmptyStr(fbAvatar)) {
       return fbAvatar;
     }
-    if(image != null && image.thumb != null) {
+    if(image != null && image.thumb != null && !image.thumb.endsWith('image_default.png')) {
       return image.thumb;
     }
-    return 'http://dmartdev2.khmermedia.xyz/images/image_default.png';
+    return "${GlobalConfiguration().getString('base_url')}images/icons/avatar_default.png";
+    // return 'http://dmartdev2.khmermedia.xyz/images/avatar_default.png';
   }
 
   /// Used for indicate if client logged in or not. This is the token value returned from BD
@@ -162,6 +165,15 @@ class User extends IdNameObj{
     map["phone"] = _phone??'';
     map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
     map["password"] = password;
+    map["device_token"] = DmConst.deviceToken??'';
+    return map;
+  }
+
+  Map toMapRegFb() {
+    var map = new Map<String, dynamic>();
+    map["phone"] = _phone??'';
+    map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
+    map["facebook_id"] = facebookId;
     map["device_token"] = DmConst.deviceToken??'';
     return map;
   }

@@ -9,8 +9,10 @@ import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/sms_retrieved.dart';
 import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/text_field_pin.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
+import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import '../../DmState.dart';
 import '../../buidUI.dart';
@@ -181,28 +183,32 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               buildMobileExistedWid(context),
-
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: buildBoxDecorationForTextField(context),
-                child: TextFormField(
-                    style: txtStyleAccent,
-                    textAlignVertical: TextAlignVertical.center,
-                    keyboardType: TextInputType.number,
-                    onSaved: (input) {
-                      _con.user.phone = input;
-                    },
-                    validator: _phoneValidate,
-                    decoration: new InputDecoration(
-                      hintText: S.of(context).phone,
-                      hintStyle: txtStyleAccent,
-                      enabledBorder:
-                          UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                      prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
-                    ),
-                    inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]),
+              PhoneNoWid(
+                onSaved: (input) {
+                  _con.user.phone = input;
+                },
               ),
+              // Container(
+              //   padding: EdgeInsets.symmetric(horizontal: 5),
+              //   decoration: buildBoxDecorationForTextField(context),
+              //   child: TextFormField(
+              //       style: txtStyleAccent,
+              //       textAlignVertical: TextAlignVertical.center,
+              //       keyboardType: TextInputType.number,
+              //       onSaved: (input) {
+              //         _con.user.phone = input;
+              //       },
+              //       validator: _phoneValidate,
+              //       decoration: new InputDecoration(
+              //         hintText: S.of(context).phone,
+              //         hintStyle: txtStyleAccent,
+              //         enabledBorder:
+              //             UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+              //         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+              //         prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
+              //       ),
+              //       inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]),
+              // ),
 
               SizedBox(height: 10),
 
@@ -551,6 +557,21 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             ),
           ],
         ),
+        Divider(color: Colors.grey.shade700),
+        Row(
+          children: [
+            Expanded(
+              child: OutlineButton(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                onPressed: () => RouteGenerator.gotoHome(context),
+                child: Text(S.of(context).startShopping,
+                    style: Theme.of(context).textTheme.headline6),
+                borderSide: BorderSide(color: DmConst.accentColor, width: 2),
+              ),
+            ),
+          ],
+        ),
+
       ],
     );
   }
@@ -699,6 +720,20 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             ),
           ],
         ),
+        Divider(color: Colors.grey.shade700),
+        Row(
+          children: [
+            Expanded(
+              child: OutlineButton(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                onPressed: () => RouteGenerator.gotoHome(context),
+                child: Text(S.of(context).startShopping,
+                    style: Theme.of(context).textTheme.headline6),
+                borderSide: BorderSide(color: DmConst.accentColor, width: 2),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -778,20 +813,20 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
   void onPressYesRegMe() async {
     _con.personalFormKey.currentState.save();
     if (_con.personalFormKey.currentState.validate()) {
-      _con.address.phone = _con.user.phone;
-      _con.address.fullName = _con.user.name;
-      _con.address.userId = _con.user.id;
-      _con.address.isDefault = true;
+      if(!_con.address.isValid) {
+        _con.address.phone = _con.user.phone;
+        _con.address.fullName = _con.user.name;
+        _con.address.userId = _con.user.id;
+        _con.address.isDefault = true;
+        print('--start add address');
+        bool a = await _con.addAddress();
+      }
 
-      print('--start add address');
-//      bool a = await _con.addAddress();
       print('--start _con.updateUser()');
       bool b = await _con.updateUser();
       if(b) {
         //to thank you page.
         RouteGenerator.gotoProfileUpdatedScreen(context);
-      } else {
-        _con.showMsg(S.of(context).generalErrorMessage);
       }
     }
   }

@@ -7,6 +7,7 @@ import 'package:dmart/src/widgets/toolbars/LogoOnlyAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import '../../buidUI.dart';
 import '../../constant.dart';

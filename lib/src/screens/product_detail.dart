@@ -28,6 +28,7 @@ import '../../src/widgets/ProductDetailsTabWidget.dart';
 import '../../src/widgets/ReviewsListWidget.dart';
 import '../../src/widgets/ShoppingCartButton.dart';
 
+// ignore: must_be_immutable
 class ProductDetailScreen extends StatefulWidget {
   RouteArgument routeArgument;
   String _heroTag;
@@ -134,7 +135,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
         icon: Container(
             padding: EdgeInsets.all(8),
             decoration: new BoxDecoration(
-              color: Theme.of(context).accentColor.withOpacity(0.3),
+              color: Theme.of(context).accentColor, //.withOpacity(0.3),
               shape: BoxShape.circle,
             ),
             child: Icon(UiIcons.return_icon, color: Colors.white)),
@@ -264,7 +265,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                   1: FlexColumnWidth(3),
                 },
                 children: [
-                  _createRowInfo(S.of(context).productCode, _con.product.code),
+                  _createRowInfo(S.of(context).code, _con.product.code),
                   _createRowInfo(S.of(context).category, _con.product.cateName),
                   _createRowInfo(S.of(context).brand, _con.product.brandName),
                   _createRowInfo(S.of(context).unit, _con.product.unitName),

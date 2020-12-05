@@ -20,6 +20,7 @@ class Store extends IdNameObj{
   Store();
 
   Store.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name']);

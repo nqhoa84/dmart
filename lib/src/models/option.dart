@@ -13,6 +13,7 @@ class Option extends IdObj{
   Option();
 
   Option.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       optionGroupId = jsonMap['option_group_id'] != null ? jsonMap['option_group_id'].toString() : '0';

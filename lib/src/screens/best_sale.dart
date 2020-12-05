@@ -9,6 +9,7 @@ import '../../constant.dart';
 import '../../src/models/route_argument.dart';
 import 'abs_product_mvc.dart';
 
+// ignore: must_be_immutable
 class BestSaleScreen extends StatefulWidget {
   RouteArgument routeArgument;
 
@@ -28,6 +29,7 @@ class _BestSaleScreenState extends ProductStateMVC<BestSaleScreen> {
 
   @override
   void initState() {
+    // this.lstProducts = proCon.bestSaleProducts;
     proCon.listenForBestSaleProducts();
     super.initState();
   }

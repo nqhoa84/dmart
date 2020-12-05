@@ -13,6 +13,7 @@ class Review extends IdObj{
   Review.init(this.rate);
 
   Review.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       review = jsonMap['review'];

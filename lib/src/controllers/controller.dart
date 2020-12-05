@@ -10,8 +10,8 @@ import '../repository/user_repository.dart' as userRepo;
 class Controller extends ControllerMVC {
   bool loading = false;
 
-  GlobalKey<ScaffoldState> scaffoldKey;
-  Controller({this.scaffoldKey});
+  var scaffoldKey = new GlobalKey<ScaffoldState>();
+  Controller() ;
 
   void showErr(String msg) {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -31,5 +31,17 @@ class Controller extends ControllerMVC {
 
   void showErrGeneral() {
     showErr(S.of(context).generalErrorMessage);
+  }
+
+  void setLoadingOn() {
+    setState((){
+      this.loading = true;
+    });
+  }
+
+  void setLoadingOff() {
+    setState((){
+      this.loading = false;
+    });
   }
 }

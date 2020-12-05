@@ -8,7 +8,7 @@ import 'ProductItemWide.dart';
 class HomeProductsListView extends StatelessWidget {
   final List<Product> products;
   final String hero;
-  final Animation animationOpacity;
+  Animation animationOpacity;
 
   HomeProductsListView({this.products = const [], this.hero = 'home',
     this.animationOpacity

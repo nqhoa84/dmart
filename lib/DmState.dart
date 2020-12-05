@@ -110,4 +110,6 @@ class DmState {
     }
   }
 
+  static String getCurrentLanguage() => isKhmer ? 'kh' : 'en';
+
 }

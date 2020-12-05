@@ -18,7 +18,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
-  SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super(scaffoldKey: scaffoldKey);
+  // SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super(scaffoldKey: scaffoldKey);
 
   @override
   void _initState() {

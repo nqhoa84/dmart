@@ -4,6 +4,7 @@ import 'package:dmart/route_generator.dart';
 import '../helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class DmBottomNavigationBar extends StatelessWidget {
   int currentIndex;
   Function(int i) onTap;
@@ -18,9 +19,9 @@ class DmBottomNavigationBar extends StatelessWidget {
   }
 
   void _defaultOnTap(int selectedIndex, BuildContext context) {
-    if(selectedIndex == DmState.bottomBarSelectedIndex) {
-      return;
-    } else {
+    // if(selectedIndex == DmState.bottomBarSelectedIndex) {
+    //   return;
+    // } else {
       DmState.bottomBarSelectedIndex = selectedIndex;
       if(selectedIndex == 0) {
         RouteGenerator.gotoHome(context);
@@ -35,7 +36,7 @@ class DmBottomNavigationBar extends StatelessWidget {
       } else {
         RouteGenerator.gotoHome(context);
       }
-    }
+    // }
   }
 
   @override

@@ -9,6 +9,7 @@ class Unit extends IdNameObj{
   Unit();
 
   Unit.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name_en']);
@@ -31,6 +32,7 @@ class ProductType extends IdNameObj{
   ProductType();
 
   ProductType.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name_en']);

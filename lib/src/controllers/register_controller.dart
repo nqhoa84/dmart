@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:dmart/src/models/address.dart';
+import 'package:dmart/src/models/api_result.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../generated/l10n.dart';
 import '../models/user.dart';
+import '../models/i_name.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'controller.dart';
 
@@ -75,16 +78,29 @@ class RegController extends Controller {
     if(_timer != null) _timer.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() => this.otpExpInSeconds--);
-      if(this.otpExpInSeconds <= 0) timer.cancel();
+      if(this.otpExpInSeconds <= 0) {
+        setState(() => this.OTP = '');
+        timer.cancel();
+      }
     });
+  }
+
+  Future<User> verifyOtpRegFb() async {
+//    if (loading) return currentUser.value;
+//    setState(()=>loading = true);
+//    //TODO check here
+//    User u = await userRepo.verifyOtpToCompleteRegFb(user.phone, OTP);
+//    if(u.isValid) currentUser.value = u;
+//    setState(()=>loading = false);
+//    return u;
   }
 
   Future<User> verifyOtp() async {
     if (loading) return currentUser.value;
-    loading = true;
+    setState(()=>loading = true);
     User u = await userRepo.verifyOtp(user.phone, OTP);
     if(u.isValid) currentUser.value = u;
-    loading = false;
+    setState(()=>loading = false);
     return u;
   }
 
@@ -150,37 +166,41 @@ class RegController extends Controller {
 
   Future<bool> addAddress() async {
     if (loading) return false;
+    setLoadingOn();
     try {
-      loading = true;
-      List a = await userRepo.addAddress(address);
-      loading = false;
-      if (a != null) {
+      var re = await userRepo.addAddress(address);
+      if(re.isSuccess) {
+        re.data.sort(IdObj.idComparerDescending);
+        if(re.data.isNotEmpty) {
+          this.address = re.data.first;
+        }
         showMsg(S.of(context).newAddressAdded);
-        return true;
-      } else {
-        showMsg(S.of(context).generalErrorMessage);
       }
-    } on Exception catch (e, trace) {
-      loading = false;
+      setLoadingOff();
+      return re.isSuccess;
+    } catch (e, trace) {
       print("$e $trace");
       showMsg(S.of(context).generalErrorMessage);
+    } finally {
+      setLoadingOff();
     }
     return false;
   }
 
   Future<bool> updateUser() async {
     if (loading) return false;
-    User re;
+    // User re;
     try {
       loading = true;
-      re = await userRepo.update(user);
+      var re = await userRepo.update(user);
       loading = false;
-      if (re != null) {
+      if (re.isSuccess) {
         showMsg(S.of(context).accountInfoUpdated);
-        this.user = re;
+        this.user = re.data;
         return true;
       } else {
-        showErrGeneral();
+        // showErrGeneral();
+        showMsg(re.message);
       }
     } on Exception catch (e, trace) {
       loading = false;
@@ -189,4 +209,40 @@ class RegController extends Controller {
     }
     return false;
   }
+
+  Future<void> sendOtpFb() async {
+    if (loading) return;
+    setState(() => loading = true);
+
+    regFormKey.currentState.save();
+    if (regFormKey.currentState.validate()) {
+//      Overlay.of(context).insert(loader);
+      ApiResult re = await userRepo.registerFb(user);
+      if(re.isSuccess == true) {
+
+      }
+
+      startTimerResendOtp();
+//      repository.register(user).then((value) {
+//        if (DmUtils.isNotNullEmptyStr(value)) { //register ok
+//          OTP = value;
+//        } else {
+//          OTP = '';
+//          scaffoldKey.currentState.showSnackBar(SnackBar(
+//            content: Text(S.of(context).registerError),
+//          ));
+//        }
+//      }).catchError((e) {
+//        loader.remove();
+//        scaffoldKey.currentState.showSnackBar(SnackBar(
+//          content: Text(S.of(context).registerError),
+//        ));
+//      }).whenComplete(() {
+//        loading = false;
+//        Helper.hideLoader(loader);
+//      });
+    }
+    setState(() => loading = false);
+  }
+
 }

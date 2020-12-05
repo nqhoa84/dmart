@@ -367,6 +367,7 @@ Future<Stream<Product>> _getBestSale(int pageIdx) async {
 }
 
 Future<List<Product>> getBestSale2(int pageIdx) async {
+  // sleep(const Duration(seconds:1));
   Uri uri = Helper.getApiUri('best_sale');
   uri = uri.replace(queryParameters: {'page': pageIdx.toString()});
   print(uri);

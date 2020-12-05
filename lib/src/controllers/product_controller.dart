@@ -12,26 +12,26 @@ import '../models/option.dart';
 import '../models/product.dart';
 import '../repository/cart_repository.dart';
 import '../repository/product_repository.dart';
+import 'controller.dart';
 
-class ProductController extends ControllerMVC {
+class ProductController extends Controller {
   Product product;
-  List<Product> relatedProducts = [];
+  List<Product> relatedProducts;
   List<Product> bestSaleProducts;
-  List<Product> newArrivalProducts = [];
-  List<Product> special4UProducts = [];
+  List<Product> newArrivalProducts;
+  List<Product> special4UProducts;
   List<Cart> carts = [];
 //  Favorite favorite;
   List<Review> reviews = <Review>[];
-  List<Product> brandsProducts=[];
-  List<Product> boughtProducts=[];
-  List<Product> promotionProducts=[];
-  List<Product> categoriesProducts=[];
+  List<Product> brandsProducts;
+  List<Product> boughtProducts;
+  List<Product> promotionProducts;
+  List<Product> categoriesProducts;
 //  List<Favorite> favorites = <Favorite>[];
-  GlobalKey<ScaffoldState> scaffoldKey;
 
-  ProductController() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
-  }
+  // ProductController() {
+  //   this.scaffoldKey = new GlobalKey<ScaffoldState>();
+  // }
 
   selectBrandById(List<Brand> brands, int id) {
     brands.forEach((Brand brand) {
@@ -56,19 +56,10 @@ class ProductController extends ControllerMVC {
   ///if [nextPage] is FALSE, this will refresh the [bestSaleProducts].
   void listenForBestSaleProducts({bool nextPage = false}) async {
     _bestSalePageIdx = nextPage == false ? 1 : _bestSalePageIdx + 1;
+
+    var pros = await getBestSale2(_bestSalePageIdx);
     if(this.bestSaleProducts == null)
       bestSaleProducts = [];
-//    final Stream<Product> stream = await getBestSale(_bestSalePageIdx);
-//    stream.listen((Product _product) {
-//      setState(() {
-//        if(_product.isValid)
-//          bestSaleProducts.add(_product);
-//      });
-////      print('best sale, pro id = ${_product.id}');
-//    }, onError: (a) {
-//      print(a);
-//    }, onDone: () {});
-    var pros = await getBestSale2(_bestSalePageIdx);
     pros.forEach((p) {
       setState(() {
         if(p.isValid)
@@ -84,6 +75,8 @@ class ProductController extends ControllerMVC {
       _newArrivalPageIdx = nextPage == false ? 1 : _newArrivalPageIdx + 1;
 
       final List<Product> ps = await getNewArrivals2(_newArrivalPageIdx);
+      if(this.newArrivalProducts == null)
+        newArrivalProducts = [];
       setState(() {
         ps.forEach((element) {newArrivalProducts.add(element);});
       });
@@ -107,6 +100,8 @@ class ProductController extends ControllerMVC {
   void listenForSpecial4U({bool nextPage = false}) async {
     _spe4UPageIdx = nextPage == false ? 1 : _spe4UPageIdx + 1;
     final List<Product> ps = await getSpecial4U2(_spe4UPageIdx);
+    if(this.special4UProducts == null)
+      special4UProducts = [];
     setState(() {
       ps.forEach((element) {special4UProducts.add(element);});
     });
@@ -160,7 +155,8 @@ class ProductController extends ControllerMVC {
     try {
 //      final List<Product> stream = await getRelatedProducts2(productId);
       var ps = await getRelatedProducts2(productId);
-
+      if(this.relatedProducts == null)
+        relatedProducts = [];
       setState((){
         this.relatedProducts.clear();
         ps.forEach((element) {
@@ -215,10 +211,12 @@ class ProductController extends ControllerMVC {
   void listenForPromoProducts(int promoId, {bool nextPage = false}) async {
     _promoPageIdx = nextPage == false ? 1 : _promoPageIdx + 1;
     final List<Product> ps = await getProductsByPromotion2(promoId, _promoPageIdx);
+    if(this.promotionProducts == null)
+      promotionProducts = [];
     setState(() {
       ps.forEach((element) {promotionProducts.add(element);});
     });
-    final Stream<Product> stream = await getProductsByPromotion(promoId, _promoPageIdx);
+    // final Stream<Product> stream = await getProductsByPromotion(promoId, _promoPageIdx);
 //    promotionProducts.clear();
 //    stream.listen((Product _product) {
 //      setState(() {
@@ -239,6 +237,8 @@ class ProductController extends ControllerMVC {
   Future<bool> listenForProductsByCategory({int id, String message,bool nextPage = false}) async {
     _cateProductsPageIdx = nextPage == false ? 1 : _cateProductsPageIdx + 1;
     final List<Product> ps = await getProductsByCategory2(id, _cateProductsPageIdx);
+    if(this.categoriesProducts == null)
+      categoriesProducts = [];
     setState(() {
       ps.forEach((element) {categoriesProducts.add(element);});
     });

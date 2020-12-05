@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/utils.dart';
@@ -16,6 +17,7 @@ class Category extends NameImageObj{
   }
 
   Category.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name_en']);

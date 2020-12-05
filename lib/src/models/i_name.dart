@@ -19,7 +19,10 @@ class IdObj {
 
   @override
   int get hashCode => id.hashCode;
-  
+
+  static int idComparerAccending(IdObj a, IdObj b) => a.id?.compareTo(b.id);
+
+  static int idComparerDescending(IdObj a, IdObj b) => b.id?.compareTo(a.id);
 }
 
 class IdNameObj extends IdObj {

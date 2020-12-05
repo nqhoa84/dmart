@@ -1,5 +1,8 @@
 {
+  "code": "លេខកូដ",
   "providePhoneNoAndTapSendOtpToVerify": "សូមបញ្ចូលលេខទូរស័ព្ទបន្ទាប់មកប៉ះផ្ញើ OTP ដើម្បីផ្ទៀងផ្ទាត់វា។",
+  "sendOtp": "ផ្ញើ OTP",
+  "requestOtp": "ស្នើសុំ OTP",
   "yes": "ត្រូវហើយ",
   "no": "ទេ",
   "ok": "យល់ព្រម",

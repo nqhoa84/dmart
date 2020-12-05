@@ -24,7 +24,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   bool _userLoaded = false, _settingLoaded = false;
 
-  SplashScreenState() : super(SplashScreenController(scaffoldKey: GlobalKey<ScaffoldState>())) {
+  SplashScreenState() : super(SplashScreenController()) {
     _con = controller;
   }
 

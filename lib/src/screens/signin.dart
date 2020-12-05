@@ -226,20 +226,13 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
             Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      color: DmConst.bgrColorSearchBar,
-                      border: Border.all(color: Theme.of(context).accentColor, width: 2),
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    child: FlatButton(
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                      onPressed: onPressRegister,
-                      child: Text(S.of(context).register,
-                          style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor)),
-                      color: Colors.white,
-                    ),
+                  child: OutlineButton(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                    onPressed: onPressRegister,
+                    child: Text(S.of(context).register,
+                        style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor)),
+                    // color: Colors.white,
+                    borderSide: BorderSide(color: DmConst.accentColor, width: 2),
                   ),
                 ),
               ],

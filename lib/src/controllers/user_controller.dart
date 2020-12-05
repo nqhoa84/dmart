@@ -1,6 +1,7 @@
 import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/api_result.dart';
 import 'package:dmart/src/repository/user_repository.dart';
+import 'package:dmart/src/screens/signup_fb.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -81,11 +82,13 @@ class UserController extends Controller {
   }
 
   void loginFb({@required String fbId, String accessToken, String name, String avatarUrl}) async {
-    print('Start login FB----');
+    print('Start login FB----fbId=$fbId, name=$name, avatarUrl=$avatarUrl, accessToken=$accessToken');
     if(this.loading) return;
     this.loading = true;
     ApiResult<User> re = await repository.loginFB(fbId: fbId, accessToken: accessToken, name: name, avatarUrl: avatarUrl);
     this.loading = false;
+
+    print(re);
 
     if(re.isSuccess) {
       re.data.fbAvatar = avatarUrl;
@@ -95,12 +98,13 @@ class UserController extends Controller {
 //      currentUser.notifyListeners();
     } else {
       //need to register by FbId
-      if(re.isNoJson == false) {
-
-      } else {
+      if(re.isNoJson == true) {
         // Todo call api to collect error.
         // send error message
         showErrGeneral();
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => SignUpFbScreen(
+            fbId: fbId, name: name, avatarUrl: avatarUrl, accessToken: accessToken)));
       }
     }
   }

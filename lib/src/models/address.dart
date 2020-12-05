@@ -31,6 +31,7 @@ class Address extends IdObj {
 
   Address clone() {
     Address a = Address();
+    a.id = this.id;
     a.address = this.address;
     a.fullName = this.fullName;
     a.phone = this.phone;
@@ -66,15 +67,16 @@ class Address extends IdObj {
         },
  */
   Address.fromJSON(Map<String, dynamic> map) {
+    if(map == null) return;
     try {
       id = toInt(map['id']);
       description = map["description"] ?? '';
       address = map["address"] ?? '';
-      province = map["province"] != null ? Province.fromJSON(map["province"]) : Province();
       try {
+        province = Province.fromJSON(map["province"]);
         district = District.fromJSON(map["district"]);
       } on Exception catch (e) {
-        district = District();
+        // district = District();
       }
       try {
         ward = Ward.fromJSON(map["ward"]);
@@ -138,6 +140,7 @@ class Province extends IdNameObj{
   Province();
 
   Province.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     id = toInt(jsonMap['id']);
     nameEn = toStringVal(jsonMap['name_en']);
     nameKh = toStringVal(jsonMap['name_kh']);
@@ -160,6 +163,7 @@ class District extends IdNameObj{
   District();
 
   District.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     id = toInt(jsonMap['id']);
     nameEn = toStringVal(jsonMap['name_en']);
     nameKh = toStringVal(jsonMap['name_kh']);
@@ -183,6 +187,7 @@ class Ward extends IdNameObj{
   Ward();
 
   Ward.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     id = toInt(jsonMap['id']);
     nameEn = toStringVal(jsonMap['name_en']);
     nameKh = toStringVal(jsonMap['name_kh']);

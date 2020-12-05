@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dmart/src/models/api_result.dart';
+import 'package:dmart/src/repository/base_repository.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -54,48 +55,10 @@ Future<User> login(User user) async {
 //  }
   return currentUser.value;
 }
-
-Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, String name, String avatarUrl}) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}login/facebook';
-  var paras = {
-    'facebook_id': '$fbId',
-    'access_token': '$accessToken',
-    'name': '$name',
-    'avatar_url': '$avatarUrl',
-    'device_token': '${DmConst.deviceToken}'
-  };
-
-  print(url);
-  print(paras);
-  final response = await http.Client().post(
-    url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-//      body: user.toMap(),
-    body: json.encode(paras),
-  );
-  print('login ${response.body}');
-
-  ApiResult<User> re = ApiResult<User>();
-  if (response.statusCode == 200 && response.headers.containsValue('application/json')) {
-    dynamic js = json.decode(response.body);
-    re.setMsgAndStatus(js);
-    if(re.isSuccess) {
-      String token = toStringVal(js['data']['token']);
-      re.data = User.fromJSON(js['data']['user']);
-      currentUser.value = re.data;
-      currentUser.value.apiToken = token;
-    }
-  } else {
-    re.isNoJson = true;
-  }
-  return re;
-}
-
 ///return OTP if register ok. if not, return nullOrEmpty
 Future<String> register(User user) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}register';
-  final client = new http.Client();
-  final response = await client.post(
+  final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMapReg()),
@@ -122,6 +85,93 @@ Future<String> register(User user) async {
   }
 }
 
+Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, String name, String avatarUrl}) async {
+//  final String url = '${GlobalConfiguration().getString('api_base_url')}login/facebook';
+  var paras = {
+    'facebook_id': '$fbId',
+    'access_token': '$accessToken',
+    'name': '$name',
+    'avatar_url': '$avatarUrl',
+    'device_token': '${DmConst.deviceToken}'
+  };
+  http.Response response = await post(shortUrl: 'login/facebook', body: paras);
+
+
+//  final response = await http.Client().post(
+//    url,
+//    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+//    body: json.encode(paras),
+//  );
+  print('loginFB ${response.body}');
+
+  ApiResult<User> re = ApiResult<User>();
+  if (isApiReturnedJson(response)) {
+    re.isNoJson = false;
+    dynamic js = json.decode(response.body);
+    re.setMsgAndStatus(js);
+    if(re.isSuccess) {
+      String token = toStringVal(js['data']['token']);
+      re.data = User.fromJSON(js['data']['user']);
+      currentUser.value = re.data;
+      currentUser.value.apiToken = token;
+    }
+  } else {
+    re.isNoJson = true;
+  }
+  return re;
+}
+
+///return OTP if register ok. if not, return nullOrEmpty
+Future<ApiResult<String>> registerFb(User user) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}register/facebook';
+  print(url);
+  print('paras: ${user.toMapRegFb()}');
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(user.toMapRegFb()),
+  );
+  ApiResult<String> re = ApiResult();
+  print('registerFb ${response.body}');
+  if (DmUtils.isApiReturnedJson(response)) {
+    re.isNoJson = false;
+    dynamic js = json.decode(response.body);
+    re.setMsgAndStatus(js);
+    if(re.isSuccess) {
+      re.data = toStringVal(js['data']['OTP']);
+    }
+  } else {
+    re.isNoJson = true;
+  }
+  return re;
+}
+
+///Verify Otp to complete registration by FB
+Future<User> verifyOtpToCompleteRegFb({String fbId, String phone, String otp}) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/verify/facebook';
+  final response = await http.Client().post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode({'phone': phone, 'OTP': otp, 'facebook_id' : fbId}),
+  );
+
+  print('verifyOtpToCompleteRegFb ${response.body}');
+  dynamic js = json.decode(response.body);
+
+  if (js["success"] != null && js["success"] == true) {
+    String token = toStringVal(js['data']['token']);
+    currentUser.value = User.fromJSON(js['data']['user']);
+    currentUser.value.apiToken = token;
+    print(json.encode(currentUser.value.toMap()));
+    saveUserToShare(currentUser.value);
+    print('user: ${currentUser.value.toStringIdName()}');
+    print('token: ${currentUser.value.apiToken}');
+    print('-----------------------------------');
+    return currentUser.value;
+  } else {
+    return null;
+  }
+}
 
 Future<String> resendOtp(String phone) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}otp/resend';
@@ -286,26 +336,19 @@ Future<CreditCard> getCreditCard() async {
   return _creditCard;
 }
 
-Future<User> update(User user) async {
+Future<ApiResult<User>> update(User user) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}profile/update';
 
-  print("update User - $url");
-  print(user.toMap());
-  final response = await http.Client().post(
-    url,
-    headers: createHeadersRepo(),
-    body: json.encode(user.toMap()),
-  );
-  dynamic js = json.decode(response.body);
-  print(response.body);
-  if (js["success"] != null && js["success"] == true) {
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
-    saveUserToShare(user);
-  } else {
-    return null;
+  var response = await httpPost(url: url, bodyParams: user.toMapUpdateInfo());
+  ApiResult<User> re = ApiResult<User>();
+  var js = re.setMsgAndStatus(response);
+  if (re.isSuccess) {
+    currentUser.value = User.fromJSON(js);
+    saveUserToShare(currentUser.value);
+    re.data = currentUser.value;
   }
 
-  return currentUser.value;
+  return re;
 }
 
 Future<User> updatePersonalDetail(User user) async {
@@ -413,47 +456,68 @@ Future<Stream<Address>> getAddresses() async {
   });
 }
 
-Future<List<Address>> addAddress(Address address) async {
+Future<ApiResult<List<Address>>> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
   final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/add';
-  print('addAddress $url');
-  print(address.toMap());
-  final response = await http.Client().post(
-    url,
-    headers: createHeadersRepo(),
-    body: json.encode(address.toMap()),
-  );
+  var response = await httpPost(url: url, bodyParams: address.toMap());
 
-  print(response.body);
-
-  dynamic js = json.decode(response.body);
-  List<Address> re = [];
-  if (js["success"] != null && js["success"] == true) {
-    (js['data'] as List).forEach((element) {
-      re.add(Address.fromJSON(element));
+  var re = ApiResult<List<Address>>();
+  var js = re.setMsgAndStatus(response);
+  if(re.isSuccess) {
+    re.data = [];
+    (js as List).forEach((element) {
+      re.data.add(Address.fromJSON(element));
     });
   }
+
   return re;
+
+  // final response = await http.Client().post(
+  //   url,
+  //   headers: createHeadersRepo(),
+  //   body: json.encode(address.toMap()),
+  // );
+
+  // print(response.body);
+  //
+  // dynamic js = json.decode(response.body);
+  // List<Address> re = [];
+  // if (js["success"] != null && js["success"] == true) {
+  //   (js['data'] as List).forEach((element) {
+  //     re.add(Address.fromJSON(element));
+  //   });
+  // }
+  // return re;
 }
 
-Future<List<Address>> updateAddress(Address address) async {
+Future<ApiResult<Address>> updateAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
   final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
-  final response = await http.Client().put(
-    url,
-    headers: createHeadersRepo(),
-    body: json.encode(address.toMap()),
-  );
-  dynamic js = json.decode(response.body);
-  List<Address> re = [];
-  if (js["success"] != null && js["success"] == true) {
-    (js['data'] as List).forEach((element) {
-      re.add(Address.fromJSON(element));
-    });
+  var response = await httpPut(url: url, bodyParams: address.toMap());
+  var re = ApiResult<Address>();
+  var js = re.setMsgAndStatus(response);
+  if(re.isSuccess) {
+    re.data = Address.fromJSON(js);
+    // (js as List).forEach((element) {
+    //   re.data.add(Address.fromJSON(element));
+    // });
   }
   return re;
+  // final response = await http.Client().put(
+  //   url,
+  //   headers: createHeadersRepo(),
+  //   body: json.encode(address.toMap()),
+  // );
+  // dynamic js = json.decode(response.body);
+  // List<Address> re = [];
+  // if (js["success"] != null && js["success"] == true) {
+  //   (js['data'] as List).forEach((element) {
+  //     re.add(Address.fromJSON(element));
+  //   });
+  // }
+  // return re;
 }
 
 Future<bool> removeDeliveryAddress(Address address) async {

@@ -61,6 +61,7 @@ class CartBottomButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
             child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
             onPressed: onPressed,
+
           ))
 //                FlatButton(child: Text(S.of(context).processOrder))
         ],

@@ -75,8 +75,9 @@ class _DmartState extends State<Dmart> {
 //            shape: StadiumBorder(),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
-//                side: BorderSide(color: DmConst.accentColor)
+               side: BorderSide(color: DmConst.accentColor)
               ),
+
 
               buttonColor: DmConst.accentColor,
               textTheme: ButtonTextTheme.primary

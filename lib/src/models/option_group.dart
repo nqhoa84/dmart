@@ -6,6 +6,7 @@ class OptionGroup extends IdNameObj {
   OptionGroup();
 
   OptionGroup.fromJSON(Map<String, dynamic> jsonMap) {
+    if(jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name']);

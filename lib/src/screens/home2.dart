@@ -17,7 +17,7 @@ import '../../src/widgets/ProductsGridViewLoading.dart';
 import '../../utils.dart';
 
 class Home2Screen extends StatefulWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   _Home2ScreenState createState() => _Home2ScreenState();
@@ -40,7 +40,6 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     _con.listenForCarts();
     _con.listenForFavorites();
 
-//    _con.listenForBrands();
     animationController = AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
     CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
@@ -68,6 +67,33 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget _build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: DmBottomNavigationBar(currentIndex: 0),
+      drawer: DrawerWidget(),
+      body: DoubleBackToCloseApp(
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: CustomScrollView(slivers: <Widget>[
+              createSliverTopBar(context),
+              createSliverSearch(context),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Container(),
+                ]),
+              )
+            ]),
+          ),
+        ),
+        snackBar: SnackBar(
+          content: Text(S.of(context).tapBackAgainToQuit),
+        ),
+      ),
+    );
   }
 
   @override
@@ -111,36 +137,25 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             }),
 
         HomePromotionsSlider(),
-
+//
 //              // Heading (bestSale)
         _createHeader(
             title: S.of(context).bestSale,
             onTap: () {
-//              Navigator.of(context).pushNamed('/Category',
-//                  arguments: new RouteArgument(
-//                      id: '1',
-//                      param: [Category(id: '1', name: S.of(context).bestSale)],
-//                      heroTag: "bestSale_"));
               RouteGenerator.gotoBestSale(context);
             }),
         DmUtils.isNullOrEmptyList(_con.bestSaleProducts)
-            ? HomeProductsListViewLoading()
+            ?  HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.bestSaleProducts, animationOpacity: animationOpacity,
           hero: 'home_best_sale',
         ),
-//            : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
         // Heading (Brands)
         _createHeader(
             title: S.of(context).newArrival,
             onTap: () {
-//              Navigator.of(context).pushNamed('/Category',
-//                  arguments: new RouteArgument(
-//                      id: '1',
-//                      param: [Category(id: '2', name: S.of(context).newArrival)],
-//                      heroTag: "newArival_"));
               RouteGenerator.gotoNewArrivals(context);
             }),
-        _con.newArrivalProducts.isEmpty
+        DmUtils.isNullOrEmptyList(_con.newArrivalProducts)
             ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.newArrivalProducts, animationOpacity: animationOpacity,
           hero: 'home_new_arrival',),
@@ -150,7 +165,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             onTap: () {
               RouteGenerator.gotoSpecial4U(context);
             }),
-        _con.special4UProducts.isEmpty
+    DmUtils.isNullOrEmptyList(_con.special4UProducts)
             ? HomeProductsListViewLoading()
             : HomeProductsListView(products: _con.special4UProducts, animationOpacity: animationOpacity,
           hero: 'home_spe4U',),

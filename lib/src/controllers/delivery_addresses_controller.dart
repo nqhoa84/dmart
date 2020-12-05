@@ -1,5 +1,6 @@
 import 'package:dmart/src/controllers/controller.dart';
 import 'package:dmart/src/models/address.dart';
+import 'package:dmart/src/models/i_name.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -10,8 +11,7 @@ import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
-class DeliveryAddressesController extends Controller
-//    with ChangeNotifier
+class DeliveryAddressesController extends Controller //    with ChangeNotifier
 {
   GlobalKey<FormState> formKey;
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -20,7 +20,8 @@ class DeliveryAddressesController extends Controller
   Address address;
 
   static List<Province> PROVINCES;
-  List<Province> get provinces => PROVINCES??[];
+
+  List<Province> get provinces => PROVINCES ?? [];
   static Map<int, List<District>> _mapDistricts = {};
   List<District> districts = [];
   static Map<int, List<Ward>> _mapWards = {};
@@ -32,7 +33,7 @@ class DeliveryAddressesController extends Controller
   }
 
   void listenForAddresses({String message}) async {
-    if(this.addresses == null) {
+    if (this.addresses == null) {
       this.addresses = [];
     } else {
       this.addresses.clear();
@@ -109,8 +110,8 @@ class DeliveryAddressesController extends Controller
   }
 
   void getProvinces() async {
-    if(PROVINCES != null) return;
-    if(loading) return;
+    if (PROVINCES != null) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -120,15 +121,15 @@ class DeliveryAddressesController extends Controller
     setState(() {
       loading = false;
     });
-    setState((){});
+    setState(() {});
   }
 
   void getDistricts(int provinceId) async {
-    if(_mapDistricts.containsKey(provinceId)) {
+    if (_mapDistricts.containsKey(provinceId)) {
       districts = _mapDistricts[provinceId];
       return;
     }
-    if(loading) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -140,15 +141,14 @@ class DeliveryAddressesController extends Controller
       this.districts = dis;
       loading = false;
     });
-
   }
 
   void getWards(int districtId) async {
-    if(_mapWards.containsKey(districtId)) {
+    if (_mapWards.containsKey(districtId)) {
       this.wards = _mapWards[districtId];
       return;
     }
-    if(loading) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -159,35 +159,40 @@ class DeliveryAddressesController extends Controller
       this.wards = ws;
       loading = false;
     });
-
   }
 
   Future<bool> saveAddress() async {
+    if (loading) return false;
+
     bool re = false;
+
     this.formKey.currentState.save();
-    if(this.formKey.currentState.validate()) {
-//      if(loading) return false;
-      setState(() {
-        loading = true;
-      });
-      if(this.address.id <= 0) {
-        List<Address> a = await userRepo.addAddress(this.address);
-        if(a != null) {
-          setState(() { this.addresses = a;});
-          re = true;
+    if (this.formKey.currentState.validate()) {
+      setLoadingOn();
+      if (this.address.id <= 0) {
+        var apiRe = await userRepo.addAddress(this.address);
+        if (apiRe.isSuccess) {
+          setState(() {
+            apiRe.data?.sort(IdObj.idComparerDescending);
+            this.address = apiRe.data?.first;
+            this.addresses = apiRe.data??[];
+          });
+          showMsg(S.of(context).newAddressAdded);
+        } else {
+          showMsg(apiRe.message);
         }
-        showMsg(S.of(context).newAddressAdded);
+        re = apiRe.isSuccess;
       } else {
-        List<Address> a = await userRepo.updateAddress(this.address);
-
-        showMsg(S.of(context).addressUpdated);
+        var apiRe = await userRepo.updateAddress(this.address);
+        if (apiRe.isSuccess) {
+          showMsg(S.of(context).addressUpdated);
+        } else {
+          showMsg(apiRe.message);
+        }
+        re = apiRe.isSuccess;
       }
-
-      setState(() {
-        loading = false;
-      });
+      setLoadingOff();
     }
-
     return re;
   }
 }

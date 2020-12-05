@@ -62,9 +62,9 @@ Widget createFavoriteIcon(BuildContext context, bool isFav) {
 }
 
 Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
-  print('_createUserInfoRowOnTopBar-----------');
-  print('fb ${user.fbAvatar}');
-  print('avatarUrl ${user.avatarUrl}');
+  // print('_createUserInfoRowOnTopBar-----------');
+  // print('fb ${user.fbAvatar}');
+  // print('avatarUrl ${user.avatarUrl}');
   if (user.isLogin) {
     return InkWell(
       onTap: () => RouteGenerator.gotoProfileInfo(context),
@@ -75,6 +75,7 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
             child: CircleAvatar(
               backgroundColor: Colors.transparent,
               backgroundImage: NetworkImage(user.avatarUrl),
+              // backgroundImage: createNetworkImage(url: user.avatarUrl),
 //              child: createNetworkImage(url: currentUser.value.image.thumb),
             ),
           ),

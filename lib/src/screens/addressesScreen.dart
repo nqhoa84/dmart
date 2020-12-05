@@ -148,7 +148,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
                       onPressDeleteAddress(a);
                     },
                     child: Text(S.of(context).delete, style: TextStyle(color: Colors.red)),
-//                  color: DmConst.accentColor,
+                    borderSide: BorderSide(color: DmConst.accentColor),
                   ),
                 ),
               ],
@@ -158,6 +158,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
         )
       );
     });
+    its.add(SizedBox(height: 8));
     its.add(buildRowButton(context));
     return Column(children: its);
   }
@@ -217,10 +218,12 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
     Widget cancelButton = OutlineButton(
       child: Text(S.of(context).cancel),
       onPressed: onPressedCancel,
+      borderSide: BorderSide(color: DmConst.accentColor),
     );
     Widget continueButton = OutlineButton(
       child: Text(S.of(context).delete),
       onPressed: onPressedOK,
+      borderSide: BorderSide(color: DmConst.accentColor),
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(

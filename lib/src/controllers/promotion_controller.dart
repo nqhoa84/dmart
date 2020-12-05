@@ -1,11 +1,10 @@
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/repository/promotion_repository.dart';
 import '../models/promotion.dart';
+import 'controller.dart';
 
-class PromotionController extends ControllerMVC {
+class PromotionController extends Controller {
   List<Promotion> promotions = <Promotion>[];
-
-  PromotionController();
 
   void listenForPromotions({String message}) async {
     final Stream<Promotion> stream = await getPromotions();

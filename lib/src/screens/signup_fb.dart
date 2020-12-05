@@ -12,6 +12,7 @@ import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import '../../DmState.dart';
 import '../../buidUI.dart';
@@ -48,6 +49,10 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
   @override
   void initState() {
     super.initState();
+//    _con.user.name = widget.name;
+//    _con.user.facebookId = widget.fbId;
+//    _con.user.fbAvatar = widget.avatarUrl;
+//    _con.user.fbAccessToken = widget.accessToken;
     _con.getProvinces();
     _getSignatureCode();
   }
@@ -164,10 +169,11 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                 Expanded(
                   child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                    onPressed: _con.loading ? null : _onPressSendOtp,
-                    child: Text(_con.loading == false ? S.of(context).next : S.of(context).processing,
+                    onPressed: _con.loading || DmUtils.isNotNullEmptyStr(_con.OTP) ? null : _onPressSendOtp,
+                    child: Text(_con.loading == false ? S.of(context).requestOtp : S.of(context).processing,
                         style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                     color: DmConst.accentColor,
+                    disabledColor: DmConst.accentColor,
 //                    shape: StadiumBorder(),
                   ),
                 ),
@@ -606,6 +612,11 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
   }
 
   _onPressSendOtp() async {
+    _con.user.name = widget.name;
+    _con.user.facebookId = widget.fbId;
+    _con.user.fbAvatar = widget.avatarUrl;
+    _con.user.fbAccessToken = widget.accessToken;
+    _con.sendOtpFb();
 //    await _con.register();
 //    if (DmUtils.isNotNullEmptyStr(_con.OTP)) {
 //      setState(() {

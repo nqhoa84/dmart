@@ -139,22 +139,25 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 //                shape: StadiumBorder(),
     ));
 
-    items.add(Divider(thickness: 1.5, height: 2));
+    items.add(Divider(thickness: 1.5));
 
     items.add(Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         OutlineButton(
           onPressed: onPressCreateNewAddress,
-          child: Text(S.of(context).addDeliveryAddress, style: TextStyle(color: DmConst.accentColor)),
-//                shape: StadiumBorder(),
+          child: Text(S.of(context).addDeliveryAddress,
+              style: TextStyle(color: DmConst.accentColor),
+            ),
+          borderSide: BorderSide(color: DmConst.accentColor),
+
         ),
         OutlineButton(
           onPressed: () {
             RouteGenerator.gotoAddressesScreen(context);
           },
           child: Text(S.of(context).deliveryAddresses, style: TextStyle(color: DmConst.accentColor)),
-//                shape: StadiumBorder(),
+          borderSide: BorderSide(color: DmConst.accentColor),
         ),
       ],
     ));
@@ -393,7 +396,10 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
           Expanded(flex: 7, child: Text('$strTime')),
           Expanded(
               flex: 3,
-              child: OutlineButton(onPressed: null, child: Text(S.of(context).full), color: DmConst.accentColor)),
+              child: OutlineButton(onPressed: null, child: Text(S.of(context).full),
+                  color: DmConst.accentColor,
+                borderSide: BorderSide(color: DmConst.accentColor),
+              )),
         ],
       );
     } else {

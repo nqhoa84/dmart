@@ -1,4 +1,6 @@
 import 'package:dmart/constant.dart';
+import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
 import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../src/models/product.dart';
 import '../../src/widgets/ProductItemHigh.dart';
 
+// ignore: must_be_immutable
 class ProductGridView extends StatefulWidget {
   final List<Product> products;
   final String heroTag;
@@ -58,7 +61,7 @@ class _ProductGridViewState extends State<ProductGridView> {
 
   @override
   Widget build(BuildContext context) {
-    if(DmUtils.isNullOrEmptyList(widget.products)) return Container();
+    if(DmUtils.isNullOrEmptyList(widget.products)) return EmptyDataLoginWid(message: S.of(context).productListEmpty,);
     return Container(
       child: widget.isList == true
           ? RefreshIndicator(

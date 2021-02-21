@@ -17,3 +17,6 @@ D:\Program Files\Android\Android Studio\jre\bin
 C:\Users\H\AppData\Local\Android\sdk
 
 GXrUUHmduNGmtfnLLx7v+pTCBGU=
+
+cái dmart24.... thì vào thư mục /var/www/html/dev/dmart24, còn cái dev2.... vào thư mục /var/www/html/phase3/dmart24
+

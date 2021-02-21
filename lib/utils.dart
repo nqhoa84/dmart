@@ -103,7 +103,7 @@ dynamic httpPut({@required String url, Map bodyParams}) async {
 }
 
 String getDisplayMoney(double value) {
-  return '\$ ${value != null ? value.toStringAsFixed(2) : '0.00'}';
+  return '\$ ${value != null ? value.toStringAsFixed(3) : '0.00'}';
 }
 
 printLog(dynamic obj) {

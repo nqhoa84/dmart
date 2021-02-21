@@ -1,4 +1,5 @@
 {
+  "Available": "Available",
   "code": "Code",
   "providePhoneNoAndTapSendOtpToVerify": "Please enter phone number, then tap send OTP to verify it.",
   "sendOtp": "Send OTP",

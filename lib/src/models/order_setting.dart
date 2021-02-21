@@ -13,9 +13,9 @@ class OrderSetting extends IdObj {
   OrderSetting.fromJSON(Map<String, dynamic> jsonMap) {
     try {
 //      id = toInt(jsonMap['id']);
-      vatTaxPercent = toDouble(jsonMap['default_tax'], errorValue: 0.1);
+      vatTaxPercent = (toDouble(jsonMap['default_tax'], errorValue: 10.0)) / 100.0;
       deliveryFee = toDouble(jsonMap['delivery_fee'], errorValue: 1.5);
-      serviceFeePercent = toDouble(jsonMap['service_fee'], errorValue: 0.01);
+      serviceFeePercent = (toDouble(jsonMap['service_fee'], errorValue: 1.0)) / 100.0;
 
       phoneSmart = toStringVal(jsonMap['smart']);
       phoneCellcard = toStringVal(jsonMap['cellcard']);

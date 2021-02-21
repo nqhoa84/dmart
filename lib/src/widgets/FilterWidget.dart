@@ -13,7 +13,7 @@ import '../controllers/filter_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../models/filter.dart';
 
-class FilterWidget extends StatefulWidget {
+class FilterWidget extends StatefulWidget { // ignore: must_be_immutable
   List<Product> products;
   final ValueNotifier<FilterCondition> filterNotifier;
 

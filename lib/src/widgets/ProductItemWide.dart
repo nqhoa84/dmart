@@ -113,7 +113,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                 Flexible(
                   flex: 350,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -143,7 +143,8 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                           child: Center(child: _createAddToCartOrChooseAmount(context)),
                         ),
                         SizedBox(height: 3),
-                        Expanded(flex: 25, child: Center(child: this._createPriceWidget(context)))
+                        Expanded(flex: 25, child: Center(child: this._createPriceWidget(context))),
+                        Text('${S.of(context).available}: ${widget.product.itemsAvailable ?? 0}', style: TextStyle(fontSize: 11),),
                       ],
                     ),
                   ),

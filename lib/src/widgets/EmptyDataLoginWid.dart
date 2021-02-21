@@ -53,44 +53,47 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
-                        Theme.of(context).focusColor,
-                        Theme.of(context).focusColor.withOpacity(0.1),
-                      ])),
-                  child: Icon(widget.iconData, size: 70),
-                ),
-                Positioned(
-                  right: -30,
-                  bottom: -50,
-                  child: Container(
-                    width: 100,
-                    height: 100,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(90),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: 150,
+                    height: 150,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(150),
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
+                          Theme.of(context).focusColor,
+                          Theme.of(context).focusColor.withOpacity(0.1),
+                        ])),
+                    child: Icon(widget.iconData, size: 70),
+                  ),
+                  Positioned(
+                    right: -30,
+                    bottom: -50,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(150),
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: -20,
-                  top: -50,
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(150),
+                  Positioned(
+                    left: -20,
+                    top: -50,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(150),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             SizedBox(height: 15),
             Opacity(

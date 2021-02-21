@@ -5,9 +5,9 @@ import 'package:flutter/rendering.dart';
 import '../../DmState.dart';
 import '../../constant.dart';
 import '../helpers/ui_icons.dart';
+
 class CartBottomButton extends StatelessWidget {
-  const CartBottomButton({Key key, this.title = '', this.onPressed})
-      : super(key: key);
+  const CartBottomButton({Key key, this.title = '', this.onPressed}) : super(key: key);
 
   final String title;
   final Function() onPressed;
@@ -33,22 +33,22 @@ class CartBottomButton extends StatelessWidget {
                 ValueListenableBuilder(
                   valueListenable: DmState.amountInCart,
                   builder: (context, value, child) {
-                  return IconWithText(
-                      title: '${DmState.amountInCart.value}',
-                      icon: UiIcons.shopping_cart,
-                      color: Colors.white,
-                      style: Theme.of(context).textTheme.headline6);
+                    return IconWithText(
+                        title: '${DmState.amountInCart.value}',
+                        icon: UiIcons.shopping_cart,
+                        color: Colors.white,
+                        style: Theme.of(context).textTheme.headline6);
                   },
                 ),
                 ValueListenableBuilder(
-                    valueListenable: DmState.cartsValue,
-                    builder: (context, value, child) {
+                  valueListenable: DmState.cartsValue,
+                  builder: (context, value, child) {
                     return IconWithText(
-                      title: '${DmState.cartsValue.value.toStringAsFixed(2)}',
-                      icon: UiIcons.money,
-                      color: Colors.white,
-                      style: Theme.of(context).textTheme.headline6);
-                    },
+                        title: '${DmState.cartsValue.value.toStringAsFixed(2)}',
+                        icon: UiIcons.money,
+                        color: Colors.white,
+                        style: Theme.of(context).textTheme.headline6);
+                  },
                 ),
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,12 +57,16 @@ class CartBottomButton extends StatelessWidget {
           ),
           VerticalDivider(thickness: 2, width: 5, color: Colors.white),
           Expanded(
-              child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-            child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-            onPressed: onPressed,
-
-          ))
+              child: Center(
+                child: InkWell(
+            // padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+                child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+            ),
+            onTap: onPressed,
+          ),
+              ))
 //                FlatButton(child: Text(S.of(context).processOrder))
         ],
       ),

@@ -33,6 +33,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Available`
+  String get Available {
+    return Intl.message(
+      'Available',
+      name: 'Available',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Code`
   String get code {
     return Intl.message(

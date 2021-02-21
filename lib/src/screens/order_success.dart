@@ -67,7 +67,7 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
   }
 
   Widget _buildSpecial4U() {
-    if(_con.special4UProducts.isNotEmpty) {
+    if(_con.special4UProducts != null) {
       return ProductGridView(products: _con.special4UProducts, heroTag: 'spe4U_fromOrderOK');
     } else {
       return ProductsGridViewLoading();

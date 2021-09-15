@@ -24,7 +24,7 @@ import '../repository/user_repository.dart' as userRepo;
 ///       re.add(Product.fromJSON(element));<br/>
 ///      });<br/>
 ///}<br/>
-Future<List<Product>> _getProducts(dynamic urlOrUri, {String firstData = 'data', String secondData = 'data'}) async {
+Future<List<Product>> _getProducts(Uri urlOrUri, {String firstData = 'data', String secondData = 'data'}) async {
   List<Product> re = [];
   try {
 //    final response = await http.Client().get(url, headers: queryParameters);
@@ -318,7 +318,7 @@ Future<Stream<Product>> _getRelatedProducts(int productId) async {
 }
 
 Future<List<Product>> getRelatedProducts2(int productId) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}related_products/$productId';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}related_products/$productId');
   print('getRelatedProducts $url');
 
 //  var req = http.Request('get', Uri.parse(url));
@@ -403,7 +403,7 @@ Future<Stream<Product>> getNewArrivals(int pageIdx) async {
 }
 
 Future<List<Product>> getNewArrivals2(int pageIdx) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}new_arrival?page=$pageIdx';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}new_arrival?page=$pageIdx');
   print('url: $url');
   return _getProducts(url);
 }
@@ -435,7 +435,7 @@ Future<Stream<Product>> getSpecial4U(int pageIdx) async {
   }
 }
 Future<List<Product>> getSpecial4U2(int pageIdx) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}special_offer?page=$pageIdx';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}special_offer?page=$pageIdx');
   print('url: $url');
   return _getProducts(url);
 }
@@ -517,7 +517,7 @@ Future<Favorite> addFavorite(int productId) async {
   var favorite = Favorite();
   favorite.userId = _user.id;
   favorite.product = new Product()..id = productId;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}favorites';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}favorites');
   print(url);
   print(favorite.toMap());
   try {
@@ -536,7 +536,7 @@ Future<Favorite> addFavorite(int productId) async {
 }
 
 removeFavorite(Favorite favorite) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}favorites/${favorite.id}';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}favorites/${favorite.id}');
   print('remove fav $url');
 //  print(favorite.toMap());
   try {
@@ -626,7 +626,7 @@ Future<Stream<Product>> getFeaturedProductsOfStore(int marketId) async {
 }
 
 Future<Review> addProductReview(Review review, Product product) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}product_reviews';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}product_reviews');
   final client = new http.Client();
   review.user = userRepo.currentUser.value;
   try {

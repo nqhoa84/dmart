@@ -39,7 +39,7 @@ Future<Notification> removeNotification(Notification notification) async {
     return new Notification();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}notifications/${notification.id}?$_apiToken';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}notifications/${notification.id}?$_apiToken');
   print ('removeNotification $url');
   try {
     final client = new http.Client();

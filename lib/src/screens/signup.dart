@@ -172,7 +172,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).mobileNoAndPass,
+          S.current.mobileNoAndPass,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
@@ -200,7 +200,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               //       },
               //       validator: _phoneValidate,
               //       decoration: new InputDecoration(
-              //         hintText: S.of(context).phone,
+              //         hintText: S.current.phone,
               //         hintStyle: txtStyleAccent,
               //         enabledBorder:
               //             UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
@@ -222,10 +222,10 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                   textAlignVertical: TextAlignVertical.center,
                   keyboardType: TextInputType.text,
                   onSaved: (input) => _con.user.password = input,
-                  validator: (input) => input.length < 4 ? S.of(context).passwordNote : null,
+                  validator: (input) => input.length < 4 ? S.current.passwordNote : null,
                   obscureText: _con.hidePassword,
                   decoration: new InputDecoration(
-                    hintText: S.of(context).password,
+                    hintText: S.current.password,
                     hintStyle: txtStyleAccent,
                     enabledBorder:
                         UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
@@ -260,12 +260,12 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     if (input != null && input == _con.user.password) {
                       return null;
                     } else {
-                      return S.of(context).passwordNotMatch;
+                      return S.current.passwordNotMatch;
                     }
                   },
                   obscureText: _con.hidePassword2,
                   decoration: new InputDecoration(
-                    hintText: S.of(context).confirmPassword,
+                    hintText: S.current.confirmPassword,
                     hintStyle: txtStyleAccent,
                     enabledBorder:
                         UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
@@ -283,7 +283,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                   ),
                 ),
               ),
-              Text(S.of(context).passwordNote, style: txtStyleGrey),
+              Text(S.current.passwordNote, style: txtStyleGrey),
               SizedBox(height: 10),
               Row(
                 children: [
@@ -291,7 +291,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     child: FlatButton(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                       onPressed: _con.loading ? null : onPressNext2VerifyStep,
-                      child: Text(_con.loading == false? S.of(context).next : S.of(context).processing,
+                      child: Text(_con.loading == false? S.current.next : S.current.processing,
                           style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                       color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -311,13 +311,13 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).verification,
+          S.current.verification,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 10),
         Text(
-          S.of(context).input6digitCode,
+          S.current.input6digitCode,
           style: TextStyle(color: DmConst.accentColor),
           textAlign: TextAlign.center,
         ),
@@ -337,7 +337,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           onOtpCallback: (code, isAutofill) => _onOtpCallBack(code, isAutofill),
         ),
         SizedBox(height: 10),
-        Text(S.of(context).verifyOtpNote, style: txtStyleGrey),
+        Text(S.current.verifyOtpNote, style: txtStyleGrey),
         buildOtpExpiredWidget(context),
         Text('${_con.OTP}', style: TextStyle(color: Colors.grey.shade400)),
         Row(
@@ -346,7 +346,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressNext2LocationStep,
-                child: Text(S.of(context).register,
+                child: Text(S.current.register,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -362,13 +362,13 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
     return Offstage(
       offstage: _con.otpExpInSeconds == null,
       child: Row(children: [
-        Text('${S.of(context).otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
+        Text('${S.current.otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
             style: txtStyleGrey),
 
         FlatButton(onPressed: _con.otpExpInSeconds != null && _con.otpExpInSeconds > 0 ?
             null
             : resendOtp,
-            child: Text(S.of(context).resend))
+            child: Text(S.current.resend))
       ]),
     );
   }
@@ -388,16 +388,16 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           title: Wrap(
             alignment: WrapAlignment.start,
             children: [
-              Text(S.of(context).yourPhoneRegOK),
+              Text(S.current.yourPhoneRegOK),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(S.of(context).welcomeTo),
+                child: Text(S.current.welcomeTo),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text("Dmart24.com", style: TextStyle(color: DmConst.accentColor)),
               ),
-              Text(S.of(context).enjoyShopping),
+              Text(S.current.enjoyShopping),
             ],
           ),
         ),
@@ -410,7 +410,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                 onPressed: () {
                   RouteGenerator.gotoHome(context);
                 },
-                child: Text(S.of(context).startShopping,
+                child: Text(S.current.startShopping,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -419,9 +419,9 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           ],
         ),
         SizedBox(height: 20),
-        TitleDivider(title: S.of(context).personalDetails),
+        TitleDivider(title: S.current.personalDetails),
         SizedBox(height: 10),
-        Text(S.of(context).personalDetailNote),
+        Text(S.current.personalDetailNote),
         SizedBox(height: 10),
         Row(
           children: [
@@ -431,7 +431,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                 onPressed: () {
                   setState(() {_stepIdx++;});
                 },
-                child: Text(S.of(context).next,
+                child: Text(S.current.next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -448,12 +448,12 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).location,
+          S.current.location,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 10),
-        Text(S.of(context).locationNote, style: txtStyleGrey),
+        Text(S.current.locationNote, style: txtStyleGrey),
         Form(
             key: _con.locationFormKey,
             child: Column(
@@ -473,8 +473,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.address = input.trim(),
                               validator: (input) =>
-                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecorationForLocation(context, S.of(context).houseNo),
+                                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.current.houseNo),
                             ),
                           ),
                         ),
@@ -488,8 +488,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.street = input.trim(),
                               validator: (input) =>
-                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecorationForLocation(context, S.of(context).streetName),
+                                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.current.streetName),
                             ),
                           ),
                         ),
@@ -532,7 +532,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                               textAlignVertical: TextAlignVertical.center,
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.description = input.trim(),
-                              decoration: buildInputDecorationForLocation(context, S.of(context).note),
+                              decoration: buildInputDecorationForLocation(context, S.current.note),
                             ),
                           ),
                         ),
@@ -549,7 +549,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressSaveLocation,
-                child: Text(S.of(context).next,
+                child: Text(S.current.next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -564,7 +564,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: OutlineButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: () => RouteGenerator.gotoHome(context),
-                child: Text(S.of(context).startShopping,
+                child: Text(S.current.startShopping,
                     style: Theme.of(context).textTheme.headline6),
                 borderSide: BorderSide(color: DmConst.accentColor, width: 2),
               ),
@@ -590,7 +590,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).personalDetails,
+          S.current.personalDetails,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
@@ -613,8 +613,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
 //                      input = input.trim();
                       _con.user.name = input.trim();
                     },
-                    validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
-                    decoration: buildInputDecorationForLocation(context, S.of(context).fullName),
+                    validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.current.invalidFullName : null,
+                    decoration: buildInputDecorationForLocation(context, S.current.fullName),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -628,15 +628,15 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     onSaved: (input) {
                       _con.user.email = input.trim();
                     },
-                    validator: (value) => !DmUtils.isEmail(value) ? S.of(context).invalidEmail : null,
-                    decoration: buildInputDecorationForLocation(context, S.of(context).email),
+                    validator: (value) => !DmUtils.isEmail(value) ? S.current.invalidEmail : null,
+                    decoration: buildInputDecorationForLocation(context, S.current.email),
                   ),
                 ),
               ],
             )),
 
         SizedBox(height: 10),
-        Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
+        Text(S.current.dateOfBirthNote, style: txtStyleGrey),
         InkWell(
           onTap: () {
             print('tap to select birthday');
@@ -675,7 +675,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(context,
-                        _con.user.birthday != null ? _con.user.birthday.day.toString(): S.of(context).day),
+                        _con.user.birthday != null ? _con.user.birthday.day.toString(): S.current.day),
                   )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
@@ -685,7 +685,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(context,
-                        _con.user.birthday != null ? _con.user.birthday.month.toString() : S.of(context).month),
+                        _con.user.birthday != null ? _con.user.birthday.month.toString() : S.current.month),
                   )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
@@ -695,7 +695,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(context,
-                        _con.user.birthday != null ? _con.user.birthday.year.toString(): S.of(context).year),
+                        _con.user.birthday != null ? _con.user.birthday.year.toString(): S.current.year),
                   )),
                 ],
               ),
@@ -703,7 +703,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           ),
         ),
         SizedBox(height: 10),
-//        Text(S.of(context).personalDetailNote, textAlign: TextAlign.center),
+//        Text(S.current.personalDetailNote, textAlign: TextAlign.center),
 //        SizedBox(height: 10),
         //button Save.
         Row(
@@ -712,7 +712,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressYesRegMe,
-                child: Text(S.of(context).yesRegMe,
+                child: Text(S.current.yesRegMe,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -727,7 +727,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
               child: OutlineButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: () => RouteGenerator.gotoHome(context),
-                child: Text(S.of(context).startShopping,
+                child: Text(S.current.startShopping,
                     style: Theme.of(context).textTheme.headline6),
                 borderSide: BorderSide(color: DmConst.accentColor, width: 2),
               ),
@@ -748,7 +748,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
             Icon(Icons.error, color: DmConst.colorFavorite, size: kToolbarHeight),
             Expanded(
               child: Text(
-                S.of(context).loginErrorIncorrectPhonePassFullMsg,
+                S.current.loginErrorIncorrectPhonePassFullMsg,
                 style: TextStyle(color: DmConst.colorFavorite),
               ),
             ),
@@ -760,7 +760,7 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
 
   String _phoneValidate(String value) {
     if (value != null && !DmUtils.isPhone(value.trim()))
-      return S.of(context).invalidPhone;
+      return S.current.invalidPhone;
     else {
       return null;
     }
@@ -792,10 +792,10 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
           this._stepIdx++;
         });
       } else {
-        _con.showErr(S.of(context).invalidOTP);
+        _con.showErr(S.current.invalidOTP);
       }
     } else {
-      _con.showErr(S.of(context).invalidOTP);
+      _con.showErr(S.current.invalidOTP);
     }
   }
 
@@ -833,16 +833,16 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
 
   Widget buildGenderDropdown() {
     var _genders = [
-      S.of(context).notToTell,
-      S.of(context).male,
-      S.of(context).female,
+      S.current.notToTell,
+      S.current.male,
+      S.current.female,
     ];
     List<DropdownMenuItem> its = [
-      DropdownMenuItem<Gender>(value: Gender.Others, child: Text(S.of(context).notToTell,
+      DropdownMenuItem<Gender>(value: Gender.Others, child: Text(S.current.notToTell,
           style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Male, child: Text(S.of(context).male,
+      DropdownMenuItem<Gender>(value: Gender.Male, child: Text(S.current.male,
           style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Female, child: Text(S.of(context).female,
+      DropdownMenuItem<Gender>(value: Gender.Female, child: Text(S.current.female,
           style: this.txtStyleAccent)),
     ];
 //    _genders.forEach((pro) {
@@ -859,8 +859,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         },
 //        value: _con.address.province,
         onSaved: (value) => _con.user.gender = value,
-        validator: (value) => value == null ? S.of(context).invalidGender : null,
-        decoration: buildInputDecorationForLocation(context, S.of(context).gender),
+        validator: (value) => value == null ? S.current.invalidGender : null,
+        decoration: buildInputDecorationForLocation(context, S.current.gender),
       ),
     );
   }
@@ -887,8 +887,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
         },
         value: _con.address.province,
         onSaved: (value) => _con.address.province = value,
-        validator: (value) => value == null ? S.of(context).invalidProvince : null,
-        decoration: buildInputDecorationForLocation(context, S.of(context).province),
+        validator: (value) => value == null ? S.current.invalidProvince : null,
+        decoration: buildInputDecorationForLocation(context, S.current.province),
       ),
     );
   }
@@ -908,8 +908,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       },
       value: _con.address.district,
       onSaved: (value) => _con.address.district = value,
-      validator: (value) => value == null ? S.of(context).invalidDistrict : null,
-      decoration: buildInputDecorationForLocation(context, S.of(context).district),
+      validator: (value) => value == null ? S.current.invalidDistrict : null,
+      decoration: buildInputDecorationForLocation(context, S.current.district),
     );
   }
 
@@ -926,8 +926,8 @@ class _SignUpScreenState extends StateMVC<SignUpScreen> {
       },
       value: _con.address.ward,
       onSaved: (value) => _con.address.ward = value,
-      validator: (value) => value == null ? S.of(context).invalidWard : null,
-      decoration: buildInputDecorationForLocation(context, S.of(context).commune),
+      validator: (value) => value == null ? S.current.invalidWard : null,
+      decoration: buildInputDecorationForLocation(context, S.current.commune),
     );
   }
 }

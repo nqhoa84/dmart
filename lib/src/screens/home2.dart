@@ -90,7 +90,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
           ),
         ),
         snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
+          content: Text(S.current.tapBackAgainToQuit),
         ),
       ),
     );
@@ -117,10 +117,14 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
           ),
         ),
         snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
+          content: Text(S.current.tapBackAgainToQuit),
         ),
       ),
     );
+  }
+
+  _d() {
+    return 9;
   }
 
   Widget _buildContent(BuildContext context) {
@@ -130,7 +134,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         _createHeader(
-            title: S.of(context).promotions,
+            title: S.current.promotions,
             backgroundColor: DmConst.homePromotionColor,
             onTap: () {
               RouteGenerator.gotoPromotions(context);
@@ -140,7 +144,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
 //
 //              // Heading (bestSale)
         _createHeader(
-            title: S.of(context).bestSale,
+            title: S.current.bestSale,
             onTap: () {
               RouteGenerator.gotoBestSale(context);
             }),
@@ -151,7 +155,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
         ),
         // Heading (Brands)
         _createHeader(
-            title: S.of(context).newArrival,
+            title: S.current.newArrival,
             onTap: () {
               RouteGenerator.gotoNewArrivals(context);
             }),
@@ -161,7 +165,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
           hero: 'home_new_arrival',),
         //specialForYou
         _createHeader(
-            title: S.of(context).specialForYou,
+            title: S.current.specialForYou,
             onTap: () {
               RouteGenerator.gotoSpecial4U(context);
             }),

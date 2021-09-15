@@ -10,7 +10,7 @@ import '../helpers/ui_icons.dart';
 import '../../src/models/brand.dart';
 import '../../src/models/product.dart';
 import '../../src/widgets/ProductItemHigh.dart';
-import '../../src/widgets/SearchBar.dart';
+import 'toolbars/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -54,7 +54,7 @@ class _ProductsByBrandWidgetState extends StateMVC<ProductsByBrandWidget> {
               color: Theme.of(context).hintColor
             ),
             title: Text(
-              '${widget.brand.name}'+' '+S.of(context).products,
+              '${widget.brand.name}'+' '+S.current.products,
               overflow: TextOverflow.fade,
               softWrap: false,
               style: Theme.of(context).textTheme.headline4,

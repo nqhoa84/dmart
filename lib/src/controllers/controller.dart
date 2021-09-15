@@ -26,11 +26,11 @@ class Controller extends ControllerMVC {
   }
 
   void showErrNoInternet() {
-    showErr(S.of(context).verifyYourInternetConnection);
+    showErr(S.current.verifyYourInternetConnection);
   }
 
   void showErrGeneral() {
-    showErr(S.of(context).generalErrorMessage);
+    showErr(S.current.generalErrorMessage);
   }
 
   void setLoadingOn() {

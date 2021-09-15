@@ -16,23 +16,21 @@ import '../../buidUI.dart';
 import '../../constant.dart';
 import '../../src/widgets/DrawerWidget.dart';
 
-abstract class ProductStateMVC<T extends StatefulWidget> extends StateMVC<StatefulWidget>
-with SingleTickerProviderStateMixin
-{
+abstract class ProductStateMVC<T extends StatefulWidget>
+    extends StateMVC<StatefulWidget> with SingleTickerProviderStateMixin {
   Animation animationOpacity;
   AnimationController animationController;
-
 
   ProductController proCon;
   final ScrollController _scrollCon = ScrollController();
   bool isLoading = false, canLoadMore = true;
   static const double _endReachedThreshold = 100;
   final int bottomIdx;
-  ProductStateMVC({@required this.bottomIdx,
+  ProductStateMVC({
+    @required this.bottomIdx,
   }) : super(new ProductController()) {
     proCon = controller;
   }
-
 
   @override
   void initState() {
@@ -40,7 +38,8 @@ with SingleTickerProviderStateMixin
 
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
@@ -49,6 +48,7 @@ with SingleTickerProviderStateMixin
 
     super.initState();
   }
+
   void dispose() {
     animationController.dispose();
     _scrollCon.dispose();
@@ -57,7 +57,8 @@ with SingleTickerProviderStateMixin
 
   Future<void> _onScroll() async {
     if (!_scrollCon.hasClients || isLoading || !canLoadMore) return;
-    final thresholdReached = _scrollCon.position.extentAfter < _endReachedThreshold;
+    final thresholdReached =
+        _scrollCon.position.extentAfter < _endReachedThreshold;
     if (thresholdReached) {
       isLoading = true;
       await loadMore();
@@ -67,7 +68,7 @@ with SingleTickerProviderStateMixin
 
   String getTitle(BuildContext context);
 
-  void loadMore() ;
+  void loadMore();
 
   Future<void> _refresh() async {
     isLoading = true;
@@ -83,24 +84,28 @@ with SingleTickerProviderStateMixin
     if (this.lstProducts == null) {
       return ProductsGridViewLoading(isList: true);
     } else if (this.lstProducts.isEmpty) {
-      return EmptyDataLoginWid(message: S.of(context).productListEmpty);
-    } else{
+      return EmptyDataLoginWid(message: S.current.productListEmpty);
+    } else {
       return FadeTransition(
           opacity: this.animationOpacity,
           child: ValueListenableBuilder(
               valueListenable: this.filterNotifier,
               builder: (context, filter, widget) {
-                var filteredProducts = doFilter(products: lstProducts, conditions: filterNotifier.value);
-                if(DmUtils.isNullOrEmptyList(filteredProducts)) {
-                  return EmptyDataLoginWid(message: S.of(context).filteredProductListEmpty);
+                var filteredProducts = doFilter(
+                    products: lstProducts, conditions: filterNotifier.value);
+                if (DmUtils.isNullOrEmptyList(filteredProducts)) {
+                  return EmptyDataLoginWid(
+                      message: S.current.filteredProductListEmpty);
                 } else {
-                  return ProductGridView(products: filteredProducts, heroTag: '');
+                  return ProductGridView(
+                      products: filteredProducts, heroTag: '');
                 }
               }));
     }
   }
 
-  ValueNotifier<FilterCondition> filterNotifier = ValueNotifier(FilterCondition());
+  ValueNotifier<FilterCondition> filterNotifier =
+      ValueNotifier(FilterCondition());
 
   List<Product> get lstProducts;
 
@@ -108,25 +113,29 @@ with SingleTickerProviderStateMixin
 
   List<Product> doFilter({List<Product> products, FilterCondition conditions}) {
     List<Product> re = [];
-    if(products == null) return re;
+    if (products == null) return re;
     products.forEach((p) {
-      if(p.match(conditions)) {
+      if (p.match(conditions)) {
         re.add(p);
       }
     });
-    if(conditions.isPriceUp != null) {
-      re.sort(conditions.isPriceUp ? Product.priceComparatorUp : Product.priceComparatorDown);
+    if (conditions.isPriceUp != null) {
+      re.sort(conditions.isPriceUp
+          ? Product.priceComparatorUp
+          : Product.priceComparatorDown);
     }
 
-    if(conditions.isLatest != null) {
-      re.sort(conditions.isLatest ? Product.dateComparatorDown : Product.dateComparatorUp);
+    if (conditions.isLatest != null) {
+      re.sort(conditions.isLatest
+          ? Product.dateComparatorDown
+          : Product.dateComparatorUp);
     }
     return re;
   }
 
-  Widget buildFilter(BuildContext context) {
-    return FilterWidget(products: lstProducts,
-        filterNotifier: this.filterNotifier);
+  Widget _buildFilter(BuildContext context) {
+    return FilterWidget(
+        products: lstProducts, filterNotifier: this.filterNotifier);
   }
 
   @override
@@ -134,7 +143,8 @@ with SingleTickerProviderStateMixin
     return Scaffold(
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: bottomIdx),
       drawer: DrawerWidget(),
-      endDrawer: buildFilter(context),
+      endDrawer: FilterWidget(
+          products: lstProducts, filterNotifier: this.filterNotifier),
       endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
         child: RefreshIndicator(
@@ -144,11 +154,13 @@ with SingleTickerProviderStateMixin
             slivers: <Widget>[
               createSliverTopBar(context),
               createSliverSearch(context),
-              createSilverTopMenu(context, haveBackIcon: true, title: getTitle(context)),
+              createSilverTopMenu(context,
+                  haveBackIcon: true, haveFilter: true, title: getTitle(context)),
               SliverList(
                 delegate: SliverChildListDelegate([
                   Container(
-                      padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+                      padding:
+                          const EdgeInsets.all(DmConst.masterHorizontalPad),
                       child: buildContent(context)),
                 ]),
               )

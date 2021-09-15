@@ -45,7 +45,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
       });
     }, onError: (a) {
       print(a);
-      showErr(S.of(context).verifyYourInternetConnection);
+      showErr(S.current.verifyYourInternetConnection);
     }, onDone: () {
       if (message != null) {
         showMsg(message);
@@ -55,7 +55,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
 
   Future<void> refreshAddresses() async {
     addresses.clear();
-    listenForAddresses(message: S.of(context).addressesRefreshedSuccessfully);
+    listenForAddresses(message: S.current.addressesRefreshedSuccessfully);
   }
 
   Future<void> changeDeliveryAddress(model.Address address) async {
@@ -80,7 +80,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
 //        this.addresses.insert(0, value);
 //      });
 //      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//        content: Text(S.of(context).newAddressAdded),
+//        content: Text(S.current.newAddressAdded),
 //      ));
 //    });
 //  }
@@ -96,7 +96,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
     userRepo.updateAddress(address).then((value) {
       setState(() {});
       addresses.clear();
-      listenForAddresses(message: S.of(context).addressUpdated);
+      listenForAddresses(message: S.current.addressUpdated);
     });
   }
 
@@ -105,7 +105,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
       setState(() {
         this.addresses.remove(address);
       });
-      showMsg(S.of(context).deliveryAddressRemovedSuccessfully);
+      showMsg(S.current.deliveryAddressRemovedSuccessfully);
     });
   }
 
@@ -177,7 +177,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
             this.address = apiRe.data?.first;
             this.addresses = apiRe.data??[];
           });
-          showMsg(S.of(context).newAddressAdded);
+          showMsg(S.current.newAddressAdded);
         } else {
           showMsg(apiRe.message);
         }
@@ -185,7 +185,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
       } else {
         var apiRe = await userRepo.updateAddress(this.address);
         if (apiRe.isSuccess) {
-          showMsg(S.of(context).addressUpdated);
+          showMsg(S.current.addressUpdated);
         } else {
           showMsg(apiRe.message);
         }

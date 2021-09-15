@@ -33,7 +33,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                     Icon(UiIcons.user_1),
                     SizedBox(width: 10),
                     Text(
-                      S.of(context).profileSettings,
+                      S.current.profileSettings,
                       style: Theme.of(context).textTheme.bodyText1,
                     )
                   ],
@@ -46,7 +46,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'John Doe', labelText: S.of(context).fullName,),
+                          decoration: getInputDecoration(hintText: 'John Doe', labelText: S.current.fullName,),
                           initialValue: widget.user.name,
                           validator: (input) => input.trim().length < 3 ? 'invalidFullName' : null,
                           onSaved: (input) => widget.user.name = input,
@@ -54,25 +54,25 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.emailAddress,
-                          decoration: getInputDecoration(hintText: 'johndo@gmail.com', labelText: S.of(context).emailAddress,),
+                          decoration: getInputDecoration(hintText: 'johndo@gmail.com', labelText: S.current.emailAddress,),
                           initialValue: widget.user.email,
-                          validator: (input) => !input.contains('@') ? S.of(context).invalidEmail : null,
+                          validator: (input) => !input.contains('@') ? S.current.invalidEmail : null,
                           onSaved: (input) => widget.user.email = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.phone,
-                          decoration: getInputDecoration(hintText: '+0000000000', labelText: S.of(context).phone,),
+                          decoration: getInputDecoration(hintText: '+0000000000', labelText: S.current.phone,),
                           initialValue: widget.user.phone,
-                          validator: (input) => !input.contains('+') ? S.of(context).invalidPhone : null,
+                          validator: (input) => !input.contains('+') ? S.current.invalidPhone : null,
                           onSaved: (input) => widget.user.phone = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'Street City Stat ', labelText: S.of(context).address,),
+                          decoration: getInputDecoration(hintText: 'Street City Stat ', labelText: S.current.address,),
                           initialValue: widget.user.address,
-                          validator: (input) => input.trim().length < 3 ? S.of(context).invalidAddress : null,
+                          validator: (input) => input.trim().length < 3 ? S.current.invalidAddress : null,
                           onSaved: (input) => widget.user.address = input,
                         ),
 
@@ -86,12 +86,12 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(S.of(context).cancel),
+                        child: Text(S.current.cancel),
                       ),
                       MaterialButton(
                         onPressed: _submit,
                         child: Text(
-                          S.of(context).save,
+                          S.current.save,
                           style: TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ),
@@ -104,7 +104,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
             });
       },
       child: Text(
-        S.of(context).edit,
+        S.current.edit,
         style: Theme.of(context).textTheme.bodyText2,
       ),
     );

@@ -41,7 +41,7 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
 //            dense: true,
 //            contentPadding: EdgeInsets.symmetric(vertical: 0),
 //            leading: Icon(UiIcons.box, color: Theme.of(context).hintColor),
-//            title: Text('${widget.category.name} ' + S.of(context).products,
+//            title: Text('${widget.category.name} ' + S.current.products,
 //                overflow: TextOverflow.fade, softWrap: false, style: Theme.of(context).textTheme.headline6),
 //            trailing: Row(
 //              mainAxisSize: MainAxisSize.min,

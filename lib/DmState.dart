@@ -1,16 +1,31 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:dmart/src/models/RadioItem.dart';
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/favorite.dart';
 import 'package:dmart/src/models/language.dart';
 import 'package:dmart/src/models/order_setting.dart';
+import 'package:dmart/src/repository/radio_repository.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import './src/repository/user_repository.dart' as userRepo;
 
 class DmState {
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  static bool isRadioOn = true;
   static ValueNotifier<Locale> mobileLanguage = ValueNotifier(Locale(Language.english.code));
+
+  static RadioItem currentRadio;
+
+  static RadioItem nextRadio;
+
   static bool get isKhmer {
     return  mobileLanguage.value.languageCode != Language.english.code;
+  }
+  static bool isLoggedIn(){
+    return userRepo.currentUser != null && userRepo.currentUser.value.apiToken != null
+    && userRepo.currentUser.value.apiToken.length > 10;
   }
   static List<String> recentSearches;
   static int bottomBarSelectedIndex = 0;
@@ -111,5 +126,116 @@ class DmState {
   }
 
   static String getCurrentLanguage() => isKhmer ? 'kh' : 'en';
+
+  static AudioPlayer _audioPlayer;
+
+  static void loadRadioFromServerAndPlay() {
+    if(isRadioOn) {
+      print('=======loadRadioFromServerAndPlay');
+      loadCurrentRadio().then((loadResult) {
+        if (loadResult == true) {
+          currentRadio = DmState.currentRadio;
+          nextRadio = DmState.nextRadio;
+          _calPosition2PlayOrWaitForNextReload();
+        }
+      });
+    }
+  }
+
+  static Future<void> _playRadio(RadioItem currentRadio, {int seekToMs = 0}) async {
+    _releasePlayer();
+    _audioPlayer = AudioPlayer();
+    print(currentRadio);
+    print('seek to ' + seekToMs.toString());
+
+    _audioPlayer.onPlayerCompletion.listen((event) {
+      print("audioPlayer.onPlayerCompletion:");
+      var now = DateTime.now();
+      var toEndMs = currentRadio.endTime.millisecondsSinceEpoch - now.millisecondsSinceEpoch;
+      print("audioPlayer.onPlayerCompletion: $toEndMs");
+      if(!currentRadio.isRepeat()) { //1. if not repeat >> wait for next file.
+        print("not repeat >> wait for next file toEndMs. $toEndMs");
+        if(nextRadio  != null) {
+          var toNextRadio = nextRadio.startTime.millisecondsSinceEpoch - now.millisecondsSinceEpoch;
+          Future.delayed(Duration(milliseconds: toNextRadio + 100),
+              loadRadioFromServerAndPlay);
+        }
+      } else {
+        if(toEndMs > 5000) {
+          _playRadio(currentRadio);
+        } else {
+          Future.delayed(Duration(milliseconds: toEndMs + 500), loadRadioFromServerAndPlay);
+        }
+      }
+    });
+
+    await _audioPlayer.setUrl(currentRadio.mediaUrl);
+    await _audioPlayer.seek(Duration(milliseconds: seekToMs));
+    await _audioPlayer.resume();
+
+    // await audioPlayer.play(currentRadio.mediaUrl, position: Duration(milliseconds: seekToMs));
+  }
+
+  static void _calPosition2PlayOrWaitForNextReload() {
+    print("_calPosition2PlayOrWaitForNextReload: $currentRadio, next $nextRadio");
+    DateTime now = DateTime.now();
+
+    if(currentRadio == null) { //wait until next radio and reload from server.
+      if(nextRadio != null) {
+        var now2Next = nextRadio.startTime.millisecondsSinceEpoch - now.millisecondsSinceEpoch;
+        Future.delayed(Duration(milliseconds: now2Next + 500), loadRadioFromServerAndPlay);
+      }
+      return;
+    }
+
+    int start2Now = now.millisecondsSinceEpoch - currentRadio.startTime.millisecondsSinceEpoch;
+    if((start2Now < currentRadio.duration * 1000)
+        || (start2Now > currentRadio.duration * 1000 && currentRadio.isRepeat())) {
+      int seekTo = start2Now % (DmState.currentRadio.duration * 1000);
+      _playRadio(currentRadio, seekToMs: seekTo);
+    } else { //no need to play current file. Wait for next radio.
+      if(nextRadio != null) {
+        var now2Next = nextRadio.startTime.millisecondsSinceEpoch - now.millisecondsSinceEpoch;
+        Future.delayed(Duration(milliseconds: now2Next + 500), loadRadioFromServerAndPlay);
+      }
+    }
+  }
+
+  static void _releasePlayer() {
+    print("release the player");
+    if(_audioPlayer != null) {
+      _audioPlayer.stop();
+      _audioPlayer.release();
+      _audioPlayer = null;
+    }
+  }
+
+  static void setRadioStatus ({bool on = true}) {
+    var preState = isRadioOn;
+    isRadioOn = on;
+    if(isRadioOn == false) {
+      print('turn OFF radio');
+      _releasePlayer();
+    } else { // turn on Radio
+      if(!preState) { //from off status
+        print('turn on radio');
+        _releasePlayer();
+        loadRadioFromServerAndPlay();
+      }
+    }
+  }
+
+  static void stopRadio() {
+    if(isRadioOn) { //from off status
+      _releasePlayer();
+    }
+  }
+
+  static void resumeRadio() {
+    if(isRadioOn) { //from off status
+      _releasePlayer();
+      loadRadioFromServerAndPlay();
+    }
+  }
 
 }

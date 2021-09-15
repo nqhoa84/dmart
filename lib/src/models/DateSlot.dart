@@ -1,5 +1,6 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/utils.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../src/models/media.dart';
 import 'i_name.dart';
@@ -35,6 +36,43 @@ class DateSlot extends IdObj{
     is5slotOK = false;
     is6slotOK = false;
   }
+
+  bool disableCurrentNextSlots() {
+    var now = DateTime.now();
+    if(now.year == deliveryDate.year
+        && now.month == deliveryDate.month
+        && now.day == deliveryDate.day) {
+      if(now.hour == 6 || now.hour == 7) {
+        this.is1slotOK = false;
+      } else if(now.hour == 8 || now.hour == 9) {
+        this.is1slotOK = false;
+        this.is2slotOK = false;
+      } else if(now.hour == 10 || now.hour == 11) {
+        this.is1slotOK = false;
+        this.is2slotOK = false;
+        this.is3slotOK = false;
+      } else if(now.hour == 12 || now.hour == 13) {
+        this.is1slotOK = false;
+        this.is2slotOK = false;
+        this.is3slotOK = false;
+        this.is4slotOK = false;
+      } else if(now.hour == 14 || now.hour == 15) {
+        this.is1slotOK = false;
+        this.is2slotOK = false;
+        this.is3slotOK = false;
+        this.is4slotOK = false;
+        this.is5slotOK = false;
+      } else if(now.hour >= 16) {
+        this.is1slotOK = false;
+        this.is2slotOK = false;
+        this.is3slotOK = false;
+        this.is4slotOK = false;
+        this.is5slotOK = false;
+        this.is6slotOK = false;
+      }
+    }
+  }
+
 
   DateSlot.fromJSON(Map<String, dynamic> jsonMap) {
     try {

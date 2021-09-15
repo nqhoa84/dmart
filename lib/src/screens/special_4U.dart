@@ -39,7 +39,7 @@ class _Special4UScreenState extends ProductStateMVC<Special4UScreen> {
 
   @override
   String getTitle(BuildContext context) {
-    return S.of(context).specialForYou;
+    return S.current.specialForYou;
   }
 
   @override

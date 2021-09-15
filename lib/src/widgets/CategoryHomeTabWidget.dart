@@ -54,7 +54,7 @@ class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
               color: Theme.of(context).hintColor,
             ),
             title: Text(
-              S.of(context).description,
+              S.current.description,
               style: Theme.of(context).textTheme.headline4,
             ),
           ),

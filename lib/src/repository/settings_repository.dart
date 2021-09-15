@@ -24,7 +24,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 
 Future<bool> initSettings() async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}settings';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}settings');
   print('initSettings $url');
 //  final response = await http.get(url, headers: createHeadersRepo());
   final response = await http.get(url);
@@ -44,20 +44,42 @@ Future<bool> initSettings() async {
   }
 }
 
-Future<bool> initLanguageSettings() async {
+///Read the local settings (language, radio) from SharedPreferences
+Future<bool> initLocalSettings() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print('language from share = [${prefs.get('language')}]');
   if (prefs.containsKey('language')) {
     DmState.mobileLanguage.value = Locale(prefs.get('language'), '');
 //    DmState.mobileLanguage.notifyListeners();
   }
+
+  if (prefs.containsKey('radio')) {
+    DmState.isRadioOn = prefs.getBool('radio') ?? true;
+//    DmState.mobileLanguage.notifyListeners();
+  } else {
+    DmState.isRadioOn = true;
+  }
   return true;
+}
+
+Future<void> setDefaultLanguage(String languageCode) async {
+  if (languageCode != null) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language', languageCode);
+
+    DmState.mobileLanguage.value = Locale(languageCode, '');
+  }
+}
+
+Future<void> setRadioSetting({bool isSoundOn = true}) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('radio', isSoundOn);
 }
 
 Future<OrderSetting> listenOrderSetting() async {
   //vouchers/check?code=quI3mJB5mT
-  final String url =
-      '${GlobalConfiguration().getString('api_base_url')}order_settings';
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}order_settings');
   print(url);
 
   http.Response res = await http.get(url, headers: createHeadersRepo());
@@ -69,30 +91,6 @@ Future<OrderSetting> listenOrderSetting() async {
     return null;
   }
 }
-
-//Future<dynamic> setCurrentLocation() async {
-//  var location = new Location();
-//  MapsUtil mapsUtil = new MapsUtil();
-//  final whenDone = new Completer();
-//  Address _address = Address.fromJSON({'address': 'S.current.unknown'});
-//  location.requestService().then((value) async {
-//    location.getLocation().then((_locationData) async {
-//      String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
-//      _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      await prefs.setString('delivery_address', json.encode(_address.toMap()));
-//      whenDone.complete(_address);
-//    }).timeout(Duration(seconds: 10), onTimeout: () async {
-//      SharedPreferences prefs = await SharedPreferences.getInstance();
-//      await prefs.setString('delivery_address', json.encode(_address.toMap()));
-//      whenDone.complete(_address);
-//      return null;
-//    }).catchError((e) {
-//      whenDone.complete(_address);
-//    });
-//  });
-//  return whenDone.future;
-//}
 
 Future<Address> changeCurrentLocation(Address _address) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,23 +114,7 @@ void setBrightness(Brightness brightness) async {
   brightness == Brightness.dark ? prefs.setBool("isDark", true) : prefs.setBool("isDark", false);
 }
 
-Future<void> setDefaultLanguage(String languageCode) async {
-  if (languageCode != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', languageCode);
 
-    DmState.mobileLanguage.value = Locale(languageCode, '');
-  }
-}
-
-Future<String> getDefaultLanguage() async {
-  String defaultLanguage = Language.khmer.code;
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.containsKey('language')) {
-    defaultLanguage = await prefs.get('language');
-  }
-  return defaultLanguage;
-}
 
 Future<void> saveMessageId(String messageId) async {
   if (messageId != null) {

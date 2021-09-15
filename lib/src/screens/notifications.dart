@@ -80,7 +80,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
           Offstage(
               offstage: _con.notifications.isNotEmpty,
               child: EmptyDataLoginWid(
-                message: S.of(context).yourNotificationEmpty,
+                message: S.current.yourNotificationEmpty,
               )
           )
         ],
@@ -99,7 +99,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
           child: CustomScrollView(slivers: <Widget>[
             createSliverTopBar(context),
             createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).notifications),
+            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.current.notifications),
             SliverList(
               delegate: SliverChildListDelegate([
                 buildContent(context),
@@ -108,7 +108,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
           ]),
         ),
         snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
+          content: Text(S.current.tapBackAgainToQuit),
         ),
       ),
     );

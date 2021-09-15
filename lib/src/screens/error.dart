@@ -33,7 +33,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                S.of(context).generalErrorMessage,
+                S.current.generalErrorMessage,
                 style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
               ),
@@ -44,7 +44,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
                 onPressed: () {
                   RouteGenerator.gotoHome(context);
                 },
-                child: Text(S.of(context).home),
+                child: Text(S.current.home),
                 shape: StadiumBorder(),
                 color: DmConst.accentColor,
               ),
@@ -61,7 +61,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
                     },
                     shape: StadiumBorder(),
                     color: DmConst.accentColor,
-                    child: Text(S.of(context).reset)),
+                    child: Text(S.current.reset)),
               ),
             ),
           ],

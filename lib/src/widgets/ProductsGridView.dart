@@ -61,7 +61,7 @@ class _ProductGridViewState extends State<ProductGridView> {
 
   @override
   Widget build(BuildContext context) {
-    if(DmUtils.isNullOrEmptyList(widget.products)) return EmptyDataLoginWid(message: S.of(context).productListEmpty,);
+    if(DmUtils.isNullOrEmptyList(widget.products)) return EmptyDataLoginWid(message: S.current.productListEmpty,);
     return Container(
       child: widget.isList == true
           ? RefreshIndicator(

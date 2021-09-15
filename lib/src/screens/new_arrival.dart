@@ -46,7 +46,7 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
 
   @override
   String getTitle(BuildContext context) {
-    return S.of(context).newArrival;
+    return S.current.newArrival;
   }
 
   @override

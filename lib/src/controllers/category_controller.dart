@@ -44,7 +44,7 @@ class CategoryController extends ControllerMVC {
 //      });
 //    }, onError: (a) {
 //      scaffoldKey.currentState.showSnackBar(SnackBar(
-//        content: Text(S.of(context).verifyYourInternetConnection),
+//        content: Text(S.current.verifyYourInternetConnection),
 //      ));
 //    }, onDone: () {
 //      if (message != null) {
@@ -62,7 +62,7 @@ class CategoryController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -124,7 +124,7 @@ class CategoryController extends ControllerMVC {
 //        });
 //      }).whenComplete(() {
 //        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//          content: Text(S.of(context).productAdded2Cart),
+//          content: Text(S.current.productAdded2Cart),
 //        ));
 //      });
 //    } else {
@@ -135,7 +135,7 @@ class CategoryController extends ControllerMVC {
 //        });
 //      }).whenComplete(() {
 //        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//          content: Text(S.of(context).productAdded2Cart),
+//          content: Text(S.current.productAdded2Cart),
 //        ));
 //      });
 //    }
@@ -145,7 +145,7 @@ class CategoryController extends ControllerMVC {
   Future<void> refreshCategory() async {
     products.clear();
     category = new Category();
-    listenForProductsByCategory(message: S.of(context).categoryRefreshedSuccessfully);
-    listenForCategory(message: S.of(context).categoryRefreshedSuccessfully);
+    listenForProductsByCategory(message: S.current.categoryRefreshedSuccessfully);
+    listenForCategory(message: S.current.categoryRefreshedSuccessfully);
   }
 }

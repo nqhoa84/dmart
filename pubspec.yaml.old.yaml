@@ -1,0 +1,96 @@
+name: dmart
+description: dmart online shopping
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 0.3.0
+
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+module:
+  androidX: true
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.3
+#  firebase_core: ^0.7.0
+#  firebase_messaging: ^8.0.0-dev.15
+#  location: 3.0.2
+#  google_maps_flutter: 0.5.27
+#  google_map_location_picker: 3.2.2
+#  mvc_pattern: ^6.3.0
+  mvc_pattern: ^7.3.3
+  global_configuration: ^2.0.0-nullsafety.1
+  http: ^0.13.3
+#  html: 0.14.0+3  #this package depends on flutter_html package.
+  shared_preferences: ^2.0.6
+  flutter_html: ^1.3.0
+  flutter_svg: ^0.20.0-nullsafety.3
+  dynamic_theme: 1.0.1
+  url_launcher: ^6.0.5
+  fluttertoast: ^8.0.7
+  flutter_staggered_grid_view: ^0.4.0
+  carousel_slider: ^4.0.0
+#  sticky_headers: ^0.1.8+1
+  intl_utils: ^2.3.0
+  intl: ^0.17.0
+  photo_view: ^0.11.1
+  badges: ^2.0.1
+  flutter_inappwebview: ^5.3.2
+  date_picker_timeline: ^1.2.1 #this package is used in order screens to select delivery time
+  flutter_datetime_picker: ^1.4.0 #this package is used in account info screen to select birthday
+  expandable: ^5.0.1
+  line_awesome_icons: ^1.0.4+2
+  auto_size_text: ^2.1.0
+  searchable_dropdown: ^1.1.3
+  cached_network_image: ^2.3.1
+  flutter_login_facebook: ^0.5.0
+  double_back_to_close_app: ^2.0.1
+  sms_otp_auto_verify: ^1.2.2
+#  flutter_facebook_login: ^3.0.0
+#  pinput: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/cfg/
+    - assets/img/
+
+  fonts:
+    - family:  EcommerceAppUI
+      fonts:
+        - asset: assets/fonts/EcommerceAppUI.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Poppins-Black.ttf
+          weight: 900

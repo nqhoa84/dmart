@@ -91,7 +91,7 @@ class Colors {
     }
   }
 
-  Color scaffoldColor(double opacity) {
+  Color _scaffoldColor(double opacity) {
     // TODO test if brightness is dark or not
     try {
       return Color(int.parse(settingRepo.setting.value.scaffoldColor.replaceAll("#", "0xFF"))).withOpacity(opacity);

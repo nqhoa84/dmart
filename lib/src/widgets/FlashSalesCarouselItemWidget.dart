@@ -113,7 +113,7 @@ class FlashSalesCarouselItemWidget extends StatelessWidget {
 
                   ),
                   SizedBox(height: 9),
-                  product.itemsAvailable.isEmpty
+                  product.itemsAvailable == 0
                       ?Text(
                         '0 Available',
                         style: Theme.of(context).textTheme.bodyText2,

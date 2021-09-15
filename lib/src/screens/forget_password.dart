@@ -52,7 +52,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).resetYourPass),
+            createSilverTopMenu(context, haveBackIcon: true, title: S.current.resetYourPass),
             SliverList(
               delegate: SliverChildListDelegate([
                 buildContent(context),
@@ -79,10 +79,10 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-//            Text(S.of(context).weWillSendNewPass),
+//            Text(S.current.weWillSendNewPass),
 //            SizedBox(height: 15),
 
-                  Text(S.of(context).resetPassEnterPhoneNumber),
+                  Text(S.current.resetPassEnterPhoneNumber),
                   SizedBox(height: DmConst.masterHorizontalPad),
                   PhoneNoWid(onSaved: (value) => _con.user.phone = value),
 
@@ -94,7 +94,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                         child: FlatButton(
                           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                           onPressed: onPressResetPass,
-                          child: Text(S.of(context).resetPassword,
+                          child: Text(S.current.resetPassword,
                               style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                           color: DmConst.colorFavorite,
 //                    shape: StadiumBorder(),
@@ -115,7 +115,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(S.of(context).verifyOtpNote),
+                  Text(S.current.verifyOtpNote),
                   TextFieldPin(
                     filled: true,
                     filledColor: DmConst.bgrColorSearchBar,
@@ -135,7 +135,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
 
                   PasswordWid(onSaved: (value) => _con.user.password = value),
                   SizedBox(height: DmConst.masterHorizontalPad),
-                  PasswordConfirmWid(onValidate: (value) => value == _con.user.password ? null : S.of(context).passwordNotMatch),
+                  PasswordConfirmWid(onValidate: (value) => value == _con.user.password ? null : S.current.passwordNotMatch),
                   SizedBox(height: DmConst.masterHorizontalPad),
                   Row(
                     children: [
@@ -143,7 +143,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                         child: FlatButton(
                           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                           onPressed: onPressSaveNewPass,
-                          child: Text(S.of(context).resetPassword,
+                          child: Text(S.current.resetPassword,
                               style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                           color: DmConst.colorFavorite,
 //                    shape: StadiumBorder(),

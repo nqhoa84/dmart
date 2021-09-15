@@ -57,8 +57,8 @@
 //                mainAxisAlignment: MainAxisAlignment.spaceAround,
 //                crossAxisAlignment: CrossAxisAlignment.start,
 //                children: <Widget>[
-//                  Text(user.name ?? S.of(context).unknown),
-//                  Text('${S.of(context).credit}: ${currentUser.value.credit}',
+//                  Text(user.name ?? S.current.unknown),
+//                  Text('${S.current.credit}: ${currentUser.value.credit}',
 //                      style: TextStyle(color: DmConst.textColorForTopBarCredit)),
 //                ],
 //              ),
@@ -76,8 +76,8 @@
 //              mainAxisAlignment: MainAxisAlignment.spaceAround,
 //              crossAxisAlignment: CrossAxisAlignment.start,
 //              children: <Widget>[
-//                Text(S.of(context).guest),
-//                Text('${S.of(context).credit}:'),
+//                Text(S.current.guest),
+//                Text('${S.current.credit}:'),
 //              ],
 //            ),
 //          ],
@@ -237,8 +237,8 @@
 //                mainAxisAlignment: MainAxisAlignment.spaceAround,
 //                crossAxisAlignment: CrossAxisAlignment.start,
 //                children: <Widget>[
-//                  Text(user.name ?? S.of(context).unknown),
-//                  Text('${S.of(context).credit}: ${currentUser.value.credit}',
+//                  Text(user.name ?? S.current.unknown),
+//                  Text('${S.current.credit}: ${currentUser.value.credit}',
 //                      style: TextStyle(color: DmConst.textColorForTopBarCredit)),
 //                ],
 //              ),
@@ -256,8 +256,8 @@
 //              mainAxisAlignment: MainAxisAlignment.spaceAround,
 //              crossAxisAlignment: CrossAxisAlignment.start,
 //              children: <Widget>[
-//                Text(S.of(context).guest),
-//                Text('${S.of(context).credit}:'),
+//                Text(S.current.guest),
+//                Text('${S.current.credit}:'),
 //              ],
 //            ),
 //          ],
@@ -333,7 +333,7 @@
 //        ),
 //        padding: EdgeInsets.only(left: 5),
 //        child: InkWell(
-//          child: Center(child: AutoSizeText(S.of(context).reset, style: ts)),
+//          child: Center(child: AutoSizeText(S.current.reset, style: ts)),
 //        ),
 //      ));
 //    }
@@ -347,7 +347,7 @@
 //        child: InkWell(
 //          child: Row(
 //            children: [
-//              AutoSizeText(S.of(context).type, style: ts),
+//              AutoSizeText(S.current.type, style: ts),
 //              Icon(
 //                Icons.keyboard_arrow_down,
 //                color: Colors.white,
@@ -368,7 +368,7 @@
 //        child: InkWell(
 //          child: Row(
 //            children: [
-//              AutoSizeText(S.of(context).category, style: ts),
+//              AutoSizeText(S.current.category, style: ts),
 //              Icon(
 //                Icons.keyboard_arrow_down,
 //                color: Colors.white,
@@ -389,7 +389,7 @@
 //        child: InkWell(
 //          child: Row(
 //            children: [
-//              AutoSizeText(S.of(context).brand, style: ts),
+//              AutoSizeText(S.current.brand, style: ts),
 //              Icon(
 //                Icons.keyboard_arrow_down,
 //                color: Colors.white,
@@ -410,7 +410,7 @@
 //        child: InkWell(
 //          child: Row(
 //            children: [
-//              AutoSizeText(S.of(context).sortBy, style: ts),
+//              AutoSizeText(S.current.sortBy, style: ts),
 //              Icon(
 //                Icons.keyboard_arrow_down,
 //                color: Colors.white,

@@ -83,9 +83,9 @@ class _PhoneNoWidState extends State<PhoneNoWid> {
         onChanged: widget.onChanged,
         initialValue: widget.initValue,
         enabled: widget.enable,
-        validator: (value) => DmUtils.isNotPhoneNo(value) ? S.of(context).invalidPhone : null,
+        validator: (value) => DmUtils.isNotPhoneNo(value) ? S.current.invalidPhone : null,
         decoration: new InputDecoration(
-          hintText: S.of(context).phone,
+          hintText: S.current.phone,
           hintStyle: txtStyleAccent,
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
@@ -103,9 +103,10 @@ class EmailWid extends StatefulWidget {
   Function(String) onChanged;
   String initValue;
   final bool enable;
+  final bool isOptional;
 
   EmailWid({Key key, @required this.onSaved, this.onChanged, this.initValue,
-  this.enable = true}) : super(key: key);
+  this.enable = true, this.isOptional = true}) : super(key: key);
 
   @override
   _EmailWidState createState() => _EmailWidState();
@@ -127,9 +128,9 @@ class _EmailWidState extends State<EmailWid> {
         onChanged: widget.onChanged,
         initialValue: widget.initValue,
         enabled: widget.enable,
-        validator: (value) => DmUtils.isNotEmail(value) ? S.of(context).invalidEmail : null,
+        validator: emailValidate, //(value) => DmUtils.isNotEmail(value) ? S.current.invalidEmail : null,
         decoration: new InputDecoration(
-          hintText: S.of(context).email,
+          hintText: S.current.email,
           hintStyle: txtStyleAccent,
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
@@ -137,6 +138,18 @@ class _EmailWidState extends State<EmailWid> {
         ),
       ),
     );
+  }
+
+  String emailValidate(String value) {
+    if(widget.isOptional) {
+      if(value == null || value.trim().length == 0) {
+        return null;
+      } else {
+        return DmUtils.isNotEmail(value) ? S.current.invalidEmail : null;
+      }
+    } else {
+      return DmUtils.isNotEmail(value) ? S.current.invalidEmail : null;
+    }
   }
 }
 
@@ -175,10 +188,10 @@ class _PasswordWidState extends State<PasswordWid> {
         onChanged: widget.onChanged,
         enabled: widget.enable,
         initialValue: widget.initValue,
-        validator: (input) => input.length < 4 ? S.of(context).passwordNote : null,
+        validator: (input) => input.length < 4 ? S.current.passwordNote : null,
         obscureText: hidePassword,
         decoration: new InputDecoration(
-          hintText: S.of(context).password,
+          hintText: S.current.password,
           hintStyle: txtStyleAccent,
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
@@ -232,7 +245,7 @@ class _PasswordConfirmWidState extends State<PasswordConfirmWid> {
         validator: widget.onValidate,
         obscureText: hidePassword,
         decoration: new InputDecoration(
-          hintText: S.of(context).confirmPassword,
+          hintText: S.current.confirmPassword,
           hintStyle: txtStyleAccent,
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),

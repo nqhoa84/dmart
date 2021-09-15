@@ -5,10 +5,10 @@ import 'package:dmart/src/screens/serach_result.dart';
 import 'package:dmart/utils.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../src/helpers/ui_icons.dart';
+import '../../helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
-import '../widgets/SearchModal.dart';
-import '../../generated/l10n.dart';
+import '../SearchModal.dart';
+import '../../../generated/l10n.dart';
 
 class SearchBar extends StatefulWidget {
 
@@ -51,7 +51,7 @@ class _SearchBarState extends StateMVC<SearchBar> {
       print("_con.products ${_con.products?.length}");
       if(DmUtils.isNullOrEmptyList(_con.products)) {
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(S.of(context).searchResultEmpty),
+          content: Text(S.current.searchResultEmpty),
         ));
       } else {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
@@ -80,30 +80,31 @@ class SearchWid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: Container(
-        padding: EdgeInsets.all(0),
-        height: DmConst.appBarHeight * 0.7,
-        decoration: BoxDecoration(
-            color: DmConst.bgrColorSearchBar,
-            border: Border.all(
-              color: Theme.of(context).focusColor.withOpacity(0.2),
+    return Container(
+      padding: EdgeInsets.all(0),
+      height: DmConst.appBarHeight * 0.7,
+      decoration: BoxDecoration(
+          color: DmConst.bgrColorSearchBar,
+          border: Border.all(
+            color: Theme.of(context).focusColor.withOpacity(0.2),
+          ),
+          borderRadius: BorderRadius.circular(5)),
+      child: Row(
+        children: <Widget>[
+          // Icon(Icons.volume_up),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: buildTextField(context),
             ),
-            borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: buildTextField(context),
-              ),
-            ),
-            InkWell(
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.horizontal(right: Radius.circular(3)),
+            child: InkWell(
                 onTap: onTapOnSearchIcon,
                 child: Image.asset('assets/img/S_Search.png', height: DmConst.appBarHeight * 0.7 + 2, fit: BoxFit.scaleDown)),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -116,13 +117,13 @@ class SearchWid extends StatelessWidget {
         autofocus: false,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(12),
-          hintText: hintText??S.of(context).searchForProducts,
+          hintText: hintText??S.current.searchForProducts,
           hintStyle: Theme.of(context).textTheme.caption.copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
         ),
       );
     } else {
       return Text(
-        S.of(context).searchForProducts,
+        S.current.searchForProducts,
         maxLines: 1,
         style: Theme.of(context).textTheme.caption.copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
       );

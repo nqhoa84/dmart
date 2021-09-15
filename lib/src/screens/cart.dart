@@ -41,7 +41,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
 
   @override
   String getTitle(BuildContext context) {
-    return S.of(context).myCart;
+    return S.current.myCart;
   }
 
   Future<void> _refresh() async {
@@ -124,7 +124,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
     return Positioned(
       bottom: 0, left: 0, right: 0,
       child: CartBottomButton(
-          title: S.of(context).processOrder,
+          title: S.current.processOrder,
           onPressed: _onPressProcessOrder
       ),
     );
@@ -132,7 +132,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
   void _onPressProcessOrder() {
     if(DmState.amountInCart.value <= 0) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('${S.of(context).yourCartEmpty}',
+          content: Text('${S.current.yourCartEmpty}',
               style: TextStyle(color: Colors.red))));
       return;
     }

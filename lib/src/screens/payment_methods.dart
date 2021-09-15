@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../widgets/PaymentMethodListItemWidget.dart';
-import '../widgets/SearchBar.dart';
+import '../widgets/toolbars/SearchBar.dart';
 import '../widgets/ShoppingCartButton.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
@@ -115,7 +115,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                         color: Theme.of(context).hintColor,
                       ),
                       title: Text(
-                        S.of(context).cashOnDelivery,
+                        S.current.cashOnDelivery,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline4,

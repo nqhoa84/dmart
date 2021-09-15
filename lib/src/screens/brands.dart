@@ -57,7 +57,7 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
         child: CustomScrollView(slivers: <Widget>[
           createSliverTopBar(context),
           createSliverSearch(context),
-          createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).brands),
+          createSilverTopMenu(context, haveBackIcon: true, title: S.current.brands),
           SliverList(
             delegate: SliverChildListDelegate([
               buildContent(context),

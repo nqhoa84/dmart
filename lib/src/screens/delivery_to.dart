@@ -54,6 +54,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
     _orderCon.listenForDeliverSlot(date: DateTime.now()).then((value) {
       setState(() {
         currentDateSlot = value;
+        currentDateSlot.disableCurrentNextSlots();
       });
     });
     _con.listenForDeliveryAddresses(onComplete: () {
@@ -85,7 +86,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                 slivers: <Widget>[
                   createSliverTopBar(context),
                   createSliverSearch(context),
-                  createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myCart),
+                  createSilverTopMenu(context, haveBackIcon: true, title: S.current.myCart),
                   SliverList(
                     delegate: SliverChildListDelegate([
                       buildContent(context),
@@ -104,13 +105,13 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 
   Widget _createSelectAddressWid(BuildContext context, List<Address> adds) {
     List<Widget> items = [];
-    items.add(Text(S.of(context).selectDeliveryAddress,
+    items.add(Text(S.current.selectDeliveryAddress,
         style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor)));
     adds.forEach((Address a) {
       items.add(Column(
         children: [
           ListTile(
-            title: Text(S.of(context).useThisAddr),
+            title: Text(S.current.useThisAddr),
             leading: Radio<Address>(
               value: a,
               groupValue: newOrder.deliveryAddress,
@@ -134,7 +135,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       onPressed: () {
         Navigator.pop(context);
       },
-      child: Text(S.of(context).ok),
+      child: Text(S.current.ok),
       color: DmConst.accentColor,
 //                shape: StadiumBorder(),
     ));
@@ -146,7 +147,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       children: [
         OutlineButton(
           onPressed: onPressCreateNewAddress,
-          child: Text(S.of(context).addDeliveryAddress,
+          child: Text(S.current.addDeliveryAddress,
               style: TextStyle(color: DmConst.accentColor),
             ),
           borderSide: BorderSide(color: DmConst.accentColor),
@@ -156,7 +157,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
           onPressed: () {
             RouteGenerator.gotoAddressesScreen(context);
           },
-          child: Text(S.of(context).deliveryAddresses, style: TextStyle(color: DmConst.accentColor)),
+          child: Text(S.current.deliveryAddresses, style: TextStyle(color: DmConst.accentColor)),
           borderSide: BorderSide(color: DmConst.accentColor),
         ),
       ],
@@ -185,25 +186,25 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       bottom: 0,
       left: 0,
       right: 0,
-      child: CartBottomButton(title: S.of(context).deliverTo, onPressed: _onPressedOnDeliveryInfo),
+      child: CartBottomButton(title: S.current.deliverTo, onPressed: _onPressedOnDeliveryInfo),
     );
   }
 
   void _onPressedOnDeliveryInfo() {
     if (newOrder.deliveryAddress == null || !newOrder.deliveryAddress.isValid) {
       _scaffoldKey.currentState.showSnackBar(
-          SnackBar(content: Text('${S.of(context).invalidAddress}', style: TextStyle(color: Colors.red))));
+          SnackBar(content: Text('${S.current.invalidAddress}', style: TextStyle(color: Colors.red))));
       return;
     }
     if (newOrder.expectedDeliverSlotTime == null || newOrder.expectedDeliverSlotTime < 0) {
       _scaffoldKey.currentState.showSnackBar(
-          SnackBar(content: Text('${S.of(context).invalidDeliveryDateTime}', style: TextStyle(color: Colors.red))));
+          SnackBar(content: Text('${S.current.invalidDeliveryDateTime}', style: TextStyle(color: Colors.red))));
       return;
     }
 
     if (DmState.amountInCart.value <= 0) {
       _scaffoldKey.currentState
-          .showSnackBar(SnackBar(content: Text('${S.of(context).yourCartEmpty}', style: TextStyle(color: Colors.red))));
+          .showSnackBar(SnackBar(content: Text('${S.current.yourCartEmpty}', style: TextStyle(color: Colors.red))));
       return;
     }
 
@@ -224,7 +225,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: TitleDivider(title: S.of(context).deliverTo),
+                    child: TitleDivider(title: S.current.deliverTo),
                   ),
                   IconButton(
                       padding: EdgeInsets.all(0),
@@ -240,14 +241,14 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                 child: buildDeliverInfo(context, newOrder.deliveryAddress)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: TitleDivider(title: S.of(context).selectDeliveryTime),
+              child: TitleDivider(title: S.current.selectDeliveryTime),
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: buildSelectDeliverTime(context)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: TitleDivider(title: S.of(context).note),
+              child: TitleDivider(title: S.current.note),
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -268,7 +269,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
                       print('newOrder.hint = ${newOrder.note}');
                     },
                     decoration: new InputDecoration(
-//                              hintText: S.of(context).emailAddress,
+//                              hintText: S.current.emailAddress,
 //                              hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
                       enabledBorder:
                           UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
@@ -342,11 +343,11 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createDeliveryRow(context, '${S.of(context).fullName}', "${address?.fullName}"),
+          _createDeliveryRow(context, '${S.current.fullName}', "${address?.fullName}"),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createDeliveryRow(context, '${S.of(context).phone}', '${address?.phone}'),
+          _createDeliveryRow(context, '${S.current.phone}', '${address?.phone}'),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createDeliveryRow(context, '${S.of(context).address}', '${address?.getFullAddress}'),
+          _createDeliveryRow(context, '${S.current.address}', '${address?.getFullAddress}'),
         ],
       ),
     );
@@ -355,7 +356,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
   Widget _createDatePiker(BuildContext context) {
     return DatePicker(
       DateTime.now(),
-      height: 80,
+      height: 90,
       controller: _datePickerController,
       initialSelectedDate: DateTime.now(),
       selectionColor: Theme.of(context).accentColor,
@@ -373,15 +374,17 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
     _orderCon.listenForDeliverSlot(date: selectedDate).then((value) {
       setState(() {
         newOrder.expectedDeliverDate = selectedDate;
-        if ((newOrder.expectedDeliverSlotTime == 1 && !value.is1slotOK) ||
-            (newOrder.expectedDeliverSlotTime == 2 && !value.is2slotOK) ||
-            (newOrder.expectedDeliverSlotTime == 3 && !value.is3slotOK) ||
-            (newOrder.expectedDeliverSlotTime == 4 && !value.is4slotOK) ||
-            (newOrder.expectedDeliverSlotTime == 5 && !value.is5slotOK) ||
-            (newOrder.expectedDeliverSlotTime == 6 && !value.is6slotOK)) {
+        currentDateSlot = value;
+        currentDateSlot.disableCurrentNextSlots();
+        if ((newOrder.expectedDeliverSlotTime == 1 && !currentDateSlot.is1slotOK) ||
+            (newOrder.expectedDeliverSlotTime == 2 && !currentDateSlot.is2slotOK) ||
+            (newOrder.expectedDeliverSlotTime == 3 && !currentDateSlot.is3slotOK) ||
+            (newOrder.expectedDeliverSlotTime == 4 && !currentDateSlot.is4slotOK) ||
+            (newOrder.expectedDeliverSlotTime == 5 && !currentDateSlot.is5slotOK) ||
+            (newOrder.expectedDeliverSlotTime == 6 && !currentDateSlot.is6slotOK)) {
           newOrder.expectedDeliverSlotTime = -1;
         }
-        currentDateSlot = value;
+
       });
     });
   }
@@ -396,7 +399,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
           Expanded(flex: 7, child: Text('$strTime')),
           Expanded(
               flex: 3,
-              child: OutlineButton(onPressed: null, child: Text(S.of(context).full),
+              child: OutlineButton(onPressed: null, child: Text(S.current.full),
                   color: DmConst.accentColor,
                 borderSide: BorderSide(color: DmConst.accentColor),
               )),
@@ -494,7 +497,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 //          onPressed: () => Navigator.of(context).pop(),
 //        ),
 //        title: Text(
-//          S.of(context).deliveryPickup,
+//          S.current.deliveryPickup,
 //          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
 //        ),
 //        actions: <Widget>[
@@ -518,7 +521,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 //                  color: Theme.of(context).hintColor,
 //                ),
 //                title: Text(
-//                  S.of(context).pickup,
+//                  S.current.pickup,
 //                  maxLines: 1,
 //                  overflow: TextOverflow.ellipsis,
 //                  style: Theme.of(context).textTheme.headline4,
@@ -554,13 +557,13 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
 //                            color: Theme.of(context).hintColor,
 //                          ),
 //                          title: Text(
-//                            S.of(context).delivery,
+//                            S.current.delivery,
 //                            maxLines: 1,
 //                            overflow: TextOverflow.ellipsis,
 //                            style: Theme.of(context).textTheme.headline4,
 //                          ),
 //                          subtitle: Text(
-//                            S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
+//                            S.current.click_to_confirm_your_address_and_pay_or_long_press,
 //                            maxLines: 3,
 //                            overflow: TextOverflow.ellipsis,
 //                            style: Theme.of(context).textTheme.caption,

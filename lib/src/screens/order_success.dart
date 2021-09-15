@@ -53,7 +53,7 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
               slivers: <Widget>[
                 createSliverTopBar(context),
                 createSliverSearch(context),
-                createSilverTopMenu(context, haveBackIcon: false, title: S.of(context).myCart),
+                createSilverTopMenu(context, haveBackIcon: false, title: S.current.myCart),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     buildContent(context),
@@ -77,10 +77,10 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
   Widget buildContent(BuildContext context) {
     return Column(
       children: [
-//                createTitleRowWithBack(context, title: S.of(context).orderConfirmation, showBack: false),
+//                createTitleRowWithBack(context, title: S.current.orderConfirmation, showBack: false),
         Padding(
           padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-          child: TitleDivider(title: '${S.of(context).orderId}: ${widget.order.id}'),
+          child: TitleDivider(title: '${S.current.orderId}: ${widget.order.id}'),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
@@ -88,24 +88,24 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
             decoration: createRoundedBorderBoxDecoration(),
             child: ListTile(
               leading: Image.asset('assets/img/Thanks.png', fit: BoxFit.scaleDown),
-              title: Text(S.of(context).thankYou.toUpperCase() + "\n" + S.of(context).yourOrderIsBeingPlaced),
+              title: Text(S.current.thankYou.toUpperCase() + "\n" + S.current.yourOrderIsBeingPlaced),
               subtitle: Wrap(
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Text(S.of(context).pleaseCheck1),
+                  Text(S.current.pleaseCheck1),
                   FlatButton.icon(icon: Icon(UiIcons.edit, color: Theme.of(context).accentColor),
-                      label: Text(S.of(context).myOrders, style: TextStyle(color: Theme.of(context).accentColor),),
+                      label: Text(S.current.myOrders, style: TextStyle(color: Theme.of(context).accentColor),),
                       onPressed: () => RouteGenerator.gotoMyOrders(context, replaceOld: true)
                   ),
-                  Text(S.of(context).pleaseCheck2),
+                  Text(S.current.pleaseCheck2),
                 ],),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-          child: TitleDivider(title: S.of(context).specialForYou),
+          child: TitleDivider(title: S.current.specialForYou),
         ),
         Padding(
           padding: const EdgeInsets.all(DmConst.masterHorizontalPad),

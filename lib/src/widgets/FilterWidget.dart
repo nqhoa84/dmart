@@ -103,29 +103,29 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(S.of(context).filter),
+                    Text(S.current.filter),
                     OutlineButton(
                       onPressed: onPressClearFilter,
-                      child: Text(S.of(context).clear, style: TextStyle(color: Colors.white)),
+                      child: Text(S.current.clear, style: TextStyle(color: Colors.white)),
                     )
                   ],
                 ),
               ),
               SizedBox(height: 10),
-              createTitleRow(S.of(context).categories),
+              createTitleRow(S.current.categories),
               _createCateExpansion(),
               Divider(thickness: 1),
-              createTitleRow(S.of(context).brands),
+              createTitleRow(S.current.brands),
               _createBrandExpansion(),
               Divider(thickness: 1),
-              DmUtils.isNotNullEmptyList(this.countries) ? createTitleRow(S.of(context).country) : SizedBox(),
+              DmUtils.isNotNullEmptyList(this.countries) ? createTitleRow(S.current.country) : SizedBox(),
               _createCountryExpansion(),
               DmUtils.isNotNullEmptyList(this.countries) ? Divider(thickness: 1) : SizedBox(),
               Row(
                 children: [
                   Expanded(
                     child: createCheckbox(
-                        label: S.of(context).promotion,
+                        label: S.current.promotion,
                         tristate: true,
                         isChecked: filter.isPromotion,
                         onChanged: (v) {
@@ -137,7 +137,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                   ),
                   Expanded(
                     child: createCheckbox(
-                        label: S.of(context).bestSale,
+                        label: S.current.bestSale,
                         tristate: true,
                         isChecked: filter.isBestSale,
                         onChanged: (v) {
@@ -153,7 +153,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                 children: [
                   Expanded(
                     child: createCheckbox(
-                        label: S.of(context).newArrival,
+                        label: S.current.newArrival,
                         tristate: true,
                         isChecked: filter.isNewArrival,
                         onChanged: (v) {
@@ -166,12 +166,12 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                 ],
               ),
               Divider(thickness: 1),
-              createTitleRow(S.of(context).sortBy),
+              createTitleRow(S.current.sortBy),
               Row(
                 children: [
                   Expanded(
                     child: createCheckbox(
-                        label: S.of(context).priceIncreasing,
+                        label: S.current.priceIncreasing,
                         tristate: true,
                         isChecked: filter.isPriceUp,
                         onChanged: (v) {
@@ -183,7 +183,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                   ),
                   Expanded(
                     child: createCheckbox(
-                        label: S.of(context).latestDate,
+                        label: S.current.latestDate,
                         tristate: true,
                         isChecked: filter.isLatest,
                         onChanged: (v) {
@@ -199,7 +199,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               FlatButton(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 onPressed: onPressApply,
-                child: Text(S.of(context).applyFilters),
+                child: Text(S.current.applyFilters),
                 color: DmConst.accentColor,
               ),
             ],

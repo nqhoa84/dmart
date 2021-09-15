@@ -239,7 +239,7 @@ class CategoriesGridView extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed('/Category',
-            arguments: new RouteArgument(id: -1, param: [Category()..name = S.of(context).all]));
+            arguments: new RouteArgument(id: -1, param: [Category()..name = S.current.all]));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -262,7 +262,7 @@ class CategoriesGridView extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: Center(
-                  child: Text(S.of(context).all,
+                  child: Text(S.current.all,
                       style: Theme.of(context).textTheme.headline6,
                       textAlign: TextAlign.center,
                       maxLines: 1,

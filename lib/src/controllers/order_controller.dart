@@ -1,15 +1,12 @@
 import 'dart:math' as math;
-import 'package:dmart/DmState.dart';
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/DateSlot.dart';
-import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/order_status.dart';
 import 'package:dmart/src/models/product.dart';
-import 'package:dmart/src/models/product_order.dart';
-import 'package:dmart/src/models/voucher.dart';
-import 'package:dmart/src/repository/product_repository.dart';
+import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../DmState.dart';
 import '../../generated/l10n.dart';
 import '../models/order.dart';
 import '../repository/order_repository.dart';
@@ -24,7 +21,9 @@ class OrderController extends Controller {
 
   Order order;
 
-  OrderController();
+  BuildContext context;
+
+  OrderController({@required this.context});
 
   void listenForBoughtProducts({Function() onDone}) async {
     final Stream<Product> stream = await getBoughtProducts();
@@ -36,33 +35,31 @@ class OrderController extends Controller {
       });
     }, onError: (a) {
       print(a);
-    }, onDone: onDone
-    );
+    }, onDone: onDone);
   }
 
   void listenForOrders({String message}) async {
     final Stream<Order> stream = await getOrders();
     stream.listen((Order _order) {
-      if(_order.isValid) {
+      if (_order.isValid) {
         setState(() {
           historyOrders.add(_order);
-          switch(_order.orderStatus) {
-            case OrderStatus.created :
+          switch (_order.orderStatus) {
+            case OrderStatus.created:
               pendingOrders.add(_order);
               break;
-            case OrderStatus.approved :
-            case OrderStatus.preparing :
-            case OrderStatus.delivering :
-            case OrderStatus.deliverFailed :
-            confirmedOrders.add(_order);
+            case OrderStatus.approved:
+            case OrderStatus.preparing:
+            case OrderStatus.delivering:
+            case OrderStatus.deliverFailed:
+              confirmedOrders.add(_order);
               break;
           }
         });
       }
-
     }, onError: (a) {
       print(a);
-      showError(S.of(context).verifyYourInternetConnection);
+      showError(S.current.verifyYourInternetConnection);
     }, onDone: () {
       if (message != null) {
         showError(message);
@@ -70,25 +67,36 @@ class OrderController extends Controller {
     });
   }
 
+  void listenForOrder({int orderId}) async {
+    if(!DmState.isLoggedIn()) {
+      RouteGenerator.gotoHome(context);
+    } else {
+      var order = await getOrder(orderId: orderId);
+      setState(() {
+        this.order = order;
+      });
+    }
+  }
+
   Future<void> refreshOrders() async {
     historyOrders.clear();
     confirmedOrders.clear();
     pendingOrders.clear();
-    listenForOrders(message: S.of(context).orderRefreshedSuccessfully);
+    listenForOrders(message: S.current.orderRefreshedSuccessfully);
   }
 
   void listenVoucher({@required code, String message}) async {
     await getVoucher(code).then((voucher) {
       print('Voucher --- $voucher');
       if (voucher == null || voucher.isValid == false) {
-        showError(S.of(context).invalidVoucher);
+        showError(S.current.invalidVoucher);
       } else {
         setState(() {
           this.order.applyVoucher(voucher);
 //          this.order.voucher = voucher;
           print('-------${order.voucherDiscount} -- ${order.voucher}');
         });
-        showMsg(S.of(context).voucherApplied);
+        showMsg(S.current.voucherApplied);
       }
     });
   }
@@ -121,7 +129,7 @@ class OrderController extends Controller {
 //    }, onError: (a) {
 //      print(a);
 //      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//        content: Text(S.of(context).verifyYourInternetConnection),
+//        content: Text(S.current.verifyYourInternetConnection),
 //      ));
 //    }, onDone: onDone
 //    );
@@ -141,25 +149,51 @@ class OrderController extends Controller {
   }
 
   bool checkOrderBeforePost() {
-    return order != null &&
+    bool isOK = order != null &&
         order.totalItems > 0 &&
         order.orderVal > 0 &&
         order.expectedDeliverDate != null &&
         order.expectedDeliverSlotTime >= 0;
+    if (!isOK) {
+      showErr(S.current.invalidOrder);
+      return false;
+    }
+    order.productOrders?.forEach((po) {
+      if (po.quantity > toDouble(po.product.itemsAvailable)) {
+        showErr(S.current.orderItemOutOfStock);
+        return false;
+      }
+    });
+    return true;
   }
 
   bool isSavingOrder = false;
 
-  Future<Order> saveOrder({String errMsg, String successMsg}) {
-    return saveNewOrder(order);
+  saveOrder({String errMsg, String successMsg}) async {
     isSavingOrder = true;
-    saveNewOrder(order).then((value) {
-      return value;
-    }).catchError((err) {
-      if (errMsg != null) showError(errMsg);
-      isSavingOrder = false;
-    }).whenComplete(() {
-      isSavingOrder = false;
-    });
+    var re = await saveNewOrder(order);
+    isSavingOrder = false;
+    if(re != null) {
+      return re;
+    } else {
+      showError(S.current.placeOrderError);
+    }
   }
+
+  Future<bool> cancelPendingOrder(Order order) async {
+    if(order != null && order.canCancel()) {
+      var re = await cancelOrder(order.id);
+      if (re) {
+        showMsg(S.current.cancelOrderSuccess);
+        return true;
+      } else {
+        showMsg(S.current.cancelOrderFail);
+      }
+    } else {
+      showErr(S.current.cantCancelProcessingOrder);
+    }
+    return false;
+  }
+
+  // api/orders/$id?api_token=${_apiToken}
 }

@@ -72,7 +72,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
                 slivers: <Widget>[
                   createSliverTopBar(context),
                   createSliverSearch(context),
-                  createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myCart),
+                  createSilverTopMenu(context, haveBackIcon: true, title: S.current.myCart),
                   SliverList(
                     delegate: SliverChildListDelegate([
                       buildContent(context),
@@ -129,23 +129,23 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createSummaryRow(context, S.of(context).date, toDateTimeStr(DateTime.now())),
+          _createSummaryRow(context, S.current.date, toDateTimeStr(DateTime.now())),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).totalItems, '${_con.order.totalItems}'),
+          _createSummaryRow(context, S.current.totalItems, '${_con.order.totalItems}'),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).orderValue, getDisplayMoney(_con.order.orderVal), isBold: true),
+          _createSummaryRow(context, S.current.orderValue, getDisplayMoney(_con.order.orderVal), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).serviceFee, getDisplayMoney(_con.order.serviceFee)),
+          _createSummaryRow(context, S.current.serviceFee, getDisplayMoney(_con.order.serviceFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
+          _createSummaryRow(context, S.current.deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
+          _createSummaryRow(context, S.current.discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
+          _createSummaryRow(context, S.current.total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).VAT, getDisplayMoney(_con.order.tax)),
+          _createSummaryRow(context, S.current.VAT, getDisplayMoney(_con.order.tax)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).grandTotal.toUpperCase(), getDisplayMoney(_con.order.grandTotal),
+          _createSummaryRow(context, S.current.grandTotal.toUpperCase(), getDisplayMoney(_con.order.grandTotal),
               isBold: true),
         ],
       ),
@@ -158,15 +158,15 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createSummaryRow(context, S.of(context).fullName, widget.order.deliveryAddress.fullName,
+          _createSummaryRow(context, S.current.fullName, widget.order.deliveryAddress.fullName,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).phone, widget.order.deliveryAddress.phone,
+          _createSummaryRow(context, S.current.phone, widget.order.deliveryAddress.phone,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
+          _createSummaryRow(context, S.current.date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.of(context).address, widget.order.deliveryAddress.getFullAddress,
+          _createSummaryRow(context, S.current.address, widget.order.deliveryAddress.getFullAddress,
               txtAlign2: TextAlign.start),
         ],
       ),
@@ -187,9 +187,9 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
               onSubmitted: (input) {
 //                print('your input voucher code = $input');
               },
-//                            validator: (input) => !input.contains('@') ? S.of(context).invalidAddress : null,
+//                            validator: (input) => !input.contains('@') ? S.current.invalidAddress : null,
               decoration: new InputDecoration(
-                hintText: S.of(context).voucherCode,
+                hintText: S.current.voucherCode,
                 hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
                 focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
                 prefixIcon: Icon(UiIcons.gift),
@@ -199,7 +199,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
           ),
         ),
         FlatButton(
-          child: Text(S.of(context).apply),
+          child: Text(S.current.apply),
           onPressed: onPressedOnApplyVoucher,
           color: DmConst.accentColor,
         )
@@ -260,7 +260,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
           Expanded(flex: 7, child: Text('$strTime')),
           Expanded(
               flex: 3,
-              child: OutlineButton(onPressed: null, child: Text(S.of(context).full), color: DmConst.accentColor)),
+              child: OutlineButton(onPressed: null, child: Text(S.current.full), color: DmConst.accentColor)),
         ],
       );
     } else if (status > 0) {
@@ -320,7 +320,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
-                  title: S.of(context).orderSummary,
+                  title: S.current.orderSummary,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -329,7 +329,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
-                  title: S.of(context).voucher,
+                  title: S.current.voucher,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -340,7 +340,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(
-                  title: S.of(context).deliverTo,
+                  title: S.current.deliverTo,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -349,7 +349,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(
-                  title: S.of(context).itemsList,
+                  title: S.current.itemsList,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -389,7 +389,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       left: 0,
       right: 0,
       child: CartBottomButton(
-        title: S.of(context).placeOrder,
+        title: S.current.placeOrder,
         onPressed: onPressedOnPlaceOrder,
       ),
     );

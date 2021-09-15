@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 ///[shortUrl] is the String without host. The real url to post will be [apiBaseUrl + shortUrl].<br/>
 ///The header is minimal data with 'language' value.
 Future<http.Response> post({@required String shortUrl, Map body}) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}$shortUrl';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}$shortUrl');
   print('url: $url \nParas: $body');
   return await http.Client().post(
     url,
@@ -24,7 +24,7 @@ Future<http.Response> post({@required String shortUrl, Map body}) async {
 ///[shortUrl] is the String without host. The real url to post will be [apiBaseUrl + shortUrl].<br/>
 ///[paras] must NOT contain keys: 'language' because it wil be added before submitting.<br/>
 Future<http.Response> get({@required String shortUrl, Map paras}) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}$shortUrl';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}$shortUrl');
   print('url: $url \nParas: $paras');
   if (paras != null) {
     Map newParas = {HttpHeaders.contentTypeHeader: 'application/json', 'language': DmState.isKhmer ? 'kh' : 'en'};

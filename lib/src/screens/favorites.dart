@@ -32,7 +32,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
 
   @override
   String getTitle(BuildContext context) {
-    return S.of(context).myFavorite;
+    return S.current.myFavorite;
   }
 
   @override
@@ -46,7 +46,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
     if (DmState.favorites.isEmpty) {
 //      return ProductsGridViewLoading(isList: true);
       return EmptyDataLoginWid(
-        message: S.of(context).yourFavoriteEmpty,
+        message: S.current.yourFavoriteEmpty,
         iconData: Icons.favorite_border,
       );
     } else {

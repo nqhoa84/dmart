@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:dmart/constant.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../../DmState.dart';
 import '../../src/helpers/custom_trace.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,49 +16,33 @@ import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'controller.dart';
 
+
 class SplashScreenController extends Controller with ChangeNotifier {
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
-  // SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super(scaffoldKey: scaffoldKey);
+  final firebaseMessaging = FirebaseMessaging();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 
-  @override
-  void _initState() {
-    super.initState();
-    firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
-    configureFirebase(firebaseMessaging);
-    settingRepo.setting.addListener(() {
-      if (settingRepo.setting.value.appName != null && settingRepo.setting.value.appName != '' && settingRepo.setting.value.mainColor != null) {
-        progress.value["Setting"] = 50;
-        progress?.notifyListeners();
-      }
-    });
-    userRepo.currentUser.addListener(() {
-      if (userRepo.currentUser.value.isLogin) {
-        progress.value["User"] = 100;
-        progress?.notifyListeners();
-      }
-    });
-    Timer(Duration(seconds: 20), () {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
-    });
+  SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super();
+
+  void init() {
+    _initFireBase();
   }
 
-  void initFireBase() {
-    firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
-    configureFirebase(firebaseMessaging);
-    FirebaseMessaging().getToken().then((String _deviceToken) {
+  void _initFireBase() {
+    firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+
+    _configureFirebase(firebaseMessaging);
+    firebaseMessaging.getToken().then((String _deviceToken) {
       DmConst.deviceToken = _deviceToken;
       print(' DmConst.deviceToken--${DmConst.deviceToken}');
-      print('------------------------');
     }).catchError((e) {
       print('Notification not configured $e');
     });
   }
 
-  void configureFirebase(FirebaseMessaging _firebaseMessaging) {
+  void _configureFirebase(FirebaseMessaging _firebaseMessaging) {
     try {
       _firebaseMessaging.configure(
         onMessage: notificationOnMessage,
@@ -69,6 +55,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
   }
 
   Future notificationOnResume(Map<String, dynamic> message) async {
+    print('==notificationOnResume: $message');
     print(message['data']['id']);
     try {
       if (message['data']['id'] == "orders") {
@@ -81,6 +68,7 @@ class SplashScreenController extends Controller with ChangeNotifier {
   }
 
   Future notificationOnLaunch(Map<String, dynamic> message) async {
+    print('==notificationOnLaunch: $message');
     String messageId = await settingRepo.getMessageId();
     try {
       if (messageId != message['google.message_id']) {
@@ -96,13 +84,25 @@ class SplashScreenController extends Controller with ChangeNotifier {
 
   Future notificationOnMessage(Map<String, dynamic> message) async {
     print('OnMessage: $message');
-    Fluttertoast.showToast(
-//      msg: message['notification']['title'],
-      msg: '$message',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 5,
-    );
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        showWhen: false);
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+    await DmState.flutterLocalNotificationsPlugin?.show(
+        0, 'plain title', '$message', platformChannelSpecifics,
+        payload: 'the payload ');
+
+//     Fluttertoast.showToast(
+// //      msg: message['notification']['title'],
+//       msg: '$message',
+//       toastLength: Toast.LENGTH_LONG,
+//       gravity: ToastGravity.TOP,
+//       timeInSecForIosWeb: 5,
+//     );
   }
 
   // ignore: missing_return

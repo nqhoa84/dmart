@@ -171,7 +171,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                 },
                                 shape: StadiumBorder(),
                                 label: Text(
-                                  S.of(context).submit,
+                                  S.current.submit,
                                   style: TextStyle(color: Theme.of(context).primaryColor),
                                 ),
                                 icon: Icon(
@@ -241,7 +241,7 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                     },
                                     shape: StadiumBorder(),
                                     label: Text(
-                                      S.of(context).submit,
+                                      S.current.submit,
                                       style: TextStyle(color: Theme.of(context).primaryColor),
                                     ),
                                     icon: Icon(

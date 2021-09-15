@@ -46,7 +46,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                           keyboardType: TextInputType.number,
                           decoration: getInputDecoration(hintText: '4242 4242 4242 4242', labelText: 'number'),
                           initialValue: widget.creditCard.number.isNotEmpty ? widget.creditCard.number : null,
-                          validator: (input) => input.trim().length != 16 ? S.of(context).invalidNumber : null,
+                          validator: (input) => input.trim().length != 16 ? S.current.invalidNumber : null,
                           onSaved: (input) => widget.creditCard.number = input,
                         ),
                         new TextFormField(
@@ -55,7 +55,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                             decoration: getInputDecoration(hintText: 'mm/yy', labelText: 'exp_date'),
                             initialValue: widget.creditCard.expMonth.isNotEmpty ? widget.creditCard.expMonth + '/' + widget.creditCard.expYear : null,
                             // TODO validate date
-                            validator: (input) => !input.contains('/') || input.length != 5 ? S.of(context).invalidDate : null,
+                            validator: (input) => !input.contains('/') || input.length != 5 ? S.current.invalidDate : null,
                             onSaved: (input) {
                               widget.creditCard.expMonth = input.split('/').elementAt(0);
                               widget.creditCard.expYear = input.split('/').elementAt(1);
@@ -78,12 +78,12 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(S.of(context).cancel),
+                        child: Text(S.current.cancel),
                       ),
                       MaterialButton(
                         onPressed: _submit,
                         child: Text(
-                          S.of(context).save,
+                          S.current.save,
                           style: TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ),
@@ -96,7 +96,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
             });
       },
       child: Text(
-        S.of(context).edit,
+        S.current.edit,
         style: Theme.of(context).textTheme.bodyText2,
       ),
     );

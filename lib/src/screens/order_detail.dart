@@ -4,6 +4,7 @@ import 'package:dmart/src/controllers/order_controller.dart';
 import 'package:dmart/src/helpers/ui_icons.dart';
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/order.dart';
+import 'package:dmart/src/models/order_status.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/models/product_order.dart';
 import 'package:dmart/src/screens/order_success.dart';
@@ -26,17 +27,19 @@ import 'delivery_to.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   Order order;
-
-  OrderDetailScreen(this.order);
+  int orderId;
+  OrderDetailScreen({this.order = null, this.orderId = -1});
+  // OrderDetailScreen({this.orderId});
 
   @override
-  _OrderDetailScreenState createState() => _OrderDetailScreenState(this.order);
+  _OrderDetailScreenState createState() => _OrderDetailScreenState(this.order, this.orderId);
 }
 
 class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
   Order order;
+  int orderId;
   OrderController _con;
-  _OrderDetailScreenState(this.order) : super(OrderController()) {
+  _OrderDetailScreenState(this.order, this.orderId) : super(OrderController(context: null)) {
     _con = controller;
     _con.order = order;
     _con.scaffoldKey = GlobalKey<ScaffoldState>();
@@ -44,12 +47,11 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
 
   @override
   void initState() {
-//    DmState.cartsValue.addListener(() {
-//      setState(() {
-//        _con.order.applyCarts(DmState.carts);
-//      });
-//    });
     super.initState();
+    _con.context = this.context;
+    if(this.order == null && this.orderId > 0) {
+      _con.listenForOrder(orderId: this.orderId);
+    }
   }
 
   @override
@@ -68,7 +70,7 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
             slivers: <Widget>[
               createSliverTopBar(context),
               createSliverSearch(context),
-              createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).myOrder),
+              createSilverTopMenu(context, haveBackIcon: true, title: S.current.myOrder),
               SliverList(
                 delegate: SliverChildListDelegate([
                   buildContent(context),
@@ -83,30 +85,29 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
     );
   }
 
-
   Widget _createSummaryContainer(BuildContext context) {
     return Container(
       decoration: createRoundedBorderBoxDecoration(),
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          OrderSummaryRow(S.of(context).date, toDateTimeStr(DateTime.now())),
+          OrderSummaryRow(S.current.date, toDateTimeStr(DateTime.now())),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).totalItems, '${_con.order.totalItems}'),
+          OrderSummaryRow(S.current.totalItems, '${_con.order.totalItems}'),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).orderValue, getDisplayMoney(_con.order.orderVal), isBold: true),
+          OrderSummaryRow(S.current.orderValue, getDisplayMoney(_con.order.orderVal), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).serviceFee, getDisplayMoney(_con.order.serviceFee)),
+          OrderSummaryRow(S.current.serviceFee, getDisplayMoney(_con.order.serviceFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
+          OrderSummaryRow(S.current.deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
+          OrderSummaryRow(S.current.discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
+          OrderSummaryRow(S.current.total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).VAT, getDisplayMoney(_con.order.tax)),
+          OrderSummaryRow(S.current.VAT, getDisplayMoney(_con.order.tax)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).grandTotal.toUpperCase(), getDisplayMoney(_con.order.grandTotal),
+          OrderSummaryRow(S.current.grandTotal.toUpperCase(), getDisplayMoney(_con.order.grandTotal),
               isBold: true),
         ],
       ),
@@ -119,15 +120,15 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          OrderSummaryRow(S.of(context).fullName, widget.order.deliveryAddress.fullName,
+          OrderSummaryRow(S.current.fullName, widget.order.deliveryAddress.fullName,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).phone, widget.order.deliveryAddress.phone,
+          OrderSummaryRow(S.current.phone, widget.order.deliveryAddress.phone,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
+          OrderSummaryRow(S.current.date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.of(context).address, widget.order.deliveryAddress.getFullAddress,
+          OrderSummaryRow(S.current.address, widget.order.deliveryAddress.getFullAddress,
               txtAlign2: TextAlign.start),
         ],
       ),
@@ -144,20 +145,19 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
-                  title: '${S.of(context).orderNumber}: ${widget.order.id}' ),
+                  title: '${S.current.orderNumber}: ${widget.order.id}' ),
             ),
             Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _createSummaryContainer(context)),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(
-                  title: S.of(context).deliverTo ),
+                  title: S.current.deliverTo ),
             ),
             Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _createDeliverToContainer(context)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: TitleDivider(
-                  title: S.of(context).itemsList ),
+              child: TitleDivider( title: S.current.itemsList ),
             ),
             GridView.count(
               primary: false,
@@ -182,12 +182,26 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
               ),
             ),
             SizedBox(height: 20),
+            TextButton(child: Text(S.current.cancelOrder),
+              onPressed: order.canCancel() ? _onCancelPress : null )
           ],
         ),
       ),
     );
   }
 
+  bool isCanceling = false;
+  Future<void> _onCancelPress() async {
+    print('_onCancelPress=========== $isCanceling');
+    if(isCanceling) return;
+    isCanceling = true;
+    var re = await _con.cancelPendingOrder(this.order);
+    print('==============re = $re');
+    if(re && Navigator.of(context).canPop()) {
+      Navigator.of(context).pop({'isCancel' : true});
+    }
+    isCanceling = false;
+  }
 }
 
 class OrderSummaryRow extends StatelessWidget {

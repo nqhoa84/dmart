@@ -30,7 +30,7 @@ class _OrderListWidgetState extends State<OrdersListWidget> {
               children: <Widget>[
                 Expanded(
                     child:
-                    Text('${S.of(context).orderId}: #${widget.orders.elementAt(index).id}')),
+                    Text('${S.current.orderId}: #${widget.orders.elementAt(index).id}')),
                 Text(
                   '${widget.orders.elementAt(index).orderStatus}',
                   style: Theme.of(context).textTheme.caption,

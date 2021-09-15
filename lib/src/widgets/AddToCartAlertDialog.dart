@@ -20,7 +20,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: new Text(S.of(context).resetCart),
+      title: new Text(S.current.resetCart),
       contentPadding: EdgeInsets.symmetric(vertical: 20),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -156,14 +156,14 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
         FlatButton(
-          child: new Text(S.of(context).reset),
+          child: new Text(S.current.reset),
           onPressed: () {
             onPressed(newProduct, reset: true);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: new Text(S.of(context).close),
+          child: new Text(S.current.close),
           onPressed: () {
             Navigator.of(context).pop();
           },

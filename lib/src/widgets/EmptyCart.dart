@@ -44,7 +44,7 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
                 )
               )
             : EmptyDataLoginWid(
-          message: S.of(context).yourCartEmpty,
+          message: S.current.yourCartEmpty,
         ),
       ],
     );
@@ -71,7 +71,7 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  S.of(context).yourCartEmpty,
+                  S.current.yourCartEmpty,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
@@ -85,7 +85,7 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
                 color: Theme.of(context).accentColor.withOpacity(1),
                 shape: StadiumBorder(),
                 child: Text(
-                  S.of(context).home,
+                  S.current.home,
                   style: Theme.of(context)
                       .textTheme
                       .headline6

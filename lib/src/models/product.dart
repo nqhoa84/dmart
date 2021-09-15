@@ -26,7 +26,7 @@ class Product extends IdNameObj{
   String capacity;
   Unit unit;
   double packageItemsCount;
-  String itemsAvailable;
+  int itemsAvailable;
   bool featured;
   bool deliverable;
   String rate;
@@ -79,7 +79,7 @@ class Product extends IdNameObj{
       featured = false;
       deliverable = false;
       rate = '0';
-      itemsAvailable = '0';
+      itemsAvailable = 0;
       brand = new Brand();
       category = new Category();
       store = new Store();
@@ -118,7 +118,7 @@ class Product extends IdNameObj{
     isBestSale = jsonMap['is_best_sale'] ?? false;
     totalSale = toDouble(jsonMap['total_sale'], errorValue: 0.0);
     rate = toStringVal(jsonMap['rate']);
-    itemsAvailable = toStringVal(jsonMap['itemsAvailable']);
+    itemsAvailable = toInt(jsonMap['itemsAvailable'], errorValue: 0);
     try {
       brand = jsonMap['brand'] != null && jsonMap['brand'] is Map<String, dynamic>
           ? Brand.fromJSON(jsonMap['brand'])

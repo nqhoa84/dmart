@@ -26,7 +26,7 @@ class DeliveryAddressDialog {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  S.of(context).addDeliveryAddress,
+                  S.current.addDeliveryAddress,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
@@ -42,9 +42,9 @@ class DeliveryAddressDialog {
                         style: TextStyle(color: Theme.of(context).hintColor),
                         keyboardType: TextInputType.text,
                         decoration: getInputDecoration(
-                            hintText: S.of(context).homeAddress, labelText: S.of(context).description),
+                            hintText: S.current.homeAddress, labelText: S.current.description),
                         initialValue: address.description?.isNotEmpty ?? false ? address.description : null,
-                        validator: (input) => input.trim().length == 0 ? S.of(context).invalidAddress : null,
+                        validator: (input) => input.trim().length == 0 ? S.current.invalidAddress : null,
                         onSaved: (input) => address.description = input,
                       ),
                     ),
@@ -54,9 +54,9 @@ class DeliveryAddressDialog {
                         style: TextStyle(color: Theme.of(context).hintColor),
                         keyboardType: TextInputType.text,
                         decoration: getInputDecoration(
-                            hintText: S.of(context).fullAddress, labelText: S.of(context).fullAddress),
+                            hintText: S.current.fullAddress, labelText: S.current.fullAddress),
                         initialValue: address.address?.isNotEmpty ?? false ? address.address : null,
-                        validator: (input) => input.trim().length == 0 ? S.of(context).invalidAddress : null,
+                        validator: (input) => input.trim().length == 0 ? S.current.invalidAddress : null,
                         onSaved: (input) => address.address = input,
                       ),
                     ),
@@ -66,7 +66,7 @@ class DeliveryAddressDialog {
                         context: context,
                         initialValue: address.isDefault ?? false,
                         onSaved: (input) => address.isDefault = input,
-                        title: Text(S.of(context).makeItDefault),
+                        title: Text(S.current.makeItDefault),
                       ),
                     )
                   ],
@@ -79,14 +79,14 @@ class DeliveryAddressDialog {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      S.of(context).cancel,
+                      S.current.cancel,
                       style: TextStyle(color: Theme.of(context).hintColor),
                     ),
                   ),
                   MaterialButton(
                     onPressed: _submit,
                     child: Text(
-                      S.of(context).save,
+                      S.current.save,
                       style: TextStyle(color: Theme.of(context).accentColor),
                     ),
                   ),

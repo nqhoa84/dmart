@@ -115,7 +115,7 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                           Row(
                             children:<Widget>[
                               Text(
-                                S.of(context).deliveryFee,
+                                S.current.deliveryFee,
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Helper.getPrice(widget.cart.product.store.deliveryFee, context, style: Theme.of(context).textTheme.bodyText2)
@@ -124,7 +124,7 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                           Row(
                               children:<Widget>[
                                 Text(
-                                  '${S.of(context).tax} (${widget.cart.product.store.defaultTax})%',
+                                  '${S.current.tax} (${widget.cart.product.store.defaultTax})%',
                                    style: Theme.of(context).textTheme.bodyText2,
                                 ),
                                 //Helper.getPrice(widget.taxAmount, context, style: Theme.of(context).textTheme.bodyText2)

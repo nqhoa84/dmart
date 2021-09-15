@@ -3,8 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class
-DmConst {
+class DmConst {
   static String deviceToken;
   ///dateFormat = 'yyyy-MM-dd';
   static const String dateFormat = 'yyyy-MM-dd';

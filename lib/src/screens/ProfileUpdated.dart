@@ -56,7 +56,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
           contentPadding: EdgeInsets.all(0),
           isThreeLine: false,
           leading: Image.asset(DmConst.assetImgUserThumbUp),
-          title: Text(S.of(context).accountInfoUpdated),
+          title: Text(S.current.accountInfoUpdated),
         ),
         SizedBox(height: 10),
         Row(
@@ -67,7 +67,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
                 onPressed: () {
                   RouteGenerator.gotoHome(context);
                 },
-                child: Text(S.of(context).startShopping,
+                child: Text(S.current.startShopping,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -76,7 +76,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
           ],
         ),
         SizedBox(height: 20),
-        TitleDivider(title: S.of(context).bestSale),
+        TitleDivider(title: S.current.bestSale),
         SizedBox(height: 10),
         buildBestSale(context),
       ],
@@ -111,7 +111,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
                   contentPadding: EdgeInsets.all(0),
                   isThreeLine: false,
                   leading: Image.asset(DmConst.assetImgUserThumbUp),
-                  title: Text(S.of(context).accountInfoUpdated),
+                  title: Text(S.current.accountInfoUpdated),
                 ),
                 Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
                 Padding(
@@ -124,7 +124,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
                           onPressed: () {
                             RouteGenerator.gotoHome(context);
                           },
-                          child: Text(S.of(context).startShopping,
+                          child: Text(S.current.startShopping,
                               style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                           color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -137,7 +137,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
             ),
           ),
           SizedBox(height: 20),
-          TitleDivider(title: S.of(context).bestSale),
+          TitleDivider(title: S.current.bestSale),
           SizedBox(height: 10),
           buildBestSale(context),
         ],

@@ -4,10 +4,11 @@ import 'package:dmart/src/models/brand.dart';
 import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/src/widgets/DmDropDown.dart';
-import 'package:expandable/expandable.dart';
+import 'package:dmart/src/widgets/toolbars/HeaderBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'DmState.dart';
 import 'constant.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -16,10 +17,12 @@ import 'src/models/product.dart';
 import 'src/models/user.dart';
 import 'src/repository/user_repository.dart';
 import 'src/widgets/ProductItemWide.dart';
-import 'src/widgets/SearchBar.dart';
+import 'src/widgets/toolbars/SearchBar.dart';
 import 'src/widgets/ShoppingCartButton.dart';
+import 'src/widgets/toolbars/SearchSoundBar.dart';
 
-Widget createNetworkImage({String url, double width, double height, BoxFit fit = BoxFit.cover}) {
+Widget createNetworkImage(
+    {String url, double width, double height, BoxFit fit = BoxFit.cover}) {
   return CachedNetworkImage(
     height: height,
     width: width,
@@ -29,8 +32,7 @@ Widget createNetworkImage({String url, double width, double height, BoxFit fit =
       'assets/img/loading.gif',
       fit: BoxFit.cover,
     ),
-    errorWidget: (context, url, error) =>
-        Icon(Icons.error_outline),
+    errorWidget: (context, url, error) => Icon(Icons.error_outline),
   );
 //  return Image.network(
 //    url,
@@ -85,8 +87,8 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(user.nameShort ?? S.of(context).unknown),
-                Text('${S.of(context).credit}: ${currentUser.value.credit}',
+                Text(user.nameShort ?? S.current.unknown),
+                Text('${S.current.credit}: ${currentUser.value.credit}',
                     style: TextStyle(color: DmConst.textColorForTopBarCredit)),
               ],
             ),
@@ -101,14 +103,15 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
         children: <Widget>[
           CircleAvatar(
             backgroundColor: Colors.transparent,
-            child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
+            child: Image.asset('assets/img/H_User_Icon.png',
+                width: 40, height: 40, fit: BoxFit.scaleDown),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(S.of(context).guest),
-              Text('${S.of(context).credit}:'),
+              Text(S.current.guest),
+              Text('${S.current.credit}:'),
             ],
           ),
         ],
@@ -117,7 +120,9 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
   }
 }
 
-PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey, {int amountBadge = 0}) {
+PreferredSize createAppBar(
+    BuildContext context, GlobalKey<ScaffoldState> scaffoldKey,
+    {int amountBadge = 0}) {
   User user = currentUser.value;
   return PreferredSize(
     preferredSize: Size.fromHeight(110),
@@ -136,7 +141,8 @@ PreferredSize createAppBar(BuildContext context, GlobalKey<ScaffoldState> scaffo
                 InkWell(
                   onTap: () => RouteGenerator.gotoHome(context),
                   child: Container(
-                      child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
+                      child: Image.asset(DmConst.assetImgLogo,
+                          width: 46, height: 46, fit: BoxFit.scaleDown)),
                 ),
                 Expanded(
                   child: Align(
@@ -182,7 +188,8 @@ AppBar createAppBarLogo(BuildContext context, {bool haveBackIcon = true}) {
             child: Icon(UiIcons.return_icon, color: DmConst.accentColor)),
     title: InkWell(
         onTap: () => RouteGenerator.gotoHome(context),
-        child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
+        child: Image.asset(DmConst.assetImgLogo,
+            width: 46, height: 46, fit: BoxFit.scaleDown)),
     centerTitle: true,
     bottom: PreferredSize(
       preferredSize: Size.fromHeight(4),
@@ -195,8 +202,10 @@ SliverAppBar createSliverTopBar(BuildContext context) {
   User user = currentUser.value;
   return SliverAppBar(
     automaticallyImplyLeading: false,
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.white,
     elevation: 10,
+    pinned: true,
+    //this property make to widget pin to screen
 //    title: Container(color: Colors.red),
     bottom: PreferredSize(
       preferredSize: Size.fromHeight(0),
@@ -209,7 +218,8 @@ SliverAppBar createSliverTopBar(BuildContext context) {
               InkWell(
                 onTap: () => RouteGenerator.gotoHome(context),
                 child: Container(
-                    child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
+                    child: Image.asset(DmConst.assetImgLogo,
+                        width: 46, height: 46, fit: BoxFit.scaleDown)),
               ),
               Expanded(
                 child: Align(
@@ -235,137 +245,18 @@ SliverAppBar createSliverTopBar(BuildContext context) {
   );
 }
 
-SliverAppBar createSliverSearch(BuildContext context) {
-  IconThemeData it = IconThemeData(
-    color: DmConst.accentColor
-  );
-  return SliverAppBar(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      automaticallyImplyLeading: false,
-      title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SearchBar(),
-      ),
-      centerTitle: true,
-      pinned: true,
-      floating: true,
-    iconTheme: it,
-  );
+Widget createSliverSearch(BuildContext context) {
+  return SearchSoundBar();
 }
 
 Widget createSilverTopMenu(BuildContext context,
-    {bool haveBackIcon = true,
-    List<IdNameObj> types = const [],
-    List<Category> cates = const [],
-    List<Brand> brands = const [],
-    List<SortBy> sorts = const [],
-    String title = ''}) {
-  TextStyle ts = Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
-
+    {bool haveBackIcon = true, bool haveFilter = false, String title = ''}) {
+  return HeaderBar(haveBackIcon: haveBackIcon, haveFilter: haveFilter, title: title);
+  TextStyle ts =
+      Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
 
   List<Widget> _buildMenu() {
-//    TextStyle ts = Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white);
-
-    bool haveReset = types.isNotEmpty || cates.isNotEmpty || brands.isNotEmpty || sorts.isNotEmpty;
     List<Widget> re = [];
-
-    if (haveReset) {
-      re.add(Container(
-        padding: EdgeInsets.fromLTRB(8, 5, 8, 5),
-//        decoration: BoxDecoration(
-//          border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
-//        ),
-        child: InkWell(
-          child: Center(child: Text(S.of(context).reset, style: ts)),
-        ),
-      ));
-    }
-
-    if (types != null && types.length > 0) {
-      re.add(Container(
-        padding: EdgeInsets.fromLTRB(8, 5, 0, 5),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
-        ),
-        child: DmDropDown(items: types),
-//        child: InkWell(
-//          onTap: onTapOnType,
-//          child: Row(
-//            children: [
-//              Text(S.of(context).type, style: ts),
-//              Icon(
-//                Icons.keyboard_arrow_down,
-//                color: Colors.white,
-//                size: 25,
-//              )
-//            ],
-//          ),
-//        ),
-      ));
-    }
-
-    if (cates != null && cates.isNotEmpty) {
-      re.add(Container(
-        padding: EdgeInsets.fromLTRB(8, 5, 0, 5),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
-        ),
-        child: InkWell(
-          child: Row(
-            children: [
-              Text(S.of(context).category, style: ts),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 25,
-              )
-            ],
-          ),
-        ),
-      ));
-    }
-
-    if (brands != null && brands.isNotEmpty) {
-      re.add(Container(
-        padding: EdgeInsets.fromLTRB(8, 5, 0, 5),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
-        ),
-        child: InkWell(
-          child: Row(
-            children: [
-              Text(S.of(context).brand, style: ts),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 25,
-              )
-            ],
-          ),
-        ),
-      ));
-    }
-
-    if (sorts != null && sorts.isNotEmpty) {
-      re.add(Container(
-        padding: EdgeInsets.fromLTRB(8, 5, 0, 5),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
-        ),
-        child: InkWell(
-          child: Row(
-            children: [
-              Text(S.of(context).sortBy, style: ts),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-                size: 25,
-              )
-            ],
-          ),
-        ),
-      ));
-    }
     if (title != null && title.isNotEmpty) {
 //      re.add(VerticalDivider(color: Colors.white, thickness: 2, width: 10,));
       re.add(Container(
@@ -393,20 +284,25 @@ Widget createSilverTopMenu(BuildContext context,
 //    centerTitle: true,
     title: Align(
       alignment: Alignment.centerRight,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+      // child: SingleChildScrollView(
+      //   scrollDirection: Axis.horizontal,
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.end,
+      //     children: _buildMenu(),
+      //   ),
+      // ),
+      child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: _buildMenu(),
-        ),
-      ),
+        )
     ),
-    actions: <Widget>[Container()],
+    actions: <Widget>[haveFilter ? Icon(Icons.menu) : Container()],
     backgroundColor: DmConst.accentColor,
   );
 }
 
-Widget createTitleRowWithBack(BuildContext context, {String title = '', bool showBack = true}) {
+Widget createTitleRowWithBack(BuildContext context,
+    {String title = '', bool showBack = true}) {
   return Container(
     width: double.infinity,
     height: DmConst.appBarHeight * 0.7,
@@ -422,7 +318,12 @@ Widget createTitleRowWithBack(BuildContext context, {String title = '', bool sho
             : Text(''),
         Padding(
           padding: const EdgeInsets.only(right: 10),
-          child: Center(child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+          child: Center(
+              child: Text(title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(color: Colors.white))),
         )
       ],
     ),
@@ -430,7 +331,9 @@ Widget createTitleRowWithBack(BuildContext context, {String title = '', bool sho
 }
 
 BoxDecoration createRoundedBorderBoxDecoration(
-    {double radius = 15, double borderWidth = 2, Color borderColor = Colors.black12}) {
+    {double radius = 15,
+    double borderWidth = 2,
+    Color borderColor = Colors.black12}) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(width: borderWidth, color: borderColor),
@@ -442,7 +345,8 @@ BoxDecoration createRoundedBorderBoxDecoration(
   );
 }
 
-Widget createGridViewOfProducts(BuildContext context, List<Product> products, {String heroTag = 'dm'}) {
+Widget createGridViewOfProducts(BuildContext context, List<Product> products,
+    {String heroTag = 'dm'}) {
   return GridView.count(
     primary: false,
     shrinkWrap: true,
@@ -457,7 +361,8 @@ Widget createGridViewOfProducts(BuildContext context, List<Product> products, {S
         Product product = products.elementAt(index);
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ProductItemWide(product: product, heroTag: '${heroTag}_${index}_'),
+          child: ProductItemWide(
+              product: product, heroTag: '${heroTag}_${index}_'),
         );
       },
     ),
@@ -477,16 +382,17 @@ InputDecoration buildInputDecoration(BuildContext context, String hintText) {
   return InputDecoration(
     hintText: hintText,
     hintStyle: TextStyle(color: DmConst.accentColor),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+    enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+    focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: DmConst.accentColor)),
   );
 }
 
 Container createEmptyContainer({String imageUrl}) {
-  return Container(decoration: BoxDecoration(
-      image: DecorationImage(
-          image: NetworkImage(imageUrl),
-          fit: BoxFit.cover
-      )
-  ));
+  return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(imageUrl), fit: BoxFit.cover)));
 }
+

@@ -21,7 +21,7 @@ class MobileVerification extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    S.of(context).verifyPhoneNo,
+                    S.current.verifyPhoneNo,
                     style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
@@ -85,7 +85,7 @@ class MobileVerification extends StatelessWidget {
                 Navigator.of(context).pushNamed('/MobileVerification2');
               },
               color: Theme.of(context).accentColor,
-              text: Text(S.of(context).submit.toUpperCase(),
+              text: Text(S.current.submit.toUpperCase(),
                   style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],

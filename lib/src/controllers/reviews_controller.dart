@@ -26,25 +26,25 @@ class ReviewsController extends ControllerMVC {
   }
 
   void listenForOrder({int orderId, String message}) async {
-    final Stream<Order> stream = await getOrder(orderId);
-    stream.listen((Order _order) {
-      setState(() {
-        order = _order;
-        productsReviews = List.generate(order.productOrders.length, (_) => new Review.init("0"));
-      });
-    }, onError: (a) {
-      print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
-    }, onDone: () {
-      getProductsOfOrder();
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
-    });
+    // final Stream<Order> stream = await getOrder(orderId);
+    // stream.listen((Order _order) {
+    //   setState(() {
+    //     order = _order;
+    //     productsReviews = List.generate(order.productOrders.length, (_) => new Review.init("0"));
+    //   });
+    // }, onError: (a) {
+    //   print(a);
+    //   scaffoldKey.currentState.showSnackBar(SnackBar(
+    //     content: Text(S.current.verifyYourInternetConnection),
+    //   ));
+    // }, onDone: () {
+    //   getProductsOfOrder();
+    //   if (message != null) {
+    //     scaffoldKey.currentState.showSnackBar(SnackBar(
+    //       content: Text(message),
+    //     ));
+    //   }
+    // });
   }
 
   void addProductReview(Review _review, Product _product) async {

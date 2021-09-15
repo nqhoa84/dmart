@@ -67,7 +67,7 @@ class CartBottomButton extends StatelessWidget {
             onTap: onPressed,
           ),
               ))
-//                FlatButton(child: Text(S.of(context).processOrder))
+//                FlatButton(child: Text(S.current.processOrder))
         ],
       ),
     );

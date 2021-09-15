@@ -39,7 +39,7 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
     if(_con.faqs == null) {
       body = Center(child: CircularProgressIndicator());
     } else if(_con.faqs.isEmpty){
-      body = EmptyDataLoginWid(message: S.of(context).faqEmpty);
+      body = EmptyDataLoginWid(message: S.current.faqEmpty);
     } else {
       body = DefaultTabController(
         length: _con.faqs.length,
@@ -55,12 +55,12 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
 //                          ListTile(
 //                            contentPadding: EdgeInsets.symmetric(vertical: 0),
 //                            leading: Icon(Icons.help, color: Theme.of(context).hintColor),
-//                            title: Text(S.of(context).help_supports,
+//                            title: Text(S.current.help_supports,
 //                                maxLines: 1,
 //                                overflow: TextOverflow.ellipsis,
 //                                style: Theme.of(context).textTheme.headline5),
 //                          ),
-                  createTitleRowWithBack(context, title:S.of(context).helpAndSupports),
+                  createTitleRowWithBack(context, title:S.current.helpAndSupports),
                   TabBar(
                     tabs: List.generate(_con.faqs.length, (index) {
                       return Tab(text: _con.faqs.elementAt(index).name ?? '');
@@ -102,7 +102,7 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
       return Center(child: CircularProgressIndicator());
     }
     if(_con.faqs.isEmpty) {
-      return EmptyDataLoginWid(message: S.of(context).faqEmpty);
+      return EmptyDataLoginWid(message: S.current.faqEmpty);
     }
     return DefaultTabController(
       length: _con.faqs.length,
@@ -118,12 +118,12 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
 //                          ListTile(
 //                            contentPadding: EdgeInsets.symmetric(vertical: 0),
 //                            leading: Icon(Icons.help, color: Theme.of(context).hintColor),
-//                            title: Text(S.of(context).help_supports,
+//                            title: Text(S.current.help_supports,
 //                                maxLines: 1,
 //                                overflow: TextOverflow.ellipsis,
 //                                style: Theme.of(context).textTheme.headline5),
 //                          ),
-                createTitleRowWithBack(context, title:S.of(context).helpAndSupports),
+                createTitleRowWithBack(context, title:S.current.helpAndSupports),
                 TabBar(
                   tabs: List.generate(_con.faqs.length, (index) {
                     return Tab(text: _con.faqs.elementAt(index).name ?? '');

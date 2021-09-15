@@ -36,12 +36,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           padding: EdgeInsets.symmetric(horizontal: padingH, vertical: 10),
           child: Column(
             children: [
-//            createSilverAppBar(context, haveBackIcon: true, title: S.of(context).contactUs),
-              createTitleRowWithBack(context, title: S.of(context).contactUs),
+//            createSilverAppBar(context, haveBackIcon: true, title: S.current.contactUs),
+              createTitleRowWithBack(context, title: S.current.contactUs),
               SizedBox(height: 10),
-//              createTitleRow(context, title: S.of(context).hotline),
+//              createTitleRow(context, title: S.current.hotline),
               TitleDivider(
-                  title: S.of(context).hotline,
+                  title: S.current.hotline,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -98,9 +98,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ),
               ),
               SizedBox(height: DmConst.masterHorizontalPad),
-//              createTitleRow(context, title: S.of(context).socialNetwork),
+//              createTitleRow(context, title: S.current.socialNetwork),
               TitleDivider(
-                  title: S.of(context).socialNetwork,
+                  title: S.current.socialNetwork,
                   titleTextColor: Theme.of(context).accentColor,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
@@ -218,7 +218,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenWhatapp);
+        errMsg: S.current.errorOpenWhatapp);
   }
 
   void _onTapWechat() {
@@ -230,7 +230,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenWechat);
+        errMsg: S.current.errorOpenWechat);
   }
 
   void _onTapViber() {
@@ -243,7 +243,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenViber);
+        errMsg: S.current.errorOpenViber);
   }
 
   void _onTapInstagram() {
@@ -255,7 +255,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenInstagram);
+        errMsg: S.current.errorOpenInstagram);
   }
 
   void _onTapTelegram() {
@@ -268,7 +268,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenTelegram);
+        errMsg: S.current.errorOpenTelegram);
   }
 
   void _onTapFb() {
@@ -276,7 +276,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     String deepIos = 'fb://profile/${s.socialFb}';
     String web = 'https://www.facebook.com/${s.socialFb}';
     _launchFull(webUrl: web, deepLinkAn: deepAn, deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenFb);
+        errMsg: S.current.errorOpenFb);
   }
 
   void _onTapFbMess() {
@@ -289,7 +289,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenFbMess);
+        errMsg: S.current.errorOpenFbMess);
   }
 
   void _onTapLine() {
@@ -301,7 +301,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         webUrl: web,
         deepLinkAn: deepAn,
         deepLinkIos: deepIos,
-        errMsg: S.of(context).errorOpenLine);
+        errMsg: S.current.errorOpenLine);
   }
 
   void _launchFull({@required String webUrl, String deepLinkAn, String deepLinkIos, String errMsg}) async {

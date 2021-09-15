@@ -20,7 +20,7 @@ ValueNotifier<User> currentUser = new ValueNotifier(User());
 
 Future<User> login(User user) async {
   try {
-    final String url = '${GlobalConfiguration().getString('api_base_url')}login';
+    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}login');
     final client = new http.Client();
     print('login $url \n map-para ${user.toMap()}');
     final response = await client.post(
@@ -57,7 +57,7 @@ Future<User> login(User user) async {
 }
 ///return OTP if register ok. if not, return nullOrEmpty
 Future<String> register(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}register';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}register');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -123,7 +123,7 @@ Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, Stri
 
 ///return OTP if register ok. if not, return nullOrEmpty
 Future<ApiResult<String>> registerFb(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}register/facebook';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}register/facebook');
   print(url);
   print('paras: ${user.toMapRegFb()}');
   final response = await http.Client().post(
@@ -148,7 +148,7 @@ Future<ApiResult<String>> registerFb(User user) async {
 
 ///Verify Otp to complete registration by FB
 Future<User> verifyOtpToCompleteRegFb({String fbId, String phone, String otp}) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/verify/facebook';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/verify/facebook');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -174,7 +174,7 @@ Future<User> verifyOtpToCompleteRegFb({String fbId, String phone, String otp}) a
 }
 
 Future<String> resendOtp(String phone) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/resend';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/resend');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -200,7 +200,7 @@ Future<String> resendOtp(String phone) async {
 ///Verify Otp to complete registration.
 ///This will also automatic login for customer.
 Future<User> verifyOtp(String phone, String otp) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}otp/verify';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/verify');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -237,7 +237,7 @@ Future<User> verifyOtp(String phone, String otp) async {
 
 ///return the OTP send to client.
 Future<String> sendOtpForgotPass(String phone) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}forgot_password';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}forgot_password');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -254,7 +254,7 @@ Future<String> sendOtpForgotPass(String phone) async {
 }
 
 Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String password) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}reset_password';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}reset_password');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -272,7 +272,7 @@ Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String pass
 }
 
 Future<bool> changePwd(String phoneWith855, String currentPass, String newPass) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}change_password';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}change_password');
   final response = await http.Client().post(
     url,
     headers: createHeadersRepo(),
@@ -352,7 +352,7 @@ Future<ApiResult<User>> update(User user) async {
 }
 
 Future<User> updatePersonalDetail(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}profile/update';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}profile/update');
 
   print("update User - $url");
   print(user.toMapUpdateInfo());
@@ -378,7 +378,7 @@ Future<List<Province>> getProvinces() async {
   List<Province> re = [];
 
   try {
-    final String url = '${GlobalConfiguration().getString('api_base_url')}provinces';
+    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}provinces');
     print('getProvinces $url');
     final response = await http.Client().get(
       url,
@@ -400,7 +400,7 @@ Future<List<Province>> getProvinces() async {
 Future<List<District>> getDistricts(int provinceId) async {
   List<District> re = [];
   try {
-    final String url = '${GlobalConfiguration().getString('api_base_url')}districts?province_id=$provinceId';
+    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}districts?province_id=$provinceId');
     print('getDistricts $url');
     final response = await http.Client().get( url );
     print('getDistricts ${response.body}');
@@ -419,7 +419,7 @@ Future<List<District>> getDistricts(int provinceId) async {
 Future<List<Ward>> getWards(int districtId) async {
   List<Ward> re = [];
   try {
-    final String url = '${GlobalConfiguration().getString('api_base_url')}wards?district_id=$districtId';
+    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}wards?district_id=$districtId');
     print('getWards $url');
     final response = await http.Client().get( url );
     print('getWards ${response.body}');
@@ -521,7 +521,7 @@ Future<ApiResult<Address>> updateAddress(Address address) async {
 }
 
 Future<bool> removeDeliveryAddress(Address address) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}');
   final response = await http.Client().delete(
     url,
     headers: createHeadersRepo(),

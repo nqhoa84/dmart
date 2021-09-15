@@ -44,7 +44,7 @@ class RegController extends Controller {
   void register() async {
     if (loading) return;
     print('Start registering');
-    FocusScope.of(context).unfocus();
+    // FocusScope.of(context).unfocus();
     loading = true;
     regFormKey.currentState.save();
     if (regFormKey.currentState.validate()) {
@@ -57,13 +57,13 @@ class RegController extends Controller {
 //        } else {
 //          OTP = '';
 //          scaffoldKey.currentState.showSnackBar(SnackBar(
-//            content: Text(S.of(context).registerError),
+//            content: Text(S.current.registerError),
 //          ));
 //        }
 //      }).catchError((e) {
 //        loader.remove();
 //        scaffoldKey.currentState.showSnackBar(SnackBar(
-//          content: Text(S.of(context).registerError),
+//          content: Text(S.current.registerError),
 //        ));
 //      }).whenComplete(() {
 //        loading = false;
@@ -115,9 +115,9 @@ class RegController extends Controller {
     }
     loading = false;
     if(OTP != null) {
-      showMsg(S.of(context).resendOtpSuccess);
+      showMsg(S.current.resendOtpSuccess);
     } else {
-      showMsg(S.of(context).generalErrorMessage);
+      showMsg(S.current.generalErrorMessage);
     }
   }
 
@@ -174,13 +174,13 @@ class RegController extends Controller {
         if(re.data.isNotEmpty) {
           this.address = re.data.first;
         }
-        showMsg(S.of(context).newAddressAdded);
+        showMsg(S.current.newAddressAdded);
       }
       setLoadingOff();
       return re.isSuccess;
     } catch (e, trace) {
       print("$e $trace");
-      showMsg(S.of(context).generalErrorMessage);
+      showMsg(S.current.generalErrorMessage);
     } finally {
       setLoadingOff();
     }
@@ -195,7 +195,7 @@ class RegController extends Controller {
       var re = await userRepo.update(user);
       loading = false;
       if (re.isSuccess) {
-        showMsg(S.of(context).accountInfoUpdated);
+        showMsg(S.current.accountInfoUpdated);
         this.user = re.data;
         return true;
       } else {
@@ -229,13 +229,13 @@ class RegController extends Controller {
 //        } else {
 //          OTP = '';
 //          scaffoldKey.currentState.showSnackBar(SnackBar(
-//            content: Text(S.of(context).registerError),
+//            content: Text(S.current.registerError),
 //          ));
 //        }
 //      }).catchError((e) {
 //        loader.remove();
 //        scaffoldKey.currentState.showSnackBar(SnackBar(
-//          content: Text(S.of(context).registerError),
+//          content: Text(S.current.registerError),
 //        ));
 //      }).whenComplete(() {
 //        loading = false;

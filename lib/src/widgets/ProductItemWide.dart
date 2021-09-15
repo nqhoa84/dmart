@@ -144,7 +144,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                         ),
                         SizedBox(height: 3),
                         Expanded(flex: 25, child: Center(child: this._createPriceWidget(context))),
-                        Text('${S.of(context).available}: ${widget.product.itemsAvailable ?? 0}', style: TextStyle(fontSize: 11),),
+                        Text('${S.current.available}: ${widget.product.itemsAvailable?? 0}', style: TextStyle(fontSize: 11),),
                       ],
                     ),
                   ),
@@ -241,7 +241,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
         constraints: BoxConstraints(minWidth: 80),
         child: FlatButton(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Text(S.of(context).add),
+          child: Text(S.current.add),
           color: DmConst.accentColor,
           onPressed: _onPressedAdd2Cart,
         ),
@@ -281,6 +281,8 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
 
   void addCart(int quantity) {
     if (_isDoing) return;
+    bool enable = widget.product.itemsAvailable >= widget.amountInCart + quantity && widget.amountInCart + quantity >= 0;
+    if(!enable) return;
     if (currentUser.value.isLogin) {
       _con.addCartGeneral(widget.product.id, quantity, onDone: (isOK) {
         _isDoing = false;

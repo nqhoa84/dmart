@@ -40,7 +40,7 @@ class _BestSaleScreenState extends ProductStateMVC<BestSaleScreen> {
 
   @override
   String getTitle(BuildContext context) {
-    return S.of(context).bestSale;
+    return S.current.bestSale;
   }
 
   @override

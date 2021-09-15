@@ -120,7 +120,7 @@ Future<Stream<Review>> getRecentReviews() async {
 }
 
 Future<Review> addStoreReview(Review review, Store store) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}store_reviews';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}store_reviews');
   final client = new http.Client();
   review.user = currentUser.value;
   try {

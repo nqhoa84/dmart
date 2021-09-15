@@ -48,7 +48,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                 label: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(S.of(context).featured,
+                    Text(S.current.featured,
                         style: Theme.of(context).textTheme.bodyText1.merge(
                             TextStyle(color: Theme.of(context).primaryColor))),
                     Icon(
@@ -93,7 +93,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
                       color: Theme.of(context).focusColor,
                       borderRadius: BorderRadius.circular(24)),
                   child:Text(
-                        '${widget.product.packageItemsCount}' + S.of(context).items,
+                        '${widget.product.packageItemsCount}' + S.current.items,
                         style: Theme.of(context).textTheme.bodyText2
                   )
               ),
@@ -144,7 +144,7 @@ class productHomeTabWidgetState extends StateMVC<ProductHomeTabWidget> {
               color: Theme.of(context).hintColor,
             ),
             title: Text(
-              S.of(context).options,
+              S.current.options,
               style: Theme.of(context).textTheme.subtitle1,
             ),
             subtitle: Text(

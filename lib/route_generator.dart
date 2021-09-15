@@ -6,6 +6,7 @@ import 'package:dmart/src/screens/error.dart';
 import 'package:dmart/src/screens/home2.dart';
 import 'package:dmart/src/screens/new_arrival.dart';
 import 'package:dmart/src/screens/notifications.dart';
+import 'package:dmart/src/screens/order_detail.dart';
 import 'package:dmart/src/screens/orders.dart';
 import 'package:dmart/src/screens/promotions.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,8 @@ import 'src/screens/favorites.dart';
 import 'src/screens/forget_password.dart';
 import 'src/screens/help.dart';
 import 'src/screens/payment_methods.dart';
-import 'src/screens/paypal_payment.dart';
 import 'src/screens/product_detail.dart';
 import 'src/screens/promotion.dart';
-import 'src/screens/razorpay_payment.dart';
 import 'src/screens/reviews.dart';
 import 'src/screens/signin.dart';
 import 'src/screens/signup.dart';
@@ -89,10 +88,21 @@ class RouteGenerator {
     : Navigator.of(context).pushNamed('/MyFavorites');
   }
 
-
   static void gotoMyOrders(BuildContext context, {bool replaceOld = false}) {
     replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders')
         : Navigator.of(context).pushNamed('/MyOrders');
+  }
+
+  static Future<dynamic> gotoOrderDetailPage(BuildContext context, {int orderId, bool replaceOld = false}) async {
+    if(replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId)));
+      return re;
+    } else {
+      var re = await Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId)));
+      return re;
+    }
   }
 
   static void gotoCart(BuildContext context, {bool replaceOld = false}) {
@@ -173,11 +183,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddressesScreen());
       case '/Checkout'://todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
-      case '/PayPal':
-        return MaterialPageRoute(builder: (_) => PayPalPaymentWidget(routeArgument: args as RouteArgument));
-      case '/RazorPay':
-        return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
-     case '/Help':
+      case '/Help':
         return MaterialPageRoute(builder: (_) => HelpScreen());
       case '/ProfileInfo':
         return MaterialPageRoute(builder: (_) => ProfileInfoScreen());

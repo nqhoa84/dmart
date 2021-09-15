@@ -70,7 +70,7 @@
 //            mainAxisSize: MainAxisSize.max,
 //            children: <Widget>[
 //              _createHeader(
-//                  title: S.of(context).promotions,
+//                  title: S.current.promotions,
 //                  backgroundColor: DmConst.homePromotionColor,
 //                  onTap: () {
 //                    RouteGenerator.gotoPromotions(context, replaceOld: true);
@@ -80,12 +80,12 @@
 //
 ////              // Heading (bestSale)
 //              _createHeader(
-//                  title: S.of(context).bestSale,
+//                  title: S.current.bestSale,
 //                  onTap: () {
 //                    Navigator.of(context).pushNamed('/Category',
 //                        arguments: new RouteArgument(
 //                            id: 1,
-//                            param: [Category(id: 1, name: S.of(context).bestSale)],
+//                            param: [Category(id: 1, name: S.current.bestSale)],
 //                            heroTag: "bestSale_"));
 //                  }),
 //              _con.categorySelected == null
@@ -93,23 +93,23 @@
 //                  : HomeProductsByCategory(animationOpacity: animationOpacity, category: _con.categorySelected),
 //              // Heading (Brands)
 //              _createHeader(
-//                  title: S.of(context).newArrival,
+//                  title: S.current.newArrival,
 //                  onTap: () {
 //                    Navigator.of(context).pushNamed('/Category',
 //                        arguments: new RouteArgument(
 //                            id: 1,
-//                            param: [Category(id: 2, name: S.of(context).newArrival)],
+//                            param: [Category(id: 2, name: S.current.newArrival)],
 //                            heroTag: "newArival_"));
 //                  }),
 //              _con.brandSelected == null
 //                  ? ProductsGridViewLoading()
 //                  : BrandedProductsWidget(animationOpacity: animationOpacity, brand: _con.brandSelected),
 //              _createHeader(
-//                  title: S.of(context).specialForYou,
+//                  title: S.current.specialForYou,
 //                  onTap: () {
 //                    Navigator.of(context).pushNamed('/Category',
 //                        arguments: new RouteArgument(
-//                            id: 3, param: [Category(id: 1, name: S.of(context).bestSale)], heroTag: "spe4U_"));
+//                            id: 3, param: [Category(id: 1, name: S.current.bestSale)], heroTag: "spe4U_"));
 //                  }),
 //              _con.brandSelected == null
 //                  ? ProductsGridViewLoading()
@@ -282,8 +282,8 @@
 //            mainAxisAlignment: MainAxisAlignment.spaceAround,
 //            crossAxisAlignment: CrossAxisAlignment.start,
 //            children: <Widget>[
-//              Text(user.name ?? S.of(context).unknown),
-//              Text('${S.of(context).credit}: ${currentUser.value.credit}',
+//              Text(user.name ?? S.current.unknown),
+//              Text('${S.current.credit}: ${currentUser.value.credit}',
 //                  style: TextStyle(color: DmConst.textColorForTopBarCredit)),
 //            ],
 //          ),
@@ -300,8 +300,8 @@
 //            mainAxisAlignment: MainAxisAlignment.spaceAround,
 //            crossAxisAlignment: CrossAxisAlignment.start,
 //            children: <Widget>[
-//              Text(S.of(context).guest),
-//              Text('${S.of(context).credit}:'),
+//              Text(S.current.guest),
+//              Text('${S.current.credit}:'),
 //            ],
 //          ),
 //        ],

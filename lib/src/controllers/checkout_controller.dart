@@ -48,7 +48,7 @@ class CheckoutController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       calculateSubtotal();

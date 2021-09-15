@@ -37,6 +37,10 @@ class Order extends IdObj {
 
   String note;
 
+  bool canCancel() {
+    return orderStatus == OrderStatus.created || orderStatus == OrderStatus.confirmed || orderStatus == OrderStatus.preparing;
+  }
+
 //  Payment payment;
 
   String get getFullName {

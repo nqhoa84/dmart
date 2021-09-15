@@ -175,7 +175,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 //                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
 //                child: Align(
 //                  alignment: Alignment.center,
-//                  child: Text(S.of(context).product),
+//                  child: Text(S.current.product),
 //                ),
 //              ),
 //            ),
@@ -187,7 +187,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 //                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
 //                child: Align(
 //                  alignment: Alignment.center,
-//                  child: Text(S.of(context).detail),
+//                  child: Text(S.current.detail),
 //                ),
 //              ),
 //            ),
@@ -199,7 +199,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 //                    border: Border.all(color: DmConst.accentColor.withOpacity(0.5), width: 1)),
 //                child: Align(
 //                  alignment: Alignment.center,
-//                  child: Text(S.of(context).review),
+//                  child: Text(S.current.review),
 //                ),
 //              ),
 //            ),
@@ -265,15 +265,15 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
                   1: FlexColumnWidth(3),
                 },
                 children: [
-                  _createRowInfo(S.of(context).code, _con.product.code),
-                  _createRowInfo(S.of(context).category, _con.product.cateName),
-                  _createRowInfo(S.of(context).brand, _con.product.brandName),
-                  _createRowInfo(S.of(context).unit, _con.product.unitName),
-                  _createRowInfo(S.of(context).country, _con.product.country),
-                  _createRowInfo(S.of(context).available, _con.product.itemsAvailable),
+                  _createRowInfo(S.current.code, _con.product.code),
+                  _createRowInfo(S.current.category, _con.product.cateName),
+                  _createRowInfo(S.current.brand, _con.product.brandName),
+                  _createRowInfo(S.current.unit, _con.product.unitName),
+                  _createRowInfo(S.current.country, _con.product.country),
+                  _createRowInfo(S.current.available, '${_con.product.itemsAvailable}'),
 
                   TableRow(children: [
-                    Text(S.of(context).description, style: ts),
+                    Text(S.current.description, style: ts),
                     Helper.applyHtml(context, _con.product.description ?? ''),
 //                          Text('${_con.product.description??''}', style: ts),
                   ])
@@ -283,7 +283,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
           ),
           SizedBox(height: 10),
           //related product panel
-          TitleDivider(title: S.of(context).relatedProducts),
+          TitleDivider(title: S.current.relatedProducts),
           Padding(
             padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
             child: _con.relatedProducts != null //? Container(color: Colors.green)
@@ -295,7 +295,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
           ),
 //                ExpandablePanel(
 //                  theme: them,
-//                  header: TitleDivider(title: S.of(context).relatedProducts),
+//                  header: TitleDivider(title: S.current.relatedProducts),
 //                  expanded: Padding(
 //                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
 //                    child: _con.relatedProducts != null
@@ -387,7 +387,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
               child: FlatButton(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(S.of(context).add),
+                child: Text(S.current.add),
                 color: DmConst.accentColor,
                 onPressed: _onPressAdd2Cart,
               ),

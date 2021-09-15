@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -49,9 +48,11 @@ class BrandController extends ControllerMVC {
         products.add(_product);
       });
     }, onError: (a) {
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
+      SnackBar snackBar = SnackBar(
+            content: Text(S.current.verifyYourInternetConnection),
+          );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      scaffoldKey.currentState.showSnackBar(snackBar);
     }, onDone: () {
       if (message != null) {
         scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -68,7 +69,7 @@ class BrandController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -130,7 +131,7 @@ class BrandController extends ControllerMVC {
 //        });
 //      }).whenComplete(() {
 //        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//          content: Text(S.of(context).productAdded2Cart),
+//          content: Text(S.current.productAdded2Cart),
 //        ));
 //      });
 //    } else {
@@ -141,7 +142,7 @@ class BrandController extends ControllerMVC {
 //        });
 //      }).whenComplete(() {
 //        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//          content: Text(S.of(context).productAdded2Cart),
+//          content: Text(S.current.productAdded2Cart),
 //        ));
 //      });
 //    }
@@ -151,7 +152,7 @@ class BrandController extends ControllerMVC {
   Future<void> refreshBrand() async {
     products.clear();
     brand = new Brand();
-    listenForProductsByBrand(message: S.of(context).brandRefreshedSuccessfully);
-    listenForBrand(message: S.of(context).brandRefreshedSuccessfully);
+    listenForProductsByBrand(message: S.current.brandRefreshedSuccessfully);
+    listenForBrand(message: S.current.brandRefreshedSuccessfully);
   }
 }

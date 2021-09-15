@@ -37,7 +37,7 @@ class FilterController extends ControllerMVC {
   }
 
   void listenForFields({String message}) async {
-    fields.add(new Field.fromJSON({'id': '0', 'name': S.of(context).all, 'selected': true}));
+    fields.add(new Field.fromJSON({'id': '0', 'name': S.current.all, 'selected': true}));
     final Stream<Field> stream = await getFields();
     stream.listen((Field _field) {
       setState(() {
@@ -50,7 +50,7 @@ class FilterController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -63,7 +63,7 @@ class FilterController extends ControllerMVC {
 
   Future<void> refreshFields() async {
     fields.clear();
-    listenForFields(message: S.of(context).addressesRefreshedSuccessfully);
+    listenForFields(message: S.current.addressesRefreshedSuccessfully);
   }
 
   void clearFilter() {

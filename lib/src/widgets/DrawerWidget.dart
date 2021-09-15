@@ -19,7 +19,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
       return ListTile(
         title: Text(currentUser.value.name,
           style: TextStyle(color: Colors.white),),
-        subtitle: Text('${S.of(context).credit}: ${currentUser.value.credit.toStringAsFixed(2)}',
+        subtitle: Text('${S.current.credit}: ${currentUser.value.credit.toStringAsFixed(2)}',
         style: TextStyle(color: DmConst.textColorForTopBarCredit),),
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).accentColor,
@@ -28,8 +28,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
       );
     } else {
       return ListTile(
-        title: Text(S.of(context).guest),
-        subtitle: Text('${S.of(context).credit}: 0.00'),
+        title: Text(S.current.guest),
+        subtitle: Text('${S.current.credit}: 0.00'),
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).accentColor,
           backgroundImage: AssetImage('assets/img/H_User_Icon.png'),

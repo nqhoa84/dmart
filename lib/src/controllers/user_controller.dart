@@ -2,7 +2,7 @@ import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/api_result.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:dmart/src/screens/signup_fb.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -25,7 +25,8 @@ class UserController extends Controller {
   Address address = new Address();
 
   UserController() {
-    loader = Helper.overlayLoader(context);
+    //todo: unrem and test.
+    // loader = Helper.overlayLoader(context);
     loginFormKey = new GlobalKey<FormState>();
     resetPassFormKey = GlobalKey<FormState>();
     newPassFormKey = GlobalKey<FormState>();
@@ -35,19 +36,19 @@ class UserController extends Controller {
   }
 
   bool isLoginError = false;
-  void login() async {
+  void login(BuildContext context) async {
     isLoginError = false;
     FocusScope.of(context).unfocus();
     if (loginFormKey.currentState.validate()) {
       loginFormKey.currentState.save();
-      Overlay.of(context).insert(loader);
+      // Overlay.of(context).insert(loader);
 
       repository.login(user).then((value) {
         if (value != null && value.id > 0) {
           RouteGenerator.gotoPromotions(context);
         } else {
           scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.of(context).wrongEmailOrPassword),
+            content: Text(S.current.wrongEmailOrPassword),
           ));
           setState(() {
             isLoginError = true;
@@ -57,7 +58,7 @@ class UserController extends Controller {
         print(e);
         loader.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(S.of(context).emailAccountExists),
+          content: Text(S.current.emailAccountExists),
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
@@ -81,7 +82,7 @@ class UserController extends Controller {
     );
   }
 
-  void loginFb({@required String fbId, String accessToken, String name, String avatarUrl}) async {
+  void loginFb(BuildContext context, {@required String fbId, String accessToken, String name, String avatarUrl}) async {
     print('Start login FB----fbId=$fbId, name=$name, avatarUrl=$avatarUrl, accessToken=$accessToken');
     if(this.loading) return;
     this.loading = true;
@@ -94,6 +95,7 @@ class UserController extends Controller {
       re.data.fbAvatar = avatarUrl;
       currentUser.value = re.data;
       saveUserToShare(re.data);
+
       RouteGenerator.gotoHome(context);
 //      currentUser.notifyListeners();
     } else {

@@ -69,7 +69,7 @@ class _PermissionDeniedState extends State<PermissionDenied> {
           SizedBox(height: 15),
           Opacity(
             opacity: 0.4,
-            child: Text(S.of(context).youMustSignToSeeThisSection,
+            child: Text(S.current.youMustSignToSeeThisSection,
                 textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
@@ -80,7 +80,7 @@ class _PermissionDeniedState extends State<PermissionDenied> {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 70),
             color: Theme.of(context).accentColor.withOpacity(1),
             shape: StadiumBorder(),
-            child: Text(S.of(context).login, style: Theme.of(context).textTheme.headline6),
+            child: Text(S.current.login, style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
           FlatButton(
@@ -90,7 +90,7 @@ class _PermissionDeniedState extends State<PermissionDenied> {
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
               shape: StadiumBorder(),
               child: Text(
-                S.of(context).dontHaveAccount,
+                S.current.dontHaveAccount,
                 style: TextStyle(color: Theme.of(context).focusColor),
               )),
         ],

@@ -48,7 +48,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(
-            S.of(context).trackingOrder,
+            S.current.trackingOrder,
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
@@ -71,7 +71,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                               initiallyExpanded: true,
                               title: Row(
                                 children: <Widget>[
-                                  Expanded(child: Text('${S.of(context).orderId}: #${_con.order.id}')),
+                                  Expanded(child: Text('${S.current.orderId}: #${_con.order.id}')),
                                   Text(
                                     '${_con.order.orderStatus}',
                                     style: Theme.of(context).textTheme.caption,

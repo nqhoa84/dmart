@@ -8,7 +8,7 @@ import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
-import 'package:dmart/src/widgets/SearchBar.dart';
+import 'package:dmart/src/widgets/toolbars/SearchBar.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -107,7 +107,7 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
             slivers: <Widget>[
               createSliverTopBar(context),
               buildSearchWidget(context),
-              createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).search),
+              createSilverTopMenu(context, haveBackIcon: true, title: S.current.search),
               SliverList(
                 delegate: SliverChildListDelegate([
                   Padding(
@@ -169,7 +169,7 @@ class _SearchResultScreenState extends StateMVC<SearchResultScreen> with SingleT
     print('------_onTapOnSearchIcon-------');
     _searchCon.search(search, onDone: (){
       if(DmUtils.isNullOrEmptyList(_searchCon.products)) {
-        _searchCon.showMsg(S.of(context).searchResultEmpty);
+        _searchCon.showMsg(S.current.searchResultEmpty);
       } else {
         lastSearch = search;
         setState(() { });

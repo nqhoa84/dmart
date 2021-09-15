@@ -37,5 +37,4 @@ class FlashSalesCarouselWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
         ));
   }
-
 }

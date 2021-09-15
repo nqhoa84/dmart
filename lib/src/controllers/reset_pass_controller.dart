@@ -29,7 +29,7 @@ class ResetPassController extends Controller {
         this.otp = await repository.sendOtpForgotPass(user.phoneWith855);
 
         if(otp != null) {
-          showMsg(S.of(context).resetPassOtpSent);
+          showMsg(S.current.resetPassOtpSent);
           return true;
         } else {
           showErrGeneral();
@@ -44,7 +44,7 @@ class ResetPassController extends Controller {
 
   Future<bool> saveNewPasses(String userEnterOtp) async {
     if(this.otp != userEnterOtp) {
-      showErr(S.of(context).invalidOTP);
+      showErr(S.current.invalidOTP);
       return false;
     }
     bool re = false;

@@ -13,7 +13,7 @@ import 'dart:math' as math;
 
 import '../../constant.dart';
 import '../../route_generator.dart';
-import 'SearchBar.dart';
+import 'toolbars/SearchBar.dart';
 import 'ShoppingCartButton.dart';
 
 class DmAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -250,7 +250,7 @@ class _DmAppBarState extends State<DmAppBar> {
         ),
         padding: EdgeInsets.only(left: 5),
         child: InkWell(
-          child: Center(child: AutoSizeText(S.of(context).reset, style: ts)),
+          child: Center(child: AutoSizeText(S.current.reset, style: ts)),
         ),
       ));
     }
@@ -264,7 +264,7 @@ class _DmAppBarState extends State<DmAppBar> {
         child: InkWell(
           child: Row(
             children: [
-              AutoSizeText(S.of(context).type, style: ts),
+              AutoSizeText(S.current.type, style: ts),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
@@ -285,7 +285,7 @@ class _DmAppBarState extends State<DmAppBar> {
         child: InkWell(
           child: Row(
             children: [
-              AutoSizeText(S.of(context).category, style: ts),
+              AutoSizeText(S.current.category, style: ts),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
@@ -306,7 +306,7 @@ class _DmAppBarState extends State<DmAppBar> {
         child: InkWell(
           child: Row(
             children: [
-              AutoSizeText(S.of(context).brand, style: ts),
+              AutoSizeText(S.current.brand, style: ts),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
@@ -327,7 +327,7 @@ class _DmAppBarState extends State<DmAppBar> {
         child: InkWell(
           child: Row(
             children: [
-              AutoSizeText(S.of(context).sortBy, style: ts),
+              AutoSizeText(S.current.sortBy, style: ts),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,

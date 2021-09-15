@@ -150,7 +150,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).providePhoneNoAndTapSendOtpToVerify,
+          S.current.providePhoneNoAndTapSendOtpToVerify,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
@@ -170,7 +170,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                   child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     onPressed: _con.loading || DmUtils.isNotNullEmptyStr(_con.OTP) ? null : _onPressSendOtp,
-                    child: Text(_con.loading == false ? S.of(context).requestOtp : S.of(context).processing,
+                    child: Text(_con.loading == false ? S.current.requestOtp : S.current.processing,
                         style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                     color: DmConst.accentColor,
                     disabledColor: DmConst.accentColor,
@@ -195,7 +195,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).input6digitCode,
+          S.current.input6digitCode,
           style: TextStyle(color: DmConst.accentColor),
           textAlign: TextAlign.center,
         ),
@@ -215,7 +215,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
           onOtpCallback: (code, isAutofill) => _onOtpCallBack(code, isAutofill),
         ),
         SizedBox(height: 10),
-        Text(S.of(context).verifyOtpNote, style: txtStyleGrey),
+        Text(S.current.verifyOtpNote, style: txtStyleGrey),
         buildOtpExpiredWidget(context),
         Text('${_con.OTP}', style: TextStyle(color: Colors.grey.shade400)),
         Row(
@@ -224,7 +224,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressNext2LocationStep,
-                child: Text(S.of(context).register,
+                child: Text(S.current.register,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -240,11 +240,11 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
     return Offstage(
       offstage: _con.otpExpInSeconds == null,
       child: Row(children: [
-        Text('${S.of(context).otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
+        Text('${S.current.otpExpiredIn} ${_con.otpMin}:${_con.otpSecond.toString().padLeft(2, '0')}',
             style: txtStyleGrey),
         FlatButton(
             onPressed: _con.otpExpInSeconds != null && _con.otpExpInSeconds > 0 ? null : resendOtp,
-            child: Text(S.of(context).resend))
+            child: Text(S.current.resend))
       ]),
     );
   }
@@ -264,16 +264,16 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
           title: Wrap(
             alignment: WrapAlignment.start,
             children: [
-              Text(S.of(context).yourPhoneRegOK),
+              Text(S.current.yourPhoneRegOK),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(S.of(context).welcomeTo),
+                child: Text(S.current.welcomeTo),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text("Dmart24.com", style: TextStyle(color: DmConst.accentColor)),
               ),
-              Text(S.of(context).enjoyShopping),
+              Text(S.current.enjoyShopping),
             ],
           ),
         ),
@@ -286,7 +286,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                 onPressed: () {
                   RouteGenerator.gotoHome(context);
                 },
-                child: Text(S.of(context).startShopping,
+                child: Text(S.current.startShopping,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -295,9 +295,9 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
           ],
         ),
         SizedBox(height: 20),
-        TitleDivider(title: S.of(context).personalDetails),
+        TitleDivider(title: S.current.personalDetails),
         SizedBox(height: 10),
-        Text(S.of(context).personalDetailNote),
+        Text(S.current.personalDetailNote),
         SizedBox(height: 10),
         Row(
           children: [
@@ -309,7 +309,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                     _stepIdx++;
                   });
                 },
-                child: Text(S.of(context).next,
+                child: Text(S.current.next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -326,12 +326,12 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).location,
+          S.current.location,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 10),
-        Text(S.of(context).locationNote, style: txtStyleGrey),
+        Text(S.current.locationNote, style: txtStyleGrey),
         Form(
             key: _con.locationFormKey,
             child: Column(
@@ -351,8 +351,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.address = input.trim(),
                               validator: (input) =>
-                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecorationForLocation(context, S.of(context).houseNo),
+                                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.current.houseNo),
                             ),
                           ),
                         ),
@@ -366,8 +366,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.street = input.trim(),
                               validator: (input) =>
-                                  DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                              decoration: buildInputDecorationForLocation(context, S.of(context).streetName),
+                                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                              decoration: buildInputDecorationForLocation(context, S.current.streetName),
                             ),
                           ),
                         ),
@@ -410,7 +410,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                               textAlignVertical: TextAlignVertical.center,
                               keyboardType: TextInputType.text,
                               onSaved: (input) => _con.address.description = input.trim(),
-                              decoration: buildInputDecorationForLocation(context, S.of(context).note),
+                              decoration: buildInputDecorationForLocation(context, S.current.note),
                             ),
                           ),
                         ),
@@ -427,7 +427,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressSaveLocation,
-                child: Text(S.of(context).next,
+                child: Text(S.current.next,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -453,7 +453,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          S.of(context).personalDetails,
+          S.current.personalDetails,
           style: txtStyleHeadline,
           textAlign: TextAlign.center,
         ),
@@ -476,8 +476,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
 //                      input = input.trim();
                       _con.user.name = input.trim();
                     },
-                    validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.of(context).invalidFullName : null,
-                    decoration: buildInputDecorationForLocation(context, S.of(context).fullName),
+                    validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.current.invalidFullName : null,
+                    decoration: buildInputDecorationForLocation(context, S.current.fullName),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -491,15 +491,15 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                     onSaved: (input) {
                       _con.user.email = input.trim();
                     },
-                    validator: (value) => !DmUtils.isEmail(value) ? S.of(context).invalidEmail : null,
-                    decoration: buildInputDecorationForLocation(context, S.of(context).email),
+                    validator: (value) => !DmUtils.isEmail(value) ? S.current.invalidEmail : null,
+                    decoration: buildInputDecorationForLocation(context, S.current.email),
                   ),
                 ),
               ],
             )),
 
         SizedBox(height: 10),
-        Text(S.of(context).dateOfBirthNote, style: txtStyleGrey),
+        Text(S.current.dateOfBirthNote, style: txtStyleGrey),
         InkWell(
           onTap: () {
             print('tap to select birthday');
@@ -534,7 +534,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(
-                        context, _con.user.birthday != null ? _con.user.birthday.day.toString() : S.of(context).day),
+                        context, _con.user.birthday != null ? _con.user.birthday.day.toString() : S.current.day),
                   )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
@@ -544,7 +544,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(context,
-                        _con.user.birthday != null ? _con.user.birthday.month.toString() : S.of(context).month),
+                        _con.user.birthday != null ? _con.user.birthday.month.toString() : S.current.month),
                   )),
                   VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
                   Expanded(
@@ -554,7 +554,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
                     textAlignVertical: TextAlignVertical.center,
                     enabled: false,
                     decoration: buildInputDecorationForLocation(
-                        context, _con.user.birthday != null ? _con.user.birthday.year.toString() : S.of(context).year),
+                        context, _con.user.birthday != null ? _con.user.birthday.year.toString() : S.current.year),
                   )),
                 ],
               ),
@@ -562,7 +562,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
           ),
         ),
         SizedBox(height: 10),
-//        Text(S.of(context).personalDetailNote, textAlign: TextAlign.center),
+//        Text(S.current.personalDetailNote, textAlign: TextAlign.center),
 //        SizedBox(height: 10),
         //button Save.
         Row(
@@ -571,7 +571,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 onPressed: onPressYesRegMe,
-                child: Text(S.of(context).yesRegMe,
+                child: Text(S.current.yesRegMe,
                     style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -593,7 +593,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
             Icon(Icons.error, color: DmConst.colorFavorite, size: kToolbarHeight),
             Expanded(
               child: Text(
-                S.of(context).loginErrorIncorrectPhonePassFullMsg,
+                S.current.loginErrorIncorrectPhonePassFullMsg,
                 style: TextStyle(color: DmConst.colorFavorite),
               ),
             ),
@@ -605,7 +605,7 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
 
   String _phoneValidate(String value) {
     if (value != null && !DmUtils.isPhone(value.trim()))
-      return S.of(context).invalidPhone;
+      return S.current.invalidPhone;
     else {
       return null;
     }
@@ -642,10 +642,10 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
           this._stepIdx++;
         });
       } else {
-        _con.showErr(S.of(context).invalidOTP);
+        _con.showErr(S.current.invalidOTP);
       }
     } else {
-      _con.showErr(S.of(context).invalidOTP);
+      _con.showErr(S.current.invalidOTP);
     }
   }
 
@@ -676,21 +676,21 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
         //to thank you page.
         RouteGenerator.gotoProfileUpdatedScreen(context);
       } else {
-        _con.showMsg(S.of(context).generalErrorMessage);
+        _con.showMsg(S.current.generalErrorMessage);
       }
     }
   }
 
   Widget buildGenderDropdown() {
     var _genders = [
-      S.of(context).notToTell,
-      S.of(context).male,
-      S.of(context).female,
+      S.current.notToTell,
+      S.current.male,
+      S.current.female,
     ];
     List<DropdownMenuItem> its = [
-      DropdownMenuItem<Gender>(value: Gender.Others, child: Text(S.of(context).notToTell, style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Male, child: Text(S.of(context).male, style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Female, child: Text(S.of(context).female, style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Others, child: Text(S.current.notToTell, style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Male, child: Text(S.current.male, style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(value: Gender.Female, child: Text(S.current.female, style: this.txtStyleAccent)),
     ];
 //    _genders.forEach((pro) {
 ////      print(pro);
@@ -706,8 +706,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
         },
 //        value: _con.address.province,
         onSaved: (value) => _con.user.gender = value,
-        validator: (value) => value == null ? S.of(context).invalidGender : null,
-        decoration: buildInputDecorationForLocation(context, S.of(context).gender),
+        validator: (value) => value == null ? S.current.invalidGender : null,
+        decoration: buildInputDecorationForLocation(context, S.current.gender),
       ),
     );
   }
@@ -734,8 +734,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
         },
         value: _con.address.province,
         onSaved: (value) => _con.address.province = value,
-        validator: (value) => value == null ? S.of(context).invalidProvince : null,
-        decoration: buildInputDecorationForLocation(context, S.of(context).province),
+        validator: (value) => value == null ? S.current.invalidProvince : null,
+        decoration: buildInputDecorationForLocation(context, S.current.province),
       ),
     );
   }
@@ -755,8 +755,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       },
       value: _con.address.district,
       onSaved: (value) => _con.address.district = value,
-      validator: (value) => value == null ? S.of(context).invalidDistrict : null,
-      decoration: buildInputDecorationForLocation(context, S.of(context).district),
+      validator: (value) => value == null ? S.current.invalidDistrict : null,
+      decoration: buildInputDecorationForLocation(context, S.current.district),
     );
   }
 
@@ -773,8 +773,8 @@ class _SignUpFbScreenState extends StateMVC<SignUpFbScreen> {
       },
       value: _con.address.ward,
       onSaved: (value) => _con.address.ward = value,
-      validator: (value) => value == null ? S.of(context).invalidWard : null,
-      decoration: buildInputDecorationForLocation(context, S.of(context).commune),
+      validator: (value) => value == null ? S.current.invalidWard : null,
+      decoration: buildInputDecorationForLocation(context, S.current.commune),
     );
   }
 }

@@ -25,7 +25,7 @@ class NotificationController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -60,7 +60,7 @@ class NotificationController extends ControllerMVC {
 
   Future<void> refreshNotifications() async {
     notifications.clear();
-    listenForNotifications(message: S.of(context).notificationsRefreshedSuccessfully);
+    listenForNotifications(message: S.current.notificationsRefreshedSuccessfully);
   }
 
   void removeFromNotification(model.Notification _notification) async {
@@ -77,7 +77,7 @@ class NotificationController extends ControllerMVC {
       this.notifications.remove(_notification);
     });
 //    removeNotification(_notification).then((value) {
-//      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(S.of(context).this_notification_was_removed)));
+//      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(S.current.this_notification_was_removed)));
 //    });
   }
 }

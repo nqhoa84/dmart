@@ -35,7 +35,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).checkout,
+          S.current.checkout,
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
@@ -80,7 +80,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                         SizedBox(height: 40),
                         setting.value.payPalEnabled
                             ? Text(
-                                S.of(context).orCheckOutWith,
+                                S.current.orCheckOutWith,
                                 style: Theme.of(context).textTheme.caption,
                               )
                             : SizedBox(
@@ -130,7 +130,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  S.of(context).subtotal,
+                                  S.current.subtotal,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
@@ -142,7 +142,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  S.of(context).deliveryFee,
+                                  S.current.deliveryFee,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
@@ -154,7 +154,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  "${S.of(context).tax} (${_con.carts[0].product.store.defaultTax}%)",
+                                  "${S.current.tax} (${_con.carts[0].product.store.defaultTax}%)",
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
@@ -166,7 +166,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  S.of(context).total,
+                                  S.current.total,
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
                               ),

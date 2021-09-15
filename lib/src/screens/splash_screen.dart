@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/src/repository/user_repository.dart' as userRepo;
 import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../DmState.dart';
@@ -33,7 +35,9 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     super.initState();
 //    loadData();
     Future.delayed(Duration(seconds: 1), () async {
-      _con.initFireBase();
+
+      _con.init();
+      _initLocalNotification();
 
       userRepo.getCurrentUser().whenComplete(() {
         _userLoaded = true;
@@ -52,22 +56,56 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     });
   }
 
-  void onError(FlutterErrorDetails errDetail) {
-    print(errDetail);
-    _con.showErr(S.of(context).verifyYourInternetConnection);
+  final AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('app_icon');
+  final IOSInitializationSettings initializationSettingsIOS =
+  IOSInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  final MacOSInitializationSettings initializationSettingsMacOS =
+  MacOSInitializationSettings();
+  // final InitializationSettings initializationSettings = InitializationSettings(
+  //     android: initializationSettingsAndroid,
+  //     iOS: initializationSettingsIOS,
+  //     macOS: initializationSettingsMacOS);
+  InitializationSettings initializationSettings;
+
+
+  Future<void> _initLocalNotification() async {
+    initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+        macOS: initializationSettingsMacOS);
+
+    await DmState.flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
   }
 
-  void _loadData() {
-    _con.progress.addListener(() {
-      double progress = 0;
-      _con.progress.value.values.forEach((_progress) {
-        progress += _progress;
-        print('progress $progress');
-      });
-      if (progress >= 100) {
-        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 0);
+  Future<dynamic> selectNotification(String payload) async {
+    if(payload != null) {
+      Map data = jsonDecode(payload);
+      if(data.containsKey('order')) {
+        int orderId = data['order'];
+        //navigate to Order detail page.
+        RouteGenerator.gotoOrderDetailPage(context, orderId: orderId);
       }
-    });
+    }
+    return true;
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    // await Navigator.push(
+    //   this.context,
+    //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
+    // );
+  }
+
+  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload) {
+    print('onDidReceiveLocalNotification: id $id, title $title, body $body, payload $payload');
+  }
+
+  void onError(FlutterErrorDetails errDetail) {
+    print(errDetail);
+    _con.showErr(S.current.verifyYourInternetConnection);
   }
 
   @override

@@ -64,7 +64,7 @@ class ShoppingCartButton extends StatefulWidget
             builder: (context, value, child) {
               if(DmState.amountInCart.value > 0) {
                 return Badge(
-                  position: BadgePosition.topRight(top: 0, right: 3),
+                  position: BadgePosition.topEnd(top: 0, end: 3),
                   animationDuration: Duration(milliseconds: 300),
                   animationType: BadgeAnimationType.slide,
                   badgeContent: Text('${DmState.amountInCart.value}',

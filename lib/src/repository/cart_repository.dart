@@ -46,7 +46,7 @@ Future<List<Cart>> addCart(int productId, {int quality = 1}) async {
 //  final String _apiToken = 'api_token=${_user.apiToken}';
 //  final String _resetParam = 'reset=${reset ? 1 : 0}';
 //  cart.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}carts');
   print('addCart $url');
 
 //  final client = new http.Client();
@@ -71,7 +71,7 @@ Future<List<Cart>> addCart(int productId, {int quality = 1}) async {
 }
 
 Future<List<Cart>> updateCart(Cart cart) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}');
   print('updateCart $url');
   final client = new http.Client();
   final response = await client.put(
@@ -92,7 +92,7 @@ Future<List<Cart>> updateCart(Cart cart) async {
 }
 
 Future<List<Cart>> removeCart(Cart cart) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}';
+  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}');
   print('removeCart $url');
   final client = new http.Client();
   final response = await client.delete(

@@ -139,7 +139,7 @@ class ProductController extends Controller {
       }
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -189,7 +189,7 @@ class ProductController extends Controller {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: onComplete);
   }
@@ -285,7 +285,7 @@ class ProductController extends Controller {
       print(e);
       print(trace);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).generalErrorMessage),
+        content: Text(S.current.generalErrorMessage),
       ));
     }
   }
@@ -301,14 +301,14 @@ class ProductController extends Controller {
       }).whenComplete(() {
         if(onDone != null) onDone(true);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
+          content: Text(S.current.productAdded2Cart),
         ));
       });
     }  catch (e, trace) {
       print('$e \n $trace');
       if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).generalErrorMessage),
+        content: Text(S.current.generalErrorMessage),
       ));
     }
   }
@@ -324,14 +324,14 @@ class ProductController extends Controller {
       }).whenComplete(() {
         if(onDone != null) onDone(true);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
+          content: Text(S.current.productAdded2Cart),
         ));
       });
     }  catch (e, trace) {
       print('$e \n $trace');
       if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).generalErrorMessage),
+        content: Text(S.current.generalErrorMessage),
       ));
     }
   }
@@ -348,14 +348,14 @@ class ProductController extends Controller {
         if(onDone != null) onDone(true);
 
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).productAdded2Cart),
+          content: Text(S.current.productAdded2Cart),
         ));
       });
     } catch (e, trace) {
       print('$e \n $trace');
       if(onDone != null) onDone(false);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).generalErrorMessage),
+        content: Text(S.current.generalErrorMessage),
       ));
     }
   }

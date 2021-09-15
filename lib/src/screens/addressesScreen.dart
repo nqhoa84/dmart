@@ -53,7 +53,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
           slivers: <Widget>[
             createSliverTopBar(context),
             createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: true, title: S.of(context).deliveryAddresses),
+            createSilverTopMenu(context, haveBackIcon: true, title: S.current.deliveryAddresses),
             SliverList(
               delegate: SliverChildListDelegate([
                 Container(
@@ -74,7 +74,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
 
     if(_con.addresses.length == 0) {
       return Column(children: [
-        IconWithText(title: S.of(context).addressesEmpty),
+        IconWithText(title: S.current.addressesEmpty),
 
         buildRowButton(context),
       ],);
@@ -90,7 +90,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  Text('${S.of(context).fullName}: '),
+                  Text('${S.current.fullName}: '),
                   Expanded(child: Text('${a.fullName}')),
                 ],
               ),
@@ -100,7 +100,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  Text('${S.of(context).phone}: '),
+                  Text('${S.current.phone}: '),
                   Expanded(child: Text('${a.phone}')),
                 ],
               ),
@@ -110,7 +110,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  Text('${S.of(context).address}: '),
+                  Text('${S.current.address}: '),
                   Expanded(child: Text('${a.getFullAddress}')),
                 ],
               ),
@@ -120,8 +120,8 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  Text('${S.of(context).defaultDeliveryAddress}: '),
-                  Expanded(child: Text('${a.isDefault ? S.of(context).yes : S.of(context).no}')),
+                  Text('${S.current.defaultDeliveryAddress}: '),
+                  Expanded(child: Text('${a.isDefault ? S.current.yes : S.current.no}')),
                 ],
               ),
             ),
@@ -136,7 +136,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
                     onPressed: () {
                       onPressEditAddress(a);
                     },
-                    child: Text(S.of(context).edit, style: TextStyle(color: Colors.white)),
+                    child: Text(S.current.edit, style: TextStyle(color: Colors.white)),
                     color: DmConst.accentColor,
                   ),
                 ),
@@ -147,7 +147,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
                     onPressed: () {
                       onPressDeleteAddress(a);
                     },
-                    child: Text(S.of(context).delete, style: TextStyle(color: Colors.red)),
+                    child: Text(S.current.delete, style: TextStyle(color: Colors.red)),
                     borderSide: BorderSide(color: DmConst.accentColor),
                   ),
                 ),
@@ -170,7 +170,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
           child: FlatButton(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             onPressed: onPressCreateNewAddress,
-            child: Text(S.of(context).addDeliveryAddress,
+            child: Text(S.current.addDeliveryAddress,
                 style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
             color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -216,18 +216,18 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
   showAlertDialog(BuildContext context, {Function() onPressedOK, Function() onPressedCancel}) {
     // set up the buttons
     Widget cancelButton = OutlineButton(
-      child: Text(S.of(context).cancel),
+      child: Text(S.current.cancel),
       onPressed: onPressedCancel,
       borderSide: BorderSide(color: DmConst.accentColor),
     );
     Widget continueButton = OutlineButton(
-      child: Text(S.of(context).delete),
+      child: Text(S.current.delete),
       onPressed: onPressedOK,
       borderSide: BorderSide(color: DmConst.accentColor),
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text('${S.of(context).delete} ${S.of(context).address}'),
+      title: Text('${S.current.delete} ${S.current.address}'),
       content: Text("Would you like to continue learning how to use Flutter alerts?"),
       actions: [
         cancelButton,
@@ -261,7 +261,7 @@ class AddressInfoWid extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              Text('${S.of(context).fullName}: '),
+              Text('${S.current.fullName}: '),
               Expanded(child: Text('${a.fullName}')),
             ],
           ),
@@ -271,7 +271,7 @@ class AddressInfoWid extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              Text('${S.of(context).phone}: '),
+              Text('${S.current.phone}: '),
               Expanded(child: Text('${a.phone}')),
             ],
           ),
@@ -281,7 +281,7 @@ class AddressInfoWid extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              Text('${S.of(context).address}: '),
+              Text('${S.current.address}: '),
               Expanded(child: Text('${a.getFullAddress}')),
             ],
           ),
@@ -291,8 +291,8 @@ class AddressInfoWid extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
-              Text('${S.of(context).defaultDeliveryAddress}: '),
-              Expanded(child: Text('${a.isDefault ? S.of(context).yes : S.of(context).no}')),
+              Text('${S.current.defaultDeliveryAddress}: '),
+              Expanded(child: Text('${a.isDefault ? S.current.yes : S.current.no}')),
             ],
           ),
         ),

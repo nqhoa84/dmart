@@ -110,7 +110,7 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
               color: Theme.of(context).accentColor.withOpacity(1),
               shape: StadiumBorder(),
-              child: Text(S.of(context).home, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
+              child: Text(S.current.home, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
             ),
             SizedBox(height: 10),
             _user == null || !_user.isLogin
@@ -119,7 +119,7 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
               color: Theme.of(context).accentColor.withOpacity(1),
               shape: StadiumBorder(),
-              child: Text(S.of(context).login, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
+              child: Text(S.current.login, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
             )
             : SizedBox(height: 5),
           ],

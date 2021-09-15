@@ -18,18 +18,18 @@ class TrackingController extends ControllerMVC {
   }
 
   void listenForOrder({int orderId, String message}) async {
-    final Stream<Order> stream = await getOrder(orderId);
-    stream.listen((Order _order) {
-      setState(() {
-        order = _order;
-      });
-    }, onError: (a) {
-      print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
-      ));
-    }, onDone: () {
-    });
+    // final Stream<Order> stream = await getOrder(orderId);
+    // stream.listen((Order _order) {
+    //   setState(() {
+    //     order = _order;
+    //   });
+    // }, onError: (a) {
+    //   print(a);
+    //   scaffoldKey.currentState.showSnackBar(SnackBar(
+    //     content: Text(S.current.verifyYourInternetConnection),
+    //   ));
+    // }, onDone: () {
+    // });
   }
 
 //  void listenForOrderStatus() async {

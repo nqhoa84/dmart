@@ -9,7 +9,7 @@ import '../controllers/search_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/ProductItemSearchResult.dart';
 import '../models/route_argument.dart';
-import 'SearchBar.dart';
+import 'toolbars/SearchBar.dart';
 
 class SearchResultWidget extends StatefulWidget {
   final String heroTag;
@@ -53,11 +53,11 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                 },
               ),
               title: Text(
-                S.of(context).search,
+                S.current.search,
                 style: Theme.of(context).textTheme.headline4,
               ),
               /*subtitle: Text(
-                S.of(context).ordered_by_nearby_first,
+                S.current.ordered_by_nearby_first,
                 style: Theme.of(context).textTheme.caption,
               ),*/
             ),
@@ -79,7 +79,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           dense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 0),
                           title: Text(
-                            S.of(context).productsResults,
+                            S.current.productsResults,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ),
@@ -105,7 +105,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           dense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 0),
                           title: Text(
-                            S.of(context).stores_results,
+                            S.current.stores_results,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ),

@@ -59,7 +59,7 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
           child: CustomScrollView(slivers: <Widget>[
             createSliverTopBar(context),
             createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.of(context).categories),
+            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.current.categories),
             SliverList(
               delegate: SliverChildListDelegate([
                 Container(
@@ -70,7 +70,7 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
           ]),
         ),
         snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
+          content: Text(S.current.tapBackAgainToQuit),
         ),
       ),
     );

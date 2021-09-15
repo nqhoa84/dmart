@@ -60,7 +60,7 @@ class _PromotionsScreenState extends StateMVC<PromotionsScreen>
             createSilverTopMenu(
               context,
               haveBackIcon: widget.canBack,
-              title: S.of(context).promotions,
+              title: S.current.promotions,
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -72,7 +72,7 @@ class _PromotionsScreenState extends StateMVC<PromotionsScreen>
           ]),
         ),
         snackBar: SnackBar(
-          content: Text(S.of(context).tapBackAgainToQuit),
+          content: Text(S.current.tapBackAgainToQuit),
         ),
       ),
     );

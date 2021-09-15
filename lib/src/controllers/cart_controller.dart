@@ -37,7 +37,7 @@ class CartController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verifyYourInternetConnection),
+        content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
 //      if (carts.isNotEmpty) {
@@ -52,7 +52,7 @@ class CartController extends ControllerMVC {
 
 
   Future<void> refreshCarts() async {
-    listenForCarts(message: S.of(context).cartsRefreshedSuccessfully);
+    listenForCarts(message: S.current.cartsRefreshedSuccessfully);
   }
 
   void removeFromCart(Cart _cart) async {
@@ -86,7 +86,7 @@ class CartController extends ControllerMVC {
   }
 
   incrementQuantity(Cart cart) {
-    if (cart.quantity < double.parse(cart.product.itemsAvailable)) {
+    if (cart.quantity < cart.product.itemsAvailable) {
       ++cart.quantity;
       updateCart(cart);
       calculateSubtotal();

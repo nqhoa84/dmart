@@ -19,7 +19,7 @@ import '../controllers/settings_controller.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/PaymentSettingsDialog.dart';
 import '../widgets/ProfileSettingsDialog.dart';
-import '../widgets/SearchBar.dart';
+import '../widgets/toolbars/SearchBar.dart';
 import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
 import '../helpers/ui_icons.dart';
@@ -78,7 +78,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
             createSliverSearch(context),
             createSilverTopMenu(context,
                 haveBackIcon: true,
-                title: _con.address.id <= 0 ? S.of(context).addDeliveryAddress : S.of(context).deliveryAddress),
+                title: _con.address.id <= 0 ? S.current.addDeliveryAddress : S.current.deliveryAddress),
             SliverList(
               delegate: SliverChildListDelegate([
                 Container(padding: const EdgeInsets.all(DmConst.masterHorizontalPad), child: buildContent(context)),
@@ -99,8 +99,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
         children: [
           TextEditWid(
             initValue: a.fullName,
-            hintText: S.of(context).fullName,
-            validator: (v) => DmUtils.isNotNullEmptyStr(v) ? null : S.of(context).invalidFullName,
+            hintText: S.current.fullName,
+            validator: (v) => DmUtils.isNotNullEmptyStr(v) ? null : S.current.invalidFullName,
             onSaved: (v) => a.fullName = v,
             prefixIcon: Icons.person_outline,
           ),
@@ -128,8 +128,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                           onSaved: (input) => _con.address.address = input.trim(),
                           initialValue: _con.address.address,
                           validator: (input) =>
-                          DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                          decoration: buildInputDecoration(context, S.of(context).houseNo),
+                          DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                          decoration: buildInputDecoration(context, S.current.houseNo),
                         ),
                       ),
                     ),
@@ -143,8 +143,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                           onSaved: (input) => _con.address.street = input.trim(),
                           initialValue: _con.address.street,
                           validator: (input) =>
-                          DmUtils.isNullOrEmptyStr(input) ? S.of(context).invalidAddress : null,
-                          decoration: buildInputDecoration(context, S.of(context).streetName),
+                          DmUtils.isNullOrEmptyStr(input) ? S.current.invalidAddress : null,
+                          decoration: buildInputDecoration(context, S.current.streetName),
                         ),
                       ),
                     ),
@@ -187,7 +187,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                           textAlignVertical: TextAlignVertical.center,
                           keyboardType: TextInputType.text,
                           onSaved: (input) => _con.address.description = input.trim(),
-                          decoration: buildInputDecoration(context, S.of(context).note),
+                          decoration: buildInputDecoration(context, S.current.note),
                         ),
                       ),
                     ),
@@ -199,12 +199,12 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
         ),
 //          Row(
 //            children: [
-//              Text(S.of(context).defaultDeliveryAddress),
+//              Text(S.current.defaultDeliveryAddress),
 //              CheckboxListTile(value: a.isDefault, onChanged: (v) => a.isDefault = v),
 //            ],
 //          ),
           CheckboxListTile(
-            title: Text(S.of(context).defaultDeliveryAddress, style: TextStyle(color: DmConst.accentColor)),
+            title: Text(S.current.defaultDeliveryAddress, style: TextStyle(color: DmConst.accentColor)),
               value: a.isDefault,
               onChanged: (v) {
                 setState(() { a.isDefault = v;});
@@ -219,7 +219,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                 child: OutlineButton(
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                   onPressed: onPressCancel,
-                  child: Text(S.of(context).cancel,
+                  child: Text(S.current.cancel,
                       style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.red)),
                   borderSide: BorderSide(color: DmConst.accentColor),
                 ),
@@ -228,7 +228,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                   onPressed: onPressSave,
-                  child: Text(S.of(context).save,
+                  child: Text(S.current.save,
                       style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
                   color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
@@ -263,8 +263,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
         },
         value: _con.address.province,
         onSaved: (value) => _con.address.province = value,
-        validator: (value) => value == null ? S.of(context).invalidProvince : null,
-        decoration: buildInputDecoration(context, S.of(context).province),
+        validator: (value) => value == null ? S.current.invalidProvince : null,
+        decoration: buildInputDecoration(context, S.current.province),
       ),
     );
   }
@@ -284,8 +284,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
       },
       value: _con.address.district,
       onSaved: (value) => _con.address.district = value,
-      validator: (value) => value == null ? S.of(context).invalidDistrict : null,
-      decoration: buildInputDecoration(context, S.of(context).district),
+      validator: (value) => value == null ? S.current.invalidDistrict : null,
+      decoration: buildInputDecoration(context, S.current.district),
     );
   }
 
@@ -302,8 +302,8 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
       },
       value: _con.address.ward,
       onSaved: (value) => _con.address.ward = value,
-      validator: (value) => value == null ? S.of(context).invalidWard : null,
-      decoration: buildInputDecoration(context, S.of(context).commune),
+      validator: (value) => value == null ? S.current.invalidWard : null,
+      decoration: buildInputDecoration(context, S.current.commune),
     );
   }
 

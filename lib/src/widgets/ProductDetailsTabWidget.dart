@@ -46,7 +46,7 @@ class ProductDetailsTabWidgetState extends StateMVC<ProductDetailsTabWidget> {
             dense: true,
             contentPadding: EdgeInsets.symmetric(vertical: 0),
             leading: Icon( UiIcons.file_2),
-            title: Text(S.of(context).description,
+            title: Text(S.current.description,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -67,7 +67,7 @@ class ProductDetailsTabWidgetState extends StateMVC<ProductDetailsTabWidget> {
                   child: Divider(thickness: 2),
                 ),
               ),
-              Text(S.of(context).relatedProducts,
+              Text(S.current.relatedProducts,
                   style: Theme.of(context).textTheme.headline6),
               Expanded(
                 child: Padding(

@@ -51,7 +51,7 @@ class ProfileInfoController extends Controller {
       u = await userRepo.updatePersonalDetail(user);
       setState(() => this.isPersonalChange = false);
       if (u != null) {
-        showMsg(S.of(context).accountInfoUpdated);
+        showMsg(S.current.accountInfoUpdated);
         this.user = u;
         re = true;
       } else {
@@ -73,7 +73,7 @@ class ProfileInfoController extends Controller {
       setState(() => loading = true);
       re = await userRepo.changePwd(user.phoneWith855, this.currentPass, this.newPass);
       if (re == true) {
-        showMsg(S.of(context).passwordChanged);
+        showMsg(S.current.passwordChanged);
       } else {
         showErrGeneral();
       }

@@ -86,7 +86,7 @@ dynamic httpPost({@required String url, Map bodyParams}) async {
   printLog('bodyParams: $bodyParams');
 
   return await http.Client().post(
-    url,
+    Uri.parse(url),
     headers: createHeadersRepo(),
     body: json.encode(bodyParams??{}),
   );
@@ -96,7 +96,7 @@ dynamic httpPut({@required String url, Map bodyParams}) async {
   printLog('httpPut: $url');
   printLog('bodyParams: $bodyParams');
   return await http.Client().put(
-    url,
+    Uri.parse(url),
     headers: createHeadersRepo(),
     body: json.encode(bodyParams??{}),
   );

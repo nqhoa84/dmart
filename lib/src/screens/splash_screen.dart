@@ -33,6 +33,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _con.context = this.context;
 //    loadData();
     Future.delayed(Duration(seconds: 1), () async {
 

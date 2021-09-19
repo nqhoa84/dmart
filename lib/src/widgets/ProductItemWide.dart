@@ -66,10 +66,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       splashColor: Theme.of(context).accentColor,
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
-      onTap: () {
-        Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(id: widget.product.id, param: [widget.product, widget.heroStr]));
-      },
+      onTap: onTapOnProduct,
       child: Stack(
         children: <Widget>[
           Container(
@@ -333,5 +330,9 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       }
     }
     _isDoing = false;
+  }
+
+  void onTapOnProduct() {
+    RouteGenerator.gotoProductDetailPage(context, productId: widget.product.id, replaceOld: false);
   }
 }

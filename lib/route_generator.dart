@@ -1,3 +1,5 @@
+import 'package:dmart/src/models/category.dart';
+import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/src/screens/ProfileUpdated.dart';
 import 'package:dmart/src/screens/bottom_right_menu.dart';
 import 'package:dmart/src/screens/contactus.dart';
@@ -157,15 +159,14 @@ class RouteGenerator {
 //      case '/Pages':
 //        return MaterialPageRoute(builder: (_) => PagesScreen(currentTab: args));
 
-      case '/Product':
-        return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
+      // case '/Product':
+      //   return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
       case '/Brand':
         return MaterialPageRoute(builder: (_) => BrandWidget(routeArgument: args as RouteArgument));
       case '/Brands':
         return MaterialPageRoute(builder: (_) => BrandsWidget());
-      case '/Category':
-        return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
-
+      // case '/Category':
+      //   return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
 
       case '/Cart':
         return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
@@ -195,8 +196,7 @@ class RouteGenerator {
 
       case '/MyOrders':
         return MaterialPageRoute(builder: (_) => OrdersScreen());
-      case '/Promotion':
-        return MaterialPageRoute(builder: (_) => PromotionScreen(routeArgument: args as RouteArgument));
+
 
       case '/Home':
         return MaterialPageRoute(builder: (_) => Home2Screen());
@@ -224,7 +224,42 @@ class RouteGenerator {
     }
   }
 
+  static Future<void> gotoProductDetailPage(context, {@required int productId, bool replaceOld = false}) async {
+    var para = RouteArgument();
+    para.id = productId;
+    if(replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId,)));
+      return re;
+    } else {
+      var re = await Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId,)));
+      return re;
+    }
+  }
 
+  static void gotoCategoryPage(BuildContext context, {Category category, int cateId, bool replaceOld = false}) async {
+    if(replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => CategoryScreen(cateId: cateId, category: category)));
+      return re;
+    } else {
+      var re = await Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => CategoryScreen(cateId: cateId, category: category,)));
+      return re;
+    }
+  }
 
+  static void gotoPromotionPage(BuildContext context, {int promotionId, bool replaceOld = false, String heroTag}) async {
+    if(replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => PromotionScreen(promotionId: promotionId)));
+      return re;
+    } else {
+      var re = await Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => PromotionScreen(promotionId: promotionId)));
+      return re;
+    }
+  }
 
 }

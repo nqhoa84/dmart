@@ -1,6 +1,7 @@
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/promotion_controller.dart';
 import 'package:dmart/src/models/promotion.dart';
 import 'package:dmart/src/widgets/CircularLoadingWidget.dart';
@@ -77,11 +78,7 @@ class PromotionsGridView extends StatelessWidget {
       children: List.generate( promotions.length, (index) {
         Promotion promo =  promotions.elementAt(index);
         return InkWell(
-          onTap: () {
-            Navigator.of(context)
-                .pushNamed('/Promotion', arguments: new RouteArgument(id: promo.id, param: [promo],
-                heroTag: "fromPromoGroup_${promo.id}"));
-          },
+          onTap: () => onTapOnPromotion(context, id:promo.id),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -131,6 +128,13 @@ class PromotionsGridView extends StatelessWidget {
       mainAxisSpacing: 15.0,
       crossAxisSpacing: 15.0,
     );
+  }
+
+  void onTapOnPromotion(BuildContext context, {int id}) {
+    RouteGenerator.gotoPromotionPage(context, promotionId: id, heroTag: "fromPromoGroup_$id");
+    // Navigator.of(context)
+    //     .pushNamed('/Promotion', arguments: new RouteArgument(id: promo.id, param: [promo],
+    //     heroTag: "fromPromoGroup_$id"));
   }
 }
 

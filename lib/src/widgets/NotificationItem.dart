@@ -1,15 +1,17 @@
+import 'package:dmart/constant.dart';
+import 'package:dmart/src/models/noti.dart';
+
 import '../../src/helpers/helper.dart';
 import 'package:intl/intl.dart';
 
 import '../../src/helpers/ui_icons.dart';
-import '../../src/models/notification.dart' as model;
 import 'package:flutter/material.dart';
 
 class NotificationItem extends StatefulWidget {
 
   NotificationItem({Key key, this.notification, this.onDismissed}) : super(key: key);
-  model.Notification notification;
-  ValueChanged<model.Notification> onDismissed;
+  Noti notification;
+  ValueChanged<Noti> onDismissed;
 
   @override
   _NotificationItemState createState() => _NotificationItemState();
@@ -33,14 +35,16 @@ class _NotificationItemState extends State<NotificationItem> {
           ),
         ),
       ),
-      onDismissed: (direction) {
-        // Remove the item from the data source.
-        setState(() {
-          widget.onDismissed(widget.notification);
-        });
-      },
+      onDismissed: onDismissed,
       child: Container(
-        color: this.widget.notification.read ? Colors.transparent : Theme.of(context).focusColor.withOpacity(0.15),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: DmConst.accentColor
+            ),
+          ),
+        ),
+        // color: this.widget.notification.read ? Colors.transparent : Theme.of(context).focusColor.withOpacity(0.15),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +62,8 @@ class _NotificationItemState extends State<NotificationItem> {
                       ])),
                   child: Icon(
                     Icons.notifications,
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: widget.notification.tapable ? DmConst.accentColor : Theme.of(context).scaffoldBackgroundColor,
+                      // color: Theme.of(context).scaffoldBackgroundColor,
                     size: 40
                   ),
                 ),
@@ -95,15 +100,21 @@ class _NotificationItemState extends State<NotificationItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
-                    Helper.trans(this.widget.notification.type),
+                    '${this.widget.notification.title}',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        color: widget.notification.tapable ? DmConst.accentColor : Theme.of(context).textTheme.bodyText1.color,
                         fontWeight: this.widget.notification.read ? FontWeight.w300 : FontWeight.w600),
                   ),
                   Text(
-                    DateFormat('yyyy-MM-dd - HH:mm').format(this.widget.notification.createdAt),
+                    DateFormat('yyyy-MM-dd - HH:mm').format(this.widget.notification.dateTime),
                     style: Theme.of(context).textTheme.caption
+                  ),
+                  Text(
+                      '${widget.notification.body}',
+                      style: Theme.of(context).textTheme.caption,
+                    overflow: TextOverflow.ellipsis,
                   )
                 ],
               ),
@@ -112,5 +123,13 @@ class _NotificationItemState extends State<NotificationItem> {
         ),
       ),
     );
+  }
+
+  void onDismissed(DismissDirection direction){
+    setState(() {
+      if(widget.onDismissed != null) {
+        widget.onDismissed(widget.notification);
+      }
+    });
   }
 }

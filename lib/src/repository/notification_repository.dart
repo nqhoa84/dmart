@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dmart/src/models/noti.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../DmState.dart';
 import '../helpers/helper.dart';
 import '../models/notification.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Notification>> getNotifications() async {
+Future<Stream<Noti>> getNotifications() async {
   User _user = userRepo.currentUser.value;
   if (_user.isNotLogin) {
     return new Stream.value(null);
@@ -29,14 +32,14 @@ Future<Stream<Notification>> getNotifications() async {
       .expand((data) => (data as List))
       .map((data) {
     print(data);
-    return Notification.fromJSON(data);
+    return Noti.fromJSON(data);
   });
 }
 
-Future<Notification> removeNotification(Notification notification) async {
+Future<Noti> removeNotification(Noti notification) async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
-    return new Notification();
+    return new Noti();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
   var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}notifications/${notification.id}?$_apiToken');
@@ -47,9 +50,57 @@ Future<Notification> removeNotification(Notification notification) async {
       url,
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
-    return Notification.fromJSON(json.decode(response.body)['data']);
+    return Noti.fromJSON(json.decode(response.body)['data']);
   } catch (e, trace) {
     print('$e \n $trace');
-    return Notification.fromJSON({});
+    return Noti.fromJSON({});
   }
+}
+
+
+saveNoti(Noti noti) async {
+  print('save noti to storage: $noti');
+  if (noti != null) {
+    if(DmState.notifications == null) {
+      await loadNoties();
+    }
+
+    if(DmState.notifications.isEmpty) {
+      DmState.notifications.add(noti);
+    } else {
+      DmState.notifications.insert(0, noti);
+    }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('dmNotifications', jsonEncode(DmState.notifications) );
+  }
+}
+
+Future<bool> removeNoti(Noti noti) async {
+  print('Remove noti: $noti');
+  if(DmState.notifications != null) {
+    var lne = DmState.notifications.length;
+    DmState.notifications.remove(noti);
+    print('---- pre len: $lne, now len ${DmState.notifications.length}');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('dmNotifications', jsonEncode(DmState.notifications) );
+    return true;
+  }
+  return false;
+}
+
+loadNoties() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String v = await prefs.get('dmNotifications');
+  print('-------$v');
+  DmState.notifications = [];
+  if(v != null && v.isNotEmpty) {
+    var nMap = jsonDecode(v);
+    if(nMap != null && nMap is List) {
+      nMap.forEach((element) {
+        DmState.notifications.add(Noti.fromJSON(element));
+      });
+    }
+  }
+  return DmState.notifications;
 }

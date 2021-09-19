@@ -1,4 +1,6 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/src/controllers/category_controller.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/models/product.dart';
@@ -19,25 +21,41 @@ import 'abs_product_mvc.dart';
 // ignore: must_be_immutable
 class CategoryScreen extends StatefulWidget {
   RouteArgument routeArgument;
-  Category _category;
+  Category category;
+  int cateId;
 
-  CategoryScreen({Key key, this.routeArgument}) {
-    _category = this.routeArgument.param[0] as Category;
+  ///If category == null then cateId is used to load the category object from server.
+  CategoryScreen({Key key, this.cateId, this.category}) {
+    // category = this.routeArgument.param[0] as Category;
   }
 
   @override
-  _CategoryScreenState createState() => _CategoryScreenState(category: _category);
+  _CategoryScreenState createState() => _CategoryScreenState(category: category, cateId: cateId);
 }
 
 class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
+  int cateId;
   Category category;
 
-  _CategoryScreenState({@required this.category}) : super(bottomIdx: DmState.bottomBarSelectedIndex);
+  _CategoryScreenState({@required this.category, this.cateId}) : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
   @override
   void initState() {
-    proCon.listenForProductsByCategory(id: this.category.id);
     super.initState();
+    print('----cateId = $cateId, category = $category');
+    if(this.category == null) {
+      CategoryController().loadCate(id: cateId).then((value) {
+        setState(() {
+          this.category = value;
+          if(this.category == null) {
+            this.errMsg = S.current.generalErrorMessage;
+          }
+        });
+        proCon.listenForProductsByCategory(id: cateId);
+      });
+    } else {
+      proCon.listenForProductsByCategory(id: this.category.id);
+    }
   }
 
   void dispose() {
@@ -51,9 +69,13 @@ class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
 
   @override
   Future<void> onRefresh() async {
-    proCon.categoriesProducts.clear();
-    proCon.listenForProductsByCategory(id: this.category.id);
-    canLoadMore = true;
+    if(this.category != null) {
+      proCon.categoriesProducts.clear();
+      proCon.listenForProductsByCategory(id: this.category.id);
+      canLoadMore = true;
+    } else {
+      canLoadMore = false;
+    }
   }
 
 //  @override
@@ -71,12 +93,17 @@ class _CategoryScreenState extends ProductStateMVC<CategoryScreen> {
 
   @override
   Future<void> loadMore() async {
-    int pre = proCon.categoriesProducts != null ? proCon.categoriesProducts.length : 0;
+    if(this.category != null) {
+      int pre = proCon.categoriesProducts != null ? proCon.categoriesProducts
+          .length : 0;
 
-    await proCon.listenForProductsByCategory(id: this.category.id, nextPage: true);
-    canLoadMore = proCon.categoriesProducts != null && proCon.categoriesProducts.length > pre;
+      await proCon.listenForProductsByCategory(
+          id: this.category.id, nextPage: true);
+      canLoadMore = proCon.categoriesProducts != null &&
+          proCon.categoriesProducts.length > pre;
 //    isLoading = false;
-    print('category can load more: $canLoadMore');
+      print('category can load more: $canLoadMore');
+    }
   }
 
   @override

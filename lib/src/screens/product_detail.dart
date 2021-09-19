@@ -7,6 +7,7 @@ import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/helpers/helper.dart';
 import 'package:dmart/src/models/favorite.dart';
 import 'package:dmart/src/models/media.dart';
+import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:expandable/expandable.dart';
@@ -30,15 +31,14 @@ import '../../src/widgets/ShoppingCartButton.dart';
 
 // ignore: must_be_immutable
 class ProductDetailScreen extends StatefulWidget {
-  RouteArgument routeArgument;
-  String _heroTag;
+  // RouteArgument routeArgument;
+  String heroTag;
+  int productId;
 
-  ProductDetailScreen({Key key, this.routeArgument}) {
-    _heroTag = this.routeArgument.param[1] as String;
-  }
+  ProductDetailScreen({Key key, @required this.productId, this.heroTag}) ;
 
   @override
-  _ProductDetailScreenState createState() => _ProductDetailScreenState(productId: routeArgument.id);
+  _ProductDetailScreenState createState() => _ProductDetailScreenState(productId: productId);
 }
 
 class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with SingleTickerProviderStateMixin {
@@ -113,15 +113,19 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   }
 
   Widget _buildContent(BuildContext context) {
-    return _con.product == null
-        ? CircularLoadingWidget(height: 500)
-        : CustomScrollView(slivers: <Widget>[
-      _createImageSpace(context),
-      SliverList(
-          delegate: SliverChildListDelegate([
-            _createInfoWidget(context),
-          ])),
-    ]);
+    if(_con.product == null) {
+      return CircularLoadingWidget(height: 500);
+    } else if(_con.product.id <= 0) { //invalid product.
+      return EmptyDataLoginWid(message: S.current.generalErrorMessage);
+    } else {
+      return CustomScrollView(slivers: <Widget>[
+        _createImageSpace(context),
+        SliverList(
+            delegate: SliverChildListDelegate([
+              _createInfoWidget(context),
+            ])),
+      ]);
+    }
   }
 
   Widget _createImageSpace(BuildContext context) {
@@ -472,8 +476,6 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     );
   }
 
-
-
   void _onPressOnFav() {
     if (currentUser.value.isLogin == false) {
       RouteGenerator.gotoLogin(context);
@@ -509,15 +511,20 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     addCart(1);
   }
 
+  bool isDoing = false;
   void addCart(int quantity) {
+    if(isDoing) return;
+    isDoing = true;
     if (currentUser.value.isLogin) {
       _con.addCartGeneral(productId, quantity);
       setState(() {
         amountInCart = math.max<int>(0, amountInCart + quantity);
       });
     } else {
+      isDoing = false;
       RouteGenerator.gotoLogin(context, replaceOld: true);
     }
+    isDoing = false;
   }
 }
 

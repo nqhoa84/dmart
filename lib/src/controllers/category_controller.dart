@@ -20,8 +20,8 @@ class CategoryController extends ControllerMVC {
 
   CategoryController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    listenForProductsByCategory();
-    listenForCategories();
+    // listenForProductsByCategory();
+    // listenForCategories();
   }
 
   void listenForCategories ({Function() onDone }) async {
@@ -35,24 +35,24 @@ class CategoryController extends ControllerMVC {
 
   void listenForProductsByCategory({int id, String message}) async {
 
-    print('listenForProductsByCategory called.........');
+    print('listenForProductsByCategory called.........id = $id');
 
-//    final Stream<Product> stream = await getProductsByCategory(id, 1);
-//    stream.listen((Product _product) {
-//      setState(() {
-//        products.add(_product);
-//      });
-//    }, onError: (a) {
-//      scaffoldKey.currentState.showSnackBar(SnackBar(
-//        content: Text(S.current.verifyYourInternetConnection),
-//      ));
-//    }, onDone: () {
-//      if (message != null) {
-//        scaffoldKey.currentState.showSnackBar(SnackBar(
-//          content: Text(message),
-//        ));
-//      }
-//    });
+   final Stream<Product> stream = await getProductsByCategory(id, 1);
+   stream.listen((Product _product) {
+     setState(() {
+       products.add(_product);
+     });
+   }, onError: (a) {
+     scaffoldKey.currentState.showSnackBar(SnackBar(
+       content: Text(S.current.verifyYourInternetConnection),
+     ));
+   }, onDone: () {
+     if (message != null) {
+       scaffoldKey.currentState.showSnackBar(SnackBar(
+         content: Text(message),
+       ));
+     }
+   });
   }
 
   void listenForCategory({int id, String message}) async {
@@ -71,6 +71,10 @@ class CategoryController extends ControllerMVC {
         ));
       }
     });
+  }
+
+  Future<Category> loadCate({@required int id}) async {
+    return loadCategory(id);
   }
 
   void listenForCart() async {

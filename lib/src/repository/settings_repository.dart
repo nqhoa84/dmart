@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dmart/DmState.dart';
 import 'package:dmart/src/models/language.dart';
+import 'package:dmart/src/models/noti.dart';
 import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -114,12 +115,11 @@ void setBrightness(Brightness brightness) async {
   brightness == Brightness.dark ? prefs.setBool("isDark", true) : prefs.setBool("isDark", false);
 }
 
-
-
 Future<void> saveMessageId(String messageId) async {
   if (messageId != null) {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('google.message_id', messageId);
+    await prefs.setString('dmNotifications', messageId);
+
   }
 }
 

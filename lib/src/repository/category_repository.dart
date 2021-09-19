@@ -4,6 +4,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils.dart';
 import '../helpers/helper.dart';
 import '../models/category.dart';
 import '../models/filter.dart';
@@ -46,5 +47,24 @@ Future<Stream<Category>> getCategory(int id) async {
     return new Stream.value(new Category.fromJSON({}));
   }
 }
+
+Future<Category> loadCategory(int id) async {
+  // final String url = '${GlobalConfiguration().getValue('api_base_url')}categories/$id';
+  var url = Uri.parse(
+      '${GlobalConfiguration().getValue('api_base_url')}categories/$id');
+  print(url);
+
+  http.Response res = await http.get(url, headers: createHeadersRepo());
+  var result = json.decode(res.body);
+  print(result);
+  if(result['success'] == true) {
+    return Category.fromJSON(result['data']);
+    // return OrderSetting.fromJSON(result['data']);
+  } else {
+    return null;
+  }
+}
+
+
 
 

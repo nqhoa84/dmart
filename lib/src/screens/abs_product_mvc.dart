@@ -26,6 +26,9 @@ abstract class ProductStateMVC<T extends StatefulWidget>
   bool isLoading = false, canLoadMore = true;
   static const double _endReachedThreshold = 100;
   final int bottomIdx;
+  /// If errMsg is not null, display error msg first.
+  String errMsg;
+
   ProductStateMVC({
     @required this.bottomIdx,
   }) : super(new ProductController()) {
@@ -81,6 +84,9 @@ abstract class ProductStateMVC<T extends StatefulWidget>
 
 //  Widget buildContent(BuildContext context);
   Widget buildContent(BuildContext context) {
+    if (this.errMsg != null && this.errMsg.trim().isNotEmpty) {
+      return EmptyDataLoginWid(message: this.errMsg);
+    }
     if (this.lstProducts == null) {
       return ProductsGridViewLoading(isList: true);
     } else if (this.lstProducts.isEmpty) {

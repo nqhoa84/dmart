@@ -49,7 +49,9 @@ class Product extends IdNameObj{
   
   DateTime updatedAt;
 
-  Product();
+  Product(){
+    this.id = - 1;
+  }
 
   bool get isPromotion => discountPrice != null && discountPrice > 0 && discountPrice < price;
 

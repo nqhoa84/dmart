@@ -1,5 +1,7 @@
 import 'package:dmart/DmState.dart';
+import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
+import 'package:dmart/src/controllers/promotion_controller.dart';
 import 'package:dmart/src/models/product.dart';
 import 'package:dmart/src/models/promotion.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
@@ -14,25 +16,37 @@ import '../../src/widgets/DrawerWidget.dart';
 import 'abs_product_mvc.dart';
 
 class PromotionScreen extends StatefulWidget {
-  RouteArgument routeArgument;
+  int promotionId;
   Promotion promotion;
 
-  PromotionScreen({Key key, this.routeArgument}) {
-    promotion = this.routeArgument.param[0] as Promotion;
-  }
+  PromotionScreen({Key key, this.promotion, this.promotionId});
 
   @override
-  _PromotionScreenState createState() => _PromotionScreenState(promo: promotion);
+  _PromotionScreenState createState() => _PromotionScreenState(promo: this.promotion, promotionId: promotionId);
 }
 
 class _PromotionScreenState extends ProductStateMVC<PromotionScreen> {
   Promotion promo;
-  _PromotionScreenState({this.promo}) : super(bottomIdx: DmState.bottomBarSelectedIndex);
+  int promotionId;
+  _PromotionScreenState({this.promo, this.promotionId}) : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
   @override
   void initState() {
-    proCon.listenForPromoProducts(promo.id);
     super.initState();
+
+    if(this.promo == null) {
+      PromotionController().loadPromotion(id: this.promotionId).then((value) {
+        setState(() {
+          this.promo = value;
+          if(this.promo == null || this.promo.id <= 0) {
+            this.errMsg = S.current.generalErrorMessage;
+          }
+        });
+        proCon.listenForPromoProducts(this.promo.id);
+      });
+    } else {
+      proCon.listenForPromoProducts(this.promo.id);
+    }
   }
 
   void dispose() {

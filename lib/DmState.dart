@@ -3,6 +3,7 @@ import 'package:dmart/src/models/RadioItem.dart';
 import 'package:dmart/src/models/cart.dart';
 import 'package:dmart/src/models/favorite.dart';
 import 'package:dmart/src/models/language.dart';
+import 'package:dmart/src/models/noti.dart';
 import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/src/repository/radio_repository.dart';
 import 'package:dmart/utils.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import './src/repository/user_repository.dart' as userRepo;
 
 class DmState {
+  static final GlobalKey<NavigatorState> navState = GlobalKey<NavigatorState>();
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
   static bool isRadioOn = true;
@@ -19,6 +21,10 @@ class DmState {
   static RadioItem currentRadio;
 
   static RadioItem nextRadio;
+
+  static List<Noti> notifications;
+
+  static Noti pendingNoti;
 
   static bool get isKhmer {
     return  mobileLanguage.value.languageCode != Language.english.code;

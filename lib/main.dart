@@ -75,7 +75,8 @@ class _DmartState extends State<Dmart> with WidgetsBindingObserver{
     Setting _setting = settingRepo.setting.value;
 
     return MaterialApp(
-      navigatorKey: settingRepo.navigatorKey,
+      // navigatorKey: settingRepo.navigatorKey,
+      navigatorKey: DmState.navState,
       title: _setting.appName,
 
       initialRoute: '/Splash',

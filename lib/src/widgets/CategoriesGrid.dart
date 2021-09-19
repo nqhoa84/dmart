@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/i_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,12 +41,28 @@ class NameImageItemGridViewLoading extends StatelessWidget {
   }
 }
 
-///TODO remove promotion gridview and use this grid.
-///GridView of 2 columns to display NameImageObj (such as Category, Brand, Promotion...).
-class CategoriesGridView extends StatelessWidget {
+class CategoriesGridView extends StatefulWidget {
+  const CategoriesGridView({Key key, this.items}) : super(key: key);
   final List<NameImageObj> items;
 
-  CategoriesGridView({@required this.items});
+  @override
+  _CategoriesGridViewState createState() => _CategoriesGridViewState(items: this.items);
+}
+
+// class _CategoriesGridViewState extends State<CategoriesGridView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container();
+//   }
+// }
+
+
+///TODO remove promotion gridview and use this grid.
+///GridView of 2 columns to display NameImageObj (such as Category, Brand, Promotion...).
+class _CategoriesGridViewState extends State<CategoriesGridView> {
+  List<NameImageObj> items;
+
+  _CategoriesGridViewState({@required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +79,7 @@ class CategoriesGridView extends StatelessWidget {
           NameImageObj category = items.elementAt(index - 1);
           return InkWell(
             onTap: () {
-              Navigator.of(context)
-                  .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
+              _onTapOnCate(category);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -273,5 +289,11 @@ class CategoriesGridView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTapOnCate(NameImageObj category) {
+    RouteGenerator.gotoCategoryPage(this.context, category: category);
+    // Navigator.of(context)
+    //     .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
   }
 }

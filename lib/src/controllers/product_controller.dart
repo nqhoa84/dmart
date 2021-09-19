@@ -216,18 +216,6 @@ class ProductController extends Controller {
     setState(() {
       ps.forEach((element) {promotionProducts.add(element);});
     });
-    // final Stream<Product> stream = await getProductsByPromotion(promoId, _promoPageIdx);
-//    promotionProducts.clear();
-//    stream.listen((Product _product) {
-//      setState(() {
-//        promotionProducts.add(_product);
-//      });
-//    }, onError: (a) {
-//      print(a);
-//    }, onDone: (){
-//      print(' onDone boughtProducts ${promotionProducts.length}');
-//    }
-//    );
   }
 
   int _cateProductsPageIdx = 1;

@@ -34,15 +34,15 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
 
   @override
   void initState() {
-//    _con.listenForCategories();
+
     super.initState();
+       _con.listenForCategories();
   }
 
   Widget buildContent(BuildContext context) {
-    if (_con.categories.isEmpty)  {
+    if (_con.categories == null || _con.categories.isEmpty)  {
       return NameImageItemGridViewLoading();
-    } else
-    {
+    } else {
       return CategoriesGridView(items: _con.categories);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }

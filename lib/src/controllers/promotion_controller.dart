@@ -27,4 +27,9 @@ class PromotionController extends Controller {
   Future<void> refreshPromotions() async {
     listenForPromotions(message: 'Sliders refreshed successfully');
   }
+
+  Future<Promotion> loadPromotion({int id}) async{
+    //TODO need api from to get info of one promotion.
+    return Promotion()..id = id;
+  }
 }

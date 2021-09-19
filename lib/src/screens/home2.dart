@@ -2,6 +2,7 @@ import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/filter.dart';
+import 'package:dmart/src/models/noti.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/FilterWidget.dart';
@@ -10,6 +11,7 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../DmState.dart';
 import '../../generated/l10n.dart';
 import '../../route_generator.dart';
 import '../../src/widgets/HomePromotionsSlider.dart';
@@ -48,7 +50,17 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
       });
     animationController.forward();
     super.initState();
-
+    Future.delayed(Duration(seconds: 1), (){
+      print('Future.delayed(Duration(seconds: 1) in home2.dart');
+      if(DmState.pendingNoti != null) {
+        var n = DmState.pendingNoti;
+        DmState.pendingNoti = null;
+        var id = toInt(n.data);
+        if(n.type == NotiType.product && id > 0) {
+          RouteGenerator.gotoProductDetailPage(DmState.navState.currentContext, productId: id);
+        }
+      }
+    });
   }
 
   Future<void> onRefresh() async{

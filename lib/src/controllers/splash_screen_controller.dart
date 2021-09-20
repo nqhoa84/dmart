@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
@@ -178,23 +179,27 @@ class SplashScreenController extends Controller with ChangeNotifier {
 
   Noti saveNotiToLocal(Map<String, dynamic> message) {
     Noti noti = Noti();
-    noti.title = message['title'];
-    noti.body = message['body'];
-    if(message.containsKey('object_type'))
-      noti.type = getType(message['object_type']);
-    if(message.containsKey('object_id'))
-      noti.data = message['object_id'];
-    // if(message.containsKey('fcm_options') && message['fcm_options'] is Map) {
-    //   Map op = message['fcm_options'];
-    //   print('-----$op');
-    //   if(op.containsKey('type')) {
-    //     noti.type = getType(op['type']);
-    //   }
-    //   if(op.containsKey('data')) {
-    //     noti.data = op['data'];
-    //   }
-    // }
-
+    if(Platform.isAndroid) {
+      if(message.containsKey('data') && message['data'] is Map) {
+        Map data = message['data'];
+        noti.title = data['title'];
+        noti.body = data['body'];
+        if (data.containsKey('object_type'))
+          noti.type = getType(data['object_type']);
+        if (data.containsKey('object_id'))
+          noti.data = data['object_id'];
+      } else if (message.containsKey('notification')){
+        noti.title = message['notification']['title'];
+        noti.body = message['notification']['body'];
+      }
+    } else if (Platform.isIOS) {
+      noti.title = message['title'];
+      noti.body = message['body'];
+      if(message.containsKey('object_type'))
+        noti.type = getType(message['object_type']);
+      if(message.containsKey('object_id'))
+        noti.data = message['object_id'];
+    }
     saveNoti(noti);
     return noti;
   }

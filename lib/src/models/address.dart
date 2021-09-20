@@ -20,6 +20,11 @@ class Address extends IdObj {
   int userId = 0;
 
   String _phone = '';
+
+  String districtName;
+
+  String wardName;
+  
   set phone (String v) => _phone = DmUtils.addCountryCode(phone: v);
   String get phone {
     if(_phone == null) return '';
@@ -74,15 +79,12 @@ class Address extends IdObj {
       address = map["address"] ?? '';
       try {
         province = Province.fromJSON(map["province"]);
-        district = District.fromJSON(map["district"]);
+        districtName = map['districtName'];
+        wardName = map['wardName'];
       } on Exception catch (e) {
         // district = District();
       }
-      try {
-        ward = Ward.fromJSON(map["ward"]);
-      } on Exception catch (e) {
-        ward = Ward();
-      }
+
       street = toStringVal(map["street"]);
       phone = map["phone"] ?? '';
       fullName = map["full_name"] ?? '';
@@ -113,8 +115,10 @@ class Address extends IdObj {
     var map = new Map<String, dynamic>();
     map["id"] = id;
     map["province_id"] = province.id;
-    map["district_id"] = district.id;
-    map["ward_id"] = ward.id;
+    map["district_id"] = district != null? district.id : 0;
+    map["districtName"] = districtName;
+    map["ward_id"] = ward != null ? ward.id : 0;
+    map["wardName"] = this.wardName;
     map["street"] = street??'';
     map["address"] = address??'';
     map["full_name"] = this.fullName??'';

@@ -153,25 +153,7 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
               ),
             ),
             buildProvincesDropDown(),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              decoration: buildBoxDecorationForTextField(context),
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: IntrinsicHeight(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: buildDistrictsDropDown(),
-                    ),
-                    VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
-                    //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
-                    Expanded(
-                      child: buildWardsDropDown(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            buildDistrictCommuneRow(),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 5),
               decoration: buildBoxDecorationForTextField(context),
@@ -239,6 +221,69 @@ class _AddressScreenState extends StateMVC<AddressScreen> {
         ],
       ),
     );
+  }
+
+  Widget buildDistrictCommuneRow(){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      decoration: buildBoxDecorationForTextField(context),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                child: TextFormField(
+                  style: TextStyle(color: DmConst.accentColor),
+                  textAlignVertical: TextAlignVertical.center,
+                  keyboardType: TextInputType.text,
+                  onSaved: (input) => _con.address.districtName = input.trim(),
+                  initialValue: _con.address.districtName,
+                  validator: (input) =>
+                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidDistrict : null,
+                  decoration: buildInputDecoration(context, S.current.district),
+                ),
+              ),
+            ),
+            VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+            Expanded(
+              child: Container(
+                child: TextFormField(
+                  style: TextStyle(color: DmConst.accentColor),
+                  textAlignVertical: TextAlignVertical.center,
+                  keyboardType: TextInputType.text,
+                  onSaved: (input) => _con.address.wardName = input.trim(),
+                  initialValue: _con.address.wardName,
+                  validator: (input) =>
+                  DmUtils.isNullOrEmptyStr(input) ? S.current.invalidWard : null,
+                  decoration: buildInputDecoration(context, S.current.commune),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // Container(
+    //   padding: EdgeInsets.symmetric(horizontal: 5),
+    //   decoration: buildBoxDecorationForTextField(context),
+    //   margin: EdgeInsets.symmetric(vertical: 5),
+    //   child: IntrinsicHeight(
+    //     child: Row(
+    //       children: [
+    //         Expanded(
+    //           child: buildDistrictsDropDown(),
+    //         ),
+    //         VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+    //         //            SizedBox(width: 2, height: 100, child: Container(color: Colors.white)),
+    //         Expanded(
+    //           child: buildWardsDropDown(),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   Widget buildProvincesDropDown() {

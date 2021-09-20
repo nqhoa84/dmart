@@ -112,21 +112,68 @@ class SplashScreenController extends Controller with ChangeNotifier {
 
   Future notificationOnMessage(Map<String, dynamic> message) async {
     print('OnMessage===========: $message');
-    // //todo: show the message to
-    // const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    // AndroidNotificationDetails(
-    //     'your channel id', 'your channel name', 'your channel description',
-    //     importance: Importance.max,
-    //     priority: Priority.high,
-    //     showWhen: false);
-    // const NotificationDetails platformChannelSpecifics =
-    // NotificationDetails(android: androidPlatformChannelSpecifics);
-    // await DmState.flutterLocalNotificationsPlugin?.show(
-    //     0, 'plain title', '$message', platformChannelSpecifics,
-    //     payload: 'the payload ');
+    var noti = await saveNotiToLocal(message);
 
-    saveNotiToLocal(message);
+    _showMaterialDialog(noti: noti);
 
+  }
+
+  void _showMaterialDialog({Noti noti}) {
+    print('_showMaterialDialog $noti');
+    void onPressOnCancel() {
+      Navigator.pop(DmState.navState.currentContext);
+    }
+    void onPressOnView() {
+      Navigator.pop(DmState.navState.currentContext);
+      int id = toInt(noti.data);
+      switch (noti.type) {
+        case NotiType.product:
+          RouteGenerator.gotoProductDetailPage(
+              DmState.navState.currentContext, productId: id);
+          break;
+        case NotiType.category:
+          RouteGenerator.gotoCategoryPage(
+              DmState.navState.currentContext, cateId: id);
+          break;
+        case NotiType.order:
+          RouteGenerator.gotoOrderDetailPage(
+              DmState.navState.currentContext, orderId: id);
+          break;
+        case NotiType.promotion:
+          RouteGenerator.gotoPromotionPage(
+              DmState.navState.currentContext, promotionId: id);
+          break;
+        case NotiType.bestSale:
+          RouteGenerator.gotoBestSale(DmState.navState.currentContext);
+          break;
+        case NotiType.newArrival:
+          RouteGenerator.gotoNewArrivals(DmState.navState.currentContext);
+          break;
+        case NotiType.special4U:
+          RouteGenerator.gotoSpecial4U(DmState.navState.currentContext);
+          break;
+      }
+    }
+
+    showDialog(
+        context: DmState.navState.currentContext,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('${noti.title}'),
+            content: Text('${noti.body}'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: onPressOnCancel,
+                  child: Text(S.current.close),),
+              noti.tapable ?
+              TextButton(
+                onPressed: onPressOnView,
+                child: Text(S.current.detail),
+              ) : SizedBox()
+
+            ],
+          );
+        });
   }
 
   Noti saveNotiToLocal(Map<String, dynamic> message) {
@@ -176,4 +223,6 @@ class SplashScreenController extends Controller with ChangeNotifier {
       //final dynamic notification = message['notification'];
     }
   }*/
+
+
 }

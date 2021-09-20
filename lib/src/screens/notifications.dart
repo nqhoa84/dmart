@@ -144,26 +144,28 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
   void onTapOnNoti(Noti n) {
     print('onTapOnNoti $n');
     int id = toInt(n.data);
-
-    if(id > 0) {
-      if (n.type == NotiType.product) {
+    switch (n.type) {
+      case NotiType.product:
         RouteGenerator.gotoProductDetailPage(this.context, productId: id);
-      } else if (n.type == NotiType.category) {
+        break;
+      case NotiType.category:
         RouteGenerator.gotoCategoryPage(this.context, cateId: id);
-      } else if (n.type == NotiType.order) {
+        break;
+      case NotiType.order:
         RouteGenerator.gotoOrderDetailPage(this.context, orderId: id);
-      } else if (n.type == NotiType.promotion) {
+        break;
+      case NotiType.promotion:
         RouteGenerator.gotoPromotionPage(this.context, promotionId: id);
-      }
-    } else {
-      if (n.type == NotiType.bestSale) {
+        break;
+      case NotiType.bestSale:
         RouteGenerator.gotoBestSale(context);
-      } else if (n.type == NotiType.newArrival) {
+        break;
+      case NotiType.newArrival:
         RouteGenerator.gotoNewArrivals(context);
-      } else if (n.type == NotiType.special4U) {
+        break;
+      case NotiType.special4U:
         RouteGenerator.gotoSpecial4U(context);
-      }
+        break;
     }
-
   }
 }

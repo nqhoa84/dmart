@@ -165,20 +165,20 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
             ),
             SizedBox(height: 15),
             //Facebook button.
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Text(S.current.orSignInWith),
-                ),
-                InkWell(
-                  onTap: onPressFbLogin,
-                  child: Image.asset('assets/img/C_Facebook.png', width: 40, fit: BoxFit.scaleDown),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(right: 15),
+            //       child: Text(S.current.orSignInWith),
+            //     ),
+            //     InkWell(
+            //       onTap: onPressFbLogin,
+            //       child: Image.asset('assets/img/C_Facebook.png', width: 40, fit: BoxFit.scaleDown),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: 8),
             Divider(thickness: 2, height: 2),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),

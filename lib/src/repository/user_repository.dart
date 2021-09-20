@@ -237,10 +237,11 @@ Future<User> verifyOtp(String phone, String otp) async {
 
 ///return the OTP send to client.
 Future<String> sendOtpForgotPass(String phone) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}forgot_password');
+  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}forgot_password');
+  print('sendOtpForgotPass $url');
   final response = await http.Client().post(
     url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    headers: createHeadersMinimal(),
     body: json.encode({'phone': phone}),
   );
   print('forgot_password ${response.body}');
@@ -254,7 +255,7 @@ Future<String> sendOtpForgotPass(String phone) async {
 }
 
 Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String password) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}reset_password');
+  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}reset_password');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},

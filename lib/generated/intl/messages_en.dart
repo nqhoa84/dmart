@@ -330,6 +330,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseCheck1": MessageLookupByLibrary.simpleMessage("Please check"),
         "pleaseCheck2":
             MessageLookupByLibrary.simpleMessage("menu for any update."),
+        "plsConfirmDeleteAddress": MessageLookupByLibrary.simpleMessage(
+            "Are you sure to delete delivery address?"),
         "preparing": MessageLookupByLibrary.simpleMessage("Preparing"),
         "priceIncreasing":
             MessageLookupByLibrary.simpleMessage("Price increasing"),

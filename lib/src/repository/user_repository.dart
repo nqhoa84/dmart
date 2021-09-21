@@ -460,7 +460,7 @@ Future<Stream<Address>> getAddresses() async {
 Future<ApiResult<List<Address>>> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/add';
+  final String url = '${GlobalConfiguration().getValue('api_base_url')}delivery_addresses/add';
   var response = await httpPost(url: url, bodyParams: address.toMap());
 
   var re = ApiResult<List<Address>>();

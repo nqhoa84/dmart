@@ -283,6 +283,7 @@
   "wrongEmailOrPassword": "Wrong email or password",
   "addressesRefreshedSuccessfully": "Addresses refreshed successfully",
   "deliveryAddresses": "Delivery Addresses",
+  "plsConfirmDeleteAddress":"Are you sure to delete delivery address?",
   "useThisAddr": "Use this address",
   "selectDeliveryAddress": "Please select delivery address",
   "add": "Add",

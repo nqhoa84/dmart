@@ -343,6 +343,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("សូម​ត្រួតពិនិត្យ"),
         "pleaseCheck2": MessageLookupByLibrary.simpleMessage(
             "ម៉ឺនុយសម្រាប់ការធ្វើបច្ចុប្បន្នភាពណាមួយ។"),
+        "plsConfirmDeleteAddress": MessageLookupByLibrary.simpleMessage(
+            "តើអ្នកប្រាកដថាលុបអាសយដ្ឋានដឹកជញ្ជូនទេ?"),
         "preparing": MessageLookupByLibrary.simpleMessage("កំពុងរៀបចំ"),
         "priceIncreasing": MessageLookupByLibrary.simpleMessage("ការឡើងថ្លៃ"),
         "processOrder":

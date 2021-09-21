@@ -45,8 +45,10 @@ class Address extends IdObj {
     a.isDefault = this.isDefault;
     a.userId = this.userId;
     a.province = this.province != null ? this.province.clone() : null;
-    a.district = this.district!= null ? this.district.clone() : null;
-    a.ward = this.ward!= null ? this.ward.clone() : null;
+    a.wardName = this.wardName;
+    a.districtName = this.districtName;
+    // a.district = this.district!= null ? this.district.clone() : null;
+    // a.ward = this.ward!= null ? this.ward.clone() : null;
     return a;
   }
 
@@ -79,8 +81,8 @@ class Address extends IdObj {
       address = map["address"] ?? '';
       try {
         province = Province.fromJSON(map["province"]);
-        districtName = map['districtName'];
-        wardName = map['wardName'];
+        districtName = map['district'];
+        wardName = map['ward'];
       } on Exception catch (e) {
         // district = District();
       }
@@ -98,8 +100,8 @@ class Address extends IdObj {
 
   String get getFullAddress => '${address??''}'
       '${isNullOrEmpty(street) ? '' : ', $street'}'
-      '${ward == null ? '' : ', ${ward.name}'}'
-      '${district == null ? '' : ', ${district.name}'}'
+      '${wardName == null ? '' : ', $wardName'}'
+      '${districtName == null ? '' : ', $districtName'}'
       '${province == null ? '' : ', ${province.name}.'}'
       '${isNullOrEmpty(description) ? '' : '\n$description'}'
   ;
@@ -116,9 +118,9 @@ class Address extends IdObj {
     map["id"] = id;
     map["province_id"] = province.id;
     map["district_id"] = district != null? district.id : 0;
-    map["districtName"] = districtName;
+    map["district"] = districtName??"";
     map["ward_id"] = ward != null ? ward.id : 0;
-    map["wardName"] = this.wardName;
+    map["ward"] = this.wardName??'';
     map["street"] = street??'';
     map["address"] = address??'';
     map["full_name"] = this.fullName??'';

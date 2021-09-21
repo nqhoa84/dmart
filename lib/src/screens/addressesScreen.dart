@@ -228,7 +228,7 @@ class _AddressesScreenState extends StateMVC<AddressesScreen> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text('${S.current.delete} ${S.current.address}'),
-      content: Text("Would you like to continue learning how to use Flutter alerts?"),
+      content: Text("${S.current.plsConfirmDeleteAddress}"),
       actions: [
         cancelButton,
         continueButton,

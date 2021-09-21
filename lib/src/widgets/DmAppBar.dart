@@ -8,7 +8,6 @@ import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'dart:math' as math;
 
 import '../../constant.dart';

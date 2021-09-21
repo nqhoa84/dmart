@@ -2790,6 +2790,16 @@ class S {
     );
   }
 
+  /// `Are you sure to delete delivery address?`
+  String get plsConfirmDeleteAddress {
+    return Intl.message(
+      'Are you sure to delete delivery address?',
+      name: 'plsConfirmDeleteAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Use this address`
   String get useThisAddr {
     return Intl.message(

@@ -282,6 +282,7 @@
   "wrongEmailOrPassword": "អ៊ីមែលឬលេខសម្ងាត់មិនត្រឹមត្រូវ",
   "addressesRefreshedSuccessfully": "អាសយដ្ឋានត្រូវបានធ្វើឱ្យស្រស់ដោយជោគជ័យ",
   "deliveryAddresses": "អាសយដ្ឋានដឹកជញ្ជូន",
+  "plsConfirmDeleteAddress":"តើអ្នកប្រាកដថាលុបអាសយដ្ឋានដឹកជញ្ជូនទេ?",
   "useThisAddr": "ប្រើអាសយដ្ឋាននេះ",
   "selectDeliveryAddress": "សូមជ្រើសរើសអាសយដ្ឋានដឹកជញ្ជូន",
   "add": "បន្ថែម",

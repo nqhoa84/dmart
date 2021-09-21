@@ -254,8 +254,9 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed('/Category',
-            arguments: new RouteArgument(id: -1, param: [Category()..name = S.current.all]));
+        var cate = Category()..name = S.current.all;
+        cate.id = 0;
+        RouteGenerator.gotoCategoryPage(context, category: cate);
       },
       child: Container(
         decoration: BoxDecoration(

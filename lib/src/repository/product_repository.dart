@@ -157,79 +157,55 @@ Future<List<Product>> searchProducts2(String search, {int page = 1}) async {
   return _getProducts(uri);
 }
 
-Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async {
-  print('---getProductsByCategory called in Product repository');
-  Uri uri = Helper.getApiUri('products');
-  final String url = '${GlobalConfiguration().getString('api_base_url')}products';
-  if(categoryId > 0) {
-    uri = uri.replace(queryParameters: {
-      'page': '$pageIdx',
-      'with': 'store',
-      'search': 'category_id:$categoryId;itemsAvailable:0',
-      'searchFields': 'category_id:=;itemsAvailable:<>',
-      'searchJoin': 'and'
-    });
-  } else {
-    uri = uri.replace(queryParameters: {
-      'page': '$pageIdx',
-      'with': 'store',
-      'search': 'itemsAvailable:0',
-      'searchFields': 'itemsAvailable:<>',
-      'searchJoin': 'and'
-    });
-  }
-  print('$uri \n ${uri.queryParameters}');
-
-//  Map<String, dynamic> _queryParams = {};
-////  SharedPreferences prefs = await SharedPreferences.getInstance();
-////  Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
-//  _queryParams['with'] = 'store';
-//  _queryParams['search'] = 'category_id:$categoryId;itemsAvailable:0';
-//  _queryParams['searchFields'] = 'category_id:=;itemsAvailable:<>';
-//  _queryParams['searchJoin'] = 'and';
-//  _queryParams['page'] = '$pageIdx';
-
-//  _queryParams = filter.toQuery(oldQuery: _queryParams);
-//  uri = uri.replace(queryParameters: _queryParams);
-//  print('$uri \n ${uri.queryParameters}');
-
-  try {
-    final client = new http.Client();
-    final streamedRest = await client.send(http.Request('get', uri));
-
-    return streamedRest.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .map((data) => Helper.getData(data))
-        .map((data) => Helper.getData(data))
-        .expand((data) => (data as List))
-        .map((data) {
-      return Product.fromJSON(data);
-    });
-
-  } catch (e, trace) {
-    print('$e \n $trace');
-    return new Stream.value(new Product.fromJSON({}));
-  }
-}
+// Future<Stream<Product>> getProductsByCategory(int categoryId, int pageIdx) async {
+//   print('---getProductsByCategory called in Product repository');
+//   Uri uri = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}products?search=category_id:$categoryId&page=$pageIdx');
+//   if(categoryId <=0 ) {
+//     uri = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}products?page=$pageIdx');
+//   }
+//
+//   print('$uri \n ${uri.queryParameters}');
+//   try {
+//     final client = new http.Client();
+//     final streamedRest = await client.send(http.Request('get', uri));
+//
+//     return streamedRest.stream
+//         .transform(utf8.decoder)
+//         .transform(json.decoder)
+//         .map((data) => Helper.getData(data))
+//         .map((data) => Helper.getData(data))
+//         .expand((data) => (data as List))
+//         .map((data) {
+//       return Product.fromJSON(data);
+//     });
+//
+//   } catch (e, trace) {
+//     print('$e \n $trace');
+//     return new Stream.value(new Product.fromJSON({}));
+//   }
+// }
 
 Future<List<Product>> getProductsByCategory2(int categoryId, int pageIdx) async {
-  Uri uri = Helper.getApiUri('products');
-  if(categoryId > 0) {
-    uri = uri.replace(queryParameters: {
-      'page': '$pageIdx',
-      'search': 'category_id:$categoryId;itemsAvailable:0',
-      'searchFields': 'category_id:=;itemsAvailable:<>',
-      'searchJoin': 'and'
-    });
-
-  } else {
-    uri = uri.replace(queryParameters: {
-      'page': '$pageIdx',
-      'search': 'itemsAvailable:0',
-      'searchFields': 'itemsAvailable:<>',
-      'searchJoin': 'and'
-    });
+  // Uri uri = Helper.getApiUri('products');
+  // if(categoryId > 0) {
+  //   uri = uri.replace(queryParameters: {
+  //     'page': '$pageIdx',
+  //     'search': 'category_id:$categoryId;itemsAvailable:0',
+  //     'searchFields': 'category_id:=;itemsAvailable:<>',
+  //     'searchJoin': 'and'
+  //   });
+  //
+  // } else {
+  //   uri = uri.replace(queryParameters: {
+  //     'page': '$pageIdx',
+  //     'search': 'itemsAvailable:0',
+  //     'searchFields': 'itemsAvailable:<>',
+  //     'searchJoin': 'and'
+  //   });
+  // }
+  Uri uri = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}products?search=category_id:$categoryId&page=$pageIdx');
+  if(categoryId <=0 ) {
+    uri = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}products?page=$pageIdx');
   }
   print(uri);
   return _getProducts(uri);

@@ -277,21 +277,28 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   void addCart(int quantity) {
+    print(' addCart isdoing= $_isDoing isLogin = ${currentUser.value.isLogin} itemsAvailable ${widget.product.itemsAvailable} amountincart = ${widget.amountInCart} quantity = $quantity');
     if (_isDoing) return;
-    bool enable = widget.product.itemsAvailable >= widget.amountInCart + quantity && widget.amountInCart + quantity >= 0;
-    if(!enable) return;
+    _isDoing = true;
+    // bool enable = widget.product.itemsAvailable >= widget.amountInCart + quantity && widget.amountInCart + quantity >= 0;
+    // if(!enable) return;
     if (currentUser.value.isLogin) {
-      _con.addCartGeneral(widget.product.id, quantity, onDone: (isOK) {
-        _isDoing = false;
-        setState(() {
-          widget.amountInCart = math.max<int>(0, widget.amountInCart + quantity);
-          widget.showRemoveIcon = widget.amountInCart > 0; // = DmState.countQualityInCarts(widget.product.id);
+      if(widget.product != null && widget.product.itemsAvailable >= widget.amountInCart + quantity) {
+        _con.addCartGeneral(widget.product.id, quantity, onDone: (isOK) {
+          _isDoing = false;
+          setState(() {
+            widget.amountInCart =
+                math.max<int>(0, widget.amountInCart + quantity);
+            widget.showRemoveIcon = widget.amountInCart >
+                0; // = DmState.countQualityInCarts(widget.product.id);
+          });
         });
-      });
+      }
     } else {
+      _isDoing = false;
       RouteGenerator.gotoLogin(context, replaceOld: false);
     }
-//    _isDoing = false;
+   _isDoing = false;
   }
 
   void _onTapIconAdd() {
@@ -299,6 +306,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   void _onTapIconRemove() {
+    print('_onTapIconRemove-----');
     addCart(-999999999);
   }
 

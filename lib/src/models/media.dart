@@ -11,9 +11,9 @@ class Media extends IdNameObj{
 
 
   Media() {
-    url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
-    thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
-    icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+    url = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+    thumb = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+    icon = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
   }
 
   Media.fromJSON(Map<String, dynamic> jsonMap) {
@@ -22,13 +22,14 @@ class Media extends IdNameObj{
       nameEn = toStringVal(jsonMap['name']);
       this.nameKh = nameEn;
       url = toStringVal(jsonMap['url']);
+      url = url.replaceFirst('http:', 'https:');
       thumb = toStringVal(jsonMap['thumb']);
       icon = toStringVal(jsonMap['icon']);
       size = toStringVal(jsonMap['formated_size']);
     } catch (e, trace) {
-      url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
-      thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
-      icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+      url = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      thumb = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      icon = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
 
       print('Error parsing data in Media $e \n $trace');
 

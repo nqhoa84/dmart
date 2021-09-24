@@ -427,7 +427,7 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
   }
 
   void _onTapOnPhoto(Media media) {
-    print('-------tap on image ${media?.id}');
+    print('-------tap on image ${media?.id} ${media.url}');
     if (media == null) return;
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return ProductPhotoGalleryScreen(
@@ -513,13 +513,16 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
 
   bool isDoing = false;
   void addCart(int quantity) {
-    if(isDoing) return;
+    print("=isDoing $isDoing, isLogin = ${currentUser.value.isLogin} avai ${_con.product.itemsAvailable}");
+    if(isDoing == true) return;
     isDoing = true;
     if (currentUser.value.isLogin) {
-      _con.addCartGeneral(productId, quantity);
-      setState(() {
-        amountInCart = math.max<int>(0, amountInCart + quantity);
-      });
+      if(_con.product != null && _con.product.itemsAvailable >= amountInCart + quantity) {
+        _con.addCartGeneral(productId, quantity);
+        setState(() {
+          amountInCart = math.max<int>(0, amountInCart + quantity);
+        });
+      }
     } else {
       isDoing = false;
       RouteGenerator.gotoLogin(context, replaceOld: true);

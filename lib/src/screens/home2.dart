@@ -135,10 +135,6 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     );
   }
 
-  _d() {
-    return 9;
-  }
-
   Widget _buildContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

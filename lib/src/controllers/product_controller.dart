@@ -349,6 +349,7 @@ class ProductController extends Controller {
   }
 
   void addCartGeneral(int productId, int quantity, {Function(bool) onDone}) {
+    print("add to cart, productid: $productId, quantity: $quantity");
     if(quantity > 0) {
       addToCart(productId, quality: quantity, onDone: onDone);
     } else {
@@ -359,6 +360,7 @@ class ProductController extends Controller {
           updateToCart(c, onDone: onDone);
         } else {
           removeFromCart(c, onDone: onDone);
+          c.quantity = 0;
         }
       }
     }

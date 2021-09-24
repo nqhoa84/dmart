@@ -33,26 +33,35 @@ class CategoryController extends ControllerMVC {
     }, onDone: onDone != null ? onDone : (){});
   }
 
-  void listenForProductsByCategory({int id, String message}) async {
+  void listenForProductsByCategory({int id, int pageIdx, String message}) async {
 
     print('listenForProductsByCategory called.........id = $id');
 
-   final Stream<Product> stream = await getProductsByCategory(id, 1);
-   stream.listen((Product _product) {
-     setState(() {
-       products.add(_product);
+   var lstPros = await getProductsByCategory2(id, pageIdx);
+   if (this.products == null) this.products = [];
+   if(pageIdx <= 1) {
+     this.products.clear();
+   }
+   setState(() {
+     lstPros.forEach((element) {
+       this.products.add(element);
      });
-   }, onError: (a) {
-     scaffoldKey.currentState.showSnackBar(SnackBar(
-       content: Text(S.current.verifyYourInternetConnection),
-     ));
-   }, onDone: () {
-     if (message != null) {
-       scaffoldKey.currentState.showSnackBar(SnackBar(
-         content: Text(message),
-       ));
-     }
    });
+   // stream.listen((Product _product) {
+   //   setState(() {
+   //     products.add(_product);
+   //   });
+   // }, onError: (a) {
+   //   scaffoldKey.currentState.showSnackBar(SnackBar(
+   //     content: Text(S.current.verifyYourInternetConnection),
+   //   ));
+   // }, onDone: () {
+   //   if (message != null) {
+   //     scaffoldKey.currentState.showSnackBar(SnackBar(
+   //       content: Text(message),
+   //     ));
+   //   }
+   // });
   }
 
   void listenForCategory({int id, String message}) async {

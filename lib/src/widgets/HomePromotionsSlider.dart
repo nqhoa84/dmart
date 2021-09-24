@@ -4,6 +4,8 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
+import 'package:dmart/route_generator.dart';
+import 'package:dmart/src/models/promotion.dart';
 import 'package:dmart/src/models/route_argument.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
@@ -58,9 +60,7 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
                           //display slider.image
                           InkWell(
                             onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed('/Promotion', arguments: new RouteArgument(id: promotion.id,
-                                  param: [promotion], heroTag: 'fromHome${promotion.id}'));
+                              onTapOnPromotion(promotion: promotion);
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -138,5 +138,16 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
         }).toList(),
       ),
     );
+  }
+
+  void onTapOnPromotion({Promotion promotion}) {
+    if(promotion != null && promotion.id > 0) {
+      RouteGenerator.gotoPromotionPage(context, promotionId: promotion.id);
+    } else {
+      _con.showErr(S.current.generalErrorMessage);
+    }
+    // Navigator.of(context)
+    //     .pushNamed('/Promotion', arguments: new RouteArgument(id: promotion.id,
+    //     param: [promotion], heroTag: 'fromHome${promotion.id}'));
   }
 }

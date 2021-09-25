@@ -61,14 +61,17 @@ Future<Order> getOrder({int orderId}) async {
   }
 }
 
-Future<Order> saveNewOrder(Order order) async {
+///
+/// return order if OK, error msg if notOK
+Future<dynamic> saveNewOrder(Order order) async {
   User _user = userRepo.currentUser.value;
   if (_user.isLogin == false) {
     return null;
   }
 
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}orders');
+  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}orders');
   print('saveNewOrder $url \n map-para ${order.toMap()}');
+  print('saveNewOrder $url \n headers ${createHeadersRepo()}');
   final response = await http.Client().post(
     url,
     headers: createHeadersRepo(),
@@ -79,7 +82,7 @@ Future<Order> saveNewOrder(Order order) async {
   if (js["success"] != null && js["success"] == true) {
     return Order.fromJSON(js['data']);
   } else {
-    return null;
+    return js['message'];
   }
 }
 

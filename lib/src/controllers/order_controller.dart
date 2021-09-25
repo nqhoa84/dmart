@@ -34,7 +34,7 @@ class OrderController extends Controller {
         print('boughtProduct - ${_product.id}');
       });
     }, onError: (a) {
-      print(a);
+      print('listenForBoughtProducts----- $a');
     }, onDone: onDone);
   }
 
@@ -58,7 +58,7 @@ class OrderController extends Controller {
         });
       }
     }, onError: (a) {
-      print(a);
+      print('listenForOrders ---- $a');
       showError(S.current.verifyYourInternetConnection);
     }, onDone: () {
       if (message != null) {
@@ -173,10 +173,11 @@ class OrderController extends Controller {
     isSavingOrder = true;
     var re = await saveNewOrder(order);
     isSavingOrder = false;
-    if(re != null) {
+    if(re != null && re is Order) {
       return re;
     } else {
-      showError(S.current.placeOrderError);
+      // showError(S.current.placeOrderError);
+      showError("${re}");
     }
   }
 

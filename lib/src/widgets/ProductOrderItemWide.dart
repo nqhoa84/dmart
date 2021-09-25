@@ -68,9 +68,10 @@ class _ProductOrderItemWideState extends StateMVC<ProductOrderItemWide> {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Product',
-            arguments: new RouteArgument(
-                id: widget.po.product.id, param: [widget.po.product, widget.heroStr]));
+        RouteGenerator.gotoProductDetailPage(context, productId: widget.po.product.id);
+        // Navigator.of(context).pushNamed('/Product',
+        //     arguments: new RouteArgument(
+        //         id: widget.po.product.id, param: [widget.po.product, widget.heroStr]));
       },
       child: Stack(
         children: <Widget>[

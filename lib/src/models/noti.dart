@@ -26,22 +26,28 @@ class Noti extends IdObj {
   DateTime dateTime;
   String title = '';
   String body;
+  String image, icon;
   NotiType type = NotiType.broadcast;
-  dynamic data;
+  dynamic objectId;
 
+  // {image: http://dmart24.khmermedia.xyz/logo.png, object_type: Product, icon: http://dmart24.khmermedia.xyz/logo.png,
+  // body: 333333333333333333, type: NOTIFY, title: បេះដូងម៉ែពិត, click_action: FLUTTER_NOTIFICATION_CLICK, object_id: 0}
   Noti.fromJSON(Map<String, dynamic> map) {
     if(map == null) return;
     id = toInt(map['id']);
     title = map["title"] ?? '';
     body = map["body"] ?? '';
-    type = getType(map['type']);
-    data = map['data'] ?? '';
-    dateTime = toDateTime(map['dateTime']);
+    type = getType(map['object_type']);
+    objectId = map['object_id'] ?? '';
+    image = map['image'] ?? '';
+    icon = map['icon'] ?? '';
+
+    dateTime = toDateTime(map['dateTime'], errorValue: DateTime.now());
   }
 
   bool read = false;
 
-  get tapable => ((type == NotiType.order || type == NotiType.promotion || type == NotiType.product || type == NotiType.category) && toInt(data) > 0)
+  get tapable => ((type == NotiType.order || type == NotiType.promotion || type == NotiType.product || type == NotiType.category) && toInt(objectId) > 0)
   || type == NotiType.bestSale || type == NotiType.newArrival || type==NotiType.special4U;
 
   Map<String, dynamic> toJson() {
@@ -49,25 +55,20 @@ class Noti extends IdObj {
     map["id"] = id;
     map["title"] = title;
     map["body"] = body;
-    map["data"] = data;
-    map["type"] = type.toString();
+    map["object_type"] = type.toString();
+    map["object_id"] = objectId;
+    map['image'] = image;
+    map['icon'] = icon;
     map["dateTime"] = toDateTimeStr(dateTime);
     return map;
   }
 
   Map toMap() {
-    var map = new Map<String, dynamic>();
-    map["id"] = id;
-    map["title"] = title;
-    map["body"] = body;
-    map["data"] = data;
-    map["type"] = type.toString();
-    map["dateTime"] = toDateTimeStr(dateTime);
-    return map;
+    return toJson();
   }
   @override
   String toString() {
-   return 'Noti {id: $id, title:$title, body:$body, type:$type, data:$data, date: $dateTime}';
+   return 'Noti {id: $id, title:$title, body:$body, type:$type, data:$objectId, date: $dateTime}';
   }
 
   @override

@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
+import 'package:dmart/src/models/noti.dart';
+import 'package:dmart/src/repository/notification_repository.dart';
+import 'package:dmart/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,7 +25,7 @@ import 'src/repository/settings_repository.dart' as settingRepo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FirebaseMessaging.instance
       .setForegroundNotificationPresentationOptions(
     alert: true,
@@ -38,7 +44,7 @@ Future<void> main() async {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   print('Handling a background message $message');
 }
 
@@ -85,18 +91,166 @@ class _DmartState extends State<Dmart> with WidgetsBindingObserver{
     FirebaseMessaging.instance.getInitialMessage()
         .then((RemoteMessage message) {
       print('FirebaseMessaging.instance.getInitialMessage $message');
-
+        onNotificationFromTerminatedState(message);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('FirebaseMessaging.onMessage.listen! $message');
+      print('FirebaseMessaging.onMessage.listen! ${message.data}');
+        Noti noti = saveNotiToLocal(message.data);
+        _showMaterialDialog(noti: noti);
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('FirebaseMessaging.onMessageOpenedApp! $message');
-      // Navigator.pushNamed(context, '/message',
-      //     arguments: MessageArguments(message, true));
+    FirebaseMessaging.onMessageOpenedApp.listen(onNotificationOpenedApp);
+  }
+
+  void onNotificationFromTerminatedState(RemoteMessage message) {
+    if(message != null && message.data != null) {
+      print('==onNotificationFromTerminatedState: ${message.data}');
+      Noti n = saveNotiToLocal(message.data);
+      DmState.pendingNoti = n;
+    }
+  }
+
+  void onNotificationOpenedApp(RemoteMessage message) {
+      print('==onNotificationOpenedApp: ${message.data}');
+      Noti n = saveNotiToLocal(message.data);
+      int id = toInt(n.objectId);
+      switch(n.type) {
+        case NotiType.product:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoProductDetailPage(DmState.navState.currentContext, productId: id);
+          });
+          break;
+        case NotiType.category:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoCategoryPage(DmState.navState.currentContext, cateId: id);
+          });
+          break;
+        case NotiType.order:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoOrderDetailPage(DmState.navState.currentContext, orderId: id);
+          });
+          break;
+        case NotiType.promotion:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoPromotionPage(DmState.navState.currentContext, promotionId: id);
+          });
+          break;
+        case NotiType.bestSale:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoBestSale(DmState.navState.currentContext);
+          });
+          break;
+        case NotiType.newArrival:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoNewArrivals(DmState.navState.currentContext);
+          });
+          break;
+        case NotiType.special4U:
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            RouteGenerator.gotoSpecial4U(DmState.navState.currentContext);
+          });
+          break;
+      }
+  }
+
+  void _showMaterialDialog({Noti noti}) {
+    print('_showMaterialDialog $noti');
+    void onPressOnCancel() {
+      Navigator.pop(DmState.navState.currentContext);
+    }
+    void onPressOnView() {
+      Navigator.pop(DmState.navState.currentContext);
+      int id = toInt(noti.objectId);
+      switch (noti.type) {
+        case NotiType.product:
+          RouteGenerator.gotoProductDetailPage(
+              DmState.navState.currentContext, productId: id);
+          break;
+        case NotiType.category:
+          RouteGenerator.gotoCategoryPage(
+              DmState.navState.currentContext, cateId: id);
+          break;
+        case NotiType.order:
+          RouteGenerator.gotoOrderDetailPage(
+              DmState.navState.currentContext, orderId: id);
+          break;
+        case NotiType.promotion:
+          RouteGenerator.gotoPromotionPage(
+              DmState.navState.currentContext, promotionId: id);
+          break;
+        case NotiType.bestSale:
+          RouteGenerator.gotoBestSale(DmState.navState.currentContext);
+          break;
+        case NotiType.newArrival:
+          RouteGenerator.gotoNewArrivals(DmState.navState.currentContext);
+          break;
+        case NotiType.special4U:
+          RouteGenerator.gotoSpecial4U(DmState.navState.currentContext);
+          break;
+      }
+    }
+
+    showDialog(
+        context: DmState.navState.currentContext,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('${noti.title}'),
+            content: Text('${noti.body}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: onPressOnCancel,
+                child: Text(S.current.close),),
+              noti.tapable ?
+              TextButton(
+                onPressed: onPressOnView,
+                child: Text(S.current.detail),
+              ) : SizedBox()
+
+            ],
+          );
+        });
+  }
+
+  Noti saveNotiToLocal(Map<String, dynamic> message) {
+    Noti noti = Noti();
+    if(Platform.isAndroid) {
+      noti = Noti.fromJSON(message);
+      // if(message.containsKey('data') && message['data'] is Map) {
+      //   Map data = message['data'];
+      //   noti.title = data['title'];
+      //   noti.body = data['body'];
+      //   if (data.containsKey('object_type'))
+      //     noti.type = getType(data['object_type']);
+      //   if (data.containsKey('object_id'))
+      //     noti.objectId = data['object_id'];
+      // } else if (message.containsKey('notification')){
+      //   noti.title = message['notification']['title'];
+      //   noti.body = message['notification']['body'];
+      // }
+    } else if (Platform.isIOS) {
+      noti = Noti.fromJSON(message);
+      // noti.title = message['title'];
+      // noti.body = message['body'];
+      // if(message.containsKey('object_type'))
+      //   noti.type = getType(message['object_type']);
+      // if(message.containsKey('object_id'))
+      //   noti.objectId = message['object_id'];
+    }
+    saveNoti(noti);
+    return noti;
+  }
+
+  NotiType getType(op) {
+    if(op == null) return NotiType.broadcast;
+    var re = NotiType.broadcast;
+    NotiType.values.forEach((element) {
+      print('---${element.toString().toLowerCase()} --- ${op.toString().trim().toLowerCase()}');
+      if(element.toString().trim().toLowerCase().endsWith(op.toString().trim().toLowerCase())) {
+        re = element;
+      }
     });
+    return re;
   }
 
   @override

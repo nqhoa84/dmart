@@ -80,24 +80,24 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   //       onSelectNotification: selectNotification);
   // }
 
-  Future<dynamic> selectNotification(String payload) async {
-    if(payload != null) {
-      Map data = jsonDecode(payload);
-      if(data.containsKey('order')) {
-        int orderId = data['order'];
-        //navigate to Order detail page.
-        RouteGenerator.gotoOrderDetailPage(context, orderId: orderId);
-      }
-    }
-    return true;
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-    }
-    // await Navigator.push(
-    //   this.context,
-    //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
-    // );
-  }
+  // Future<dynamic> selectNotification(String payload) async {
+  //   if(payload != null) {
+  //     Map data = jsonDecode(payload);
+  //     if(data.containsKey('order')) {
+  //       int orderId = data['order'];
+  //       //navigate to Order detail page.
+  //       RouteGenerator.gotoOrderDetailPage(context, orderId: orderId);
+  //     }
+  //   }
+  //   return true;
+  //   if (payload != null) {
+  //     debugPrint('notification payload: $payload');
+  //   }
+  //   // await Navigator.push(
+  //   //   this.context,
+  //   //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
+  //   // );
+  // }
 
   static Future onDidReceiveLocalNotification(int id, String title, String body, String payload) {
     print('onDidReceiveLocalNotification: id $id, title $title, body $body, payload $payload');

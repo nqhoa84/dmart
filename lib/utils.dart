@@ -27,7 +27,7 @@ DateTime toDateTime (var obj, {String format = 'yyyy-MM-dd HH:mm:ss',  DateTime 
   try {
     return DateFormat(format).parse(obj.toString());
   } catch (e) {
-    return null;
+    return errorValue;
   }
 }
 

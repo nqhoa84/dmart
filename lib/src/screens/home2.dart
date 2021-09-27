@@ -25,7 +25,8 @@ class Home2Screen extends StatefulWidget {
   _Home2ScreenState createState() => _Home2ScreenState();
 }
 
-class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderStateMixin {
+class _Home2ScreenState extends StateMVC<Home2Screen>
+    with SingleTickerProviderStateMixin {
   Animation animationOpacity;
   AnimationController animationController;
   ProductController _con;
@@ -42,28 +43,55 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     _con.listenForCarts();
     _con.listenForFavorites();
 
-    animationController = AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    animationController = AnimationController(
+        duration: Duration(milliseconds: 1000), vsync: this);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
       });
     animationController.forward();
     super.initState();
-    Future.delayed(Duration(seconds: 1), (){
+    Future.delayed(Duration(seconds: 2), () {
       print('Future.delayed(Duration(seconds: 1) in home2.dart');
-      if(DmState.pendingNoti != null) {
+      if (DmState.pendingNoti != null) {
         var n = DmState.pendingNoti;
         DmState.pendingNoti = null;
-        var id = toInt(n.data);
-        if(n.type == NotiType.product && id > 0) {
-          RouteGenerator.gotoProductDetailPage(DmState.navState.currentContext, productId: id);
+        var id = toInt(n.objectId);
+        switch (n.type) {
+          case NotiType.product:
+            RouteGenerator.gotoProductDetailPage(
+                DmState.navState.currentContext,
+                productId: id);
+            break;
+          case NotiType.category:
+            RouteGenerator.gotoCategoryPage(DmState.navState.currentContext,
+                cateId: id);
+            break;
+          case NotiType.order:
+            RouteGenerator.gotoOrderDetailPage(DmState.navState.currentContext,
+                orderId: id);
+            break;
+          case NotiType.promotion:
+            RouteGenerator.gotoPromotionPage(DmState.navState.currentContext,
+                promotionId: id);
+            break;
+          case NotiType.bestSale:
+            RouteGenerator.gotoBestSale(DmState.navState.currentContext);
+            break;
+          case NotiType.newArrival:
+            RouteGenerator.gotoNewArrivals(DmState.navState.currentContext);
+            break;
+          case NotiType.special4U:
+            RouteGenerator.gotoSpecial4U(DmState.navState.currentContext);
+            break;
         }
       }
     });
   }
 
-  Future<void> onRefresh() async{
+  Future<void> onRefresh() async {
     print('onRefresh on home CALLED');
     _con.bestSaleProducts.clear();
     _con.newArrivalProducts.clear();
@@ -72,7 +100,6 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
     _con.listenForNewArrivals();
     _con.listenForSpecial4U();
     _con.listenForCarts();
-
   }
 
   @override
@@ -121,9 +148,7 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
               createSliverTopBar(context),
               createSliverSearch(context),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  _buildContent(context)
-                ]),
+                delegate: SliverChildListDelegate([_buildContent(context)]),
               )
             ]),
           ),
@@ -157,10 +182,12 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
               RouteGenerator.gotoBestSale(context);
             }),
         DmUtils.isNullOrEmptyList(_con.bestSaleProducts)
-            ?  HomeProductsListViewLoading()
-            : HomeProductsListView(products: _con.bestSaleProducts, animationOpacity: animationOpacity,
-          hero: 'home_best_sale',
-        ),
+            ? HomeProductsListViewLoading()
+            : HomeProductsListView(
+                products: _con.bestSaleProducts,
+                animationOpacity: animationOpacity,
+                hero: 'home_best_sale',
+              ),
         // Heading (Brands)
         _createHeader(
             title: S.current.newArrival,
@@ -169,23 +196,32 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             }),
         DmUtils.isNullOrEmptyList(_con.newArrivalProducts)
             ? HomeProductsListViewLoading()
-            : HomeProductsListView(products: _con.newArrivalProducts, animationOpacity: animationOpacity,
-          hero: 'home_new_arrival',),
+            : HomeProductsListView(
+                products: _con.newArrivalProducts,
+                animationOpacity: animationOpacity,
+                hero: 'home_new_arrival',
+              ),
         //specialForYou
         _createHeader(
             title: S.current.specialForYou,
             onTap: () {
               RouteGenerator.gotoSpecial4U(context);
             }),
-    DmUtils.isNullOrEmptyList(_con.special4UProducts)
+        DmUtils.isNullOrEmptyList(_con.special4UProducts)
             ? HomeProductsListViewLoading()
-            : HomeProductsListView(products: _con.special4UProducts, animationOpacity: animationOpacity,
-          hero: 'home_spe4U',),
+            : HomeProductsListView(
+                products: _con.special4UProducts,
+                animationOpacity: animationOpacity,
+                hero: 'home_spe4U',
+              ),
       ],
     );
   }
 
-  Widget _createHeader({String title, Color backgroundColor = DmConst.accentColor, Function() onTap}) {
+  Widget _createHeader(
+      {String title,
+      Color backgroundColor = DmConst.accentColor,
+      Function() onTap}) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -198,12 +234,19 @@ class _Home2ScreenState extends StateMVC<Home2Screen> with SingleTickerProviderS
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Center(
-                  child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white))),
+                  child: Text(title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          .copyWith(color: Colors.white))),
             ),
             Stack(
               children: [
-                Positioned(child: Icon(Icons.arrow_forward_ios, color: Colors.white)),
-                Positioned(child: Icon(Icons.arrow_forward_ios, color: Colors.white), left: -7)
+                Positioned(
+                    child: Icon(Icons.arrow_forward_ios, color: Colors.white)),
+                Positioned(
+                    child: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                    left: -7)
               ],
             )
           ],

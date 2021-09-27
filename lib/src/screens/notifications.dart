@@ -143,7 +143,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
 
   void onTapOnNoti(Noti n) {
     print('onTapOnNoti $n');
-    int id = toInt(n.data);
+    int id = toInt(n.objectId);
     switch (n.type) {
       case NotiType.product:
         RouteGenerator.gotoProductDetailPage(this.context, productId: id);

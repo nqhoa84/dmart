@@ -131,36 +131,34 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
       ));
     });
 
-    items.add(FlatButton(
+    items.add(TextButton(
       onPressed: () {
         Navigator.pop(context);
       },
       child: Text(S.current.ok),
-      color: DmConst.accentColor,
 //                shape: StadiumBorder(),
     ));
 
     items.add(Divider(thickness: 1.5));
 
-    items.add(Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        OutlineButton(
-          onPressed: onPressCreateNewAddress,
-          child: Text(S.current.addDeliveryAddress,
-              style: TextStyle(color: DmConst.accentColor),
-            ),
-          borderSide: BorderSide(color: DmConst.accentColor),
+    items.add(OutlineButton(
+      onPressed: onPressCreateNewAddress,
+      child: Text(S.current.addDeliveryAddress,
+        style: TextStyle(color: DmConst.accentColor),
+      ),
+      borderSide: BorderSide(color: DmConst.accentColor),
 
-        ),
-        OutlineButton(
-          onPressed: () {
-            RouteGenerator.gotoAddressesScreen(context);
-          },
-          child: Text(S.current.deliveryAddresses, style: TextStyle(color: DmConst.accentColor)),
-          borderSide: BorderSide(color: DmConst.accentColor),
-        ),
-      ],
+    ));
+
+    items.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: OutlineButton(
+        onPressed: () {
+          RouteGenerator.gotoAddressesScreen(context);
+        },
+        child: Text(S.current.deliveryAddresses, style: TextStyle(color: DmConst.accentColor)),
+        borderSide: BorderSide(color: DmConst.accentColor),
+      ),
     ));
 
     return SafeArea(
@@ -356,7 +354,7 @@ class _DeliveryToScreenState extends StateMVC<DeliveryToScreen> {
   Widget _createDatePiker(BuildContext context) {
     return DatePicker(
       DateTime.now(),
-      height: 90,
+      height: 110,
       controller: _datePickerController,
       initialSelectedDate: DateTime.now(),
       selectionColor: Theme.of(context).accentColor,

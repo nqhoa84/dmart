@@ -6,7 +6,6 @@ import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/repository/user_repository.dart' as userRepo;
 import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../DmState.dart';
@@ -38,7 +37,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     Future.delayed(Duration(seconds: 1), () async {
 
       _con.init();
-      _initLocalNotification();
+      // _initLocalNotification();
 
       userRepo.getCurrentUser().whenComplete(() {
         _userLoaded = true;
@@ -57,29 +56,29 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     });
   }
 
-  final AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
-  final IOSInitializationSettings initializationSettingsIOS =
-  IOSInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-  final MacOSInitializationSettings initializationSettingsMacOS =
-  MacOSInitializationSettings();
-  // final InitializationSettings initializationSettings = InitializationSettings(
-  //     android: initializationSettingsAndroid,
-  //     iOS: initializationSettingsIOS,
-  //     macOS: initializationSettingsMacOS);
-  InitializationSettings initializationSettings;
-
-
-  Future<void> _initLocalNotification() async {
-    initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: initializationSettingsMacOS);
-
-    await DmState.flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-  }
+  // final AndroidInitializationSettings initializationSettingsAndroid =
+  // AndroidInitializationSettings('app_icon');
+  // final IOSInitializationSettings initializationSettingsIOS =
+  // IOSInitializationSettings(
+  //     onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  // final MacOSInitializationSettings initializationSettingsMacOS =
+  // MacOSInitializationSettings();
+  // // final InitializationSettings initializationSettings = InitializationSettings(
+  // //     android: initializationSettingsAndroid,
+  // //     iOS: initializationSettingsIOS,
+  // //     macOS: initializationSettingsMacOS);
+  // InitializationSettings initializationSettings;
+  //
+  //
+  // Future<void> _initLocalNotification() async {
+  //   initializationSettings = InitializationSettings(
+  //       android: initializationSettingsAndroid,
+  //       iOS: initializationSettingsIOS,
+  //       macOS: initializationSettingsMacOS);
+  //
+  //   await DmState.flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //       onSelectNotification: selectNotification);
+  // }
 
   Future<dynamic> selectNotification(String payload) async {
     if(payload != null) {

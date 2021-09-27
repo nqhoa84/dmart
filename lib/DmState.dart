@@ -8,13 +8,12 @@ import 'package:dmart/src/models/order_setting.dart';
 import 'package:dmart/src/repository/radio_repository.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import './src/repository/user_repository.dart' as userRepo;
 
 class DmState {
   static final GlobalKey<NavigatorState> navState = GlobalKey<NavigatorState>();
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+  // static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  // FlutterLocalNotificationsPlugin();
   static bool isRadioOn = true;
   static ValueNotifier<Locale> mobileLanguage = ValueNotifier(Locale(Language.english.code));
 

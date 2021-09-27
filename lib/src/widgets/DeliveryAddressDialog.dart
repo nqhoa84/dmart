@@ -108,10 +108,9 @@ class DeliveryAddressDialog {
           ),
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor)),
-      hasFloatingPlaceholder: true,
       labelStyle: Theme.of(context).textTheme.bodyText2.merge(
             TextStyle(color: Theme.of(context).hintColor),
-          ),
+          ), floatingLabelBehavior: FloatingLabelBehavior.auto,
     );
   }
 

@@ -1,10 +1,10 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -19,11 +19,27 @@ import 'src/repository/settings_repository.dart' as settingRepo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FirebaseMessaging.instance
+      .setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   await GlobalConfiguration().loadFromAsset("configurations");
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(Dmart());
   });
+}
+
+//click on message while app is idle.
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message $message');
 }
 
 
@@ -50,6 +66,37 @@ class _DmartState extends State<Dmart> with WidgetsBindingObserver{
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+
+    _initFireBase();
+
+  }
+
+  void _initFireBase() {
+    FirebaseMessaging.instance.requestPermission(sound: true, badge: true, alert: true);
+
+    // _configureFirebase(firebaseMessaging);
+    FirebaseMessaging.instance.getToken().then((String _deviceToken) {
+      DmConst.deviceToken = _deviceToken;
+      print(' DmConst.deviceToken--${DmConst.deviceToken}');
+    }).catchError((e) {
+      print('Notification not configured $e');
+    });
+
+    FirebaseMessaging.instance.getInitialMessage()
+        .then((RemoteMessage message) {
+      print('FirebaseMessaging.instance.getInitialMessage $message');
+
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('FirebaseMessaging.onMessage.listen! $message');
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('FirebaseMessaging.onMessageOpenedApp! $message');
+      // Navigator.pushNamed(context, '/message',
+      //     arguments: MessageArguments(message, true));
+    });
   }
 
   @override

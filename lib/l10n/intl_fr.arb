@@ -36,6 +36,7 @@
   "product": "ផលិតផល",
   "productCode": "លេខកូដផលិតផល",
   "products": "ផលិតផល",
+  "cantFindProduct" : "Can't find this product in the stock",
   "detail": "លម្អិត",
   "review": "ពិនិត្យឡើងវិញ",
   "featured": "លក្ខណៈពិសេស",

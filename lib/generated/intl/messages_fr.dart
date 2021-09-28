@@ -69,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "canceled": MessageLookupByLibrary.simpleMessage("បោះបង់"),
         "cantCancelProcessingOrder": MessageLookupByLibrary.simpleMessage(
             "យើងកំពុងដំណើរការការបញ្ជាទិញរបស់អ្នកមិនអាចលុបចោលបានទេឥឡូវនេះសូមទាក់ទងសេវាកម្មអតិថិជនរបស់យើង។"),
+        "cantFindProduct": MessageLookupByLibrary.simpleMessage(
+            "Can\'t find this product in the stock"),
         "cart": MessageLookupByLibrary.simpleMessage("រទេះ"),
         "cartsRefreshedSuccessfully":
             MessageLookupByLibrary.simpleMessage("រទេះធ្វើឱ្យស្រស់ដោយជោគជ័យ"),

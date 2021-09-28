@@ -183,15 +183,8 @@ class ProductController extends Controller {
 
   ///Listen for full inform from server, and the result will be store on [product] property of this controller.
   void listenForProduct({int productId, String message, Function() onComplete}) async {
-    final Stream<Product> stream = await getProduct(productId);
-    stream.listen((Product _product) {
-      setState(() => product = _product);
-    }, onError: (a) {
-      print(a);
-      scaffoldKey.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verifyYourInternetConnection),
-      ));
-    }, onDone: onComplete);
+    var p = await getProduct(productId);
+    this.product = p;
   }
 
   void listenForProductsByBrand({int id, String message}) async {

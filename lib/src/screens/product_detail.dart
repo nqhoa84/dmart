@@ -116,7 +116,8 @@ class _ProductDetailScreenState extends StateMVC<ProductDetailScreen> with Singl
     if(_con.product == null) {
       return CircularLoadingWidget(height: 500);
     } else if(_con.product.id <= 0) { //invalid product.
-      return EmptyDataLoginWid(message: S.current.generalErrorMessage);
+      print('-----invalid product');
+      return EmptyDataLoginWid(message: S.current.cantFindProduct);
     } else {
       return CustomScrollView(slivers: <Widget>[
         _createImageSpace(context),

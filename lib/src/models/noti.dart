@@ -1,5 +1,7 @@
 //import 'package:location/location.dart';
 
+import 'dart:convert';
+
 import 'package:dmart/src/models/i_name.dart';
 
 import '../../generated/l10n.dart';
@@ -32,6 +34,13 @@ class Noti extends IdObj {
 
   // {image: http://dmart24.khmermedia.xyz/logo.png, object_type: Product, icon: http://dmart24.khmermedia.xyz/logo.png,
   // body: 333333333333333333, type: NOTIFY, title: បេះដូងម៉ែពិត, click_action: FLUTTER_NOTIFICATION_CLICK, object_id: 0}
+
+  /**
+   * {sound: default, id: 89, type: CHANGE_STATUS_ORDER, click_action: FLUTTER_NOTIFICATION_CLICK,
+   * message: {"image":"http:\/\/dmartdev2.khmermedia.xyz\/storage\/157\/conversions\/burger-bun-500x500-thumb.jpg",
+   * "text":"Your order #89 has change status to Canceled","type":"ORDER","title":"Your order #89 is Canceled",
+   * "body":"Your order #89 has change status to Canceled","order_id":89,"status":4}, order_id: 89, status: 4}
+   */
   Noti.fromJSON(Map<String, dynamic> map) {
     if(map == null) return;
     id = toInt(map['id']);
@@ -41,6 +50,18 @@ class Noti extends IdObj {
     objectId = map['object_id'] ?? '';
     image = map['image'] ?? '';
     icon = map['icon'] ?? '';
+
+    if(title == '' && body == '' && map['message'] != null) {
+      var m = map['message'];
+      if(m is String) {
+        m = jsonDecode(m);
+      }
+      title = m["title"] ?? '';
+      body = m["body"] ?? '';
+      type = getType(m['type']);
+      objectId = m['order_id'] ?? '';
+      image = m['image'] ?? '';
+    }
 
     dateTime = toDateTime(map['dateTime'], errorValue: DateTime.now());
   }

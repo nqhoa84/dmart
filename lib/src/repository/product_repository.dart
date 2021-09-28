@@ -67,30 +67,18 @@ Future<Stream<Product>> getProducts({int page = 1}) async {
   }
 }
 
-Future<Stream<Product>> getProduct(int productId) async {
-  Uri uri = Helper.getApiUri('products/$productId');
-//  uri = uri.replace(queryParameters: {
-//    'with': 'store;category;brand;options;optionGroups;productReviews;productReviews.user',
-//    'search': 'itemsAvailable:0',
-//    'searchFields': 'itemsAvailable:<>'
-//  });
+Future<Product> getProduct(int productId) async {
+  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}products/$productId');
+  print('getProduct $url');
 
-  print(uri);
-
-  try {
-    final client = new http.Client();
-    final streamedRest = await client.send(http.Request('get', uri));
-    return streamedRest.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .map((data) => Helper.getData(data))
-        .map((data) {
-      return Product.fromJSON(data);
-    });
-  } catch (e, trace) {
-    print('$e \n $trace');
-    return new Stream.value(Product());
+  Product re = new Product();
+  final response = await http.Client().get(url);
+  dynamic js = json.decode(response.body);
+  print('getProduct $js');
+  if (js["success"] != null && js["success"] == true) {
+    return Product.fromJSON(js['data']);
   }
+  return re;
 }
 
 Future<Stream<Product>> _searchProducts(String search, {int page = 1}) async {
@@ -302,9 +290,10 @@ Future<List<Product>> getRelatedProducts2(int productId) async {
   List<Product> re = [];
   final response = await http.Client().get(url);
   dynamic js = json.decode(response.body);
+  print('getRelatedProducts $js');
   if (js["success"] != null && js["success"] == true) {
+    print('----getRelatedProducts2-----------parse data ');
     (js['data'] as List).forEach((element) {
-
       re.add(Product.fromJSON(element));
     });
   }

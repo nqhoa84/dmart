@@ -180,6 +180,7 @@ class DmUtils {
   static Future<bool> launchUrl(
       {@required String webUrl, String deepLinkAn, String deepLinkIos}) async {
     String deep = Platform.isIOS ? deepLinkIos : deepLinkAn;
+    print('Goto --- $deep');
     try {
       bool ok = await launcher.launch(deep, forceSafariVC: false);
       if (!ok) {

@@ -48,12 +48,13 @@ Future<Stream<Order>> getOrders() async {
 
 Future<Order> getOrder({int orderId}) async {
   var url = Uri.parse(
-      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId');
+      '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?with=productOrders;productOrders.product;deliveryAddress');
 
   print(url);
 
   http.Response res = await http.get(url, headers: createHeadersRepo());
   var result = json.decode(res.body);
+  print('getOrder-- $result');
   if(result['success'] != null && result['success'] == true) {
     return Order.fromJSON(result['data']);
   } else {

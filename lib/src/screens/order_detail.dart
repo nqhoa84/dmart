@@ -26,22 +26,24 @@ import 'contactus.dart';
 import 'delivery_to.dart';
 
 class OrderDetailScreen extends StatefulWidget {
-  Order order;
+  Order odr;
   int orderId;
-  OrderDetailScreen({this.order = null, this.orderId = -1});
+  OrderDetailScreen({Order order = null, this.orderId = -1}){
+    this.odr = order;
+  }
   // OrderDetailScreen({this.orderId});
 
   @override
-  _OrderDetailScreenState createState() => _OrderDetailScreenState(this.order, this.orderId);
+  _OrderDetailScreenState createState() => _OrderDetailScreenState(this.odr, this.orderId);
 }
 
 class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
-  Order order;
+  Order odr;
   int orderId;
   OrderController _con;
-  _OrderDetailScreenState(this.order, this.orderId) : super(OrderController(context: null)) {
+  _OrderDetailScreenState(this.odr, this.orderId) : super(OrderController(context: null)) {
     _con = controller;
-    _con.order = order;
+    _con.order = odr;
     _con.scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
@@ -49,8 +51,12 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
   void initState() {
     super.initState();
     _con.context = this.context;
-    if(this.order == null && this.orderId > 0) {
+    if(this.odr == null && this.orderId > 0) {
       _con.listenForOrder(orderId: this.orderId);
+    }else {
+      setState(() {
+        _con.order = this.odr;
+      });
     }
   }
 
@@ -120,15 +126,15 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          OrderSummaryRow(S.current.fullName, widget.order.deliveryAddress.fullName,
+          OrderSummaryRow(S.current.fullName, _con.order?.deliveryAddress?.fullName,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.current.phone, widget.order.deliveryAddress.phone,
+          OrderSummaryRow(S.current.phone, _con.order?.deliveryAddress?.phone,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.current.date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
+          OrderSummaryRow(S.current.date, _con.order?.getDeliverDateSlot, txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          OrderSummaryRow(S.current.address, widget.order.deliveryAddress.getFullAddress,
+          OrderSummaryRow(S.current.address, _con.order?.deliveryAddress?.getFullAddress,
               txtAlign2: TextAlign.start),
         ],
       ),
@@ -136,6 +142,9 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
   }
 
   Widget buildContent(BuildContext context) {
+    if(_con.order == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     return Container(
       padding: EdgeInsets.only(bottom: 15),
       child: SingleChildScrollView(
@@ -145,7 +154,7 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
-                  title: '${S.current.orderNumber}: ${widget.order.id}' ),
+                  title: '${S.current.orderNumber}: ${_con.order.id}' ),
             ),
             Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _createSummaryContainer(context)),
 
@@ -167,9 +176,9 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
               crossAxisSpacing: 1.5,
               childAspectRatio: 337.0 / 120,
               children: List.generate(
-                this.order.productOrders!= null ?  this.order.productOrders.length : 0,
+                _con.order.productOrders!= null ?  _con.order.productOrders.length : 0,
                 (index) {
-                  ProductOrder po = order.productOrders.elementAt(index);
+                  ProductOrder po = _con.order.productOrders.elementAt(index);
 //                  Product product = c.product;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -183,7 +192,7 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
             ),
             SizedBox(height: 20),
             TextButton(child: Text(S.current.cancelOrder),
-              onPressed: order.canCancel() ? _onCancelPress : null )
+              onPressed: _con.order.canCancel() ? _onCancelPress : null )
           ],
         ),
       ),
@@ -195,7 +204,7 @@ class _OrderDetailScreenState extends StateMVC<OrderDetailScreen> {
     print('_onCancelPress=========== $isCanceling');
     if(isCanceling) return;
     isCanceling = true;
-    var re = await _con.cancelPendingOrder(this.order);
+    var re = await _con.cancelPendingOrder(_con.order);
     print('==============re = $re');
     if(re && Navigator.of(context).canPop()) {
       Navigator.of(context).pop({'isCancel' : true});

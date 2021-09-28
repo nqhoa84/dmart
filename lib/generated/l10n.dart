@@ -430,6 +430,16 @@ class S {
     );
   }
 
+  /// `Can't find this product in the stock`
+  String get cantFindProduct {
+    return Intl.message(
+      'Can\'t find this product in the stock',
+      name: 'cantFindProduct',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Detail`
   String get detail {
     return Intl.message(

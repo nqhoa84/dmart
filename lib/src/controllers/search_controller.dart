@@ -2,16 +2,11 @@ import 'dart:convert';
 
 import 'package:dmart/DmState.dart';
 import 'package:dmart/utils.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/address.dart';
-import '../models/store.dart';
 import '../models/product.dart';
-import '../repository/store_repository.dart';
 import '../repository/product_repository.dart';
 import '../repository/search_repository.dart';
-import '../repository/settings_repository.dart';
 import 'controller.dart';
 
 class SearchController extends Controller {
@@ -22,24 +17,25 @@ class SearchController extends Controller {
   }
 
   Future<List<String>> getRecentSearchStr() async {
-    if (DmState.recentSearches != null) return DmState.recentSearches;
+    if (DmState.recentSearches != null) return DmState.recentSearches!;
     DmState.recentSearches = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('recent_searches')) {
-      List ls = json.decode(await prefs.get('recent_searches')) as List;
+      List ls = json.decode(prefs.get('recent_searches') as dynamic) as List;
       setState(() {
         ls.forEach((element) {
-          DmState.recentSearches.add(element.toString());
+          DmState.recentSearches!.add(element.toString());
         });
       });
     }
 
-    return DmState.recentSearches;
+    return DmState.recentSearches!;
   }
 
   Future<void> saveRecentSearch() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('recent_searches', json.encode(DmState.recentSearches));
+    await prefs.setString(
+        'recent_searches', json.encode(DmState.recentSearches));
   }
 
   /*void listenForStores({String search}) async {
@@ -61,7 +57,8 @@ class SearchController extends Controller {
 
   int searchIdx = 0;
 
-  Future<void> search(String search, {Function() onDone, bool nextPage = false}) async {
+  Future<void> search(String search,
+      {Function()? onDone, bool nextPage = false}) async {
     if (DmUtils.isNullOrEmptyStr(search)) return;
 
     if (nextPage) {
@@ -74,14 +71,13 @@ class SearchController extends Controller {
     }
 
     final List<Product> stream = await searchProducts2(search, page: searchIdx);
-    setState((){
+    setState(() {
       stream.forEach((element) {
-        if(element.isValid)
-          products.add(element);
+        if (element.isValid) products.add(element);
       });
     });
 
-    if (onDone != null) onDone();
+    onDone!();
 
 //    stream.listen(
 //      (Product _product) {
@@ -102,12 +98,11 @@ class SearchController extends Controller {
 //    );
   }
 
-  void listenForProducts({String search, Function() onComplete}) async {
-    final List<Product> stream = await searchProducts2(search);
-    setState((){
+  void listenForProducts({String? search, Function()? onComplete}) async {
+    final List<Product> stream = await searchProducts2(search!);
+    setState(() {
       stream.forEach((element) {
-        if(element.isValid)
-          products.add(element);
+        if (element.isValid) products.add(element);
       });
     });
 //    stream.listen(

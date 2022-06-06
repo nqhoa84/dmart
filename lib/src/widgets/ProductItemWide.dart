@@ -6,29 +6,32 @@ import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:dmart/src/models/favorite.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../constant.dart';
 import '../../src/repository/user_repository.dart';
 import '../models/product.dart';
-import '../models/route_argument.dart';
 
 class ProductItemWide extends StatefulWidget {
   //TODO need to change to big int?
   static int unique = 0;
-  String heroStr;
-  Product product;
-  int amountInCart;
-  bool isFavorite;
-  bool showRemoveIcon;
-  double _removeIconSize = 0;
+  String? heroStr;
+  Product? product;
+  int? amountInCart;
+  bool? isFavorite;
+  bool? showRemoveIcon;
+  double? _removeIconSize = 0;
 
 //  Function(int) onPressedOnRemoveIcon;
 
-  ProductItemWide({Key key, @required Product product, String heroTag, this.showRemoveIcon = false}) : super(key: key) {
-    if (showRemoveIcon) _removeIconSize = 25;
+  ProductItemWide(
+      {Key? key,
+      required Product product,
+      required String heroTag,
+      this.showRemoveIcon = false})
+      : super(key: key) {
+    if (showRemoveIcon!) _removeIconSize = 25;
 
     this.product = product;
     this.heroStr = '${heroTag ?? ''}_W_${product.id}.${unique++}';
@@ -49,10 +52,10 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
 //  static const double _tagSize = 50.0 / 550 * _width,
 //      _photoWid = 200.0 / 550 * _width,
 //      _icFavWSize = 34.0 / 550 * _width;
-  ProductController _con;
+  ProductController _con = ProductController();
 
   _ProductItemWideState() : super(ProductController()) {
-    _con = controller;
+    _con = controller as ProductController;
   }
 
   @override
@@ -63,8 +66,8 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Theme.of(context).accentColor,
-      focusColor: Theme.of(context).accentColor,
+      splashColor: Theme.of(context).colorScheme.secondary,
+      focusColor: Theme.of(context).colorScheme.secondary,
       highlightColor: Theme.of(context).primaryColor,
       onTap: onTapOnProduct,
       child: Stack(
@@ -80,16 +83,18 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                   child: Stack(
                     children: <Widget>[
                       Hero(
-                        tag: widget.heroStr,
+                        tag: widget.heroStr!,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 8, top: 8, bottom: 8),
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 8, top: 8, bottom: 8),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child: createNetworkImage(url: widget.product.image.thumb),
+                            child: createNetworkImage(
+                                url: widget.product!.image!.thumb),
                           ),
                         ),
                       ),
-                      widget.product.getTagAssetImage() != null
+                      widget.product!.getTagAssetImage() != null
                           ? Align(
                               alignment: Alignment.topLeft,
                               child: Column(
@@ -97,7 +102,9 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                                 children: <Widget>[
                                   Expanded(
                                     flex: 1,
-                                    child: Image.asset(widget.product.getTagAssetImage(), fit: BoxFit.scaleDown),
+                                    child: Image.asset(
+                                        widget.product!.getTagAssetImage()!,
+                                        fit: BoxFit.scaleDown),
                                   ),
                                   Expanded(flex: 2, child: Container()),
                                 ],
@@ -123,7 +130,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                               Expanded(
                                 flex: 7,
                                 child: Text(
-                                  widget.product?.name,
+                                  widget.product!.name,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: Theme.of(context).textTheme.subtitle2,
@@ -137,11 +144,18 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
                         SizedBox(height: 3),
                         Expanded(
                           flex: 30,
-                          child: Center(child: _createAddToCartOrChooseAmount(context)),
+                          child: Center(
+                              child: _createAddToCartOrChooseAmount(context)),
                         ),
                         SizedBox(height: 3),
-                        Expanded(flex: 25, child: Center(child: this._createPriceWidget(context))),
-                        Text('${S.current.available}: ${widget.product.itemsAvailable?? 0}', style: TextStyle(fontSize: 11),),
+                        Expanded(
+                            flex: 25,
+                            child: Center(
+                                child: this._createPriceWidget(context))),
+                        Text(
+                          '${S.current.available}: ${widget.product!.itemsAvailable ?? 0}',
+                          style: TextStyle(fontSize: 11),
+                        ),
                       ],
                     ),
                   ),
@@ -149,14 +163,15 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
               ],
             ),
           ),
-          widget.showRemoveIcon
+          widget.showRemoveIcon!
               ? Align(
                   alignment: Alignment.topRight,
                   child: InkWell(
                     child: Container(
                         padding: EdgeInsets.all(0),
-                        color: Theme.of(context).accentColor,
-                        child: Icon(Icons.close, size: widget._removeIconSize, color: Colors.white)),
+                        color: Theme.of(context).colorScheme.secondary,
+                        child: Icon(Icons.close,
+                            size: widget._removeIconSize, color: Colors.white)),
                     onTap: _onTapIconRemove,
                   ))
               : SizedBox(width: 0)
@@ -175,23 +190,23 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
 //        onPressed: _onTapIconFav);
     return InkWell(
       onTap: _onTapIconFav,
-      child: widget.isFavorite
+      child: widget.isFavorite!
           ? Icon(Icons.favorite, color: DmConst.colorFavorite)
           : Icon(Icons.favorite_border, color: DmConst.colorFavorite),
     );
   }
 
   BoxDecoration _createDecoration() {
-    return widget.amountInCart > 0
+    return widget.amountInCart! > 0
         ? BoxDecoration(
             border: Border.all(color: DmConst.accentColor),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                  color: DmConst.productShadowColor,
+                color: DmConst.productShadowColor,
 //                  spreadRadius: 5,
 //                  blurRadius: 0,
-                  offset: Offset(5, 5),
+                offset: Offset(5, 5),
               )
             ],
           )
@@ -204,7 +219,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   TextEditingController _textEditingCon = TextEditingController(text: '');
 
   Widget _createAddToCartOrChooseAmount(BuildContext context) {
-    if (widget.amountInCart > 0) {
+    if (widget.amountInCart! > 0) {
       _textEditingCon.text = '${widget.amountInCart}';
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -247,23 +262,25 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   Widget _createPriceWidget(BuildContext context) {
-    if (widget.product.isPromotion) {
+    if (widget.product!.isPromotion) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/img/Price_Strikethrough.png'), fit: BoxFit.scaleDown)),
-            child: Text('${widget.product.getDisplayOriginalPrice}'),
+                image: DecorationImage(
+                    image: AssetImage('assets/img/Price_Strikethrough.png'),
+                    fit: BoxFit.scaleDown)),
+            child: Text('${widget.product!.getDisplayOriginalPrice}'),
           ),
           Text(
-            '${widget.product.getDisplayPromotionPrice}',
+            '${widget.product!.getDisplayPromotionPrice}',
             style: TextStyle(color: DmConst.textColorPromotionPrice),
           ),
         ],
       );
     } else {
-      return Text('${widget.product.getDisplayOriginalPrice}');
+      return Text('${widget.product!.getDisplayOriginalPrice}');
     }
   }
 
@@ -277,19 +294,20 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
   }
 
   void addCart(int quantity) {
-    print(' addCart isdoing= $_isDoing isLogin = ${currentUser.value.isLogin} itemsAvailable ${widget.product.itemsAvailable} amountincart = ${widget.amountInCart} quantity = $quantity');
+    print(
+        ' addCart isdoing= $_isDoing isLogin = ${currentUser.value.isLogin} itemsAvailable ${widget.product!.itemsAvailable} amountincart = ${widget.amountInCart} quantity = $quantity');
     if (_isDoing) return;
     _isDoing = true;
     // bool enable = widget.product.itemsAvailable >= widget.amountInCart + quantity && widget.amountInCart + quantity >= 0;
     // if(!enable) return;
     if (currentUser.value.isLogin) {
-      if(widget.product != null && widget.product.itemsAvailable >= widget.amountInCart + quantity) {
-        _con.addCartGeneral(widget.product.id, quantity, onDone: (isOK) {
+      if (widget.product!.itemsAvailable! >= widget.amountInCart! + quantity) {
+        _con.addCartGeneral(widget.product!.id, quantity, onDone: (isOK) {
           _isDoing = false;
           setState(() {
             widget.amountInCart =
-                math.max<int>(0, widget.amountInCart + quantity);
-            widget.showRemoveIcon = widget.amountInCart >
+                math.max<int>(0, widget.amountInCart! + quantity);
+            widget.showRemoveIcon = widget.amountInCart! >
                 0; // = DmState.countQualityInCarts(widget.product.id);
           });
         });
@@ -298,7 +316,7 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
       _isDoing = false;
       RouteGenerator.gotoLogin(context, replaceOld: false);
     }
-   _isDoing = false;
+    _isDoing = false;
   }
 
   void _onTapIconAdd() {
@@ -316,31 +334,30 @@ class _ProductItemWideState extends StateMVC<ProductItemWide> {
     if (_isDoing) return;
     _isDoing = true;
     setState(() {
-      widget.isFavorite = !widget.isFavorite;
+      widget.isFavorite = !widget.isFavorite!;
     });
 
-    if (widget.isFavorite) {
-      _con.addToFavorite(widget.product, onDone: (isOK) {
+    if (widget.isFavorite!) {
+      _con.addToFavorite(widget.product!, onDone: (isOK) {
 //        setState(() {
 //          widget.isFavorite = DmState.isFavorite(productId: widget.product?.id);
 //        });
       });
     } else {
-      Favorite mark;
+      Favorite? mark;
       DmState.favorites.forEach((element) {
-        if (element.product.id == widget.product.id) {
+        if (element.product!.id == widget.product!.id) {
           mark = element;
           return;
         }
       });
-      if (mark != null) {
-        _con.removeFromFavorite(mark);
-      }
+      _con.removeFromFavorite(mark!);
     }
     _isDoing = false;
   }
 
   void onTapOnProduct() {
-    RouteGenerator.gotoProductDetailPage(context, productId: widget.product.id, replaceOld: false);
+    RouteGenerator.gotoProductDetailPage(context,
+        productId: widget.product!.id, replaceOld: false);
   }
 }

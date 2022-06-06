@@ -4,10 +4,10 @@ import 'package:dmart/utils.dart';
 import 'package:http/http.dart';
 
 class ApiResult<T> {
-  String message;
-  bool isSuccess;
-  bool isNoJson = false;
-  T data;
+  String? message;
+  bool? isSuccess;
+  bool? isNoJson = false;
+  T? data;
 
   ApiResult({this.isSuccess, this.message, this.data, this.isNoJson});
 
@@ -16,23 +16,23 @@ class ApiResult<T> {
     printLog(response.body);
     var haveJs = DmUtils.isApiReturnedJson(response);
 
-    if(haveJs) {
+    if (haveJs) {
       dynamic jsonMap = json.decode(response.body);
-      if(jsonMap != null) {
+      if (jsonMap != null) {
         this.isNoJson = false;
         this.isSuccess = jsonMap['success'] ?? false;
-        if(this.isSuccess == false) {
+        if (this.isSuccess == false) {
           this.message = '';
           // {"success":false,"message":{"name":["The name must be at least 3 characters."]}}
           //{"success":false,"message":{"email":[""],"name":["The name must be at least 3 characters."]}}
           var jsMsg = jsonMap['message'];
-          if(jsMsg != null && jsMsg is Map) {
-            (jsMsg as Map).forEach((key, value) {
-              this.message += '$value\n';
+          if (jsMsg != null && jsMsg is Map) {
+            jsMsg.forEach((key, value) {
+              this.message = this.message! + '$value\n';
             });
           }
         } else {
-          this.message = (jsonMap['message']?? '').toString();
+          this.message = (jsonMap['message'] ?? '').toString();
         }
         // printLog('json decode: $jsonMap');
         return jsonMap['data'];

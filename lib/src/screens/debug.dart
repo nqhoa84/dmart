@@ -1,13 +1,13 @@
 import 'package:dmart/src/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+
 import '../models/route_argument.dart';
 
 class DebugWidget extends StatefulWidget {
-  final RouteArgument routeArgument;
+  final RouteArgument? routeArgument;
 
-  DebugWidget({Key key, this.routeArgument}) : super(key: key);
+  DebugWidget({Key? key, this.routeArgument}) : super(key: key);
 
   @override
   _DebugWidgetState createState() {
@@ -38,7 +38,10 @@ class _DebugWidgetState extends StateMVC<DebugWidget> {
           centerTitle: true,
           title: Text(
             'Debug',
-            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
             IconButton(
@@ -48,7 +51,6 @@ class _DebugWidgetState extends StateMVC<DebugWidget> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        body: Container()
-    );
+        body: Container());
   }
 }

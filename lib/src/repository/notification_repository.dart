@@ -8,11 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../DmState.dart';
 import '../helpers/helper.dart';
-import '../models/notification.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Noti>> getNotifications() async {
+Future<Stream<Noti?>> getNotifications() async {
   User _user = userRepo.currentUser.value;
   if (_user.isNotLogin) {
     return new Stream.value(null);
@@ -20,7 +19,7 @@ Future<Stream<Noti>> getNotifications() async {
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
       '${GlobalConfiguration().getString('api_base_url')}notifications?${_apiToken}search=notifiable_id:${_user.id}&searchFields=notifiable_id:=&orderBy=created_at&sortedBy=desc&limit=10';
-  print ('getNotifications $url');
+  print('getNotifications $url');
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
@@ -36,14 +35,15 @@ Future<Stream<Noti>> getNotifications() async {
   });
 }
 
-Future<Noti> removeNotification(Noti notification) async {
+Future<Noti?> removeNotification(Noti notification) async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return new Noti();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}notifications/${notification.id}?$_apiToken');
-  print ('removeNotification $url');
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}notifications/${notification.id}?$_apiToken');
+  print('removeNotification $url');
   try {
     final client = new http.Client();
     final response = await client.delete(
@@ -57,33 +57,30 @@ Future<Noti> removeNotification(Noti notification) async {
   }
 }
 
-
 saveNoti(Noti noti) async {
   print('save noti to storage: $noti');
-  if (noti != null) {
-    if(DmState.notifications == null) {
-      await loadNoties();
-    }
-
-    if(DmState.notifications.isEmpty) {
-      DmState.notifications.add(noti);
-    } else {
-      DmState.notifications.insert(0, noti);
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('dmNotifications', jsonEncode(DmState.notifications) );
+  if (DmState.notifications == null) {
+    await loadNoties();
   }
+
+  if (DmState.notifications!.isEmpty) {
+    DmState.notifications!.add(noti);
+  } else {
+    DmState.notifications!.insert(0, noti);
+  }
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('dmNotifications', jsonEncode(DmState.notifications));
 }
 
 Future<bool> removeNoti(Noti noti) async {
   print('Remove noti: $noti');
-  if(DmState.notifications != null) {
-    var lne = DmState.notifications.length;
-    DmState.notifications.remove(noti);
-    print('---- pre len: $lne, now len ${DmState.notifications.length}');
+  if (DmState.notifications != null) {
+    var lne = DmState.notifications!.length;
+    DmState.notifications!.remove(noti);
+    print('---- pre len: $lne, now len ${DmState.notifications!.length}');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('dmNotifications', jsonEncode(DmState.notifications) );
+    await prefs.setString('dmNotifications', jsonEncode(DmState.notifications));
     return true;
   }
   return false;
@@ -91,14 +88,14 @@ Future<bool> removeNoti(Noti noti) async {
 
 loadNoties() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String v = await prefs.get('dmNotifications');
+  String v = prefs.get('dmNotifications') as String;
   print('-------$v');
   DmState.notifications = [];
-  if(v != null && v.isNotEmpty) {
+  if (v.isNotEmpty) {
     var nMap = jsonDecode(v);
-    if(nMap != null && nMap is List) {
+    if (nMap != null && nMap is List) {
       nMap.forEach((element) {
-        DmState.notifications.add(Noti.fromJSON(element));
+        DmState.notifications!.add(Noti.fromJSON(element));
       });
     }
   }

@@ -4,12 +4,12 @@ import 'package:dmart/utils.dart';
 import 'media.dart';
 
 class IdObj {
-  int id = 0;
+  int id;
 
   IdObj({this.id = 0});
 
   bool get isValid {
-    return id != null && id > 0;
+    return id > 0;
   }
 
   @override
@@ -20,37 +20,41 @@ class IdObj {
   @override
   int get hashCode => id.hashCode;
 
-  static int idComparerAccending(IdObj a, IdObj b) => a.id?.compareTo(b.id);
+  static int idComparerAccending(IdObj a, IdObj b) => a.id.compareTo(b.id);
 
-  static int idComparerDescending(IdObj a, IdObj b) => b.id?.compareTo(a.id);
+  static int idComparerDescending(IdObj a, IdObj b) => b.id.compareTo(a.id);
 }
 
 class IdNameObj extends IdObj {
   String nameEn, nameKh;
 
   String get name {
-    if(DmState.isKhmer) {
-      if(!DmUtils.isNullOrEmptyStr(this.nameKh)) {
+    if (DmState.isKhmer) {
+      if (!DmUtils.isNullOrEmptyStr(this.nameKh)) {
         return nameKh;
-      } else if(!DmUtils.isNullOrEmptyStr(this.nameEn)) {
+      } else if (!DmUtils.isNullOrEmptyStr(this.nameEn)) {
         return nameEn;
-      } else return '';
+      } else
+        return '';
     } else {
-      if(!DmUtils.isNullOrEmptyStr(this.nameEn)) {
+      if (!DmUtils.isNullOrEmptyStr(this.nameEn)) {
         return nameEn;
-      } else if(!DmUtils.isNullOrEmptyStr(this.nameKh)) {
+      } else if (!DmUtils.isNullOrEmptyStr(this.nameKh)) {
         return nameKh;
-      } else return '';
+      } else
+        return '';
     }
   }
 
   String get nameShort {
     String n = this.name;
-    if(n.length > 7) return '...${n.substring(n.length - 5)}';
-    else return n;
+    if (n.length > 7)
+      return '...${n.substring(n.length - 5)}';
+    else
+      return n;
   }
 
-  set name (String value) {
+  set name(String value) {
     this.nameEn = DmUtils.isNotNullEmptyStr(value) ? value.trim() : '';
     this.nameKh = nameEn;
   }
@@ -59,8 +63,7 @@ class IdNameObj extends IdObj {
 
   @override
   bool get isValid {
-    return id != null && id >= 0
-        && name != null && name.length > 0;
+    return id >= 0 && name.length > 0;
   }
 
   String toStringIdName() {
@@ -74,15 +77,15 @@ class IdNameObj extends IdObj {
 }
 
 class NameImageObj extends IdNameObj {
-  Media image;
+  Media? image;
 
-  NameImageObj({int id = -1, String nameEn = '', String nameKh = '', this.image}) : super(id: id, nameEn: nameEn, nameKh: nameKh);
+  NameImageObj(
+      {int id = -1, String nameEn = '', String nameKh = '', this.image})
+      : super(id: id, nameEn: nameEn, nameKh: nameKh);
 
   @override
   bool get isValid {
-    return super.isValid
-        && image != null && image.thumb != null && image.thumb.length > 10
-    ;
+    return super.isValid && image!.thumb!.length > 10;
   }
 
   @override
@@ -90,4 +93,3 @@ class NameImageObj extends IdNameObj {
     return '{id: $id, name: $name, image: $image}';
   }
 }
-

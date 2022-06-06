@@ -1,31 +1,28 @@
+import 'package:global_configuration/global_configuration.dart';
+
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/models/address.dart';
-import 'package:global_configuration/global_configuration.dart';
 
 import '../../utils.dart';
 import '../models/media.dart';
 import 'i_name.dart';
 
-class User extends IdNameObj{
-  String email;
-  String password;
-  String apiToken;
-  String deviceToken;
-  String _phone;
-
-  Gender gender;
-
-  DateTime birthday;
-
-  int point;
-
-  String facebookId;
-  String fbAvatar;
-  String fbAccessToken;
+class User extends IdNameObj {
+  String? email;
+  String? password;
+  String? apiToken;
+  String? deviceToken;
+  String _phone = '';
+  Gender? gender;
+  DateTime? birthday;
+  int? point;
+  String? facebookId;
+  String? fbAvatar;
+  String? fbAccessToken;
 
   String get phone {
-    if(_phone == null) return '';
-    if(_phone.startsWith("855")) {
+    if (_phone == null) return '';
+    if (_phone.startsWith("855")) {
       return _phone.replaceFirst('855', '0');
     }
     return _phone;
@@ -35,11 +32,16 @@ class User extends IdNameObj{
     return _phone;
   }
 
+  String? address;
+  List<Address>? addresses = [];
+  String? bio;
+  Media? image;
+
   String get fullNameWithTitle {
-    if(gender == null || gender == Gender.Others) {
+    if (gender == Gender.Others) {
       return name;
     }
-    if(gender == Gender.Female) {
+    if (gender == Gender.Female) {
       return "Mrs $name";
     }
     return "Mr $name";
@@ -47,45 +49,44 @@ class User extends IdNameObj{
 
   set phone(String value) {
     _phone = DmUtils.addCountryCode(phone: value);
-//    if(value == null) {
-//      _phone = '';
-//    } else {
-//      _phone = value.replaceAll(RegExp(r"[^0-9]"), '');
-//      while(_phone.startsWith('0')) {
-//        _phone = _phone.substring(1);
-//      }
-//      if(!_phone.startsWith('855')) {
-//        _phone = '855$_phone';
-//      }
-//    }
   }
 
-  String address;
-  List<Address> addresses = [];
-  String bio;
-  Media image;
-
-  String get avatarUrl {
-
-    if(DmUtils.isNotNullEmptyStr(fbAvatar)) {
+  String? get avatarUrl {
+    if (DmUtils.isNotNullEmptyStr(fbAvatar!)) {
       return fbAvatar;
     }
-    if(image != null && image.thumb != null && !image.thumb.endsWith('image_default.png')) {
-      return image.thumb;
+    if (image!.thumb != null && !image!.thumb!.endsWith('image_default.png')) {
+      return image!.thumb;
     }
     return "${GlobalConfiguration().getString('base_url')}images/icons/avatar_default.png";
     // return 'http://dmartdev2.khmermedia.xyz/images/avatar_default.png';
   }
 
   /// Used for indicate if client logged in or not. This is the token value returned from BD
-  bool get isLogin => this.apiToken != null && this.apiToken.length > 10;
+  bool get isLogin => this.apiToken!.length > 10;
   bool get isNotLogin => isLogin == false;
 
-  double credit = 0;
+  double? credit = 0;
 
 //  String role;
 
-  User();
+  User({
+    this.email,
+    this.password,
+    this.apiToken,
+    this.deviceToken,
+    this.gender,
+    this.birthday,
+    this.point,
+    this.facebookId,
+    this.fbAvatar,
+    this.fbAccessToken,
+    this.address,
+    this.addresses,
+    this.bio,
+    this.image,
+    this.credit,
+  });
 
   User.fromJSON(Map<String, dynamic> jsonMap) {
     try {
@@ -96,14 +97,14 @@ class User extends IdNameObj{
       apiToken = toStringVal(jsonMap['token']);
       deviceToken = toStringVal(jsonMap['device_token']);
       int i = toInt(jsonMap['gender']);
-      gender = i >=0 && i <= 2 ? Gender.values[i] : null;
+      gender = i >= 0 && i <= 2 ? Gender.values[i] : null;
       birthday = toDateTime(jsonMap['birthday'], errorValue: null);
       credit = toDouble(jsonMap['credit'], errorValue: 0);
       point = toInt(jsonMap['point'], errorValue: 0);
       phone = toStringVal(jsonMap['phone']);
       email = toStringVal(jsonMap['email']);
       facebookId = toStringVal(jsonMap['facebook_id']);
-      if(jsonMap.containsKey('fb_avatar')) {
+      if (jsonMap.containsKey('fb_avatar')) {
         fbAvatar = toStringVal(jsonMap['fb_avatar']);
       }
 
@@ -118,16 +119,16 @@ class User extends IdNameObj{
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id.toString();
-    map["email"] = email??'';
-    map["phone"] = _phone??'';
-    map["name"] = name??'';
+    map["email"] = email ?? '';
+    map["phone"] = _phone ?? '';
+    map["name"] = name ?? '';
     map["password"] = password;
     // map["device_token"] = deviceToken??'';
     map["device_token"] = '${DmConst.deviceToken}';
     map["address"] = address;
-    map["gender"] = gender != null?  gender.index: Gender.Others.index;
-    map["birthday"] = birthday != null? toDateStr(birthday) : '';
-    map["media"] = [image?.toMap()];
+    map["gender"] = gender != null ? gender!.index : Gender.Others.index;
+    map["birthday"] = birthday != null ? toDateStr(birthday!) : '';
+    map["media"] = [image!.toMap()];
     return map;
   }
 
@@ -135,24 +136,24 @@ class User extends IdNameObj{
     var map = new Map<String, dynamic>();
     map["id"] = id.toString();
 //    map["phone"] = phone??'';
-    map["gender"] = gender != null?  gender.index: Gender.Others.index;
-    map["name"] = name??'';
-    map["birthday"] = birthday != null? toDateStr(birthday) : '';
-    map["email"] = email??'';
-    map["device_token"] = DmConst.deviceToken??'';
+    map["gender"] = gender != null ? gender!.index : Gender.Others.index;
+    map["name"] = name ?? '';
+    map["birthday"] = birthday != null ? toDateStr(birthday!) : '';
+    map["email"] = email ?? '';
+    map["device_token"] = DmConst.deviceToken ?? '';
     return map;
   }
 
   Map toMap4SharePreference() {
     var map = new Map<String, dynamic>();
     map["id"] = id.toString();
-    map["email"] = email??'';
-    map["phone"] = _phone??'';
-    map["name"] = name??'';
+    map["email"] = email ?? '';
+    map["phone"] = _phone ?? '';
+    map["name"] = name ?? '';
     map["password"] = password;
-    map["gender"] = gender != null?  gender.index: Gender.Others.index;
-    map["birthday"] = birthday != null? toDateTimeStr(birthday) : '';
-    map["media"] = [image?.toMap()];
+    map["gender"] = gender != null ? gender!.index : Gender.Others.index;
+    map["birthday"] = birthday != null ? toDateTimeStr(birthday!) : '';
+    map["media"] = [image!.toMap()];
     map["token"] = apiToken;
     map["facebook_id"] = facebookId;
     map["fb_avatar"] = fbAvatar;
@@ -162,19 +163,19 @@ class User extends IdNameObj{
 
   Map toMapReg() {
     var map = new Map<String, dynamic>();
-    map["phone"] = _phone??'';
-    map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
+    map["phone"] = _phone ?? '';
+    map["name"] = DmUtils.isNotNullEmptyStr(name) ? name : phone;
     map["password"] = password;
-    map["device_token"] = DmConst.deviceToken??'';
+    map["device_token"] = DmConst.deviceToken ?? '';
     return map;
   }
 
   Map toMapRegFb() {
     var map = new Map<String, dynamic>();
-    map["phone"] = _phone??'';
-    map["name"] = DmUtils.isNotNullEmptyStr(name)? name : phone;
+    map["phone"] = _phone ?? '';
+    map["name"] = DmUtils.isNotNullEmptyStr(name) ? name : phone;
     map["facebook_id"] = facebookId;
-    map["device_token"] = DmConst.deviceToken??'';
+    map["device_token"] = DmConst.deviceToken ?? '';
     return map;
   }
 
@@ -185,8 +186,8 @@ class User extends IdNameObj{
   }
 
   bool profileCompleted() {
-    return address != null && address != '' && phone != null && phone != '';
+    return address != '' && phone != '';
   }
 }
 
-enum Gender {Female, Male, Others}
+enum Gender { Female, Male, Others }

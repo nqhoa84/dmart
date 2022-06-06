@@ -1,9 +1,7 @@
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/controllers/promotion_controller.dart';
-import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/PromotionGroups.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
@@ -17,19 +15,18 @@ class PromotionsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   bool canBack;
 
-  PromotionsScreen({Key key, this.canBack = false}) : super(key: key);
+  PromotionsScreen({Key? key, this.canBack = false}) : super(key: key);
 
   @override
   _PromotionsScreenState createState() => _PromotionsScreenState();
 }
 
 class _PromotionsScreenState extends StateMVC<PromotionsScreen>
-    with SingleTickerProviderStateMixin
-{
-  PromotionController _con;
+    with SingleTickerProviderStateMixin {
+  PromotionController _con = PromotionController();
 
   _PromotionsScreenState() : super(PromotionController()) {
-    _con = controller;
+    _con = controller as PromotionController;
   }
 
   @override

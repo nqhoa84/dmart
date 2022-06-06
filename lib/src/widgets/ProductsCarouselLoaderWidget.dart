@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProductsCarouselLoaderWidget extends StatelessWidget {
   const ProductsCarouselLoaderWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -20,7 +20,8 @@ class ProductsCarouselLoaderWidget extends StatelessWidget {
               margin: EdgeInsetsDirectional.only(start: _marginLeft, end: 20),
               width: 160,
               height: 275,
-              child: Image.asset('assets/img/loading_trend.gif', fit: BoxFit.contain),
+              child: Image.asset('assets/img/loading_trend.gif',
+                  fit: BoxFit.contain),
             );
           },
           scrollDirection: Axis.horizontal,

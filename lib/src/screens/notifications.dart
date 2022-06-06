@@ -22,18 +22,18 @@ class NotificationsScreen extends StatefulWidget {
 
   bool canBack;
 
-  NotificationsScreen({Key key, this.canBack = false}) : super(key: key);
+  NotificationsScreen({Key? key, this.canBack = false}) : super(key: key);
 
   @override
   _NotificationsScreenState createState() => _NotificationsScreenState();
 }
 
 class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
-  NotificationController _con;
+  NotificationController _con = NotificationController();
   User user = userRepo.currentUser.value;
 
   _NotificationsScreenState() : super(NotificationController()) {
-    _con = controller;
+    _con = controller as NotificationController;
   }
 
   @override
@@ -56,17 +56,17 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
         children: <Widget>[
           //ListView of empty
           Offstage(
-              offstage: _con.notifications.isEmpty,
+              offstage: _con.notifications!.isEmpty,
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 shrinkWrap: true,
                 primary: false,
-                itemCount: _con.notifications.length,
+                itemCount: _con.notifications!.length,
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 7);
                 },
                 itemBuilder: (context, index) {
-                  var noti = _con.notifications.elementAt(index);
+                  var noti = _con.notifications!.elementAt(index);
 //                        return Text('${noti?.id} - ${noti?.type}');
                   if (!noti.tapable) {
                     return NotificationItem(
@@ -88,7 +88,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
               )),
           //EmptyNotificationWidget
           Offstage(
-              offstage: _con.notifications.isNotEmpty,
+              offstage: _con.notifications!.isNotEmpty,
               child: EmptyDataLoginWid(
                 message: S.current.yourNotificationEmpty,
               ))
@@ -137,7 +137,7 @@ class _NotificationsScreenState extends StateMVC<NotificationsScreen> {
   void onRemoveNoti(Noti notification) {
     _con.removeFromNotification(notification);
     setState(() {
-      _con.notifications.remove(notification);
+      _con.notifications!.remove(notification);
     });
   }
 

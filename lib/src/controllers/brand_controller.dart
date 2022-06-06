@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
-import '../models/cart.dart';
 import '../models/brand.dart';
+import '../models/cart.dart';
 import '../models/product.dart';
-import '../repository/cart_repository.dart';
 import '../repository/brand_repository.dart';
+import '../repository/cart_repository.dart';
 import '../repository/product_repository.dart';
 
 class BrandController extends ControllerMVC {
-  List<Product> products = <Product>[];
-  GlobalKey<ScaffoldState> scaffoldKey;
-  Brand brand;
-  bool loadCart = false;
-  List<Cart> carts = [];
-  List<Brand> brands = [];
+  List<Product>? products = <Product>[];
+  late GlobalKey<ScaffoldState> scaffoldKey;
+  Brand? brand;
+  bool? loadCart = false;
+  List<Cart>? carts = [];
+  List<Brand>? brands = [];
 
-  BrandController() {
+  BrandController({
+    this.products,
+    this.brand,
+    this.loadCart,
+    this.carts,
+    this.brands,
+  }) {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForBrands();
     listenForProductsByBrand();
@@ -31,65 +37,60 @@ class BrandController extends ControllerMVC {
       }
     });
   }*/
-  void listenForBrands () async {
+  void listenForBrands() async {
     final Stream<Brand> stream = await getBrands();
     stream.listen((Brand _brand) {
-      setState(() => brands.add(_brand));
+      setState(() => brands!.add(_brand));
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
 
-
-  void listenForProductsByBrand({int id, String message}) async {
+  void listenForProductsByBrand({int? id, String? message}) async {
     final Stream<Product> stream = await getProductsByBrand(id);
     stream.listen((Product _product) {
       setState(() {
-        products.add(_product);
+        products!.add(_product);
       });
     }, onError: (a) {
       SnackBar snackBar = SnackBar(
-            content: Text(S.current.verifyYourInternetConnection),
-          );
+        content: Text(S.current.verifyYourInternetConnection),
+      );
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      scaffoldKey.currentState.showSnackBar(snackBar);
+      scaffoldKey.currentState!.showSnackBar(snackBar);
     }, onDone: () {
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
+        content: Text(message!),
+      ));
     });
   }
 
-  void listenForBrand({int id, String message}) async {
-    final Stream<Brand> stream = await getBrand(id);
+  void listenForBrand({int? id, required String message}) async {
+    final Stream<Brand> stream = await getBrand(id!);
     stream.listen((Brand _brand) {
       setState(() => brand = _brand);
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
+        content: Text(message),
+      ));
     });
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCarts();
-    stream.listen((Cart _cart) {
-      carts.add(_cart);
+    final Stream<Cart?> stream = await getCarts();
+    stream.listen((Cart? _cart) {
+      carts!.add(_cart!);
     });
   }
 
   bool isSameStores(Product product) {
-    if (carts.isNotEmpty) {
-      return carts[0].product?.store?.id == product.store?.id;
+    if (carts!.isNotEmpty) {
+      return carts![0].product?.store?.id == product.store?.id;
     }
     return true;
   }
@@ -148,9 +149,8 @@ class BrandController extends ControllerMVC {
 //    }
   }
 
-
   Future<void> refreshBrand() async {
-    products.clear();
+    products!.clear();
     brand = new Brand();
     listenForProductsByBrand(message: S.current.brandRefreshedSuccessfully);
     listenForBrand(message: S.current.brandRefreshedSuccessfully);

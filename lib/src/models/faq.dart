@@ -3,18 +3,16 @@ import 'package:dmart/DmState.dart';
 import '../../utils.dart';
 import 'i_name.dart';
 
-class Faq extends IdObj{
-  String questionEn, questionKh, answerEn, answerKh;
+class Faq extends IdObj {
+  String questionEn = '';
+  String questionKh = '';
+  String answerEn = '';
+  String answerKh = '';
 
   String get question => DmState.isKhmer ? questionKh : questionEn;
   String get answer => DmState.isKhmer ? answerKh : answerEn;
 
-  Faq() {
-    questionEn = '';
-    questionKh = '';
-    answerEn = '';
-    answerKh = '';
-  }
+  Faq(this.answerKh, this.answerEn, this.questionKh, this.questionEn);
 
   Faq.fromJSON(Map<String, dynamic> jsonMap) {
     try {

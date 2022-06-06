@@ -10,14 +10,13 @@ import 'abs_product_mvc.dart';
 class FavoritesScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  FavoritesScreen({Key key}) : super(key: key);
+  FavoritesScreen({Key? key}) : super(key: key);
 
   @override
   _FavoritesScreenState createState() => _FavoritesScreenState();
 }
 
-class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
-{
+class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen> {
   _FavoritesScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
   @override
@@ -36,7 +35,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
   }
 
   @override
-  Future<void> onRefresh() async{
+  Future<void> onRefresh() async {
     proCon.listenForFavorites();
     canLoadMore = true;
   }
@@ -52,11 +51,12 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
     } else {
       List<Product> lp = [];
       DmState.favorites.forEach((element) {
-        lp.add(element.product);
+        lp.add(element.product!);
       });
       return FadeTransition(
-        opacity: this.animationOpacity,
-        child: ProductGridView(products: lp, heroTag: 'myFav'),);
+        opacity: this.animationOpacity!,
+        child: ProductGridView(products: lp, heroTag: 'myFav'),
+      );
     }
   }
 
@@ -72,7 +72,7 @@ class _FavoritesScreenState extends ProductStateMVC<FavoritesScreen>
   List<Product> get lstProducts {
     List<Product> lp = [];
     DmState.favorites.forEach((element) {
-      lp.add(element.product);
+      lp.add(element.product!);
     });
     return lp;
   }

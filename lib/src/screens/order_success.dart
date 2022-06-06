@@ -18,18 +18,18 @@ class OrderSuccessScreen extends StatefulWidget {
 //  final RouteArgument routeArgument;
 
   final Order order;
-  
-  OrderSuccessScreen(this.order, {Key key}) : super(key: key);
+
+  OrderSuccessScreen(this.order, {Key? key}) : super(key: key);
 
   @override
   _OrderSuccessScreenState createState() => _OrderSuccessScreenState();
 }
 
 class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
-  ProductController _con;
+  ProductController _con = ProductController();
 
   _OrderSuccessScreenState() : super(ProductController()) {
-    _con = controller;
+    _con = controller as ProductController;
   }
 
   @override
@@ -47,13 +47,15 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
       child: Scaffold(
           key: _con.scaffoldKey,
 //        appBar: createAppBar(context, _con.scaffoldKey),
-          bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+          bottomNavigationBar: DmBottomNavigationBar(
+              currentIndex: DmState.bottomBarSelectedIndex),
           body: SafeArea(
             child: CustomScrollView(
               slivers: <Widget>[
                 createSliverTopBar(context),
                 createSliverSearch(context),
-                createSilverTopMenu(context, haveBackIcon: false, title: S.current.myCart),
+                createSilverTopMenu(context,
+                    haveBackIcon: false, title: S.current.myCart),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     buildContent(context),
@@ -61,14 +63,14 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
                 )
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 
   Widget _buildSpecial4U() {
-    if(_con.special4UProducts != null) {
-      return ProductGridView(products: _con.special4UProducts, heroTag: 'spe4U_fromOrderOK');
+    if (_con.special4UProducts != null) {
+      return ProductGridView(
+          products: _con.special4UProducts!, heroTag: 'spe4U_fromOrderOK');
     } else {
       return ProductsGridViewLoading();
     }
@@ -80,26 +82,38 @@ class _OrderSuccessScreenState extends StateMVC<OrderSuccessScreen> {
 //                createTitleRowWithBack(context, title: S.current.orderConfirmation, showBack: false),
         Padding(
           padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
-          child: TitleDivider(title: '${S.current.orderId}: ${widget.order.id}'),
+          child:
+              TitleDivider(title: '${S.current.orderId}: ${widget.order.id}'),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
+          padding: const EdgeInsets.symmetric(
+              horizontal: DmConst.masterHorizontalPad),
           child: Container(
             decoration: createRoundedBorderBoxDecoration(),
             child: ListTile(
-              leading: Image.asset('assets/img/Thanks.png', fit: BoxFit.scaleDown),
-              title: Text(S.current.thankYou.toUpperCase() + "\n" + S.current.yourOrderIsBeingPlaced),
+              leading:
+                  Image.asset('assets/img/Thanks.png', fit: BoxFit.scaleDown),
+              title: Text(S.current.thankYou.toUpperCase() +
+                  "\n" +
+                  S.current.yourOrderIsBeingPlaced),
               subtitle: Wrap(
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(S.current.pleaseCheck1),
-                  FlatButton.icon(icon: Icon(UiIcons.edit, color: Theme.of(context).accentColor),
-                      label: Text(S.current.myOrders, style: TextStyle(color: Theme.of(context).accentColor),),
-                      onPressed: () => RouteGenerator.gotoMyOrders(context, replaceOld: true)
-                  ),
+                  FlatButton.icon(
+                      icon: Icon(UiIcons.edit,
+                          color: Theme.of(context).colorScheme.secondary),
+                      label: Text(
+                        S.current.myOrders,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      onPressed: () => RouteGenerator.gotoMyOrders(context,
+                          replaceOld: true)),
                   Text(S.current.pleaseCheck2),
-                ],),
+                ],
+              ),
             ),
           ),
         ),

@@ -9,7 +9,6 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import '../../DmState.dart';
 import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -23,13 +22,14 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends StateMVC<SignInScreen> {
-  UserController _con;
-  get txtStyleGrey => Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey);
+  UserController _con = UserController();
+  get txtStyleGrey =>
+      Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.grey);
 //  get txtStyleAccent => Theme.of(context).textTheme.subtitle1.copyWith(color: DmConst.accentColor);
   final txtStyleAccent = TextStyle(color: DmConst.accentColor);
 
   _SignInScreenState() : super(UserController()) {
-    _con = controller;
+    _con = controller as UserController;
   }
 
   @override
@@ -45,18 +45,21 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
 //        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown),
+        title: Image.asset(DmConst.assetImgLogo,
+            width: 46, height: 46, fit: BoxFit.scaleDown),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(4),
           child: Divider(height: 4, thickness: 2, color: DmConst.accentColor),
         ),
       ),
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            createSilverTopMenu(context, haveBackIcon: true, title: S.current.login),
+            createSilverTopMenu(context,
+                haveBackIcon: true, title: S.current.login),
             SliverList(
               delegate: SliverChildListDelegate([
                 buildContent(context),
@@ -85,10 +88,16 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Row(
                   children: [
-                    Icon(Icons.error, color: DmConst.colorFavorite, size: kToolbarHeight),
+                    Icon(Icons.error,
+                        color: DmConst.colorFavorite, size: kToolbarHeight),
                     Expanded(
-                      child: Text(S.current.loginErrorIncorrectPhonePassFullMsg,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(color: DmConst.colorFavorite),),
+                      child: Text(
+                        S.current.loginErrorIncorrectPhonePassFullMsg,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: DmConst.colorFavorite),
+                      ),
                     ),
                   ],
                 ),
@@ -96,8 +105,10 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
             ),
             PhoneNoWid(
               onSaved: (value) {
-                _con.user.phone = value;
-              }),
+                _con.user!.phone = value!;
+              },
+              initValue: '',
+            ),
 
             SizedBox(height: 10),
 
@@ -114,24 +125,30 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
                 style: txtStyleAccent,
                 textAlignVertical: TextAlignVertical.center,
                 keyboardType: TextInputType.text,
-                onSaved: (input) => _con.user.password = input,
-                validator: (input) => input.length < 3 ? S.current.passwordNote : null,
-                obscureText: _con.hidePassword,
+                onSaved: (input) => _con.user!.password = input,
+                validator: (input) =>
+                    input!.length < 3 ? S.current.passwordNote : null,
+                obscureText: _con.hidePassword!,
                 decoration: new InputDecoration(
                   hintText: S.current.password,
                   hintStyle: txtStyleAccent,
-                  enabledBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-                  prefixIcon: Icon(UiIcons.padlock_1, color: DmConst.accentColor),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: DmConst.accentColor.withOpacity(0.2))),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: DmConst.accentColor)),
+                  prefixIcon:
+                      Icon(UiIcons.padlock_1, color: DmConst.accentColor),
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
-                        _con.hidePassword = !_con.hidePassword;
+                        _con.hidePassword = !_con.hidePassword!;
                       });
                     },
                     color: DmConst.accentColor.withOpacity(0.4),
-                    icon: Icon(_con.hidePassword ? Icons.visibility_off : Icons.visibility),
+                    icon: Icon(_con.hidePassword!
+                        ? Icons.visibility_off
+                        : Icons.visibility),
                   ),
                 ),
               ),
@@ -142,8 +159,10 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
               children: [
                 FlatButton(
                   onPressed: onPressForgetPass,
-                  child: Text(S.current.forgetPassword,
-                      style: txtStyleAccent.copyWith(decoration: TextDecoration.underline),
+                  child: Text(
+                    S.current.forgetPassword,
+                    style: txtStyleAccent.copyWith(
+                        decoration: TextDecoration.underline),
                   ),
                 ),
               ],
@@ -156,7 +175,10 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     onPressed: onPressLogin,
                     child: Text(S.current.login,
-                        style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: Colors.white)),
                     color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
                   ),
@@ -187,13 +209,17 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
             Row(
               children: [
                 Expanded(
-                  child: OutlineButton(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                  child: OutlinedButton(
+                    // padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     onPressed: onPressRegister,
                     child: Text(S.current.register,
-                        style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: DmConst.accentColor)),
                     // color: Colors.white,
-                    borderSide: BorderSide(color: DmConst.accentColor, width: 2),
+                    // borderSide:
+                    //     BorderSide(color: DmConst.accentColor, width: 2),
                   ),
                 ),
               ],
@@ -211,16 +237,17 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
     );
   }
 
-  String _phoneOrEmailValidate(String value) {
-    if (DmUtils.isNullOrEmptyStr(value) || (!DmUtils.isEmail(value.trim()) && !DmUtils.isPhone(value.trim())))
+  String? _phoneOrEmailValidate(String value) {
+    if (DmUtils.isNullOrEmptyStr(value) ||
+        (!DmUtils.isEmail(value.trim()) && !DmUtils.isPhone(value.trim())))
       return S.current.invalidPhoneOrEmail;
     else {
       return null;
     }
   }
 
-  void onPressLogin(){
-    _con.login(context) ;
+  void onPressLogin() {
+    _con.login(context);
   }
 
   Future<void> onPressFbLogin() async {
@@ -235,13 +262,13 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
 // Check result status
     switch (res.status) {
       case FacebookLoginStatus.success:
-      // Logged in, Send access token to server for validation and auth
-        final FacebookAccessToken accessToken = res.accessToken;
+        // Logged in, Send access token to server for validation and auth
+        final FacebookAccessToken accessToken = res.accessToken!;
         print('Access token: ${accessToken.token}');
 
         // Get profile data
         final profile = await widget.fb.getUserProfile();
-        print('Hello, ${profile.name}! You ID: ${profile.userId}');
+        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
 
         // Get user profile image url
         final imageUrl = await widget.fb.getProfileImageUrl(width: 100);
@@ -250,17 +277,20 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
         // Get email (since we request email permission)
         final email = await widget.fb.getUserEmail();
         // But user can decline permission
-        if (email != null)
-          print('And your email is $email');
+        if (email != null) print('And your email is $email');
 
-        _con.loginFb(context, fbId: profile.userId, accessToken: accessToken.token, name: profile.name, avatarUrl: imageUrl);
+        _con.loginFb(context,
+            fbId: profile.userId,
+            accessToken: accessToken.token,
+            name: profile.name!,
+            avatarUrl: imageUrl!);
 
         break;
       case FacebookLoginStatus.cancel:
-      // User cancel log in
+        // User cancel log in
         break;
       case FacebookLoginStatus.error:
-      // Log in failed
+        // Log in failed
         _con.showErr(S.current.loginFbError);
         break;
     }
@@ -311,5 +341,4 @@ class _SignInScreenState extends StateMVC<SignInScreen> {
   void onPressRegister() {
     Navigator.of(context).pushNamed('/SignUp');
   }
-
 }

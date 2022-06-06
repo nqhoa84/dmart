@@ -1,20 +1,26 @@
 import '../../utils.dart';
-import '../models/option.dart';
 import '../models/product.dart';
 import 'i_name.dart';
 
 class ProductOrder extends IdObj {
-  double paidPrice;
-  double quantity;
+  double? paidPrice;
+  double? quantity;
 
 //  List<Option> options;
-  Product product;
+  Product? product;
 
-  ProductOrder();
+  ProductOrder({
+    this.paidPrice,
+    this.quantity,
+    this.product,
+  });
 
   @override
   bool get isValid {
-    return super.isValid && product != null && product.id > 0 && quantity >= 0 && paidPrice >= 0;
+    return super.isValid &&
+        product!.id > 0 &&
+        quantity! >= 0 &&
+        paidPrice! >= 0;
   }
 
   ProductOrder.fromJSON(Map<String, dynamic> jsonMap) {
@@ -42,7 +48,7 @@ class ProductOrder extends IdObj {
 //    map["id"] = id;
 //    map["price"] = paidPrice;
     map["quantity"] = quantity;
-    map["id"] = product.id;
+    map["id"] = product!.id;
 //    map["options"] = options.map((element) => element.id).toList();
     return map;
   }

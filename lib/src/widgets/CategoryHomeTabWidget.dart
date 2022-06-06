@@ -1,7 +1,6 @@
 import '../../generated/l10n.dart';
 import '../../src/controllers/home_controller.dart';
 import '../../src/helpers/ui_icons.dart';
-import '../../src/widgets/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/models/category.dart';
 import '../../src/widgets/FlashSalesCarouselWidget.dart';
@@ -12,17 +11,17 @@ import 'FlashSalesWidget.dart';
 
 class CategoryHomeTabWidget extends StatefulWidget {
   Category category;
-  CategoryHomeTabWidget({this.category});
+  CategoryHomeTabWidget({required this.category});
 
   @override
   _CategoryHomeTabWidgetState createState() => _CategoryHomeTabWidgetState();
 }
 
 class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
-  HomeController _con;
+  HomeController _con = HomeController();
 
-  _CategoryHomeTabWidgetState(): super( HomeController()){
-    _con = controller;
+  _CategoryHomeTabWidgetState() : super(HomeController()) {
+    _con = controller as HomeController;
   }
   @override
   Widget build(BuildContext context) {
@@ -63,10 +62,11 @@ class _CategoryHomeTabWidgetState extends StateMVC<CategoryHomeTabWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Text(
               '${widget.category.description}',
-            )
-        ),
+            )),
         FlashSalesHeaderWidget(),
-        FlashSalesCarouselWidget(heroTag: 'category_featured_products', productsList:_con.trendingProducts),
+        FlashSalesCarouselWidget(
+            heroTag: 'category_featured_products',
+            productsList: _con.trendingProducts!),
       ],
     );
   }

@@ -1,9 +1,9 @@
 import '../../utils.dart';
 import 'i_name.dart';
 
-class Payment extends IdObj{
-  String status;
-  String method;
+class Payment extends IdObj {
+  String status = '';
+  String? method;
 
   Payment.init();
 
@@ -19,7 +19,6 @@ class Payment extends IdObj{
       status = '';
       method = '';
       print('Error parsing data in Payment.fromJSON $e \n $trace');
-
     }
   }
 

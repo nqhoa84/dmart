@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
-import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
 
 class DeliveryPickupController extends CartController {
-  GlobalKey<ScaffoldState> scaffoldKey;
-  model.Address deliveryAddress;
-  List<Cart> carts = [];
+  late GlobalKey<ScaffoldState> scaffoldKey;
+  model.Address? deliveryAddress;
+  List<Cart>? cart;
 
-  DeliveryPickupController() {
+  DeliveryPickupController(
+    this.deliveryAddress,
+    this.cart,
+  ) {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForCart();
     listenForDeliveryAddress();
@@ -22,18 +22,17 @@ class DeliveryPickupController extends CartController {
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCarts();
-    stream.listen((Cart _cart) {
-        setState(() {
-            carts.add(_cart);
-        });
+    final Stream<Cart?> stream = await getCarts();
+    stream.listen((Cart? _cart) {
+      setState(() {
+        carts.add(_cart!);
+      });
     });
   }
 
   void listenForDeliveryAddress() async {
-      this.deliveryAddress = settingRepo.deliveryAddress.value;
-      print(this.deliveryAddress.id);
-
+    this.deliveryAddress = settingRepo.deliveryAddress.value;
+    print(this.deliveryAddress!.id);
   }
 
   void addAddress(model.Address address) {

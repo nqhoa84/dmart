@@ -5,20 +5,25 @@ import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 // ignore: must_be_immutable
 class TextEditWid extends StatefulWidget {
-  Function(String) onSaved;
-  Function(String) onChanged;
-  Function(String) validator;
-  String initValue;
-  final bool enable;
-  String hintText;
-  IconData prefixIcon;
+  void Function(String?)? onSaved;
+  void Function(String?)? onChanged;
+  String? Function(String?)? validator;
+  String? initValue;
+  final bool enable = true;
+  String? hintText;
+  IconData? prefixIcon;
 
-
-  TextEditWid({Key key, this.onSaved, this.onChanged, this.validator,
-    this.initValue, this.hintText, this.prefixIcon, this.enable = true}) : super(key: key);
+  TextEditWid({
+    Key? key,
+    this.onSaved,
+    this.onChanged,
+    this.validator,
+    this.initValue,
+    this.hintText,
+    this.prefixIcon,
+  }) : super(key: key);
 
   @override
   _TextEditWidState createState() => _TextEditWidState();
@@ -40,14 +45,18 @@ class _TextEditWidState extends State<TextEditWid> {
         onChanged: widget.onChanged,
         initialValue: widget.initValue,
         enabled: widget.enable,
-        validator: widget.validator,
+        validator: widget.validator!,
         decoration: new InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: txtStyleAccent,
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
-          prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: DmConst.accentColor) : null
-        ),
+            hintText: widget.hintText,
+            hintStyle: txtStyleAccent,
+            enabledBorder: UnderlineInputBorder(
+                borderSide:
+                    BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: DmConst.accentColor)),
+            prefixIcon: widget.prefixIcon != null
+                ? Icon(widget.prefixIcon, color: DmConst.accentColor)
+                : null),
       ),
     );
   }
@@ -55,13 +64,18 @@ class _TextEditWidState extends State<TextEditWid> {
 
 // ignore: must_be_immutable
 class PhoneNoWid extends StatefulWidget {
-  Function(String) onSaved;
-  Function(String) onChanged;
-  String initValue;
-  final bool enable;
+  void Function(String?)? onSaved;
+  void Function(String?)? onChanged;
+  String? initValue;
+  final bool? enable;
 
-  PhoneNoWid({Key key, this.onSaved, this.onChanged,
-    this.initValue, this.enable = true}) : super(key: key);
+  PhoneNoWid(
+      {Key? key,
+      this.onSaved,
+      this.onChanged,
+      this.initValue,
+      this.enable = true})
+      : super(key: key);
 
   @override
   _PhoneNoWidState createState() => _PhoneNoWidState();
@@ -83,15 +97,21 @@ class _PhoneNoWidState extends State<PhoneNoWid> {
         onChanged: widget.onChanged,
         initialValue: widget.initValue,
         enabled: widget.enable,
-        validator: (value) => DmUtils.isNotPhoneNo(value) ? S.current.invalidPhone : null,
+        validator: (value) =>
+            DmUtils.isNotPhoneNo(value!) ? S.current.invalidPhone : null,
         decoration: new InputDecoration(
           hintText: S.current.phone,
           hintStyle: txtStyleAccent,
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+          enabledBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: DmConst.accentColor)),
           prefixIcon: Icon(Icons.phone, color: DmConst.accentColor),
         ),
-        inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+        inputFormatters: <TextInputFormatter>[
+          // WhitelistingTextInputFormatter.digitsOnly
+        ],
       ),
     );
   }
@@ -99,14 +119,20 @@ class _PhoneNoWidState extends State<PhoneNoWid> {
 
 // ignore: must_be_immutable
 class EmailWid extends StatefulWidget {
-  Function(String) onSaved;
-  Function(String) onChanged;
-  String initValue;
+  Function(String?)? onSaved;
+  Function(String?)? onChanged;
+  String? initValue;
   final bool enable;
   final bool isOptional;
 
-  EmailWid({Key key, @required this.onSaved, this.onChanged, this.initValue,
-  this.enable = true, this.isOptional = true}) : super(key: key);
+  EmailWid(
+      {Key? key,
+      required this.onSaved,
+      this.onChanged,
+      this.initValue,
+      this.enable = true,
+      this.isOptional = true})
+      : super(key: key);
 
   @override
   _EmailWidState createState() => _EmailWidState();
@@ -128,40 +154,49 @@ class _EmailWidState extends State<EmailWid> {
         onChanged: widget.onChanged,
         initialValue: widget.initValue,
         enabled: widget.enable,
-        validator: emailValidate, //(value) => DmUtils.isNotEmail(value) ? S.current.invalidEmail : null,
+        validator:
+            emailValidate, //(value) => DmUtils.isNotEmail(value) ? S.current.invalidEmail : null,
         decoration: new InputDecoration(
           hintText: S.current.email,
           hintStyle: txtStyleAccent,
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+          enabledBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: DmConst.accentColor)),
           prefixIcon: Icon(Icons.email, color: DmConst.accentColor),
         ),
       ),
     );
   }
 
-  String emailValidate(String value) {
-    if(widget.isOptional) {
-      if(value == null || value.trim().length == 0) {
+  String? emailValidate(String? value) {
+    if (widget.isOptional) {
+      if (value!.trim().length == 0) {
         return null;
       } else {
-        return DmUtils.isNotEmail(value) ? S.current.invalidEmail : null;
+        return DmUtils.isNotEmail(value)! ? S.current.invalidEmail : null;
       }
     } else {
-      return DmUtils.isNotEmail(value) ? S.current.invalidEmail : null;
+      return DmUtils.isNotEmail(value!) ? S.current.invalidEmail : null;
     }
   }
 }
 
 // ignore: must_be_immutable
 class PasswordWid extends StatefulWidget {
-  Function(String) onSaved;
-  Function(String) onChanged;
-  String initValue;
+  Function(String?)? onSaved;
+  Function(String?)? onChanged;
+  String? initValue;
   final bool enable;
 
-  PasswordWid({Key key, @required this.onSaved, this.onChanged, this.initValue,
-    this.enable = true}) : super(key: key);
+  PasswordWid(
+      {Key? key,
+      required this.onSaved,
+      this.onChanged,
+      this.initValue,
+      this.enable = true})
+      : super(key: key);
   @override
   _PasswordWidState createState() => _PasswordWidState();
 }
@@ -188,13 +223,16 @@ class _PasswordWidState extends State<PasswordWid> {
         onChanged: widget.onChanged,
         enabled: widget.enable,
         initialValue: widget.initValue,
-        validator: (input) => input.length < 4 ? S.current.passwordNote : null,
+        validator: (input) => input!.length < 4 ? S.current.passwordNote : null,
         obscureText: hidePassword,
         decoration: new InputDecoration(
           hintText: S.current.password,
           hintStyle: txtStyleAccent,
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+          enabledBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: DmConst.accentColor)),
           prefixIcon: Icon(Icons.lock_outline, color: DmConst.accentColor),
           suffixIcon: IconButton(
             onPressed: () {
@@ -211,14 +249,13 @@ class _PasswordWidState extends State<PasswordWid> {
   }
 }
 
-
 // ignore: must_be_immutable
 class PasswordConfirmWid extends StatefulWidget {
-  Function(String) onValidate;
+  String? Function(String?)? onValidate;
   final bool enable;
 
-  PasswordConfirmWid({Key key, @required this.onValidate,
-    this.enable = true}) : super(key: key);
+  PasswordConfirmWid({Key? key, required this.onValidate, this.enable = true})
+      : super(key: key);
   @override
   _PasswordConfirmWidState createState() => _PasswordConfirmWidState();
 }
@@ -247,8 +284,11 @@ class _PasswordConfirmWidState extends State<PasswordConfirmWid> {
         decoration: new InputDecoration(
           hintText: S.current.confirmPassword,
           hintStyle: txtStyleAccent,
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+          enabledBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: DmConst.accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: DmConst.accentColor)),
           prefixIcon: Icon(Icons.lock_outline, color: DmConst.accentColor),
           suffixIcon: IconButton(
             onPressed: () {
@@ -264,5 +304,3 @@ class _PasswordConfirmWidState extends State<PasswordConfirmWid> {
     );
   }
 }
-
-

@@ -13,30 +13,39 @@ class OrderItemWidget extends StatelessWidget {
   final ProductOrder productOrder;
   final Order order;
 
-  const OrderItemWidget({Key key, this.productOrder, this.order, this.heroTag}) : super(key: key);
+  const OrderItemWidget(
+      {Key? key,
+      required this.productOrder,
+      required this.order,
+      required this.heroTag})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Theme.of(context).accentColor,
-      focusColor: Theme.of(context).accentColor,
+      splashColor: Theme.of(context).colorScheme.secondary,
+      focusColor: Theme.of(context).colorScheme.secondary,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Tracking', arguments: RouteArgument(id: order.id, heroTag: this.heroTag));
+        Navigator.of(context).pushNamed('/Tracking',
+            arguments: RouteArgument(id: order.id, heroTag: this.heroTag));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.9),
           boxShadow: [
-            BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+            BoxShadow(
+                color: Theme.of(context).focusColor.withOpacity(0.1),
+                blurRadius: 5,
+                offset: Offset(0, 2)),
           ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: heroTag + productOrder?.id.toString(),
+              tag: heroTag + productOrder.id.toString(),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
 //                child: CachedNetworkImage(
@@ -52,7 +61,10 @@ class OrderItemWidget extends StatelessWidget {
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                  child: createNetworkImage(url: productOrder.product.image.thumb, width: 60, height: 60),
+                child: createNetworkImage(
+                    url: productOrder.product!.image!.thumb!,
+                    width: 60,
+                    height: 60),
               ),
             ),
             SizedBox(width: 15),
@@ -67,13 +79,13 @@ class OrderItemWidget extends StatelessWidget {
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          productOrder.product.name,
+                          productOrder.product!.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          productOrder.product.store.name,
+                          productOrder.product!.store!.name,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
@@ -82,7 +94,7 @@ class OrderItemWidget extends StatelessWidget {
 //                          overflow: TextOverflow.ellipsis,
 //                          style: Theme.of(context).textTheme.bodyText2,
 //                        ),
-                        SizedBox(height:10),
+                        SizedBox(height: 10),
 //                        Text(
 //                          DateFormat('yyyy-MM-dd').format(productOrder),
 //                          style: Theme.of(context).textTheme.bodyText2,
@@ -95,13 +107,18 @@ class OrderItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Helper.getPrice(Helper.getTotalOrderPrice(productOrder, order.tax, order.deliveryFee), context,
+                      Helper.getPrice(
+                          Helper.getTotalOrderPrice(
+                              productOrder, order.tax, order.deliveryFee),
+                          context,
                           style: Theme.of(context).textTheme.headline4),
                       //SizedBox(height:8),
                       Chip(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         backgroundColor: Colors.transparent,
-                        shape: StadiumBorder(side: BorderSide(color: Theme.of(context).focusColor)),
+                        shape: StadiumBorder(
+                            side: BorderSide(
+                                color: Theme.of(context).focusColor)),
                         label: Text(
                           'X ${productOrder.quantity}',
                           style: TextStyle(color: Theme.of(context).focusColor),
@@ -111,7 +128,6 @@ class OrderItemWidget extends StatelessWidget {
 //                        DateFormat('HH:mm').format(productOrder.dateTime),
 //                        style: Theme.of(context).textTheme.bodyText2,
 //                      ),
-
                     ],
                   ),
                 ],

@@ -8,23 +8,22 @@ import '../controllers/search_controller.dart';
 //import '../widgets/CardWidget.dart';
 import '../widgets/CircularLoadingWidget.dart';
 import '../widgets/ProductItemSearchResult.dart';
-import '../models/route_argument.dart';
 import 'toolbars/SearchBar.dart';
 
 class SearchResultWidget extends StatefulWidget {
   final String heroTag;
 
-  SearchResultWidget({Key key, this.heroTag}) : super(key: key);
+  SearchResultWidget({Key? key, required this.heroTag}) : super(key: key);
 
   @override
   _SearchResultWidgetState createState() => _SearchResultWidgetState();
 }
 
 class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
-  SearchController _con;
+  SearchController _con = SearchController();
 
   _SearchResultWidgetState() : super(SearchController()) {
-    _con = controller;
+    _con = controller as SearchController;
   }
 
   @override
@@ -64,11 +63,15 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
-            child: SearchWid(onTapOnSearchIcon: _onTapOnSearchIcon, onSubmitted: _onSubmitted,
-            onTextChanged: _onSearchStrChanged, isEditable: true),
+            child: SearchWid(
+              onTapOnSearchIcon: _onTapOnSearchIcon,
+              onSubmitted: _onSubmitted,
+              onTextChanged: _onSearchStrChanged, hintText: '',
+              // isEditable: true
+            ),
           ),
           buildRecentSearches(context),
-           _con.products.isEmpty
+          _con.products.isEmpty
               ? CircularLoadingWidget(height: 288)
               : Expanded(
                   child: ListView(
@@ -142,25 +145,26 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
 
   _onSubmitted(String value) {
     print('_onSubmitted');
-    if(value != null && value.trim().isNotEmpty) {
+    if (value.trim().isNotEmpty) {
       _con.search(value.trim());
     }
   }
 
   _onSearchStrChanged(String value) {
     print('_onSearchStrChanged');
-    if(value != null && value.trim().isNotEmpty) {
-    }
+    if (value.trim().isNotEmpty) {}
   }
 
   Widget buildRecentSearches(BuildContext context) {
-    if(DmState.recentSearches == null) {
+    if (DmState.recentSearches == null) {
       return SizedBox(height: 10);
     }
     return Column(
-      children: List.generate(math.min(5, DmState.recentSearches.length), (index) {
-        return Container(padding: EdgeInsets.all(8),
-        child: Text('${DmState.recentSearches[index]}'));
+      children:
+          List.generate(math.min(5, DmState.recentSearches!.length), (index) {
+        return Container(
+            padding: EdgeInsets.all(8),
+            child: Text('${DmState.recentSearches![index]}'));
       }),
     );
   }

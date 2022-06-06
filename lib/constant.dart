@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DmConst {
-  static String deviceToken;
+  static String deviceToken = '';
+
   ///dateFormat = 'yyyy-MM-dd';
   static const String dateFormat = 'yyyy-MM-dd';
 
@@ -12,7 +11,6 @@ class DmConst {
   static const String dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
   static final DateFormat datetimeFormatter = DateFormat(dateTimeFormat);
   static final DateFormat dateFormatter = DateFormat(dateFormat);
-
 
   static const Color accentColor = Color(0xff1DA5BE);
   static Color textColorForTopBar = Color(0xff1DA5BE);

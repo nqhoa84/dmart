@@ -8,8 +8,13 @@ class IconWithText extends StatelessWidget {
   final TextStyle style;
 //  final EdgeInsets padding;
 
-  const IconWithText({Key key, this.title = '', this.icon = Icons.info_outline,
-    this.color = DmConst.accentColor, this.style = const TextStyle(color: DmConst.accentColor)}) : super(key: key);
+  const IconWithText(
+      {Key? key,
+      this.title = '',
+      this.icon = Icons.info_outline,
+      this.color = DmConst.accentColor,
+      this.style = const TextStyle(color: DmConst.accentColor)})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +27,7 @@ class IconWithText extends StatelessWidget {
           child: Icon(icon, color: color),
         ),
         Expanded(
-          child: Text(
-            title,
-            style: this.style.copyWith(color: this.color)
-          ),
+          child: Text(title, style: this.style.copyWith(color: this.color)),
         ),
       ],
     );

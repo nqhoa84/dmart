@@ -1,55 +1,65 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/api_result.dart';
 import 'package:dmart/src/repository/user_repository.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../generated/l10n.dart';
-import '../models/user.dart';
 import '../models/i_name.dart';
+import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'controller.dart';
 
 class RegController extends Controller {
-  User user = new User();
-  bool hidePassword = true, hidePassword2 = true;
+  User? user = new User();
+  bool? hidePassword = true, hidePassword2 = true;
   bool loading = false;
-  GlobalKey<FormState> regFormKey;
-  GlobalKey<FormState> locationFormKey;
-  GlobalKey<FormState> personalFormKey;
-  OverlayEntry loader;
+  GlobalKey<FormState>? regFormKey;
+  GlobalKey<FormState>? locationFormKey;
+  GlobalKey<FormState>? personalFormKey;
+  OverlayEntry? loader;
 
-  Address address = new Address();
-  bool isRegMobileExistedReg = false;
+  Address? address = new Address();
+  bool? isRegMobileExistedReg = false;
 
-  List<Province> provinces = [];
-  List<District> districts = [];
-  List<Ward> wards = [];
+  List<Province>? provinces = [];
+  List<District>? districts = [];
+  List<Ward>? wards = [];
 
   int otpExpInSeconds = 300;
   int get otpSecond => otpExpInSeconds % 60;
   int get otpMin => otpExpInSeconds ~/ 60;
 
-  RegController() {
+  RegController({
+    this.hidePassword,
+    this.regFormKey,
+    this.locationFormKey,
+    this.personalFormKey,
+    this.loader,
+    this.isRegMobileExistedReg,
+    this.provinces,
+    this.districts,
+    this.wards,
+  }) {
     regFormKey = GlobalKey<FormState>();
     locationFormKey = GlobalKey<FormState>();
     personalFormKey = GlobalKey<FormState>();
     this.scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
-  String OTP;
-  Timer _timer;
+  String? OTP;
+  Timer? _timer;
   void register() async {
     if (loading) return;
     print('Start registering');
     // FocusScope.of(context).unfocus();
     loading = true;
-    regFormKey.currentState.save();
-    if (regFormKey.currentState.validate()) {
+    regFormKey!.currentState!.save();
+    if (regFormKey!.currentState!.validate()) {
 //      Overlay.of(context).insert(loader);
-      OTP = await userRepo.register(user);
+      OTP = await userRepo.register(user!);
       startTimerResendOtp();
 //      repository.register(user).then((value) {
 //        if (DmUtils.isNotNullEmptyStr(value)) { //register ok
@@ -75,32 +85,32 @@ class RegController extends Controller {
 
   void startTimerResendOtp() {
     this.otpExpInSeconds = 300;
-    if(_timer != null) _timer.cancel();
+    _timer!.cancel();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() => this.otpExpInSeconds--);
-      if(this.otpExpInSeconds <= 0) {
+      if (this.otpExpInSeconds <= 0) {
         setState(() => this.OTP = '');
         timer.cancel();
       }
     });
   }
 
-  Future<User> verifyOtpRegFb() async {
-//    if (loading) return currentUser.value;
-//    setState(()=>loading = true);
-//    //TODO check here
-//    User u = await userRepo.verifyOtpToCompleteRegFb(user.phone, OTP);
-//    if(u.isValid) currentUser.value = u;
-//    setState(()=>loading = false);
-//    return u;
-  }
+//   Future<User?> verifyOtpRegFb() async {
+// //    if (loading) return currentUser.value;
+// //    setState(()=>loading = true);
+// //    //TODO check here
+// //    User u = await userRepo.verifyOtpToCompleteRegFb(user.phone, OTP);
+// //    if(u.isValid) currentUser.value = u;
+// //    setState(()=>loading = false);
+// //    return u;
+//   }
 
   Future<User> verifyOtp() async {
     if (loading) return currentUser.value;
-    setState(()=>loading = true);
-    User u = await userRepo.verifyOtp(user.phone, OTP);
-    if(u.isValid) currentUser.value = u;
-    setState(()=>loading = false);
+    setState(() => loading = true);
+    User? u = await userRepo.verifyOtp(user!.phone, OTP!);
+    if (u!.isValid) currentUser.value = u;
+    setState(() => loading = false);
     return u;
   }
 
@@ -108,13 +118,13 @@ class RegController extends Controller {
     if (loading) return;
     loading = true;
     try {
-      OTP = await userRepo.resendOtp(user.phone);
-      if(OTP != null) startTimerResendOtp();
+      OTP = await userRepo.resendOtp(user!.phone);
+      startTimerResendOtp();
     } finally {
       loading = false;
     }
     loading = false;
-    if(OTP != null) {
+    if (OTP != null) {
       showMsg(S.current.resendOtpSuccess);
     } else {
       showMsg(S.current.generalErrorMessage);
@@ -122,7 +132,7 @@ class RegController extends Controller {
   }
 
   void getProvinces() async {
-    if(loading) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -135,7 +145,7 @@ class RegController extends Controller {
   }
 
   void getDistricts(int provinceId) async {
-    if(loading) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -146,11 +156,10 @@ class RegController extends Controller {
       this.districts = dis;
       loading = false;
     });
-
   }
 
   void getWards(int districtId) async {
-    if(loading) return;
+    if (loading) return;
     setState(() {
       loading = true;
     });
@@ -161,23 +170,22 @@ class RegController extends Controller {
       this.wards = dis;
       loading = false;
     });
-
   }
 
   Future<bool> addAddress() async {
     if (loading) return false;
     setLoadingOn();
     try {
-      var re = await userRepo.addAddress(address);
-      if(re.isSuccess) {
-        re.data.sort(IdObj.idComparerDescending);
-        if(re.data.isNotEmpty) {
-          this.address = re.data.first;
+      var re = await userRepo.addAddress(address!);
+      if (re.isSuccess!) {
+        re.data!.sort(IdObj.idComparerDescending);
+        if (re.data!.isNotEmpty) {
+          this.address = re.data!.first;
         }
         showMsg(S.current.newAddressAdded);
       }
       setLoadingOff();
-      return re.isSuccess;
+      return re.isSuccess!;
     } catch (e, trace) {
       print("$e $trace");
       showMsg(S.current.generalErrorMessage);
@@ -192,15 +200,15 @@ class RegController extends Controller {
     // User re;
     try {
       loading = true;
-      var re = await userRepo.update(user);
+      var re = await userRepo.update(user!);
       loading = false;
-      if (re.isSuccess) {
+      if (re.isSuccess!) {
         showMsg(S.current.accountInfoUpdated);
         this.user = re.data;
         return true;
       } else {
         // showErrGeneral();
-        showMsg(re.message);
+        showMsg(re.message!);
       }
     } on Exception catch (e, trace) {
       loading = false;
@@ -214,13 +222,11 @@ class RegController extends Controller {
     if (loading) return;
     setState(() => loading = true);
 
-    regFormKey.currentState.save();
-    if (regFormKey.currentState.validate()) {
+    regFormKey!.currentState!.save();
+    if (regFormKey!.currentState!.validate()) {
 //      Overlay.of(context).insert(loader);
-      ApiResult re = await userRepo.registerFb(user);
-      if(re.isSuccess == true) {
-
-      }
+      ApiResult re = await userRepo.registerFb(user!);
+      if (re.isSuccess == true) {}
 
       startTimerResendOtp();
 //      repository.register(user).then((value) {
@@ -244,5 +250,4 @@ class RegController extends Controller {
     }
     setState(() => loading = false);
   }
-
 }

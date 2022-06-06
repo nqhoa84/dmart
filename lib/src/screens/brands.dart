@@ -1,8 +1,6 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -13,7 +11,7 @@ import '../../src/widgets/DrawerWidget.dart';
 
 class BrandsWidget extends StatefulWidget {
   const BrandsWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -21,10 +19,10 @@ class BrandsWidget extends StatefulWidget {
 }
 
 class _BrandsWidgetState extends StateMVC<BrandsWidget> {
-  BrandController _con;
+  BrandController _con = BrandController();
 
   _BrandsWidgetState() : super(BrandController()) {
-    _con = controller;
+    _con = controller as BrandController;
   }
 
   @override
@@ -34,11 +32,10 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
   }
 
   Widget buildContent(BuildContext context) {
-    if (_con.brands.isEmpty)  {
+    if (_con.brands!.isEmpty) {
       return NameImageItemGridViewLoading();
-    } else
-    {
-      return CategoriesGridView(items: _con.brands);
+    } else {
+      return CategoriesGridView(items: _con.brands!);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }
@@ -46,7 +43,8 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
 //      endDrawer: FilterWidget(onFilter: (Filter f) {
 //        print('selected filter: $f');
@@ -57,7 +55,8 @@ class _BrandsWidgetState extends StateMVC<BrandsWidget> {
         child: CustomScrollView(slivers: <Widget>[
           createSliverTopBar(context),
           createSliverSearch(context),
-          createSilverTopMenu(context, haveBackIcon: true, title: S.current.brands),
+          createSilverTopMenu(context,
+              haveBackIcon: true, title: S.current.brands),
           SliverList(
             delegate: SliverChildListDelegate([
               buildContent(context),

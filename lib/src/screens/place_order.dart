@@ -1,5 +1,4 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:dmart/src/controllers/delivery_pickup_controller.dart';
 import 'package:dmart/src/controllers/order_controller.dart';
 import 'package:dmart/src/helpers/ui_icons.dart';
 import 'package:dmart/src/models/cart.dart';
@@ -11,7 +10,6 @@ import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:dmart/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../DmState.dart';
@@ -19,8 +17,6 @@ import '../../buidUI.dart';
 import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../widgets/cart_bottom_button.dart';
-import 'contactus.dart';
-import 'delivery_to.dart';
 
 class PlaceOrderScreen extends StatefulWidget {
   Order order;
@@ -32,13 +28,13 @@ class PlaceOrderScreen extends StatefulWidget {
 }
 
 class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
-  OrderController _con;
+  OrderController _con = OrderController();
   DatePickerController _datePickerController = DatePickerController();
 
-  String voucher;
+  String? voucher;
 
   _PlaceOrderScreenState() : super(OrderController()) {
-    _con = controller;
+    _con = controller as OrderController;
     _con.scaffoldKey = GlobalKey<ScaffoldState>();
   }
 
@@ -47,7 +43,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
     _con.order = widget.order;
     DmState.cartsValue.addListener(() {
       setState(() {
-        _con.order.applyCarts(DmState.carts);
+        _con.order!.applyCarts(DmState.carts);
       });
     });
     super.initState();
@@ -64,7 +60,8 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       child: Scaffold(
         key: _con.scaffoldKey,
 //        appBar: createAppBar(context, _con.scaffoldKey),
-        bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+        bottomNavigationBar:
+            DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
         body: SafeArea(
           child: Stack(
             children: [
@@ -72,7 +69,8 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
                 slivers: <Widget>[
                   createSliverTopBar(context),
                   createSliverSearch(context),
-                  createSilverTopMenu(context, haveBackIcon: true, title: S.current.myCart),
+                  createSilverTopMenu(context,
+                      haveBackIcon: true, title: S.current.myCart),
                   SliverList(
                     delegate: SliverChildListDelegate([
                       buildContent(context),
@@ -91,15 +89,25 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
   }
 
   Widget _createSummaryRow(BuildContext context, String text1, String text2,
-      {bool isBold = false, TextAlign txtAlign1 = TextAlign.start, TextAlign txtAlign2 = TextAlign.end}) {
+      {bool isBold = false,
+      TextAlign txtAlign1 = TextAlign.start,
+      TextAlign txtAlign2 = TextAlign.end}) {
     if (isBold)
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Row(
           children: [
-            Expanded(flex: 2, child: Text(text1, style: TextStyle(fontWeight: FontWeight.bold), textAlign: txtAlign1)),
+            Expanded(
+                flex: 2,
+                child: Text(text1,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: txtAlign1)),
             Text(": "),
-            Expanded(flex: 3, child: Text(text2, style: TextStyle(fontWeight: FontWeight.bold), textAlign: txtAlign2)),
+            Expanded(
+                flex: 3,
+                child: Text(text2,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: txtAlign2)),
           ],
         ),
       );
@@ -129,23 +137,34 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createSummaryRow(context, S.current.date, toDateTimeStr(DateTime.now())),
+          _createSummaryRow(
+              context, S.current.date, toDateTimeStr(DateTime.now())),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.totalItems, '${_con.order.totalItems}'),
+          _createSummaryRow(
+              context, S.current.totalItems, '${_con.order!.totalItems}'),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.orderValue, getDisplayMoney(_con.order.orderVal), isBold: true),
+          _createSummaryRow(context, S.current.orderValue,
+              getDisplayMoney(_con.order!.orderVal),
+              isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.serviceFee, getDisplayMoney(_con.order.serviceFee)),
+          _createSummaryRow(context, S.current.serviceFee,
+              getDisplayMoney(_con.order!.serviceFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.deliveryFee, getDisplayMoney(_con.order.deliveryFee)),
+          _createSummaryRow(context, S.current.deliveryFee,
+              getDisplayMoney(_con.order!.deliveryFee)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.discountVoucher, getDisplayMoney(_con.order.voucherDiscount)),
+          _createSummaryRow(context, S.current.discountVoucher,
+              getDisplayMoney(_con.order!.voucherDiscount)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.total, getDisplayMoney(_con.order.totalBeforeTax), isBold: true),
+          _createSummaryRow(context, S.current.total,
+              getDisplayMoney(_con.order!.totalBeforeTax),
+              isBold: true),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.VAT, getDisplayMoney(_con.order.tax)),
+          _createSummaryRow(
+              context, S.current.VAT, getDisplayMoney(_con.order!.tax)),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.grandTotal.toUpperCase(), getDisplayMoney(_con.order.grandTotal),
+          _createSummaryRow(context, S.current.grandTotal.toUpperCase(),
+              getDisplayMoney(_con.order!.grandTotal),
               isBold: true),
         ],
       ),
@@ -158,15 +177,20 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          _createSummaryRow(context, S.current.fullName, widget.order.deliveryAddress.fullName,
+          _createSummaryRow(context, S.current.fullName,
+              widget.order.deliveryAddress!.fullName!,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.phone, widget.order.deliveryAddress.phone,
+          _createSummaryRow(
+              context, S.current.phone, widget.order.deliveryAddress!.phone,
               txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.date, widget.order.getDeliverDateSlot, txtAlign2: TextAlign.start),
+          _createSummaryRow(
+              context, S.current.date, widget.order.getDeliverDateSlot,
+              txtAlign2: TextAlign.start),
           Divider(thickness: 1, color: Colors.grey.shade400, height: 5),
-          _createSummaryRow(context, S.current.address, widget.order.deliveryAddress.getFullAddress,
+          _createSummaryRow(context, S.current.address,
+              widget.order.deliveryAddress!.getFullAddress,
               txtAlign2: TextAlign.start),
         ],
       ),
@@ -190,8 +214,12 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
 //                            validator: (input) => !input.contains('@') ? S.current.invalidAddress : null,
               decoration: new InputDecoration(
                 hintText: S.current.voucherCode,
-                hintStyle: Theme.of(context).textTheme.bodyText2.copyWith(color: DmConst.accentColor),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DmConst.accentColor)),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(color: DmConst.accentColor),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: DmConst.accentColor)),
                 prefixIcon: Icon(UiIcons.gift),
 //                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade400)),
               ),
@@ -207,23 +235,21 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
     );
   }
 
-
   bool isSavingOrder = false;
   Future<void> onPressedOnPlaceOrder() async {
     print('onPressedOnPlaceOrder--------');
 //    Navigator.of(context).pushReplacementNamed('/OrderSuccess');
-    if(isSavingOrder) return;
+    if (isSavingOrder) return;
 //    isSavingOrder = true;
 
-    if(_con.checkOrderBeforePost()) {
+    if (_con.checkOrderBeforePost()) {
       Order savedOrder = await _con.saveOrder();
-      if(savedOrder != null && savedOrder.id > 0) {
+      if (savedOrder.id > 0) {
         DmState.refreshCart([]);
 //        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)));
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => OrderSuccessScreen(savedOrder)),
-                (Route<dynamic> route) => false
-        );
+            (Route<dynamic> route) => false);
       }
     }
 
@@ -236,7 +262,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
       height: 80,
       controller: _datePickerController,
       initialSelectedDate: DateTime.now(),
-      selectionColor: Theme.of(context).accentColor,
+      selectionColor: Theme.of(context).colorScheme.secondary,
       selectedTextColor: Colors.white,
 //      inactiveDates: [
 //        DateTime.now().add(Duration(days: 3)),
@@ -253,14 +279,19 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
     );
   }
 
-  Widget _createRowSelectDeliveryTime(String strTime, int status, double diFee) {
+  Widget _createRowSelectDeliveryTime(
+      String strTime, int status, double diFee) {
     if (status == 0) {
       return Row(
         children: [
           Expanded(flex: 7, child: Text('$strTime')),
           Expanded(
               flex: 3,
-              child: OutlineButton(onPressed: null, child: Text(S.current.full), color: DmConst.accentColor)),
+              child: OutlinedButton(
+                onPressed: null,
+                child: Text(S.current.full),
+                // color: DmConst.accentColor
+              )),
         ],
       );
     } else if (status > 0) {
@@ -274,7 +305,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
                 onPressed: () {
                   print('Press on button');
                 },
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
                 child: Text('\$ ${diFee.toStringAsFixed(2)}')),
           ),
         ],
@@ -285,14 +316,16 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
           Expanded(flex: 7, child: Text('$strTime')),
           Expanded(
               flex: 3,
-              child: OutlineButton(
+              child: OutlinedButton(
                   onPressed: () {
                     print('Press on button');
                   },
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  // borderSide: BorderSide(
+                  //     color: Theme.of(context).colorScheme.secondary),
                   child: Text(
                     '\$ ${diFee.toStringAsFixed(2)}',
-                    style: TextStyle(color: Theme.of(context).accentColor),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                   ))),
         ],
       );
@@ -301,11 +334,11 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
 
   void onPressedOnApplyVoucher() {
     print('onPressedOnApplyVoucher $voucher');
-    if(voucher != null && voucher.isNotEmpty) {
+    if (voucher != null && voucher!.isNotEmpty) {
       _con.listenVoucher(code: this.voucher);
     } else {
       setState(() {
-        _con.order.applyVoucher(null);
+        _con.order!.applyVoucher(null);
       });
     }
   }
@@ -318,39 +351,46 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
                   title: S.current.orderSummary,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
             ),
-            Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _createSummaryContainer(context)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _createSummaryContainer(context)),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: DmConst.masterHorizontalPad, vertical: 10),
               child: TitleDivider(
                   title: S.current.voucher,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: DmConst.masterHorizontalPad, vertical: 10),
                 child: _createVoucherRow(context)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(
                   title: S.current.deliverTo,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
             ),
-            Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _createDeliverToContainer(context)),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _createDeliverToContainer(context)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: TitleDivider(
                   title: S.current.itemsList,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
             ),
@@ -365,7 +405,7 @@ class _PlaceOrderScreenState extends StateMVC<PlaceOrderScreen> {
                 DmState.carts.length,
                 (index) {
                   Cart c = DmState.carts.elementAt(index);
-                  Product product = c.product;
+                  Product product = c.product!;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ProductItemWide(

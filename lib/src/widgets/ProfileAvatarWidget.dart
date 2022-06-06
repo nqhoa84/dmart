@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 
 class ProfileAvatarWidget extends StatelessWidget {
-  final User user;
+  final User? user;
   ProfileAvatarWidget({
-    Key key,
-    this.user,
+    Key? key,
+    required this.user,
   }) : super(key: key);
 
   @override
@@ -16,8 +16,9 @@ class ProfileAvatarWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 30),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
       ),
       child: Column(
         children: <Widget>[
@@ -39,7 +40,7 @@ class ProfileAvatarWidget extends StatelessWidget {
 //                ),
 //              ),
                 ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(300)),
+                    borderRadius: BorderRadius.all(Radius.circular(300)),
 //                  child: CachedNetworkImage(
 //                    height: 135,
 //                    width: 135,
@@ -53,8 +54,8 @@ class ProfileAvatarWidget extends StatelessWidget {
 //                    ),
 //                    errorWidget: (context, url, error) => Icon(Icons.error),
 //                  ),
-                    child: createNetworkImage(url: user.avatarUrl, width: 135, height: 135)
-                ),
+                    child: createNetworkImage(
+                        url: user!.avatarUrl, width: 135, height: 135)),
 //              SizedBox(
 //                width: 50,
 //                height: 50,
@@ -70,12 +71,18 @@ class ProfileAvatarWidget extends StatelessWidget {
             ),
           ),
           Text(
-            user.name,
-            style: Theme.of(context).textTheme.headline5.merge(TextStyle(color: Theme.of(context).primaryColor)),
+            user!.name,
+            style: Theme.of(context)
+                .textTheme
+                .headline5!
+                .merge(TextStyle(color: Theme.of(context).primaryColor)),
           ),
           Text(
-            user.address,
-            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+            user!.address!,
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .merge(TextStyle(color: Theme.of(context).primaryColor)),
           ),
         ],
       ),

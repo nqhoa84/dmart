@@ -10,24 +10,30 @@ class ProductItemSearchResult extends StatelessWidget {
   final String heroTag;
   final Product product;
 
-  const ProductItemSearchResult({Key key, this.product, this.heroTag}) : super(key: key);
+  const ProductItemSearchResult(
+      {Key? key, required this.product, required this.heroTag})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Theme.of(context).accentColor,
-      focusColor: Theme.of(context).accentColor,
+      splashColor: Theme.of(context).colorScheme.secondary,
+      focusColor: Theme.of(context).colorScheme.secondary,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Product', arguments: new RouteArgument(id: this.product.id, param: [this.product, this.heroTag]));
-
+        Navigator.of(context).pushNamed('/Product',
+            arguments: new RouteArgument(
+                id: this.product.id, param: [this.product, this.heroTag]));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.9),
           boxShadow: [
-            BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+            BoxShadow(
+                color: Theme.of(context).focusColor.withOpacity(0.1),
+                blurRadius: 5,
+                offset: Offset(0, 2)),
           ],
         ),
         child: Row(
@@ -50,7 +56,8 @@ class ProductItemSearchResult extends StatelessWidget {
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                  child: createNetworkImage(url: product.image.thumb, width: 50, height: 50),
+                child: createNetworkImage(
+                    url: product.image!.thumb!, width: 50, height: 50),
               ),
             ),
             SizedBox(width: 15),
@@ -69,7 +76,7 @@ class ProductItemSearchResult extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
-                          product.store.name,
+                          product.store!.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: Theme.of(context).textTheme.caption,
@@ -78,7 +85,8 @@ class ProductItemSearchResult extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Helper.getPrice(product.price, context, style: Theme.of(context).textTheme.headline6),
+                  Helper.getPrice(product.price!, context,
+                      style: Theme.of(context).textTheme.headline6),
                 ],
               ),
             )

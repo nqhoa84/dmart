@@ -12,7 +12,11 @@ class BrandIconWidget extends StatefulWidget {
   ValueChanged<int> onPressed;
 
   BrandIconWidget(
-      {Key key, this.brand, this.heroTag, this.marginLeft, this.onPressed})
+      {Key? key,
+      required this.brand,
+      required this.heroTag,
+      required this.marginLeft,
+      required this.onPressed})
       : super(key: key);
 
   @override
@@ -32,8 +36,8 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
 
   InkWell buildSelectedBrand(BuildContext context) {
     return InkWell(
-      splashColor: Theme.of(context).accentColor,
-      highlightColor: Theme.of(context).accentColor,
+      splashColor: Theme.of(context).colorScheme.secondary,
+      highlightColor: Theme.of(context).colorScheme.secondary,
       onTap: () {
         setState(() {
           widget.onPressed(widget.brand.id);
@@ -44,7 +48,7 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
         curve: Curves.easeInOut,
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: widget.brand.selected
+          color: widget.brand.selected!
               ? Theme.of(context).primaryColor
               : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
@@ -53,16 +57,19 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
           children: <Widget>[
             Hero(
               tag: widget.heroTag + widget.brand.id.toString(),
-              child: widget.brand.image.url.toLowerCase().endsWith('.svg') ? Container(
-                height: 36,
-                width: 36,
-                child: SvgPicture.network(
-                  widget.brand.image.url,
-                  color: widget.brand.selected?Theme.of(context).accentColor:Theme.of(context).primaryColor,
-                ),
-              )
+              child: widget.brand.image!.url!.toLowerCase().endsWith('.svg')
+                  ? Container(
+                      height: 36,
+                      width: 36,
+                      child: SvgPicture.network(
+                        widget.brand.image!.url!,
+                        color: widget.brand.selected!
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).primaryColor,
+                      ),
+                    )
                   : ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
 //                child: CachedNetworkImage(
 //                  height: 32,
 //                  width: 32,
@@ -76,8 +83,11 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                child: createNetworkImage(url: widget.brand.image.thumb, width: 32, height: 32),
-              ),
+                      child: createNetworkImage(
+                          url: widget.brand.image!.thumb,
+                          width: 32,
+                          height: 32),
+                    ),
             ),
             SizedBox(width: 10),
             AnimatedSize(
@@ -87,8 +97,10 @@ class _BrandIconWidgetState extends State<BrandIconWidget>
               child: Row(
                 children: <Widget>[
                   Text(
-                    widget.brand.selected ? widget.brand.name : '',
-                    style: TextStyle(fontSize: 14, color: Theme.of(context).accentColor),
+                    widget.brand.selected! ? widget.brand.name : '',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.secondary),
                   )
                 ],
               ),

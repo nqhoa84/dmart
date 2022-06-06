@@ -15,10 +15,10 @@ class CheckoutWidget extends StatefulWidget {
 }
 
 class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
-  CheckoutController _con;
+  CheckoutController _con = CheckoutController();
 
   _CheckoutWidgetState() : super(CheckoutController()) {
-    _con = controller;
+    _con = controller as CheckoutController;
   }
   @override
   void initState() {
@@ -36,10 +36,13 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
         centerTitle: true,
         title: Text(
           S.current.checkout,
-          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
-      body: _con.carts.isEmpty
+      body: _con.carts!.isEmpty
           ? CircularLoadingWidget(height: 400)
           : Stack(
               fit: StackFit.expand,
@@ -59,12 +62,14 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               Icons.payment,
                               color: Theme.of(context).hintColor,
                             ),
-                            title: Text('payment_mode',
+                            title: Text(
+                              'payment_mode',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline4,
                             ),
-                            subtitle: Text('select_your_preferred_payment_mode',
+                            subtitle: Text(
+                              'select_your_preferred_payment_mode',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.caption,
@@ -73,12 +78,12 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                         ),
                         SizedBox(height: 20),
                         new CreditCardsWidget(
-                            creditCard: _con.creditCard,
+                            creditCard: _con.creditCard!,
                             onChanged: (creditCard) {
                               _con.updateCreditCard(creditCard);
                             }),
                         SizedBox(height: 40),
-                        setting.value.payPalEnabled
+                        setting.value.payPalEnabled!
                             ? Text(
                                 S.current.orCheckOutWith,
                                 style: Theme.of(context).textTheme.caption,
@@ -87,15 +92,18 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                 height: 0,
                               ),
                         SizedBox(height: 40),
-                        setting.value.payPalEnabled
+                        setting.value.payPalEnabled!
                             ? SizedBox(
                                 width: 320,
                                 child: FlatButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('/PayPal');
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/PayPal');
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 12),
-                                  color: Theme.of(context).focusColor.withOpacity(0.2),
+                                  color: Theme.of(context)
+                                      .focusColor
+                                      .withOpacity(0.2),
                                   shape: StadiumBorder(),
                                   child: Image.asset(
                                     'assets/img/paypal2.png',
@@ -118,8 +126,17 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                        boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .focusColor
+                                  .withOpacity(0.15),
+                              offset: Offset(0, -2),
+                              blurRadius: 5.0)
+                        ]),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width - 40,
                       child: Column(
@@ -134,7 +151,8 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1)
+                              Helper.getPrice(_con.subTotal, context,
+                                  style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
                           SizedBox(height: 3),
@@ -146,7 +164,10 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(_con.carts[0].product.store.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                              Helper.getPrice(
+                                  _con.carts![0].product!.store!.deliveryFee!,
+                                  context,
+                                  style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
                           SizedBox(height: 3),
@@ -154,11 +175,12 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  "${S.current.tax} (${_con.carts[0].product.store.defaultTax}%)",
+                                  "${S.current.tax} (${_con.carts![0].product!.store!.defaultTax}%)",
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
+                              Helper.getPrice(_con.taxAmount!, context,
+                                  style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
                           Divider(height: 30),
@@ -170,7 +192,8 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
                               ),
-                              Helper.getPrice(_con.total, context, style: Theme.of(context).textTheme.headline6)
+                              Helper.getPrice(_con.total, context,
+                                  style: Theme.of(context).textTheme.headline6)
                             ],
                           ),
                           SizedBox(height: 20),
@@ -178,20 +201,27 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             width: MediaQuery.of(context).size.width - 40,
                             child: FlatButton(
                               onPressed: () {
-                                if (_con.creditCard.validated()) {
-                                  Navigator.of(context).pushNamed('/OrderSuccess', arguments: new RouteArgument(param: 'Credit Card (Stripe Gateway)'));
+                                if (_con.creditCard!.validated()) {
+                                  Navigator.of(context).pushNamed(
+                                      '/OrderSuccess',
+                                      arguments: new RouteArgument(
+                                          param:
+                                              'Credit Card (Stripe Gateway)'));
                                 } else {
-                                  _con.scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  _con.scaffoldKey!.currentState!
+                                      .showSnackBar(SnackBar(
                                     content: Text('your_credit_card_not_valid'),
                                   ));
                                 }
                               },
                               padding: EdgeInsets.symmetric(vertical: 14),
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                               shape: StadiumBorder(),
-                              child: Text('confirm_payment',
+                              child: Text(
+                                'confirm_payment',
                                 textAlign: TextAlign.start,
-                                style: TextStyle(color: Theme.of(context).primaryColor),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
                               ),
                             ),
                           ),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
@@ -8,7 +6,6 @@ import 'package:dmart/src/repository/settings_repository.dart' as settingRepo;
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../DmState.dart';
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,12 +18,12 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends StateMVC<SplashScreen> {
 //  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  SplashScreenController _con;
+  SplashScreenController _con = SplashScreenController();
 
   bool _userLoaded = false, _settingLoaded = false;
 
   SplashScreenState() : super(SplashScreenController()) {
-    _con = controller;
+    _con = controller as SplashScreenController;
   }
 
   @override
@@ -35,7 +32,6 @@ class SplashScreenState extends StateMVC<SplashScreen> {
     _con.context = this.context;
 //    loadData();
     Future.delayed(Duration(seconds: 1), () async {
-
       _con.init();
       // _initLocalNotification();
 
@@ -48,11 +44,10 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
       settingRepo.initSettings().whenComplete(() {
         _settingLoaded = true;
-        if(_userLoaded && _settingLoaded) {
+        if (_userLoaded && _settingLoaded) {
           RouteGenerator.gotoHome(context);
         }
       });
-
     });
   }
 
@@ -99,9 +94,11 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   //   // );
   // }
 
-  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload) {
-    print('onDidReceiveLocalNotification: id $id, title $title, body $body, payload $payload');
-  }
+  // static Future onDidReceiveLocalNotification(
+  //     int id, String title, String body, String payload) {
+  //   print(
+  //       'onDidReceiveLocalNotification: id $id, title $title, body $body, payload $payload');
+  // }
 
   void onError(FlutterErrorDetails errDetail) {
     print(errDetail);
@@ -129,7 +126,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
               ),
               SizedBox(height: 50),
               CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).colorScheme.secondary),
               ),
             ],
           ),

@@ -1,19 +1,27 @@
-import 'package:dmart/utils.dart';
 import 'package:global_configuration/global_configuration.dart';
+
+import 'package:dmart/utils.dart';
 
 import 'i_name.dart';
 
-class Media extends IdNameObj{
-  String url;
-  String thumb;
-  String icon;
-  String size;
+class Media extends IdNameObj {
+  String? url;
+  String? thumb;
+  String? icon;
+  String? size;
 
-
-  Media() {
-    url = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
-    thumb = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
-    icon = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+  Media({
+    this.url,
+    this.thumb,
+    this.icon,
+    this.size,
+  }) {
+    url =
+        "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+    thumb =
+        "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+    icon =
+        "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
   }
 
   Media.fromJSON(Map<String, dynamic> jsonMap) {
@@ -22,17 +30,19 @@ class Media extends IdNameObj{
       nameEn = toStringVal(jsonMap['name']);
       this.nameKh = nameEn;
       url = toStringVal(jsonMap['url']);
-      url = url.replaceFirst('http:', 'https:');
+      url = url?.replaceFirst('http:', 'https:');
       thumb = toStringVal(jsonMap['thumb']);
       icon = toStringVal(jsonMap['icon']);
       size = toStringVal(jsonMap['formated_size']);
     } catch (e, trace) {
-      url = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
-      thumb = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
-      icon = "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      url =
+          "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      thumb =
+          "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
+      icon =
+          "${GlobalConfiguration().getValue('base_url')}images/image_default.png";
 
       print('Error parsing data in Media $e \n $trace');
-
     }
   }
 

@@ -1,9 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/helpers/ui_icons.dart';
-import 'package:dmart/src/models/ProductType.dart';
-import 'package:dmart/src/models/brand.dart';
-import 'package:dmart/src/models/category.dart';
 import 'package:dmart/src/models/user.dart';
 import 'package:dmart/src/repository/user_repository.dart';
 import 'package:expandable/expandable.dart';
@@ -23,7 +20,9 @@ class DmAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool canBack = true;
   final String title = 'title';
 
-  DmAppBar({Key key, double height=125.0}) : preferredSize = Size.fromHeight(height), super(key: key);
+  DmAppBar({Key? key, double height = 125.0})
+      : preferredSize = Size.fromHeight(height),
+        super(key: key);
 
   @override
   final Size preferredSize;
@@ -36,7 +35,7 @@ class DmAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DmAppBarState extends State<DmAppBar> {
-  ExpandableController _controller;
+  ExpandableController _controller = ExpandableController();
 
   @override
   void initState() {
@@ -83,8 +82,10 @@ class _DmAppBarState extends State<DmAppBar> {
                       child: Column(
                         children: <Widget>[
                           ExpandablePanel(
+                            collapsed: Text('collapsed'),
                             theme: const ExpandableThemeData(
-                              headerAlignment: ExpandablePanelHeaderAlignment.center,
+                              headerAlignment:
+                                  ExpandablePanelHeaderAlignment.center,
                               tapBodyToExpand: true,
                               tapBodyToCollapse: true,
                               hasIcon: false,
@@ -112,7 +113,7 @@ class _DmAppBarState extends State<DmAppBar> {
               padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(currentUser.value.avatarUrl),
+                backgroundImage: NetworkImage(currentUser.value.avatarUrl!),
 //          child: Image.network(currentUser.value.image.thumb),
 //          child: Image.network(
 //            '${user.image.thumb}',
@@ -132,13 +133,10 @@ class _DmAppBarState extends State<DmAppBar> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(user.name ?? S
-                      .of(context)
-                      .unknown),
-                  Text('${S
-                      .of(context)
-                      .credit}: ${currentUser.value.credit}',
-                      style: TextStyle(color: DmConst.textColorForTopBarCredit)),
+                  Text(user.name ?? S.of(context)!.unknown),
+                  Text('${S.of(context)!.credit}: ${currentUser.value.credit}',
+                      style:
+                          TextStyle(color: DmConst.textColorForTopBarCredit)),
                 ],
               ),
             ),
@@ -149,26 +147,21 @@ class _DmAppBarState extends State<DmAppBar> {
           children: <Widget>[
             CircleAvatar(
               backgroundColor: Colors.transparent,
-              child: Image.asset('assets/img/H_User_Icon.png', width: 40, height: 40, fit: BoxFit.scaleDown),
+              child: Image.asset('assets/img/H_User_Icon.png',
+                  width: 40, height: 40, fit: BoxFit.scaleDown),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(S
-                    .of(context)
-                    .guest),
-                Text('${S
-                    .of(context)
-                    .credit}:'),
+                Text(S.of(context)!.guest),
+                Text('${S.of(context)!.credit}:'),
               ],
             ),
           ],
         );
       }
     }
-
-
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -183,13 +176,12 @@ class _DmAppBarState extends State<DmAppBar> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
-                      child: _createUserInfoRowOnTopBar(context, user)
-                  ),
+                  Expanded(child: _createUserInfoRowOnTopBar(context, user)),
                   InkWell(
                     onTap: () => RouteGenerator.gotoHome(context),
                     child: Container(
-                        child: Image.asset(DmConst.assetImgLogo, width: 46, height: 46, fit: BoxFit.scaleDown)),
+                        child: Image.asset(DmConst.assetImgLogo,
+                            width: 46, height: 46, fit: BoxFit.scaleDown)),
                   ),
                   Expanded(
                     child: Align(
@@ -210,8 +202,9 @@ class _DmAppBarState extends State<DmAppBar> {
               ),
               Divider(height: 4, thickness: 2, color: DmConst.accentColor),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
-                child: SearchBar( ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
+                child: SearchBar(),
               ),
 //                GridView.count(
 //                  scrollDirection: Axis.horizontal,
@@ -235,11 +228,15 @@ class _DmAppBarState extends State<DmAppBar> {
   List<Widget> buildMenu(BuildContext context) {
 //    TextStyle ts = Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white);
     TextStyle ts = TextStyle(color: Colors.white);
-    bool haveReset =
-        widget.types.isNotEmpty || widget.cates.isNotEmpty || widget.brands.isNotEmpty || widget.sorts.isNotEmpty;
+    bool haveReset = widget.types.isNotEmpty ||
+        widget.cates.isNotEmpty ||
+        widget.brands.isNotEmpty ||
+        widget.sorts.isNotEmpty;
     List<Widget> re = [];
     if (widget.canBack) {
-      re.add(Expanded(child: Align(alignment: Alignment.topLeft, child: buildBackButton(context))));
+      re.add(Expanded(
+          child: Align(
+              alignment: Alignment.topLeft, child: buildBackButton(context))));
     }
 
     if (haveReset) {
@@ -254,7 +251,7 @@ class _DmAppBarState extends State<DmAppBar> {
       ));
     }
 
-    if (widget.types != null && widget.types.isNotEmpty) {
+    if (widget.types.isNotEmpty) {
       re.add(Container(
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
@@ -275,7 +272,7 @@ class _DmAppBarState extends State<DmAppBar> {
       ));
     }
 
-    if (widget.cates != null && widget.cates.isNotEmpty) {
+    if (widget.cates.isNotEmpty) {
       re.add(Container(
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
@@ -296,7 +293,7 @@ class _DmAppBarState extends State<DmAppBar> {
       ));
     }
 
-    if (widget.brands != null && widget.brands.isNotEmpty) {
+    if (widget.brands.isNotEmpty) {
       re.add(Container(
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
@@ -317,7 +314,7 @@ class _DmAppBarState extends State<DmAppBar> {
       ));
     }
 
-    if (widget.sorts != null && widget.sorts.isNotEmpty) {
+    if (widget.sorts.isNotEmpty) {
       re.add(Container(
         decoration: BoxDecoration(
           border: Border(left: BorderSide(color: Colors.white, width: 1.5)),
@@ -337,7 +334,7 @@ class _DmAppBarState extends State<DmAppBar> {
         ),
       ));
     }
-    if (widget.title != null && widget.title.isNotEmpty) {
+    if (widget.title.isNotEmpty) {
       re.add(Container(
           height: DmConst.appBarHeight,
           decoration: BoxDecoration(
@@ -379,7 +376,10 @@ class _DmAppBarState extends State<DmAppBar> {
             ),
             Text(
               "Items",
-              style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: Colors.white),
             ),
           ],
         ),

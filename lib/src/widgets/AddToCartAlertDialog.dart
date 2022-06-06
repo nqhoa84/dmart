@@ -11,10 +11,10 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
   final ProductBoolFunc onPressed;
 
   const AddToCartAlertDialogWidget({
-    Key key,
-    @required this.oldProduct,
-    @required this.newProduct,
-    @required this.onPressed,
+    Key? key,
+    required this.oldProduct,
+    required this.newProduct,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -27,13 +27,14 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
-            child: Text( 'you_must_add_products_of_the_same_stores_choose_one',
+            child: Text(
+              'you_must_add_products_of_the_same_stores_choose_one',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
           InkWell(
-            splashColor: Theme.of(context).accentColor,
-            focusColor: Theme.of(context).accentColor,
+            splashColor: Theme.of(context).colorScheme.secondary,
+            focusColor: Theme.of(context).colorScheme.secondary,
             highlightColor: Theme.of(context).primaryColor,
             onTap: () {
               onPressed(newProduct, reset: true);
@@ -44,21 +45,26 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.9),
                 boxShadow: [
-                  BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), blurRadius: 5, offset: Offset(0, 2)),
+                  BoxShadow(
+                      color: Theme.of(context).focusColor.withOpacity(0.15),
+                      blurRadius: 5,
+                      offset: Offset(0, 2)),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Hero(
-                    tag: 'new_store' + this.newProduct?.store?.id.toString(),
+                    tag: 'new_store' + this.newProduct.store!.id.toString(),
                     child: Container(
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         image: DecorationImage(
-                            image: NetworkImage(this.newProduct?.store?.image?.thumb), fit: BoxFit.cover),
+                            image: NetworkImage(
+                                this.newProduct.store!.image!.thumb!),
+                            fit: BoxFit.cover),
                       ),
                     ),
                   ),
@@ -72,13 +78,14 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                this.newProduct.store.name,
+                                this.newProduct.store!.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
-                              Text( 'reset_your_cart_and_order_meals_form_this_store',
+                              Text(
+                                'reset_your_cart_and_order_meals_form_this_store',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -93,8 +100,8 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
           ),
           SizedBox(height: 20),
           InkWell(
-            splashColor: Theme.of(context).accentColor,
-            focusColor: Theme.of(context).accentColor,
+            splashColor: Theme.of(context).colorScheme.secondary,
+            focusColor: Theme.of(context).colorScheme.secondary,
             highlightColor: Theme.of(context).primaryColor,
             onTap: () {
               Navigator.of(context).pop();
@@ -104,21 +111,26 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.9),
                 boxShadow: [
-                  BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), blurRadius: 5, offset: Offset(0, 2)),
+                  BoxShadow(
+                      color: Theme.of(context).focusColor.withOpacity(0.15),
+                      blurRadius: 5,
+                      offset: Offset(0, 2)),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Hero(
-                    tag: 'old_store' + this.oldProduct.store.id.toString(),
+                    tag: 'old_store' + this.oldProduct.store!.id.toString(),
                     child: Container(
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
-                        image:
-                            DecorationImage(image: NetworkImage(this.oldProduct.store.image.thumb), fit: BoxFit.cover),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                this.oldProduct.store!.image!.thumb!),
+                            fit: BoxFit.cover),
                       ),
                     ),
                   ),
@@ -132,13 +144,14 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                this.oldProduct.store.name,
+                                this.oldProduct.store!.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
-                              Text( 'keep_your_old_meals_of_this_store',
+                              Text(
+                                'keep_your_old_meals_of_this_store',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],

@@ -1,18 +1,11 @@
-import 'dart:ffi';
-
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/models/promotion.dart';
-import 'package:dmart/src/models/route_argument.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/painting.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../../src/helpers/app_config.dart' as config;
 import 'package:flutter/material.dart';
 import '../controllers/promotion_controller.dart';
+import '../models/promotion.dart';
 import 'CardsCarouselLoaderWidget.dart';
 
 class HomePromotionsSlider extends StatefulWidget {
@@ -22,10 +15,10 @@ class HomePromotionsSlider extends StatefulWidget {
 
 class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
   int _current = 0;
-  PromotionController _con;
+  PromotionController _con = PromotionController();
 
   _HomePromotionsSliderState() : super(PromotionController()) {
-    _con = controller;
+    _con = controller as PromotionController;
   }
 
   @override
@@ -44,13 +37,16 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
             ? CardsCarouselLoaderWidget()
             : CarouselSlider(
                 options: CarouselOptions(
-                  autoPlay: true, autoPlayInterval: Duration(seconds: 4),
-                  //todo should make the height depend on width
-                  height: 225, viewportFraction: 1.0,
-                  onPageChanged: (idx, reason) {
-                    setState(() {_current = idx;});
-                  }
-                ),
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 4),
+                    //todo should make the height depend on width
+                    height: 225,
+                    viewportFraction: 1.0,
+                    onPageChanged: (idx, reason) {
+                      setState(() {
+                        _current = idx;
+                      });
+                    }),
                 items: _con.promotions.map((promotion) {
                   return Builder(
                     builder: (BuildContext context) {
@@ -63,18 +59,19 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
                               onTapOnPromotion(promotion: promotion);
                             },
                             child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
                               height: 200, //TODO should not hardcode.
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(
-                                      promotion.image.url
-                                    ),
+                                    image: NetworkImage(promotion.image!.url!),
                                     fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(6),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Theme.of(context).hintColor.withOpacity(0.2),
+                                      color: Theme.of(context)
+                                          .hintColor
+                                          .withOpacity(0.2),
                                       offset: Offset(0, 4),
                                       blurRadius: 9)
                                 ],
@@ -140,8 +137,8 @@ class _HomePromotionsSliderState extends StateMVC<HomePromotionsSlider> {
     );
   }
 
-  void onTapOnPromotion({Promotion promotion}) {
-    if(promotion != null && promotion.id > 0) {
+  void onTapOnPromotion({required Promotion promotion}) {
+    if (promotion.id > 0) {
       RouteGenerator.gotoPromotionPage(context, promotionId: promotion.id);
     } else {
       _con.showErr(S.current.generalErrorMessage);

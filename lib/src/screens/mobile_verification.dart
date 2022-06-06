@@ -26,7 +26,8 @@ class MobileVerification extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
-                  Text('your_phone_and_address_book_are_used_to_connect',
+                  Text(
+                    'your_phone_and_address_book_are_used_to_connect',
                     style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
@@ -38,7 +39,8 @@ class MobileVerification extends StatelessWidget {
               child: Container(
                 decoration: ShapeDecoration(
                   shape: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).focusColor.withOpacity(0.2)),
                   ),
                 ),
                 child: DropdownButton(
@@ -50,14 +52,16 @@ class MobileVerification extends StatelessWidget {
                       value: '+213',
                       child: SizedBox(
                         width: _ac.appWidth(70), // for example
-                        child: Text('(+213) - Algeria', textAlign: TextAlign.center),
+                        child: Text('(+213) - Algeria',
+                            textAlign: TextAlign.center),
                       ),
                     ),
                     DropdownMenuItem(
                       value: '+216',
                       child: SizedBox(
                         width: _ac.appWidth(70), // for example
-                        child: Text('(+216) - Tunisia', textAlign: TextAlign.center),
+                        child: Text('(+216) - Tunisia',
+                            textAlign: TextAlign.center),
                       ),
                     ),
                   ],
@@ -69,7 +73,8 @@ class MobileVerification extends StatelessWidget {
               textAlign: TextAlign.center,
               decoration: new InputDecoration(
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2)),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).focusColor.withOpacity(0.2)),
                 ),
                 focusedBorder: new UnderlineInputBorder(
                   borderSide: new BorderSide(
@@ -84,9 +89,12 @@ class MobileVerification extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('/MobileVerification2');
               },
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
               text: Text(S.current.submit.toUpperCase(),
-                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],
         ),

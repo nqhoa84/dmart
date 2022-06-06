@@ -24,47 +24,51 @@ class BottomRightMenuScreen extends StatelessWidget {
           color: Colors.grey.shade400,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Text(S.current.groceries1, style: Theme.of(context).textTheme.headline5),
+            child: Text(S.current.groceries1,
+                style: Theme.of(context).textTheme.headline5),
           ),
         ),
         ListTile(
 //            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
           onTap: () => RouteGenerator.gotoHome(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_Shop_All_Groceries.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_Shop_All_Groceries.png', width: _iconSize, height: _iconSize,
-              fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_Shop_All_Groceries.png',
+              width: _iconSize, height: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.shopAllGroceries),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoPromotions(context),
 //            leading: ImageIcon(AssetImage('assets/img/F_Promotion_01.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/F_Promotion_01.png', width: _iconSize, height: _iconSize,
-              fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/F_Promotion_01.png',
+              width: _iconSize, height: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.promotions),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoMyFavorites(context),
 //            leading: Icon(UiIcons.favorites, color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/Favourite.png', width: _iconSize, height: _iconSize,
-              fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/Favourite.png',
+              width: _iconSize, height: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.myFavorite),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoSpecial4U(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_Special_4_U.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_Special_4_U.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_Special_4_U.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.specialForYou),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoMyOrders(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_My_order.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_My_order.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_My_order.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.myOrders),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoCart(context),
 //            leading: ImageIcon(AssetImage('assets/img/H_Cart.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/H_Cart.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/H_Cart.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.myCart),
         ),
 
@@ -73,25 +77,28 @@ class BottomRightMenuScreen extends StatelessWidget {
           color: Colors.grey.shade400,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Text(S.current.domainDmart, style: Theme.of(context).textTheme.headline5),
+            child: Text(S.current.domainDmart,
+                style: Theme.of(context).textTheme.headline5),
           ),
         ),
 
         ListTile(
           onTap: () {
-            if(currentUser.value.isLogin)
+            if (currentUser.value.isLogin)
               RouteGenerator.gotoProfileInfo(context);
             else
               RouteGenerator.gotoLogin(context);
           },
 //            leading: ImageIcon(AssetImage('assets/img/H_User_Icon.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/H_User_Icon.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/H_User_Icon.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.myAccount),
         ),
         ListTile(
           onTap: () => RouteGenerator.gotoContactUs(context),
 //            leading: ImageIcon(AssetImage('assets/img/M_Contact_us.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_Contact_us.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_Contact_us.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.contactUs),
         ),
         ListTile(
@@ -106,7 +113,8 @@ class BottomRightMenuScreen extends StatelessWidget {
             settingRepo.setDefaultLanguage(Language.khmer.code);
           },
 //            leading: ImageIcon(AssetImage('assets/img/M_Flag_Cambodia.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_Flag_Cambodia.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_Flag_Cambodia.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.langKhmer),
         ),
         ListTile(
@@ -114,16 +122,18 @@ class BottomRightMenuScreen extends StatelessWidget {
             settingRepo.setDefaultLanguage(Language.english.code);
           },
 //            leading: ImageIcon(AssetImage('assets/img/M_Flag_Eng.png'), color: DmConst.primaryColor),
-          leading: Image.asset('assets/img/M_Flag_Eng.png', width: _iconSize, fit: BoxFit.scaleDown),
+          leading: Image.asset('assets/img/M_Flag_Eng.png',
+              width: _iconSize, fit: BoxFit.scaleDown),
           title: Text(S.current.langEnglish),
         ),
-        setting.value.enableVersion
+        setting.value.enableVersion!
             ? ListTile(
-          dense: true,
-          title: Text(S.current.version + " " + setting.value.appVersion,
-              style: Theme.of(context).textTheme.bodyText2),
-          trailing: Icon(Icons.remove, color: Theme.of(context).focusColor.withOpacity(0.3)),
-        )
+                dense: true,
+                title: Text(S.current.version + " " + setting.value.appVersion!,
+                    style: Theme.of(context).textTheme.bodyText2),
+                trailing: Icon(Icons.remove,
+                    color: Theme.of(context).focusColor.withOpacity(0.3)),
+              )
             : SizedBox(),
       ],
     );

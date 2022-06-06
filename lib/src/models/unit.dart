@@ -1,15 +1,13 @@
 import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/utils.dart';
 
-import '../models/media.dart';
+class Unit extends IdNameObj {
+  String? description;
 
-class Unit extends IdNameObj{
-  String description;
-
-  Unit();
+  Unit({this.description});
 
   Unit.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name_en']);
@@ -27,12 +25,12 @@ class Unit extends IdNameObj{
   }
 }
 
-class ProductType extends IdNameObj{
-  String description;
-  ProductType();
+class ProductType extends IdNameObj {
+  String? description;
+  ProductType({this.description});
 
   ProductType.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name_en']);
@@ -49,4 +47,3 @@ class ProductType extends IdNameObj{
     return name;
   }
 }
-

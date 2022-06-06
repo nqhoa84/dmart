@@ -3,17 +3,19 @@ import '../models/option.dart';
 import '../models/product.dart';
 import 'i_name.dart';
 
-class Favorite extends IdObj{
-  Product product;
-  List<Option> options;
-  int userId;
+class Favorite extends IdObj {
+  Product? product;
+  List<Option>? options;
+  int? userId;
 
-  Favorite();
+  Favorite({this.product, this.options, this.userId});
 
   Favorite.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = toInt(jsonMap['id']);
-      product = jsonMap['product'] != null ? Product.fromJSON(jsonMap['product']) : new Product();
+      product = jsonMap['product'] != null
+          ? Product.fromJSON(jsonMap['product'])
+          : new Product();
       userId = toInt(jsonMap['user_id']);
 //      options = jsonMap['options'] != null
 //          ? List.from(jsonMap['options']).map((element) => Option.fromJSON(element)).toList()
@@ -29,12 +31,12 @@ class Favorite extends IdObj{
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
-    map["product_id"] = product.id;
+    map["product_id"] = product!.id;
     map["user_id"] = userId;
 //    map["options"] = options.map((element) => element.id).toList();
     return map;
   }
 
   @override
-  bool get isValid => super.isValid && product!= null && product.isValid;
+  bool get isValid => super.isValid && product!.isValid;
 }

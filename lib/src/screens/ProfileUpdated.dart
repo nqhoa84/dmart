@@ -9,24 +9,22 @@ import '../../buidUI.dart';
 import '../../constant.dart';
 import '../../generated/l10n.dart';
 import '../../route_generator.dart';
-import '../models/product.dart';
 import '../widgets/ProductsGridView.dart';
 import '../widgets/ProductsGridViewLoading.dart';
 import '../widgets/TitleDivider.dart';
 
 class ProfileUpdatedScreen extends StatefulWidget {
-
-  ProfileUpdatedScreen({Key key}) : super(key: key);
+  ProfileUpdatedScreen({Key? key}) : super(key: key);
 
   @override
   _ProfileUpdatedScreenState createState() => _ProfileUpdatedScreenState();
 }
 
 class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
-  ProductController _con;
+  ProductController _con = ProductController();
 
-  _ProfileUpdatedScreenState() : super(ProductController()){
-    _con = controller;
+  _ProfileUpdatedScreenState() : super(ProductController()) {
+    _con = controller as ProductController;
   }
 
   @override
@@ -37,7 +35,8 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       body: SafeArea(
         child: CustomScrollView(slivers: <Widget>[
           createSliverTopBar(context),
@@ -68,7 +67,10 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
                   RouteGenerator.gotoHome(context);
                 },
                 child: Text(S.current.startShopping,
-                    style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(color: Colors.white)),
                 color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
               ),
@@ -84,7 +86,7 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
   }
 
   Widget buildBestSale(BuildContext context) {
-    if (DmUtils.isNullOrEmptyList(_con.bestSaleProducts)) {
+    if (DmUtils.isNullOrEmptyList(_con.bestSaleProducts!)) {
       return ProductsGridViewLoading(isList: true);
     } else {
 //      return FadeTransition(
@@ -92,7 +94,8 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
 //        child: ProductGridView(products: _con.bestSaleProducts, heroTag: 'bestSale'),
 //      );
 
-      return ProductGridView(products: _con.bestSaleProducts, heroTag: 'bestSale');
+      return ProductGridView(
+          products: _con.bestSaleProducts!, heroTag: 'bestSale');
     }
   }
 
@@ -120,12 +123,16 @@ class _ProfileUpdatedScreenState extends StateMVC<ProfileUpdatedScreen> {
                     children: [
                       Expanded(
                         child: FlatButton(
-                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 12),
                           onPressed: () {
                             RouteGenerator.gotoHome(context);
                           },
                           child: Text(S.current.startShopping,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: Colors.white)),
                           color: DmConst.accentColor,
 //                    shape: StadiumBorder(),
                         ),

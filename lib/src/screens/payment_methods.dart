@@ -9,32 +9,31 @@ import '../models/route_argument.dart';
 import '../repository/settings_repository.dart';
 import '../../src/helpers/ui_icons.dart';
 
-
 class PaymentMethodsWidget extends StatefulWidget {
-  final RouteArgument routeArgument;
+  final RouteArgument? routeArgument;
 
-  PaymentMethodsWidget({Key key, this.routeArgument}) : super(key: key);
+  PaymentMethodsWidget({Key? key, this.routeArgument}) : super(key: key);
 
   @override
   _PaymentMethodsWidgetState createState() => _PaymentMethodsWidgetState();
 }
 
 class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
-  PaymentMethodList list;
+  PaymentMethodList? list;
 
   @override
   void initState() {
     list = new PaymentMethodList();
-    if (!setting.value.payPalEnabled)
-      list.paymentsList.removeWhere((element) {
+    if (!setting.value.payPalEnabled!)
+      list!.paymentsList!.removeWhere((element) {
         return element.id == "paypal";
       });
-    if (!setting.value.razorPayEnabled)
-      list.paymentsList.removeWhere((element) {
+    if (!setting.value.razorPayEnabled!)
+      list!.paymentsList!.removeWhere((element) {
         return element.id == "razorpay";
       });
-    if (!setting.value.stripeEnabled)
-      list.paymentsList.removeWhere((element) {
+    if (!setting.value.stripeEnabled!)
+      list!.paymentsList!.removeWhere((element) {
         return element.id == "visacard" || element.id == "mastercard";
       });
     super.initState();
@@ -47,12 +46,16 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text( 'payment_mode',
-          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+        title: Text(
+          'payment_mode',
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .merge(TextStyle(letterSpacing: 1.3)),
         ),
         leading: new IconButton(
-          icon: new Icon(UiIcons.return_icon,
-              color: Theme.of(context).hintColor),
+          icon:
+              new Icon(UiIcons.return_icon, color: Theme.of(context).hintColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: <Widget>[
@@ -71,7 +74,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
               child: SearchBar(),
             ),
             SizedBox(height: 15),
-            list.paymentsList.length > 0
+            list!.paymentsList!.length > 0
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ListTile(
@@ -97,17 +100,19 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               primary: false,
-              itemCount: list.paymentsList.length,
+              itemCount: list!.paymentsList!.length,
               separatorBuilder: (context, index) {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index));
+                return PaymentMethodListItemWidget(
+                    paymentMethod: list!.paymentsList!.elementAt(index));
               },
             ),
-            list.cashList.length > 0
+            list!.cashList!.length > 0
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                     child: ListTile(
                       contentPadding: EdgeInsets.symmetric(vertical: 0),
                       leading: Icon(
@@ -130,12 +135,13 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               primary: false,
-              itemCount: list.cashList.length,
+              itemCount: list!.cashList!.length,
               separatorBuilder: (context, index) {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index));
+                return PaymentMethodListItemWidget(
+                    paymentMethod: list!.cashList!.elementAt(index));
               },
             ),
           ],

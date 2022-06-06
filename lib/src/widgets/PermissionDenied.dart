@@ -5,9 +5,7 @@ import '../../generated/l10n.dart';
 import '../helpers/app_config.dart' as config;
 
 class PermissionDenied extends StatefulWidget {
-  PermissionDenied({
-    Key key
-  }) : super(key: key);
+  PermissionDenied({Key? key}) : super(key: key);
 
   @override
   _PermissionDeniedState createState() => _PermissionDeniedState();
@@ -36,11 +34,15 @@ class _PermissionDeniedState extends State<PermissionDenied> {
                 height: 150,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
-                      Theme.of(context).focusColor.withOpacity(0.7),
-                      Theme.of(context).focusColor.withOpacity(0.05),
-                    ])),
-                child: Icon(Icons.https, color: Theme.of(context).scaffoldBackgroundColor, size: 70),
+                    gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        colors: [
+                          Theme.of(context).focusColor.withOpacity(0.7),
+                          Theme.of(context).focusColor.withOpacity(0.05),
+                        ])),
+                child: Icon(Icons.https,
+                    color: Theme.of(context).scaffoldBackgroundColor, size: 70),
               ),
               Positioned(
                   right: -30,
@@ -49,7 +51,9 @@ class _PermissionDeniedState extends State<PermissionDenied> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
+                        color: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .withOpacity(0.15),
 //                        color: DmConst.productShadowColor.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(150),
                       ))),
@@ -60,7 +64,9 @@ class _PermissionDeniedState extends State<PermissionDenied> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
+                      color: Theme.of(context)
+                          .scaffoldBackgroundColor
+                          .withOpacity(0.15),
                       borderRadius: BorderRadius.circular(150),
                     )),
               )
@@ -70,7 +76,8 @@ class _PermissionDeniedState extends State<PermissionDenied> {
           Opacity(
             opacity: 0.4,
             child: Text(S.current.youMustSignToSeeThisSection,
-                textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
           FlatButton(
@@ -78,9 +85,10 @@ class _PermissionDeniedState extends State<PermissionDenied> {
               Navigator.of(context).pushNamed('/Login');
             },
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 70),
-            color: Theme.of(context).accentColor.withOpacity(1),
+            color: Theme.of(context).colorScheme.secondary.withOpacity(1),
             shape: StadiumBorder(),
-            child: Text(S.current.login, style: Theme.of(context).textTheme.headline6),
+            child: Text(S.current.login,
+                style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 20),
           FlatButton(

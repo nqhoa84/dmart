@@ -1,21 +1,18 @@
 import 'package:dmart/DmState.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/src/models/product.dart';
-import 'package:dmart/src/widgets/ProductsGridView.dart';
-import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/material.dart';
 
-import '../../constant.dart';
 import '../../src/models/route_argument.dart';
 import 'abs_product_mvc.dart';
 
 // ignore: must_be_immutable
 class BestSaleScreen extends StatefulWidget {
-  RouteArgument routeArgument;
+  RouteArgument? routeArgument;
 
 //  Category _category;
 
-  BestSaleScreen({Key key, RouteArgument argument}) {
+  BestSaleScreen({Key? key, RouteArgument? argument}) {
     this.routeArgument = argument;
 //    _category = this.routeArgument.param[0] as Category;
   }
@@ -45,7 +42,7 @@ class _BestSaleScreenState extends ProductStateMVC<BestSaleScreen> {
 
   @override
   Future<void> onRefresh() async {
-    proCon.bestSaleProducts?.clear();
+    proCon.bestSaleProducts!.clear();
     proCon.listenForBestSaleProducts();
     canLoadMore = true;
   }
@@ -65,12 +62,13 @@ class _BestSaleScreenState extends ProductStateMVC<BestSaleScreen> {
 
   @override
   Future<void> loadMore() async {
-    int pre = proCon.bestSaleProducts != null ? proCon.bestSaleProducts.length : 0;
-    await proCon.listenForBestSaleProducts(nextPage: true);
-    canLoadMore = proCon.bestSaleProducts != null && proCon.bestSaleProducts.length > pre;
+    int pre =
+        proCon.bestSaleProducts != null ? proCon.bestSaleProducts!.length : 0;
+    proCon.listenForBestSaleProducts(nextPage: true);
+    canLoadMore = proCon.bestSaleProducts!.length > pre;
 //    return void;
   }
 
   @override
-  List<Product> get lstProducts => proCon.bestSaleProducts;
+  List<Product> get lstProducts => proCon.bestSaleProducts!;
 }

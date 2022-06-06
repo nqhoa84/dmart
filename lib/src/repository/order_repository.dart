@@ -14,7 +14,7 @@ import '../models/order.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Order>> getOrders() async {
+Future<Stream<Order?>> getOrders() async {
   User _user = userRepo.currentUser.value;
   if (_user.isLogin == false) {
     return new Stream.value(null);
@@ -41,12 +41,12 @@ Future<Stream<Order>> getOrders() async {
       .map((data) => Helper.getData(data))
       .expand((data) => (data as List))
       .map((data) {
-        print(data);
+    print(data);
     return Order.fromJSON(data);
   });
 }
 
-Future<Order> getOrder({int orderId}) async {
+Future<Order?> getOrder({required int orderId}) async {
   var url = Uri.parse(
       '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?with=productOrders;productOrders.product;deliveryAddress');
 
@@ -55,7 +55,7 @@ Future<Order> getOrder({int orderId}) async {
   http.Response res = await http.get(url, headers: createHeadersRepo());
   var result = json.decode(res.body);
   print('getOrder-- $result');
-  if(result['success'] != null && result['success'] == true) {
+  if (result['success'] != null && result['success'] == true) {
     return Order.fromJSON(result['data']);
   } else {
     return null;
@@ -70,7 +70,8 @@ Future<dynamic> saveNewOrder(Order order) async {
     return null;
   }
 
-  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}orders');
+  var url =
+      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}orders');
   print('saveNewOrder $url \n map-para ${order.toMap()}');
   print('saveNewOrder $url \n headers ${createHeadersRepo()}');
   final response = await http.Client().post(
@@ -87,12 +88,11 @@ Future<dynamic> saveNewOrder(Order order) async {
   }
 }
 
-Future<Stream<Order>> getRecentOrders() async {
+Future<Stream<Order?>> getRecentOrders() async {
   User _user = userRepo.currentUser.value;
   if (_user.isLogin == false) {
     return new Stream.value(null);
   }
-
 
   final String url =
       '${GlobalConfiguration().getString('api_base_url')}orders?with=user;productOrders;productOrders.product;orderStatus;deliveryAddress&search=user.id:${_user.id}&searchFields=user.id:=&orderBy=updated_at&sortedBy=desc&limit=3';
@@ -109,7 +109,6 @@ Future<Stream<Order>> getRecentOrders() async {
   });
 }
 
-
 Future<Order> addOrder(Order order) async {
   User _user = userRepo.currentUser.value;
   if (_user.isLogin == false) {
@@ -118,9 +117,9 @@ Future<Order> addOrder(Order order) async {
   CreditCard _creditCard = await userRepo.getCreditCard();
   order.user = _user;
 //  final String _apiToken = 'api_token=${_user.apiToken}';
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}orders');
+  var url =
+      Uri.parse('${GlobalConfiguration().getString('api_base_url')}orders');
   print('addOrder $url');
-
 
 //  final client = new http.Client();
   Map params = order.toMap();
@@ -135,22 +134,22 @@ Future<Order> addOrder(Order order) async {
   return Order.fromJSON(json.decode(response.body)['data']);
 }
 
-
-Future<Voucher> getVoucher(String code) async {
+Future<Voucher?> getVoucher(String code) async {
   //vouchers/check?code=quI3mJB5mT
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}vouchers/check?code=$code');
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}vouchers/check?code=$code');
   print(url);
 
   http.Response res = await http.get(url, headers: createHeadersRepo());
   var result = json.decode(res.body);
-  if(result['success'] == true) {
+  if (result['success'] == true) {
     return Voucher.fromJSON(result['data']);
   } else {
     return null;
   }
 }
 
-Future<DateSlot> getDeliverSlots(DateTime date) async {
+Future<DateSlot?> getDeliverSlots(DateTime date) async {
   var url = Uri.parse(
       '${GlobalConfiguration().getValue('api_base_url')}delivery_dates/get?date=${DmConst.dateFormatter.format(date)}');
 
@@ -158,8 +157,8 @@ Future<DateSlot> getDeliverSlots(DateTime date) async {
 
   http.Response res = await http.get(url, headers: createHeadersRepo());
   var result = json.decode(res.body);
-  if(result['success'] == true) {
-     return DateSlot.fromJSON(result['data']);
+  if (result['success'] == true) {
+    return DateSlot.fromJSON(result['data']);
   } else {
     return DateSlot()..deliveryDate = date;
   }
@@ -174,7 +173,6 @@ Future<bool> cancelOrder(int id) async {
   print(result);
   return result['success'] != null && result['success'] == true;
 }
-
 
 Future<Stream<Product>> getBoughtProducts() async {
   final String url =

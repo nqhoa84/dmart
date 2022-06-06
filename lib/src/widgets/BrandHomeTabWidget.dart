@@ -1,7 +1,6 @@
 import '../../generated/l10n.dart';
 import '../../src/controllers/home_controller.dart';
 import '../../src/helpers/ui_icons.dart';
-import '../../src/widgets/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/models/brand.dart';
 import '../../src/widgets/FlashSalesCarouselWidget.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'FlashSalesWidget.dart';
 
 class BrandHomeTabWidget extends StatefulWidget {
-  Brand brand;
+  Brand? brand;
   BrandHomeTabWidget({this.brand});
 
   @override
@@ -19,10 +18,10 @@ class BrandHomeTabWidget extends StatefulWidget {
 }
 
 class _BrandHomeTabWidgetState extends StateMVC<BrandHomeTabWidget> {
-  HomeController _con;
+  HomeController _con = HomeController();
 
-  _BrandHomeTabWidgetState(): super( HomeController()){
-    _con = controller;
+  _BrandHomeTabWidgetState() : super(HomeController()) {
+    _con = controller as HomeController;
   }
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class _BrandHomeTabWidgetState extends StateMVC<BrandHomeTabWidget> {
               color: Theme.of(context).hintColor,
             ),
             title: Text(
-              widget.brand.name,
+              widget.brand!.name,
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
@@ -60,13 +59,14 @@ class _BrandHomeTabWidgetState extends StateMVC<BrandHomeTabWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Text(
-            '${widget.brand.description}',
-          )
-        ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: Text(
+              '${widget.brand!.description!}',
+            )),
         FlashSalesHeaderWidget(),
-        FlashSalesCarouselWidget(heroTag: 'brand_featured_products', productsList:_con.trendingProducts),
+        FlashSalesCarouselWidget(
+            heroTag: 'brand_featured_products',
+            productsList: _con.trendingProducts!),
       ],
     );
   }

@@ -13,17 +13,20 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends StateMVC<DrawerWidget> {
-
   Widget buildUserInfo(BuildContext context) {
-    if(currentUser.value.isLogin) {
+    if (currentUser.value.isLogin) {
       return ListTile(
-        title: Text(currentUser.value.name,
-          style: TextStyle(color: Colors.white),),
-        subtitle: Text('${S.current.credit}: ${currentUser.value.credit.toStringAsFixed(2)}',
-        style: TextStyle(color: DmConst.textColorForTopBarCredit),),
+        title: Text(
+          currentUser.value.name,
+          style: TextStyle(color: Colors.white),
+        ),
+        subtitle: Text(
+          '${S.current.credit}: ${currentUser.value.credit!.toStringAsFixed(2)}',
+          style: TextStyle(color: DmConst.textColorForTopBarCredit),
+        ),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).accentColor,
-          backgroundImage: NetworkImage(currentUser.value.avatarUrl),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          backgroundImage: NetworkImage(currentUser.value.avatarUrl!),
         ),
       );
     } else {
@@ -31,7 +34,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
         title: Text(S.current.guest),
         subtitle: Text('${S.current.credit}: 0.00'),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           backgroundImage: AssetImage('assets/img/H_User_Icon.png'),
         ),
       );
@@ -43,15 +46,14 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
     return Drawer(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           title: GestureDetector(
               onTap: () {
                 currentUser.value.isLogin
                     ? RouteGenerator.gotoHome(context)
                     : RouteGenerator.gotoLogin(context);
               },
-              child: buildUserInfo(context)
-          ),
+              child: buildUserInfo(context)),
           leading: null,
           automaticallyImplyLeading: false,
           centerTitle: false,

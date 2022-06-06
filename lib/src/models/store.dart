@@ -2,25 +2,39 @@ import '../../utils.dart';
 import '../models/media.dart';
 import 'i_name.dart';
 
-class Store extends IdNameObj{
-  Media image;
-  String rate;
-  String description;
-  String phone;
-  String mobile;
-  String information;
-  double deliveryFee;
-  double adminCommission;
-  double defaultTax;
-  bool closed;
-  bool availableForDelivery;
-  double deliveryRange;
-  double distance;
+class Store extends IdNameObj {
+  Media? image;
+  String? rate;
+  String? description;
+  String? phone;
+  String? mobile;
+  String? information;
+  double? deliveryFee;
+  double? adminCommission;
+  double? defaultTax;
+  bool? closed;
+  bool? availableForDelivery;
+  double? deliveryRange;
+  double? distance;
 
-  Store();
+  Store({
+    this.image,
+    this.rate,
+    this.description,
+    this.phone,
+    this.mobile,
+    this.information,
+    this.deliveryFee,
+    this.adminCommission,
+    this.defaultTax,
+    this.closed,
+    this.availableForDelivery,
+    this.deliveryRange,
+    this.distance,
+  });
 
   Store.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name']);
@@ -58,7 +72,6 @@ class Store extends IdNameObj{
       availableForDelivery = false;
       distance = 0.0;
       print('Error parsing data in Store.fromJSON $e \n $trace');
-
     }
   }
 

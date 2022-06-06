@@ -9,19 +9,17 @@ import 'CircularLoadingWidget.dart';
 // ignore: must_be_immutable
 class ReviewsListWidget extends StatefulWidget {
   Product product;
-  ReviewsListWidget({
-    Key key,this.product
-  }) : super(key: key);
+  ReviewsListWidget({Key? key, required this.product}) : super(key: key);
 
   @override
   _ReviewsListWidget createState() => _ReviewsListWidget();
 }
 
 class _ReviewsListWidget extends StateMVC<ReviewsListWidget> {
-  ProductController _con;
+  ProductController _con = ProductController();
 
   _ReviewsListWidget() : super(ProductController()) {
-    _con = controller;
+    _con = controller as ProductController;
   }
 
   @override
@@ -32,21 +30,21 @@ class _ReviewsListWidget extends StateMVC<ReviewsListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.product.productReviews == null || widget.product.productReviews.isEmpty
+    return widget.product.productReviews == null ||
+            widget.product.productReviews!.isEmpty
         ? CircularLoadingWidget(height: 200)
         : ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 20),
             itemBuilder: (context, index) {
               return ReviewItemWidget(
-                  review: widget.product.productReviews.elementAt(index)
-              );
+                  review: widget.product.productReviews!.elementAt(index));
             },
             separatorBuilder: (context, index) {
               return Divider(
                 height: 30,
               );
             },
-            itemCount: widget.product.productReviews.length,
+            itemCount: widget.product.productReviews!.length,
             primary: false,
             shrinkWrap: true,
           );

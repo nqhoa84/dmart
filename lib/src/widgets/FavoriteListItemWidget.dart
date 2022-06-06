@@ -13,16 +13,20 @@ class FavoriteListItemWidget extends StatefulWidget {
   Favorite favorite;
   VoidCallback onDismissed;
 
-  FavoriteListItemWidget({Key key, this.heroTag, this.favorite,this.onDismissed}) : super(key: key);
+  FavoriteListItemWidget(
+      {Key? key,
+      required this.heroTag,
+      required this.favorite,
+      required this.onDismissed})
+      : super(key: key);
   @override
-  _FavoriteListItemWidgetState createState() =>  _FavoriteListItemWidgetState();
-
+  _FavoriteListItemWidgetState createState() => _FavoriteListItemWidgetState();
 }
-  class _FavoriteListItemWidgetState extends StateMVC<FavoriteListItemWidget>{
 
-  ProductController _con ;
-  _FavoriteListItemWidgetState() :super(ProductController()){
-    _con = controller;
+class _FavoriteListItemWidgetState extends StateMVC<FavoriteListItemWidget> {
+  ProductController _con = ProductController();
+  _FavoriteListItemWidgetState() : super(ProductController()) {
+    _con = controller as ProductController;
   }
   @override
   void initState() {
@@ -30,6 +34,7 @@ class FavoriteListItemWidget extends StatefulWidget {
     _con.listenForFavorites();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -53,31 +58,40 @@ class FavoriteListItemWidget extends StatefulWidget {
         });
       },
       child: InkWell(
-        splashColor: Theme.of(context).accentColor,
-        focusColor: Theme.of(context).accentColor,
+        splashColor: Theme.of(context).colorScheme.secondary,
+        focusColor: Theme.of(context).colorScheme.secondary,
         highlightColor: Theme.of(context).primaryColor,
         onTap: () {
-          Navigator.of(context).pushNamed('/Product', arguments: new RouteArgument(id: widget.favorite.product.id, param: [widget.favorite.product, widget.heroTag]));
+          Navigator.of(context).pushNamed('/Product',
+              arguments: new RouteArgument(
+                  id: widget.favorite.product!.id,
+                  param: [widget.favorite.product, widget.heroTag]));
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.9),
             boxShadow: [
-              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+              BoxShadow(
+                  color: Theme.of(context).focusColor.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: Offset(0, 2)),
             ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Hero(
-                tag: widget.heroTag + widget.favorite.product.id.toString(),
+                tag: widget.heroTag + widget.favorite.product!.id.toString(),
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    image: DecorationImage(image: NetworkImage(widget.favorite.product.image.thumb), fit: BoxFit.cover),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            widget.favorite.product!.image!.thumb!),
+                        fit: BoxFit.cover),
                   ),
                 ),
               ),
@@ -91,13 +105,13 @@ class FavoriteListItemWidget extends StatefulWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            widget.favorite.product.name,
+                            widget.favorite.product!.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(
-                            widget.favorite.product.store.name,
+                            widget.favorite.product!.store!.name,
                             overflow: TextOverflow.fade,
                             softWrap: false,
                             style: Theme.of(context).textTheme.caption,
@@ -106,7 +120,8 @@ class FavoriteListItemWidget extends StatefulWidget {
                       ),
                     ),
                     SizedBox(width: 8),
-                    Helper.getPrice(widget.favorite.product.price, context, style: Theme.of(context).textTheme.headline4),
+                    Helper.getPrice(widget.favorite.product!.price!, context,
+                        style: Theme.of(context).textTheme.headline4),
                   ],
                 ),
               )
@@ -117,5 +132,3 @@ class FavoriteListItemWidget extends StatefulWidget {
     );
   }
 }
-
-

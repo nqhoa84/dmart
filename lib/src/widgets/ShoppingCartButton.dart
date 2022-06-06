@@ -1,46 +1,36 @@
-import 'dart:ui';
-
 import 'package:badges/badges.dart';
 
 import '../../DmState.dart';
 import '../../route_generator.dart';
 import '../../src/controllers/cart_controller.dart';
-import '../../src/models/product.dart';
-import '../../src/models/route_argument.dart';
-import '../../src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../src/helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
 
-class ShoppingCartButton extends StatefulWidget
-{
-  const ShoppingCartButton ({
-    Key key,
+class ShoppingCartButton extends StatefulWidget {
+  const ShoppingCartButton({
+    Key? key,
   }) : super(key: key);
 
-
   @override
-  _ShoppingCartButtonWidget createState () => _ShoppingCartButtonWidget();
-
+  _ShoppingCartButtonWidget createState() => _ShoppingCartButtonWidget();
 }
 
-  class _ShoppingCartButtonWidget extends StateMVC<ShoppingCartButton>{
-
-  CartController _con;
+class _ShoppingCartButtonWidget extends StateMVC<ShoppingCartButton> {
+  CartController _con = CartController();
 
   _ShoppingCartButtonWidget() : super(CartController()) {
-  _con = controller;
+    _con = controller as CartController;
   }
 
   @override
   void initState() {
 //  _con.listenForCartsCount();
-  super.initState();
+    super.initState();
   }
 
-    @override
-    Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
 //      if (_con.cartCount > 0) {
 //        return InkWell(
 //          onTap: () => RouteGenerator.gotoCart(context),
@@ -57,27 +47,26 @@ class ShoppingCartButton extends StatefulWidget
 //            onTap: () => RouteGenerator.gotoCart(context),
 //            child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown));
 //      }
-      return InkWell(
-        onTap: () => RouteGenerator.gotoCart(context),
-        child: ValueListenableBuilder(
-            valueListenable: DmState.amountInCart,
-            builder: (context, value, child) {
-              if(DmState.amountInCart.value > 0) {
-                return Badge(
-                  position: BadgePosition.topEnd(top: 0, end: 3),
-                  animationDuration: Duration(milliseconds: 300),
-                  animationType: BadgeAnimationType.slide,
-                  badgeContent: Text('${DmState.amountInCart.value}',
-                      style: TextStyle(color: Colors.white)),
-                  child: Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
-                );
-              } else {
-                return Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown);
-              }
+    return InkWell(
+      onTap: () => RouteGenerator.gotoCart(context),
+      child: ValueListenableBuilder(
+          valueListenable: DmState.amountInCart,
+          builder: (context, value, child) {
+            if (DmState.amountInCart.value > 0) {
+              return Badge(
+                position: BadgePosition.topEnd(top: 0, end: 3),
+                animationDuration: Duration(milliseconds: 300),
+                animationType: BadgeAnimationType.slide,
+                badgeContent: Text('${DmState.amountInCart.value}',
+                    style: TextStyle(color: Colors.white)),
+                child:
+                    Image.asset('assets/img/H_Cart.png', fit: BoxFit.scaleDown),
+              );
+            } else {
+              return Image.asset('assets/img/H_Cart.png',
+                  fit: BoxFit.scaleDown);
             }
-        ),
-      );
-    }
+          }),
+    );
   }
-
-
+}

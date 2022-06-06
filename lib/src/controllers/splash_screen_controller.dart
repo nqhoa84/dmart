@@ -1,29 +1,17 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:dmart/constant.dart';
-import 'package:dmart/route_generator.dart';
-import 'package:dmart/src/models/noti.dart';
-import 'package:dmart/src/repository/notification_repository.dart';
-import 'package:dmart/utils.dart';
-
-import '../../DmState.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../generated/l10n.dart';
-import '../repository/settings_repository.dart' as settingRepo;
-import '../repository/user_repository.dart' as userRepo;
 import 'controller.dart';
 
 class SplashScreenController extends Controller with ChangeNotifier {
-  BuildContext context;
+  BuildContext? context;
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
 
   // final firebaseMessaging = FirebaseMessaging();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 
-  SplashScreenController({GlobalKey<ScaffoldState> scaffoldKey}) : super();
+  SplashScreenController({
+    this.context,
+  }) : super();
 
   void init() {
     _initFireBase();
@@ -110,8 +98,6 @@ class SplashScreenController extends Controller with ChangeNotifier {
   //
   // }
 
-
-
   // ignore: missing_return
   /*static Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
     if (message.containsKey('data')) {
@@ -124,6 +110,5 @@ class SplashScreenController extends Controller with ChangeNotifier {
       //final dynamic notification = message['notification'];
     }
   }*/
-
 
 }

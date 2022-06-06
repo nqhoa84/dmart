@@ -1,6 +1,6 @@
 class RouteArgument {
-  int id;
-  String heroTag;
+  int? id;
+  String? heroTag;
   dynamic param;
 
   RouteArgument({this.id, this.heroTag, this.param});

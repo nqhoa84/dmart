@@ -9,28 +9,29 @@ class ProfileController extends ControllerMVC {
   List<Order> recentOrders = [];
   GlobalKey<ScaffoldState> scaffoldKey;
 
-  ProfileController() {
+  ProfileController(
+    this.recentOrders,
+    this.scaffoldKey,
+  ) {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForRecentOrders();
   }
 
-  void listenForRecentOrders({String message}) async {
-    final Stream<Order> stream = await getRecentOrders();
-    stream.listen((Order _order) {
+  void listenForRecentOrders({String? message}) async {
+    final Stream<Order?> stream = await getRecentOrders();
+    stream.listen((Order? _order) {
       setState(() {
-        recentOrders.add(_order);
+        recentOrders.add(_order!);
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState?.showSnackBar(SnackBar(
         content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
-      if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      scaffoldKey.currentState?.showSnackBar(SnackBar(
+        content: Text(message!),
+      ));
     });
   }
 

@@ -8,43 +8,45 @@ import '../repository/user_repository.dart' as userRepo;
 class EmptyDataLoginWid extends StatefulWidget {
   final IconData iconData;
   final String message;
-  EmptyDataLoginWid({Key key,
-    this.iconData = Icons.info_outline,
-    this.message = ''
-  }) : super(key: key);
+  EmptyDataLoginWid(
+      {Key? key, this.iconData = Icons.info_outline, this.message = ''})
+      : super(key: key);
 
   @override
   _EmptyDataLoginWidState createState() => _EmptyDataLoginWidState();
 }
 
-class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTickerProviderStateMixin {
-  Animation animationOpacity;
-  AnimationController animationController;
+class _EmptyDataLoginWidState extends State<EmptyDataLoginWid>
+    with SingleTickerProviderStateMixin {
+  Animation<double>? animationOpacity;
+  AnimationController? animationController;
 
   User _user = userRepo.currentUser.value;
 
   @override
   void initState() {
-    animationController = AnimationController(duration: Duration(milliseconds: 2000), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    animationController = AnimationController(
+        duration: Duration(milliseconds: 2000), vsync: this);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController!, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
       });
-    animationController.forward();
+    animationController!.forward();
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
+    animationController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
-      opacity: animationOpacity,
+      opacity: animationOpacity!,
       child: Container(
         alignment: AlignmentDirectional.center,
         padding: EdgeInsets.all(10),
@@ -62,10 +64,13 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
                     height: 150,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
-                          Theme.of(context).focusColor,
-                          Theme.of(context).focusColor.withOpacity(0.1),
-                        ])),
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: [
+                              Theme.of(context).focusColor,
+                              Theme.of(context).focusColor.withOpacity(0.1),
+                            ])),
                     child: Icon(widget.iconData, size: 70),
                   ),
                   Positioned(
@@ -108,20 +113,30 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
             FlatButton(
               onPressed: () => _onPressHome(context),
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-              color: Theme.of(context).accentColor.withOpacity(1),
+              color: Theme.of(context).colorScheme.secondary.withOpacity(1),
               shape: StadiumBorder(),
-              child: Text(S.current.home, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
+              child: Text(S.current.home,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(color: Colors.white)),
             ),
             SizedBox(height: 10),
-            _user == null || !_user.isLogin
-            ? FlatButton(
-              onPressed: () => RouteGenerator.gotoLogin(context, replaceOld: true),
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-              color: Theme.of(context).accentColor.withOpacity(1),
-              shape: StadiumBorder(),
-              child: Text(S.current.login, style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white)),
-            )
-            : SizedBox(height: 5),
+            !_user.isLogin
+                ? FlatButton(
+                    onPressed: () =>
+                        RouteGenerator.gotoLogin(context, replaceOld: true),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                    color:
+                        Theme.of(context).colorScheme.secondary.withOpacity(1),
+                    shape: StadiumBorder(),
+                    child: Text(S.current.login,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5!
+                            .copyWith(color: Colors.white)),
+                  )
+                : SizedBox(height: 5),
           ],
         ),
       ),
@@ -131,6 +146,4 @@ class _EmptyDataLoginWidState extends State<EmptyDataLoginWid> with SingleTicker
   void _onPressHome(BuildContext context) {
     RouteGenerator.gotoHome(context);
   }
-
-
 }

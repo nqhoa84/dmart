@@ -1,7 +1,5 @@
-import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/widgets/CategoriesGrid.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -17,33 +15,30 @@ class CategoriesScreen extends StatefulWidget {
 
   bool canBack;
 
-  CategoriesScreen({
-    Key key, this.canBack = false
-  }) : super(key: key);
+  CategoriesScreen({Key? key, this.canBack = false}) : super(key: key);
 
   @override
   _CategoriesScreenState createState() => _CategoriesScreenState();
 }
 
 class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
-  CategoryController _con;
+  CategoryController _con = CategoryController();
 
   _CategoriesScreenState() : super(CategoryController()) {
-    _con = controller;
+    _con = controller as CategoryController;
   }
 
   @override
   void initState() {
-
     super.initState();
-       _con.listenForCategories();
+    _con.listenForCategories();
   }
 
   Widget buildContent(BuildContext context) {
-    if (_con.categories == null || _con.categories.isEmpty)  {
+    if (_con.categories!.isEmpty) {
       return NameImageItemGridViewLoading();
     } else {
-      return CategoriesGridView(items: _con.categories);
+      return CategoriesGridView(items: _con.categories!);
 //      CategoriesGrid(parentScaffoldKey: widget.scaffoldKey);
     }
   }
@@ -59,13 +54,14 @@ class _CategoriesScreenState extends StateMVC<CategoriesScreen> {
           child: CustomScrollView(slivers: <Widget>[
             createSliverTopBar(context),
             createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: widget.canBack, title: S.current.categories),
+            createSilverTopMenu(context,
+                haveBackIcon: widget.canBack, title: S.current.categories),
             SliverList(
               delegate: SliverChildListDelegate([
                 Container(
                     padding: EdgeInsets.all(DmConst.masterHorizontalPad),
                     child: buildContent(context)),
-                ]),
+              ]),
             )
           ]),
         ),

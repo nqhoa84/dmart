@@ -10,92 +10,95 @@ import '../repository/category_repository.dart';
 import '../repository/product_repository.dart';
 
 class CategoryController extends ControllerMVC {
-  List<Product> products = <Product>[];
-  GlobalKey<ScaffoldState> scaffoldKey;
-  Category category;
-  bool loadCart = false;
-  List<Cart> carts = [];
-  List<Category> categories = [];
+  List<Product>? products = <Product>[];
+  late GlobalKey<ScaffoldState> scaffoldKey;
+  Category? category;
+  bool? loadCart = false;
+  List<Cart>? carts = [];
+  List<Category>? categories = [];
 
-
-  CategoryController() {
+  CategoryController([
+    this.products,
+    this.category,
+    this.loadCart,
+    this.carts,
+    this.categories,
+  ]) {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     // listenForProductsByCategory();
     // listenForCategories();
   }
 
-  void listenForCategories ({Function() onDone }) async {
+  void listenForCategories({Function()? onDone}) async {
     final Stream<Category> stream = await getCategories();
     stream.listen((Category _category) {
-      setState(() => categories.add(_category));
+      setState(() => categories!.add(_category));
     }, onError: (a) {
       print(a);
-    }, onDone: onDone != null ? onDone : (){});
+    }, onDone: onDone != null ? onDone : () {});
   }
 
-  void listenForProductsByCategory({int id, int pageIdx, String message}) async {
-
+  void listenForProductsByCategory(
+      {int? id, int? pageIdx, String? message}) async {
     print('listenForProductsByCategory called.........id = $id');
 
-   var lstPros = await getProductsByCategory2(id, pageIdx);
-   if (this.products == null) this.products = [];
-   if(pageIdx <= 1) {
-     this.products.clear();
-   }
-   setState(() {
-     lstPros.forEach((element) {
-       this.products.add(element);
-     });
-   });
-   // stream.listen((Product _product) {
-   //   setState(() {
-   //     products.add(_product);
-   //   });
-   // }, onError: (a) {
-   //   scaffoldKey.currentState.showSnackBar(SnackBar(
-   //     content: Text(S.current.verifyYourInternetConnection),
-   //   ));
-   // }, onDone: () {
-   //   if (message != null) {
-   //     scaffoldKey.currentState.showSnackBar(SnackBar(
-   //       content: Text(message),
-   //     ));
-   //   }
-   // });
+    var lstPros = await getProductsByCategory2(id!, pageIdx!);
+    if (this.products == null) this.products = [];
+    if (pageIdx <= 1) {
+      this.products!.clear();
+    }
+    setState(() {
+      lstPros.forEach((element) {
+        this.products!.add(element);
+      });
+    });
+    // stream.listen((Product _product) {
+    //   setState(() {
+    //     products.add(_product);
+    //   });
+    // }, onError: (a) {
+    //   scaffoldKey.currentState.showSnackBar(SnackBar(
+    //     content: Text(S.current.verifyYourInternetConnection),
+    //   ));
+    // }, onDone: () {
+    //   if (message != null) {
+    //     scaffoldKey.currentState.showSnackBar(SnackBar(
+    //       content: Text(message),
+    //     ));
+    //   }
+    // });
   }
 
-  void listenForCategory({int id, String message}) async {
-    final Stream<Category> stream = await getCategory(id);
+  void listenForCategory({int? id, String? message}) async {
+    final Stream<Category> stream = await getCategory(id!);
     stream.listen((Category _category) {
       setState(() => category = _category);
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
+        content: Text(message!),
+      ));
     });
   }
 
-  Future<Category> loadCate({@required int id}) async {
+  Future<Category?> loadCate({required int id}) async {
     return loadCategory(id);
   }
 
   void listenForCart() async {
-    final Stream<Cart> stream = await getCarts();
-    stream.listen((Cart _cart) {
-      carts.add(_cart);
+    final Stream<Cart?> stream = await getCarts();
+    stream.listen((Cart? _cart) {
+      carts!.add(_cart!);
     });
   }
 
   bool isSameStores(Product product) {
-    if (carts.isNotEmpty) {
-      return carts[0].product?.store?.id == product.store?.id;
+    if (carts!.isNotEmpty) {
+      return carts![0].product?.store?.id == product.store?.id;
     }
     return true;
   }
@@ -154,11 +157,11 @@ class CategoryController extends ControllerMVC {
 //    }
   }
 
-
   Future<void> refreshCategory() async {
-    products.clear();
-    category = new Category();
-    listenForProductsByCategory(message: S.current.categoryRefreshedSuccessfully);
+    products!.clear();
+    category = new Category(description: '');
+    listenForProductsByCategory(
+        message: S.current.categoryRefreshedSuccessfully);
     listenForCategory(message: S.current.categoryRefreshedSuccessfully);
   }
 }

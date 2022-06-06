@@ -10,14 +10,14 @@ class DmDropDown extends StatefulWidget {
 }
 
 class _DmDropDownState extends State<DmDropDown> {
-  List<IdNameObj> items;
+  List<IdNameObj>? items;
 
-  _DmDropDownState({List<IdNameObj> items}) {
+  _DmDropDownState({required List<IdNameObj> items}) {
     this.items = items;
     dropdownValue = items[0].name;
   }
 
-  String dropdownValue;
+  String? dropdownValue;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,10 @@ class _DmDropDownState extends State<DmDropDown> {
       items: widget.items.map<DropdownMenuItem<String>>((IdNameObj value) {
         return DropdownMenuItem<String>(
           value: value.name,
-          child: Text(value.name, style: TextStyle(color: Colors.black),),
+          child: Text(
+            value.name,
+            style: TextStyle(color: Colors.black),
+          ),
         );
       }).toList(),
     );

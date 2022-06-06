@@ -1,24 +1,33 @@
 import 'package:dmart/utils.dart';
 
-import '../../src/models/media.dart';
 import 'i_name.dart';
 
-class Voucher extends IdNameObj{
-  String code;
-  int type;
-  double maxDiscount;
-  double minOrderValue;
+class Voucher extends IdNameObj {
+  String? code;
+  int? type;
+  double? maxDiscount;
+  double? minOrderValue;
+
   ///Được áp dụng nếu [value] is invalid (null or <=0). Lúc này điều kiện [maxDiscount] sẽ được áp dụng.
-  double percent;
+  double? percent;
 
   ///Giảm chính xác số tiền [value]. Không quan tâm tới điều kiện [maxDiscount] và [percent].
-  double value;
-  String description;
+  double? value;
+  String? description;
 
   ///Format: yyyy-MM-dd HH:mm:ss, example: 2020-02-28 01:01:01
-  DateTime from, to;
+  DateTime? from, to;
 
-  Voucher();
+  Voucher({
+    this.code,
+    this.type,
+    this.maxDiscount,
+    this.minOrderValue,
+    this.percent,
+    this.value,
+    this.description,
+    this.to,
+  });
 
   /*
    "id": 3,
@@ -42,11 +51,11 @@ class Voucher extends IdNameObj{
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name']);
       this.nameKh = nameEn;
-      description=toStringVal(jsonMap['description']);
+      description = toStringVal(jsonMap['description']);
       type = toInt(jsonMap['type']);
-      code=toStringVal(jsonMap['code']);
-      maxDiscount = toDouble(jsonMap['max_discount'], errorValue: null);
-      minOrderValue = toDouble(jsonMap['min_order_value'], errorValue: null);
+      code = toStringVal(jsonMap['code']);
+      maxDiscount = toDouble(jsonMap['max_discount']);
+      minOrderValue = toDouble(jsonMap['min_order_value']);
       value = toDouble(jsonMap['value'], errorValue: 0);
       from = toDateTime(jsonMap['from'], format: 'yyyy-MM-dd HH:mm:ss');
       to = toDateTime(jsonMap['to'], format: 'yyyy-MM-dd HH:mm:ss');
@@ -66,4 +75,3 @@ class Voucher extends IdNameObj{
     return 'Voucher {id:$id, code:$code, type:$type, value:$value, minOrderVal:$minOrderValue, maxDiscount:$maxDiscount}';
   }
 }
-

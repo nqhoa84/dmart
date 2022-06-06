@@ -14,17 +14,16 @@ import 'abs_product_mvc.dart';
 import 'delivery_to.dart';
 
 class CartsScreen extends StatefulWidget {
-  final RouteArgument routeArgument;
+  final RouteArgument? routeArgument;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  CartsScreen({Key key, this.routeArgument}) : super(key: key);
+  CartsScreen({Key? key, this.routeArgument}) : super(key: key);
 
   @override
   _CartsScreenState createState() => _CartsScreenState();
 }
 
-class _CartsScreenState extends ProductStateMVC<CartsScreen>
-{
+class _CartsScreenState extends ProductStateMVC<CartsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   _CartsScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
@@ -52,7 +51,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
   }
 
   @override
-  Future<void> onRefresh() async{
+  Future<void> onRefresh() async {
 //    proCon.newArrivalProducts?.clear();
     proCon.listenForCarts();
   }
@@ -62,18 +61,20 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
     if (DmState.carts.isEmpty) {
       return EmptyCartGrid();
     } else {
-      List<Product>  ps = [];
+      List<Product> ps = [];
       DmState.carts.forEach((cart) {
-        if(!ps.contains(cart.product)) {
-          ps.add(cart.product);
+        if (!ps.contains(cart.product)) {
+          ps.add(cart.product!);
         }
       });
 //      return ProductGridView(products: ps, heroTag: 'myCart');
       return FadeTransition(
-        opacity: this.animationOpacity,
-        child: ProductGridView(products: ps, heroTag: 'myCart',
-          showRemoveIcon: true,
-        ));
+          opacity: this.animationOpacity!,
+          child: ProductGridView(
+            products: ps,
+            heroTag: 'myCart',
+            showRemoveIcon: true,
+          ));
     }
   }
 
@@ -92,7 +93,7 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
       bottomNavigationBar: DmBottomNavigationBar(currentIndex: bottomIdx),
 //      drawer: DrawerWidget(),
       body: SafeArea(
-        child: Stack (
+        child: Stack(
           children: [
             RefreshIndicator(
               onRefresh: _refresh,
@@ -101,11 +102,12 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
                 slivers: <Widget>[
                   createSliverTopBar(context),
                   createSliverSearch(context),
-                  createSilverTopMenu(context, haveBackIcon: true, title: getTitle(context)),
+                  createSilverTopMenu(context,
+                      haveBackIcon: true, title: getTitle(context)),
                   SliverList(
                     delegate: SliverChildListDelegate([
                       Container(
-                        padding: EdgeInsets.all(DmConst.masterHorizontalPad),
+                          padding: EdgeInsets.all(DmConst.masterHorizontalPad),
                           child: buildContent(context)),
                       SizedBox(height: 80),
                     ]),
@@ -122,22 +124,24 @@ class _CartsScreenState extends ProductStateMVC<CartsScreen>
 
   Widget buildBottom(BuildContext context) {
     return Positioned(
-      bottom: 0, left: 0, right: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
       child: CartBottomButton(
-          title: S.current.processOrder,
-          onPressed: _onPressProcessOrder
-      ),
+          title: S.current.processOrder, onPressed: _onPressProcessOrder),
     );
   }
+
   void _onPressProcessOrder() {
-    if(DmState.amountInCart.value <= 0) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+    if (DmState.amountInCart.value <= 0) {
+      _scaffoldKey.currentState!.showSnackBar(SnackBar(
           content: Text('${S.current.yourCartEmpty}',
               style: TextStyle(color: Colors.red))));
       return;
     }
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => DeliveryToScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => DeliveryToScreen()));
   }
 
   @override

@@ -1,31 +1,35 @@
 import '../../utils.dart';
-import '../models/store.dart';
 import '../models/product.dart';
+import '../models/store.dart';
 import '../models/user.dart';
 import 'i_name.dart';
 
-class Review extends IdObj{
-  String review;
-  String rate;
-  User user;
+class Review extends IdObj {
+  String? review;
+  String? rate;
+  User? user;
 
-  Review();
+  Review(
+    this.review,
+    this.rate,
+    this.user,
+  );
   Review.init(this.rate);
 
   Review.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       review = jsonMap['review'];
       rate = jsonMap['rate'].toString() ?? '0';
-      user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
+      user =
+          jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
     } catch (e, trace) {
       id = -1;
       review = '';
       rate = '0';
       user = new User();
       print('Error parsing data in Review.fromJSON $e \n $trace');
-
     }
   }
 

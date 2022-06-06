@@ -6,7 +6,7 @@ import '../models/faq.dart';
 
 class FaqItem extends StatelessWidget {
   final Faq faq;
-  FaqItem({Key key, this.faq}) : super(key: key);
+  FaqItem({Key? key, required this.faq}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,16 @@ class FaqItem extends StatelessWidget {
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(10),
-            decoration:
-                BoxDecoration(color: DmConst.bgrColorSearchBar,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+            decoration: BoxDecoration(
+                color: DmConst.bgrColorSearchBar,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
             child: Text(
               Helper.skipHtml(this.faq.question),
-              style: Theme.of(context).textTheme.bodyText1.copyWith(color: DmConst.accentColor),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: DmConst.accentColor),
             ),
           ),
           Container(
@@ -37,10 +41,15 @@ class FaqItem extends StatelessWidget {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: DmConst.accentColor,
-                borderRadius: BorderRadius.only(bottomRight: Radius.circular(5), bottomLeft: Radius.circular(5))),
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(5),
+                    bottomLeft: Radius.circular(5))),
             child: Text(
               Helper.skipHtml(this.faq.answer),
-              style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2!
+                  .copyWith(color: Colors.white),
             ),
           ),
         ],

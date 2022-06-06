@@ -1,14 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dmart/src/models/ProductType.dart';
-import 'package:dmart/src/models/brand.dart';
-import 'package:dmart/src/models/category.dart';
-import 'package:dmart/src/models/i_name.dart';
-import 'package:dmart/src/widgets/DmDropDown.dart';
 import 'package:dmart/src/widgets/toolbars/HeaderBar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'DmState.dart';
 import 'constant.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -22,12 +15,12 @@ import 'src/widgets/ShoppingCartButton.dart';
 import 'src/widgets/toolbars/SearchSoundBar.dart';
 
 Widget createNetworkImage(
-    {String url, double width, double height, BoxFit fit = BoxFit.cover}) {
+    {String? url, double? width, double? height, BoxFit fit = BoxFit.cover}) {
   return CachedNetworkImage(
     height: height,
     width: width,
     fit: fit,
-    imageUrl: url,
+    imageUrl: url!,
     placeholder: (context, url) => Image.asset(
       'assets/img/loading.gif',
       fit: BoxFit.cover,
@@ -76,7 +69,7 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
             padding: const EdgeInsets.only(left: DmConst.masterHorizontalPad),
             child: CircleAvatar(
               backgroundColor: Colors.transparent,
-              backgroundImage: NetworkImage(user.avatarUrl),
+              backgroundImage: NetworkImage(user.avatarUrl!),
               // backgroundImage: createNetworkImage(url: user.avatarUrl),
 //              child: createNetworkImage(url: currentUser.value.image.thumb),
             ),
@@ -87,8 +80,8 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(user.nameShort ?? S.current.unknown),
-                Text('${S.current.credit}: ${currentUser.value.credit}',
+                Text(user.nameShort ?? S.current!.unknown),
+                Text('${S.current!.credit}: ${currentUser.value.credit}',
                     style: TextStyle(color: DmConst.textColorForTopBarCredit)),
               ],
             ),
@@ -110,8 +103,8 @@ Widget _createUserInfoRowOnTopBar(BuildContext context, User user) {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(S.current.guest),
-              Text('${S.current.credit}:'),
+              Text(S.current!.guest),
+              Text('${S.current!.credit}:'),
             ],
           ),
         ],
@@ -251,13 +244,14 @@ Widget createSliverSearch(BuildContext context) {
 
 Widget createSilverTopMenu(BuildContext context,
     {bool haveBackIcon = true, bool haveFilter = false, String title = ''}) {
-  return HeaderBar(haveBackIcon: haveBackIcon, haveFilter: haveFilter, title: title);
+  return HeaderBar(
+      haveBackIcon: haveBackIcon, haveFilter: haveFilter, title: title);
   TextStyle ts =
-      Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
+      Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white);
 
   List<Widget> _buildMenu() {
     List<Widget> re = [];
-    if (title != null && title.isNotEmpty) {
+    if (title.isNotEmpty) {
 //      re.add(VerticalDivider(color: Colors.white, thickness: 2, width: 10,));
       re.add(Container(
           padding: EdgeInsets.fromLTRB(8, 5, 0, 5),
@@ -283,19 +277,18 @@ Widget createSilverTopMenu(BuildContext context,
         : null,
 //    centerTitle: true,
     title: Align(
-      alignment: Alignment.centerRight,
-      // child: SingleChildScrollView(
-      //   scrollDirection: Axis.horizontal,
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.end,
-      //     children: _buildMenu(),
-      //   ),
-      // ),
-      child: Row(
+        alignment: Alignment.centerRight,
+        // child: SingleChildScrollView(
+        //   scrollDirection: Axis.horizontal,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.end,
+        //     children: _buildMenu(),
+        //   ),
+        // ),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: _buildMenu(),
-        )
-    ),
+        )),
     actions: <Widget>[haveFilter ? Icon(Icons.menu) : Container()],
     backgroundColor: DmConst.accentColor,
   );
@@ -322,7 +315,7 @@ Widget createTitleRowWithBack(BuildContext context,
               child: Text(title,
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
+                      .headline6!
                       .copyWith(color: Colors.white))),
         )
       ],
@@ -389,10 +382,9 @@ InputDecoration buildInputDecoration(BuildContext context, String hintText) {
   );
 }
 
-Container createEmptyContainer({String imageUrl}) {
+Container createEmptyContainer({String? imageUrl}) {
   return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(imageUrl), fit: BoxFit.cover)));
+              image: NetworkImage(imageUrl!), fit: BoxFit.cover)));
 }
-

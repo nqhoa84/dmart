@@ -20,7 +20,8 @@ ValueNotifier<User> currentUser = new ValueNotifier(User());
 
 Future<User> login(User user) async {
   try {
-    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}login');
+    var url =
+        Uri.parse('${GlobalConfiguration().getValue('api_base_url')}login');
     final client = new http.Client();
     print('login $url \n map-para ${user.toMap()}');
     final response = await client.post(
@@ -55,9 +56,11 @@ Future<User> login(User user) async {
 //  }
   return currentUser.value;
 }
+
 ///return OTP if register ok. if not, return nullOrEmpty
-Future<String> register(User user) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}register');
+Future<String?> register(User user) async {
+  var url =
+      Uri.parse('${GlobalConfiguration().getValue('api_base_url')}register');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -85,7 +88,11 @@ Future<String> register(User user) async {
   }
 }
 
-Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, String name, String avatarUrl}) async {
+Future<ApiResult<User>> loginFB(
+    {String? fbId,
+    String? accessToken,
+    String? name,
+    String? avatarUrl}) async {
 //  final String url = '${GlobalConfiguration().getString('api_base_url')}login/facebook';
   var paras = {
     'facebook_id': '$fbId',
@@ -95,7 +102,6 @@ Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, Stri
     'device_token': '${DmConst.deviceToken}'
   };
   http.Response response = await post(shortUrl: 'login/facebook', body: paras);
-
 
 //  final response = await http.Client().post(
 //    url,
@@ -109,10 +115,10 @@ Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, Stri
     re.isNoJson = false;
     dynamic js = json.decode(response.body);
     re.setMsgAndStatus(js);
-    if(re.isSuccess) {
+    if (re.isSuccess!) {
       String token = toStringVal(js['data']['token']);
       re.data = User.fromJSON(js['data']['user']);
-      currentUser.value = re.data;
+      currentUser.value = re.data!;
       currentUser.value.apiToken = token;
     }
   } else {
@@ -123,7 +129,8 @@ Future<ApiResult<User>> loginFB({@required String fbId, String accessToken, Stri
 
 ///return OTP if register ok. if not, return nullOrEmpty
 Future<ApiResult<String>> registerFb(User user) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}register/facebook');
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}register/facebook');
   print(url);
   print('paras: ${user.toMapRegFb()}');
   final response = await http.Client().post(
@@ -137,7 +144,7 @@ Future<ApiResult<String>> registerFb(User user) async {
     re.isNoJson = false;
     dynamic js = json.decode(response.body);
     re.setMsgAndStatus(js);
-    if(re.isSuccess) {
+    if (re.isSuccess!) {
       re.data = toStringVal(js['data']['OTP']);
     }
   } else {
@@ -147,12 +154,14 @@ Future<ApiResult<String>> registerFb(User user) async {
 }
 
 ///Verify Otp to complete registration by FB
-Future<User> verifyOtpToCompleteRegFb({String fbId, String phone, String otp}) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/verify/facebook');
+Future<User?> verifyOtpToCompleteRegFb(
+    {String? fbId, String? phone, String? otp}) async {
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}otp/verify/facebook');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({'phone': phone, 'OTP': otp, 'facebook_id' : fbId}),
+    body: json.encode({'phone': phone, 'OTP': otp, 'facebook_id': fbId}),
   );
 
   print('verifyOtpToCompleteRegFb ${response.body}');
@@ -173,8 +182,9 @@ Future<User> verifyOtpToCompleteRegFb({String fbId, String phone, String otp}) a
   }
 }
 
-Future<String> resendOtp(String phone) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/resend');
+Future<String?> resendOtp(String phone) async {
+  var url =
+      Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/resend');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -191,16 +201,18 @@ Future<String> resendOtp(String phone) async {
 
    */
 
-  if(js["success"] != null && js["success"] == true) {
+  if (js["success"] != null && js["success"] == true) {
     return js['data']['OTP'];
   } else {
     return null;
   }
 }
+
 ///Verify Otp to complete registration.
 ///This will also automatic login for customer.
-Future<User> verifyOtp(String phone, String otp) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/verify');
+Future<User?> verifyOtp(String phone, String otp) async {
+  var url =
+      Uri.parse('${GlobalConfiguration().getString('api_base_url')}otp/verify');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -236,8 +248,9 @@ Future<User> verifyOtp(String phone, String otp) async {
 }
 
 ///return the OTP send to client.
-Future<String> sendOtpForgotPass(String phone) async {
-  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}forgot_password');
+Future<String?> sendOtpForgotPass(String phone) async {
+  var url = Uri.parse(
+      '${GlobalConfiguration().getValue('api_base_url')}forgot_password');
   print('sendOtpForgotPass $url');
   final response = await http.Client().post(
     url,
@@ -254,13 +267,19 @@ Future<String> sendOtpForgotPass(String phone) async {
   }
 }
 
-Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String password) async {
-  var url = Uri.parse('${GlobalConfiguration().getValue('api_base_url')}reset_password');
+Future<bool> resetPassword(
+    String phoneWith855, String userEnterOtp, String password) async {
+  var url = Uri.parse(
+      '${GlobalConfiguration().getValue('api_base_url')}reset_password');
   final response = await http.Client().post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode({'phone': phoneWith855, 'OTP': userEnterOtp, 'password': password,
-      'device_token': DmConst.deviceToken??''}),
+    body: json.encode({
+      'phone': phoneWith855,
+      'OTP': userEnterOtp,
+      'password': password,
+      'device_token': DmConst.deviceToken ?? ''
+    }),
   );
   print('reset_password ${response.body}');
   dynamic js = json.decode(response.body);
@@ -272,8 +291,10 @@ Future<bool> resetPassword(String phoneWith855, String userEnterOtp, String pass
   }
 }
 
-Future<bool> changePwd(String phoneWith855, String currentPass, String newPass) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}change_password');
+Future<bool> changePwd(
+    String phoneWith855, String currentPass, String newPass) async {
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}change_password');
   final response = await http.Client().post(
     url,
     headers: createHeadersRepo(),
@@ -300,23 +321,20 @@ void saveUserToShare(User u) async {
 //    SharedPreferences prefs = await SharedPreferences.getInstance();
 //    await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
 //  }
-  if (u != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('current_user', json.encode(u.toMap4SharePreference()));
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('current_user', json.encode(u.toMap4SharePreference()));
 }
 
 Future<void> setCreditCard(CreditCard creditCard) async {
-  if (creditCard != null) {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('credit_card', json.encode(creditCard.toMap()));
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('credit_card', json.encode(creditCard.toMap()));
 }
 
 Future<User> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey('current_user')) {
-    currentUser.value = User.fromJSON(json.decode(await prefs.get('current_user')));
+    currentUser.value =
+        User.fromJSON(json.decode(prefs.get('current_user') as dynamic));
 
     print('------From share preferences---------');
     print('User: ${userRepo.currentUser.value.toStringIdName()}');
@@ -332,18 +350,20 @@ Future<CreditCard> getCreditCard() async {
   CreditCard _creditCard = new CreditCard();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey('credit_card')) {
-    _creditCard = CreditCard.fromJSON(json.decode(await prefs.get('credit_card')));
+    _creditCard =
+        CreditCard.fromJSON(json.decode(prefs.get('credit_card') as dynamic));
   }
   return _creditCard;
 }
 
 Future<ApiResult<User>> update(User user) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}profile/update';
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}profile/update';
 
   var response = await httpPost(url: url, bodyParams: user.toMapUpdateInfo());
   ApiResult<User> re = ApiResult<User>();
   var js = re.setMsgAndStatus(response);
-  if (re.isSuccess) {
+  if (re.isSuccess!) {
     currentUser.value = User.fromJSON(js);
     saveUserToShare(currentUser.value);
     re.data = currentUser.value;
@@ -352,8 +372,9 @@ Future<ApiResult<User>> update(User user) async {
   return re;
 }
 
-Future<User> updatePersonalDetail(User user) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}profile/update');
+Future<User?> updatePersonalDetail(User user) async {
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}profile/update');
 
   print("update User - $url");
   print(user.toMapUpdateInfo());
@@ -375,11 +396,11 @@ Future<User> updatePersonalDetail(User user) async {
 }
 
 Future<List<Province>> getProvinces() async {
-
   List<Province> re = [];
 
   try {
-    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}provinces');
+    var url =
+        Uri.parse('${GlobalConfiguration().getValue('api_base_url')}provinces');
     print('getProvinces $url');
     final response = await http.Client().get(
       url,
@@ -401,9 +422,10 @@ Future<List<Province>> getProvinces() async {
 Future<List<District>> getDistricts(int provinceId) async {
   List<District> re = [];
   try {
-    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}districts?province_id=$provinceId');
+    var url = Uri.parse(
+        '${GlobalConfiguration().getString('api_base_url')}districts?province_id=$provinceId');
     print('getDistricts $url');
-    final response = await http.Client().get( url );
+    final response = await http.Client().get(url);
     print('getDistricts ${response.body}');
     dynamic js = json.decode(response.body);
     if (js["success"] != null && js["success"] == true) {
@@ -420,9 +442,10 @@ Future<List<District>> getDistricts(int provinceId) async {
 Future<List<Ward>> getWards(int districtId) async {
   List<Ward> re = [];
   try {
-    var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}wards?district_id=$districtId');
+    var url = Uri.parse(
+        '${GlobalConfiguration().getValue('api_base_url')}wards?district_id=$districtId');
     print('getWards $url');
-    final response = await http.Client().get( url );
+    final response = await http.Client().get(url);
     print('getWards ${response.body}');
     dynamic js = json.decode(response.body);
     if (js["success"] != null && js["success"] == true) {
@@ -437,13 +460,17 @@ Future<List<Ward>> getWards(int districtId) async {
 }
 
 Future<Stream<Address>> getAddresses() async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}delivery_addresses';
   print(url);
   var req = http.Request('get', Uri.parse(url));
   req.headers.addAll(createHeadersRepo());
   final streamedRest = await http.Client().send(req);
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) {
+  return streamedRest.stream
+      .transform(utf8.decoder)
+      .transform(json.decoder)
+      .map((data) {
 //    print(' --+++++++--- $data');
     return Helper.getData(data);
   }).expand((data) {
@@ -460,15 +487,16 @@ Future<Stream<Address>> getAddresses() async {
 Future<ApiResult<List<Address>>> addAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}delivery_addresses/add';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}delivery_addresses/add';
   var response = await httpPost(url: url, bodyParams: address.toMap());
 
   var re = ApiResult<List<Address>>();
   var js = re.setMsgAndStatus(response);
-  if(re.isSuccess) {
+  if (re.isSuccess!) {
     re.data = [];
     (js as List).forEach((element) {
-      re.data.add(Address.fromJSON(element));
+      re.data!.add(Address.fromJSON(element));
     });
   }
 
@@ -495,11 +523,12 @@ Future<ApiResult<List<Address>>> addAddress(Address address) async {
 Future<ApiResult<Address>> updateAddress(Address address) async {
   User _user = userRepo.currentUser.value;
   address.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
+  final String url =
+      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}';
   var response = await httpPut(url: url, bodyParams: address.toMap());
   var re = ApiResult<Address>();
   var js = re.setMsgAndStatus(response);
-  if(re.isSuccess) {
+  if (re.isSuccess!) {
     re.data = Address.fromJSON(js);
     // (js as List).forEach((element) {
     //   re.data.add(Address.fromJSON(element));
@@ -522,7 +551,8 @@ Future<ApiResult<Address>> updateAddress(Address address) async {
 }
 
 Future<bool> removeDeliveryAddress(Address address) async {
-  var url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}');
+  var url = Uri.parse(
+      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}');
   final response = await http.Client().delete(
     url,
     headers: createHeadersRepo(),

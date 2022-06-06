@@ -9,7 +9,7 @@ class TitleDivider extends StatelessWidget {
   final double dividerThickness;
 
   const TitleDivider(
-      {Key key,
+      {Key? key,
       this.title = '',
       this.titleTextColor = DmConst.accentColor,
       this.dividerColor = Colors.black12,
@@ -26,16 +26,22 @@ class TitleDivider extends StatelessWidget {
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.only(right: 0),
-              child: Divider(thickness: this.dividerThickness, color: dividerColor),
+              child: Divider(
+                  thickness: this.dividerThickness, color: dividerColor),
             )),
         Expanded(flex: 1, child: Container()),
-        Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: titleTextColor)),
+        Text(title,
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: titleTextColor)),
         Expanded(flex: 1, child: Container()),
         Expanded(
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.only(left: 0),
-              child: Divider(thickness: this.dividerThickness, color: dividerColor),
+              child: Divider(
+                  thickness: this.dividerThickness, color: dividerColor),
             )),
       ],
     );

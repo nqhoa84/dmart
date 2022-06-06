@@ -3,14 +3,17 @@ import 'package:dmart/utils.dart';
 
 import '../models/media.dart';
 
-class Brand extends NameImageObj{
-  String description;
-  bool selected=false;
+class Brand extends NameImageObj {
+  String? description;
+  bool? selected;
 
-  Brand();
+  Brand({
+    this.description,
+    this.selected = false,
+  });
 
   Brand.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
       nameEn = toStringVal(jsonMap['name']);

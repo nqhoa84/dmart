@@ -1,3 +1,4 @@
+import 'package:dmart/src/widgets/ProductItemHigh.dart';
 import 'package:dmart/src/widgets/ProductItemWide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -7,20 +8,19 @@ import '../../src/controllers/product_controller.dart';
 import '../../src/models/category.dart';
 import '../../src/models/product.dart';
 import '../../src/widgets/CircularLoadingWidget.dart';
-import '../../src/widgets/ProductItemHigh.dart';
 
 class ProductsByCategory extends StatefulWidget {
   Category category;
-  ProductsByCategory({Key key, this.category}) : super(key: key);
+  ProductsByCategory({Key? key, required this.category}) : super(key: key);
   @override
   _ProductsByCategoryState createState() => _ProductsByCategoryState();
 }
 
 class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
-  ProductController _con;
+  ProductController _con = ProductController();
 
   _ProductsByCategoryState() : super(ProductController()) {
-    _con = controller;
+    _con = controller as ProductController;
   }
 
   String layout = 'list';
@@ -74,10 +74,8 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
 //        ),
         Offstage(
           offstage: this.layout != 'list',
-          child: _con.categoriesProducts.isEmpty
-              ? CircularLoadingWidget(
-                  height: 200
-                )
+          child: _con.categoriesProducts!.isEmpty
+              ? CircularLoadingWidget(height: 200)
               : GridView.count(
                   primary: false,
                   shrinkWrap: true,
@@ -87,12 +85,15 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
                   childAspectRatio: 337.0 / 120,
                   // 120 / 337,
                   children: List.generate(
-                    _con.categoriesProducts.length,
+                    _con.categoriesProducts!.length,
                     (index) {
-                      Product product = _con.categoriesProducts.elementAt(index);
+                      Product product =
+                          _con.categoriesProducts!.elementAt(index);
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ProductItemWide(product: product, heroTag: 'category_products_grid'),
+                        child: ProductItemWide(
+                            product: product,
+                            heroTag: 'category_products_grid'),
                       );
                     },
                   ),
@@ -102,27 +103,44 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
           offstage: this.layout != 'grid',
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: _con.categoriesProducts.isEmpty
+            child: _con.categoriesProducts!.isEmpty
                 ? CircularLoadingWidget(
                     height: 200,
                   )
-                : new StaggeredGridView.countBuilder(
-                    primary: false,
-                    shrinkWrap: true,
+                : new StaggeredGrid.count(
+                    // primary: false,
+                    // shrinkWrap: true,
                     crossAxisCount: 4,
-                    itemCount: _con.categoriesProducts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Product product = _con.categoriesProducts.elementAt(index);
-                      //todo this is legacy class, need customer to design UI.
-                      return ProductItemHigh(
-                        product: product,
-                        heroTag: 'products_by_category_grid',
-                      );
-                    },
-//                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
-                    staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
                     mainAxisSpacing: 15.0,
                     crossAxisSpacing: 15.0,
+                    children: [
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: _con.categoriesProducts!.length,
+                        itemBuilder: (context, index) {
+                          Product product =
+                              _con.categoriesProducts!.elementAt(index);
+                          return ProductItemHigh(
+                            product: product,
+                            heroTag: 'products_by_category_grid',
+                          );
+                        },
+                      )
+                    ],
+                    // itemCount: _con.categoriesProducts.length,
+                    // itemBuilder: (BuildContext context, int index) {
+                    //   Product product =
+                    //       _con.categoriesProducts.elementAt(index);
+                    //   //todo this is legacy class, need customer to design UI.
+                    //   return ProductItemHigh(
+                    //     product: product,
+                    //     heroTag: 'products_by_category_grid',
+                    //   );
+                    // },
+//                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
+                    // staggeredTileBuilder: (int index) =>
+                    //     new StaggeredTile.fit(2),
                   ),
           ),
         ),
@@ -130,4 +148,3 @@ class _ProductsByCategoryState extends StateMVC<ProductsByCategory> {
     );
   }
 }
-

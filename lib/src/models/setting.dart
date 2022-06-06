@@ -1,30 +1,48 @@
-import 'package:flutter/cupertino.dart';
-
 class Setting {
-
-  String appName = '';
-  double defaultTax;
-  String defaultCurrency;
-  String distanceUnit;
-  bool currencyRight = false;
-  int currencyDecimalDigits = 2;
-  bool payPalEnabled = true;
-  bool stripeEnabled = true;
-  bool razorPayEnabled = true;
-  String mainColor;
-  String mainDarkColor;
-  String secondColor;
-  String secondDarkColor;
-  String accentColor;
-  String accentDarkColor;
-  String scaffoldDarkColor;
-  String scaffoldColor;
-  String googleMapsKey;
+  String? appName = '';
+  double? defaultTax;
+  String? defaultCurrency;
+  String? distanceUnit;
+  bool? currencyRight = false;
+  int? currencyDecimalDigits = 2;
+  bool? payPalEnabled = true;
+  bool? stripeEnabled = true;
+  bool? razorPayEnabled = true;
+  String? mainColor;
+  String? mainDarkColor;
+  String? secondColor;
+  String? secondDarkColor;
+  String? accentColor;
+  String? accentDarkColor;
+  String? scaffoldDarkColor;
+  String? scaffoldColor;
+  String? googleMapsKey;
 //  ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
-  String appVersion = '0.2.0';
-  bool enableVersion = true;
+  String? appVersion = '0.2.0';
+  bool? enableVersion = true;
 
-  Setting();
+  Setting([
+    this.appName,
+    this.defaultTax,
+    this.defaultCurrency,
+    this.distanceUnit,
+    this.currencyRight,
+    this.currencyDecimalDigits,
+    this.payPalEnabled,
+    this.stripeEnabled,
+    this.razorPayEnabled,
+    this.mainColor,
+    this.mainDarkColor,
+    this.secondColor,
+    this.secondDarkColor,
+    this.accentColor,
+    this.accentDarkColor,
+    this.scaffoldDarkColor,
+    this.scaffoldColor,
+    this.googleMapsKey,
+    this.appVersion,
+    this.enableVersion,
+  ]);
 
   Setting.fromJSON(Map<String, dynamic> jsonMap) {
     try {
@@ -41,13 +59,28 @@ class Setting {
 //      mobileLanguage.value = Locale(jsonMap['mobile_language'] ?? "en", '');
       appVersion = jsonMap['app_version'] ?? '';
       distanceUnit = jsonMap['distance_unit'] ?? 'km';
-      enableVersion = jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0' ? false : true;
+      enableVersion =
+          jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0'
+              ? false
+              : true;
       defaultTax = (double.tryParse(jsonMap['default_tax']) ?? 0.0) / 100.0;
       defaultCurrency = jsonMap['default_currency'] ?? '';
-      currencyRight = jsonMap['currency_right'] == null || jsonMap['currency_right'] == '0' ? false : true;
-      payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
-      stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
-      razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
+      currencyRight =
+          jsonMap['currency_right'] == null || jsonMap['currency_right'] == '0'
+              ? false
+              : true;
+      payPalEnabled =
+          jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0'
+              ? false
+              : true;
+      stripeEnabled =
+          jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0'
+              ? false
+              : true;
+      razorPayEnabled = jsonMap['enable_razorpay'] == null ||
+              jsonMap['enable_razorpay'] == '0'
+          ? false
+          : true;
     } catch (e, trace) {
       print('Error parsing data in Setting.fromJSON $e \n $trace');
     }

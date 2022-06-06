@@ -11,7 +11,8 @@ class ErrorScreen extends StatefulWidget {
   _CategoryScreenState createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderStateMixin {
+class _CategoryScreenState extends State<ErrorScreen>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -33,7 +34,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                S.current.generalErrorMessage,
+                S.current!.generalErrorMessage,
                 style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
               ),
@@ -44,7 +45,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
                 onPressed: () {
                   RouteGenerator.gotoHome(context);
                 },
-                child: Text(S.current.home),
+                child: Text(S.current!.home),
                 shape: StadiumBorder(),
                 color: DmConst.accentColor,
               ),
@@ -52,9 +53,7 @@ class _CategoryScreenState extends State<ErrorScreen> with SingleTickerProviderS
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: 20
-                ),
+                constraints: BoxConstraints(minHeight: 20),
                 child: FlatButton(
                     onPressed: () {
                       RouteGenerator.gotoSplash(context);

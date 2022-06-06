@@ -2,26 +2,37 @@ import '../../utils.dart';
 import '../models/media.dart';
 import 'i_name.dart';
 
-class Option extends IdObj{
-  String optionGroupId;
-  String name;
-  double price;
-  Media image;
-  String description;
-  bool checked;
+class Option extends IdObj {
+  String? optionGroupId;
+  String? name;
+  double? price;
+  Media? image;
+  String? description;
+  bool? checked;
 
-  Option();
+  Option({
+    required this.optionGroupId,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.description,
+    required this.checked,
+  });
 
   Option.fromJSON(Map<String, dynamic> jsonMap) {
-    if(jsonMap == null) return;
+    if (jsonMap == null) return;
     try {
       id = toInt(jsonMap['id']);
-      optionGroupId = jsonMap['option_group_id'] != null ? jsonMap['option_group_id'].toString() : '0';
+      optionGroupId = jsonMap['option_group_id'] != null
+          ? jsonMap['option_group_id'].toString()
+          : '0';
       name = jsonMap['name'].toString();
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0;
       description = jsonMap['description'];
       checked = false;
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+          ? Media.fromJSON(jsonMap['media'][0])
+          : new Media();
     } catch (e, trace) {
       id = -1;
       optionGroupId = '0';
@@ -31,7 +42,6 @@ class Option extends IdObj{
       checked = false;
       image = new Media();
       print('Error parsing data in Option.fromJSON $e \n $trace');
-
     }
   }
 

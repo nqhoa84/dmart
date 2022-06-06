@@ -9,17 +9,18 @@ class FavoriteGridItemWidget extends StatefulWidget {
   final String heroTag;
   final Favorite favorite;
 
-  FavoriteGridItemWidget({Key key, this.heroTag, this.favorite}) : super(key: key);
+  FavoriteGridItemWidget(
+      {Key? key, required this.heroTag, required this.favorite})
+      : super(key: key);
 
   @override
-  _FavoriteGridItemWidgetState createState() =>  _FavoriteGridItemWidgetState();
-
+  _FavoriteGridItemWidgetState createState() => _FavoriteGridItemWidgetState();
 }
 
-class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
-  ProductController _con ;
-  _FavoriteGridItemWidgetState() :super(ProductController()){
-    _con = controller;
+class _FavoriteGridItemWidgetState extends StateMVC<FavoriteGridItemWidget> {
+  ProductController _con = ProductController();
+  _FavoriteGridItemWidgetState() : super(ProductController()) {
+    _con = controller as ProductController;
   }
   @override
   void initState() {
@@ -32,9 +33,12 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
   Widget build(BuildContext context) {
     return InkWell(
       highlightColor: Colors.transparent,
-      splashColor: Theme.of(context).accentColor.withOpacity(0.08),
+      splashColor: Theme.of(context).colorScheme.secondary.withOpacity(0.08),
       onTap: () {
-        Navigator.of(context).pushNamed('/Product', arguments: new RouteArgument(id: widget.favorite.product.id, param: [widget.favorite.product, widget.heroTag]));
+        Navigator.of(context).pushNamed('/Product',
+            arguments: new RouteArgument(
+                id: widget.favorite.product!.id,
+                param: [widget.favorite.product, widget.heroTag]));
       },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,
@@ -44,10 +48,13 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
             children: <Widget>[
               Expanded(
                 child: Hero(
-                  tag: widget.heroTag + widget.favorite.product.id.toString(),
+                  tag: widget.heroTag + widget.favorite.product!.id.toString(),
                   child: Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(this.widget.favorite.product.image.thumb), fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              this.widget.favorite.product!.image!.thumb!),
+                          fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
@@ -55,13 +62,13 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
               ),
               SizedBox(height: 5),
               Text(
-                widget.favorite.product.name,
+                widget.favorite.product!.name,
                 style: Theme.of(context).textTheme.bodyText1,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 2),
               Text(
-                widget.favorite.product.store.name,
+                widget.favorite.product!.store!.name,
                 style: Theme.of(context).textTheme.caption,
                 overflow: TextOverflow.ellipsis,
               )
@@ -79,7 +86,7 @@ class _FavoriteGridItemWidgetState  extends StateMVC<FavoriteGridItemWidget>{
                 color: Theme.of(context).primaryColor,
                 size: 24,
               ),
-              color: Theme.of(context).accentColor.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.9),
               shape: StadiumBorder(),
             ),
           ),

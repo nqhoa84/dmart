@@ -4,27 +4,21 @@ import 'package:dmart/constant.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/promotion_controller.dart';
 import 'package:dmart/src/models/promotion.dart';
-import 'package:dmart/src/widgets/CircularLoadingWidget.dart';
 
-import '../../src/controllers/category_controller.dart';
-import '../../src/controllers/product_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../src/models/category.dart';
-import '../../src/models/route_argument.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'CategoriesGrid.dart';
 
 class PromotionGroups extends StatefulWidget {
-  final GlobalKey<ScaffoldState> parentScaffoldKey;
+  final GlobalKey<ScaffoldState>? parentScaffoldKey;
 
 //  final List<Category> categories;
 
   const PromotionGroups(
-      {Key key,
+      {Key? key,
 //    this.categories,
       this.parentScaffoldKey})
       : super(key: key);
@@ -33,11 +27,12 @@ class PromotionGroups extends StatefulWidget {
   _PromotionGroupsState createState() => _PromotionGroupsState();
 }
 
-class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerProviderStateMixin {
-  PromotionController _con;
+class _PromotionGroupsState extends StateMVC<PromotionGroups>
+    with SingleTickerProviderStateMixin {
+  PromotionController _con = PromotionController();
 
   _PromotionGroupsState() : super(PromotionController()) {
-    _con = controller;
+    _con = controller as PromotionController;
   }
 
   @override
@@ -56,17 +51,16 @@ class _PromotionGroupsState extends StateMVC<PromotionGroups> with SingleTickerP
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _con.promotions.isEmpty
-            ? NameImageItemGridViewLoading()
-            : PromotionsGridView(promotions: _con.promotions),
+      body: _con.promotions.isEmpty
+          ? NameImageItemGridViewLoading()
+          : PromotionsGridView(promotions: _con.promotions),
     );
   }
 }
 
 class PromotionsGridView extends StatelessWidget {
   final List<Promotion> promotions;
-  PromotionsGridView ({this.promotions = const []});
-
+  PromotionsGridView({this.promotions = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +68,12 @@ class PromotionsGridView extends StatelessWidget {
       primary: false,
       shrinkWrap: true,
       childAspectRatio: 7.0 / 9.0,
-      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-      children: List.generate( promotions.length, (index) {
-        Promotion promo =  promotions.elementAt(index);
+      crossAxisCount:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      children: List.generate(promotions.length, (index) {
+        Promotion promo = promotions.elementAt(index);
         return InkWell(
-          onTap: () => onTapOnPromotion(context, id:promo.id),
+          onTap: () => onTapOnPromotion(context, id: promo.id),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -95,16 +90,18 @@ class PromotionsGridView extends StatelessWidget {
                 //category image space.
                 Expanded(
                   flex: 7,
-                  child: promo.image.url.toLowerCase().endsWith('.svg')
+                  child: promo.image!.url!.toLowerCase().endsWith('.svg')
                       ? Container(
-                    child:
-                    SvgPicture.network(promo.image.url, color: Theme.of(context).primaryColor),
-                  )
+                          child: SvgPicture.network(promo.image!.url!,
+                              color: Theme.of(context).primaryColor),
+                        )
                       : ClipRRect(
-                    borderRadius:
-                    BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
-                    child: createNetworkImage(url: promo.image.thumb, fit: BoxFit.cover),
-                  ),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(9),
+                              topRight: Radius.circular(9)),
+                          child: createNetworkImage(
+                              url: promo.image!.thumb, fit: BoxFit.cover),
+                        ),
                 ),
                 Divider(thickness: 1, height: 1, color: DmConst.accentColor),
                 Expanded(
@@ -130,11 +127,11 @@ class PromotionsGridView extends StatelessWidget {
     );
   }
 
-  void onTapOnPromotion(BuildContext context, {int id}) {
-    RouteGenerator.gotoPromotionPage(context, promotionId: id, heroTag: "fromPromoGroup_$id");
+  void onTapOnPromotion(BuildContext context, {required int id}) {
+    RouteGenerator.gotoPromotionPage(context,
+        promotionId: id, heroTag: "fromPromoGroup_$id");
     // Navigator.of(context)
     //     .pushNamed('/Promotion', arguments: new RouteArgument(id: promo.id, param: [promo],
     //     heroTag: "fromPromoGroup_$id"));
   }
 }
-

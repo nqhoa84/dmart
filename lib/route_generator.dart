@@ -1,5 +1,4 @@
 import 'package:dmart/src/models/category.dart';
-import 'package:dmart/src/models/i_name.dart';
 import 'package:dmart/src/screens/ProfileUpdated.dart';
 import 'package:dmart/src/screens/bottom_right_menu.dart';
 import 'package:dmart/src/screens/contactus.dart';
@@ -43,97 +42,124 @@ class RouteGenerator {
   }
 
   static gotoLogin(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Login')
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/Login')
         : Navigator.of(context).pushNamed('/Login');
   }
 
   static void gotoForgetPass(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/ForgetPassword')
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/ForgetPassword')
         : Navigator.of(context).pushNamed('/ForgetPassword');
   }
 
   ///This will remove all route, except /Home
   static void gotoHome(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/Home', (Route<dynamic> route) => false);
 //    Navigator.of(context).pushReplacementNamed('/Home');
   }
+
   static void gotoCategories(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/Categories', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/Categories', (Route<dynamic> route) => false);
 
 //    Navigator.of(context).pushReplacementNamed('/Categories');
   }
+
   static void gotoPromotions(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/Promotions', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/Promotions', (Route<dynamic> route) => false);
 //    Navigator.of(context).pushReplacementNamed('/Promotions');
   }
+
   static void gotoNotifications(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/Notifications', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/Notifications', (Route<dynamic> route) => false);
 //    Navigator.of(context).pushReplacementNamed('/Notifications');
   }
+
   static void gotoMenu(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/BottomRightMenu', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/BottomRightMenu', (Route<dynamic> route) => false);
 //    Navigator.of(context).pushReplacementNamed('/BottomRightMenu');
   }
 
   static void gotoBestSale(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/BestSale')
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/BestSale')
         : Navigator.of(context).pushNamed('/BestSale');
   }
 
   static void gotoNewArrivals(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/NewArrivals')
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/NewArrivals')
         : Navigator.of(context).pushNamed('/NewArrivals');
   }
 
   static void gotoMyFavorites(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyFavorites')
-    : Navigator.of(context).pushNamed('/MyFavorites');
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/MyFavorites')
+        : Navigator.of(context).pushNamed('/MyFavorites');
   }
 
   static void gotoMyOrders(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/MyOrders')
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/MyOrders')
         : Navigator.of(context).pushNamed('/MyOrders');
   }
 
-  static Future<dynamic> gotoOrderDetailPage(BuildContext context, {int orderId, bool replaceOld = false}) async {
-    if(replaceOld) {
-      var re = await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId)));
+  static Future<dynamic> gotoOrderDetailPage(BuildContext context,
+      {int? orderId, bool replaceOld = false}) async {
+    if (replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => OrderDetailScreen(orderId: orderId!)));
       return re;
     } else {
-      var re = await Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => OrderDetailScreen(orderId: orderId)));
+      var re = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => OrderDetailScreen(orderId: orderId!)));
       return re;
     }
   }
 
   static void gotoCart(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Cart', arguments: RouteArgument())
-        : Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument()) ;
+    replaceOld
+        ? Navigator.of(context)
+            .pushReplacementNamed('/Cart', arguments: RouteArgument())
+        : Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument());
   }
 
   static gotoSpecial4U(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Special4U', arguments: RouteArgument())
-        : Navigator.of(context).pushNamed('/Special4U', arguments: RouteArgument()) ;
+    replaceOld
+        ? Navigator.of(context)
+            .pushReplacementNamed('/Special4U', arguments: RouteArgument())
+        : Navigator.of(context)
+            .pushNamed('/Special4U', arguments: RouteArgument());
   }
 
   static gotoHelp(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/Help', arguments: RouteArgument())
-        : Navigator.of(context).pushNamed('/Help', arguments: RouteArgument()) ;
+    replaceOld
+        ? Navigator.of(context)
+            .pushReplacementNamed('/Help', arguments: RouteArgument())
+        : Navigator.of(context).pushNamed('/Help', arguments: RouteArgument());
   }
 
   static gotoContactUs(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushReplacementNamed('/ContactUs')
-        : Navigator.of(context).pushNamed('/ContactUs') ;
+    replaceOld
+        ? Navigator.of(context).pushReplacementNamed('/ContactUs')
+        : Navigator.of(context).pushNamed('/ContactUs');
   }
 
   static void gotoProfileUpdatedScreen(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/ProfileUpdated', (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/ProfileUpdated', (Route<dynamic> route) => false);
   }
 
   static gotoProfileInfo(BuildContext context, {bool replaceOld = false}) {
-    replaceOld ? Navigator.of(context).pushNamedAndRemoveUntil('/ProfileInfo', (Route<dynamic> route) => false)
-        : Navigator.of(context).pushNamed('/ProfileInfo') ;
+    replaceOld
+        ? Navigator.of(context).pushNamedAndRemoveUntil(
+            '/ProfileInfo', (Route<dynamic> route) => false)
+        : Navigator.of(context).pushNamed('/ProfileInfo');
   }
 
   static gotoAddressesScreen(BuildContext context) {
@@ -147,7 +173,8 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case '/Debug':
-        return MaterialPageRoute(builder: (_) => DebugWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(
+            builder: (_) => DebugWidget(routeArgument: args as RouteArgument));
       case '/Splash':
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/SignUp':
@@ -162,27 +189,34 @@ class RouteGenerator {
       // case '/Product':
       //   return MaterialPageRoute(builder: (_) => ProductDetailScreen(routeArgument: args as RouteArgument));
       case '/Brand':
-        return MaterialPageRoute(builder: (_) => BrandWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(
+            builder: (_) => BrandWidget(routeArgument: args as RouteArgument));
       case '/Brands':
         return MaterialPageRoute(builder: (_) => BrandsWidget());
       // case '/Category':
       //   return MaterialPageRoute(builder: (_) => CategoryScreen(routeArgument: args as RouteArgument));
 
       case '/Cart':
-        return MaterialPageRoute(builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(
+            builder: (_) => CartsScreen(routeArgument: args as RouteArgument));
       case '/DeliveryPickup':
-        return MaterialPageRoute(builder: (_) => DeliveryToScreen(routeArgument: args as RouteArgument));
-
+        return MaterialPageRoute(
+            builder: (_) =>
+                DeliveryToScreen(routeArgument: args as RouteArgument));
 
       case '/Tracking':
-        return MaterialPageRoute(builder: (_) => TrackingWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(
+            builder: (_) =>
+                TrackingWidget(routeArgument: args as RouteArgument));
       case '/Reviews':
-        return MaterialPageRoute(builder: (_) => ReviewsWidget(routeArgument: args as RouteArgument));
+        return MaterialPageRoute(
+            builder: (_) =>
+                ReviewsWidget(routeArgument: args as RouteArgument));
       case '/PaymentMethod':
         return MaterialPageRoute(builder: (_) => PaymentMethodsWidget());
       case '/Addresses':
         return MaterialPageRoute(builder: (_) => AddressesScreen());
-      case '/Checkout'://todo unused
+      case '/Checkout': //todo unused
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/Help':
         return MaterialPageRoute(builder: (_) => HelpScreen());
@@ -196,7 +230,6 @@ class RouteGenerator {
 
       case '/MyOrders':
         return MaterialPageRoute(builder: (_) => OrdersScreen());
-
 
       case '/Home':
         return MaterialPageRoute(builder: (_) => Home2Screen());
@@ -224,42 +257,51 @@ class RouteGenerator {
     }
   }
 
-  static Future<void> gotoProductDetailPage(context, {@required int productId, bool replaceOld = false}) async {
+  static Future<void> gotoProductDetailPage(context,
+      {required int productId, bool replaceOld = false}) async {
     var para = RouteArgument();
     para.id = productId;
-    if(replaceOld) {
-      var re = await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId,)));
+    if (replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => ProductDetailScreen(
+                productId: productId,
+              )));
       return re;
     } else {
-      var re = await Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId,)));
+      var re = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => ProductDetailScreen(
+                productId: productId,
+              )));
       return re;
     }
   }
 
-  static void gotoCategoryPage(BuildContext context, {Category category, int cateId, bool replaceOld = false}) async {
-    if(replaceOld) {
-      var re = await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => CategoryScreen(cateId: cateId, category: category)));
+  static void gotoCategoryPage(BuildContext context,
+      {Category? category, int? cateId, bool replaceOld = false}) async {
+    if (replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => CategoryScreen(cateId: cateId, category: category)));
       return re;
     } else {
-      var re = await Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => CategoryScreen(cateId: cateId, category: category,)));
+      var re = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => CategoryScreen(
+                cateId: cateId,
+                category: category,
+              )));
       return re;
     }
   }
 
-  static void gotoPromotionPage(BuildContext context, {int promotionId, bool replaceOld = false, String heroTag}) async {
-    if(replaceOld) {
-      var re = await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => PromotionScreen(promotionId: promotionId)));
+  static void gotoPromotionPage(BuildContext context,
+      {int? promotionId, bool replaceOld = false, String? heroTag}) async {
+    if (replaceOld) {
+      var re = await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => PromotionScreen(promotionId: promotionId)));
       return re;
     } else {
-      var re = await Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => PromotionScreen(promotionId: promotionId)));
+      var re = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => PromotionScreen(promotionId: promotionId)));
       return re;
     }
   }
-
 }

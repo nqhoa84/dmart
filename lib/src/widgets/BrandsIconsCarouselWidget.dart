@@ -13,75 +13,90 @@ class BrandsIconsCarouselWidget extends StatefulWidget {
   String heroTag;
   ValueChanged<int> onChanged;
 
-  BrandsIconsCarouselWidget({Key key, this.brandsList, this.heroTag, this.onChanged}) : super(key: key);
+  BrandsIconsCarouselWidget(
+      {Key? key,
+      required this.brandsList,
+      required this.heroTag,
+      required this.onChanged})
+      : super(key: key);
 
   @override
-  _BrandsIconsCarouselWidgetState createState() => _BrandsIconsCarouselWidgetState();
+  _BrandsIconsCarouselWidgetState createState() =>
+      _BrandsIconsCarouselWidgetState();
 }
 
-class _BrandsIconsCarouselWidgetState extends StateMVC<BrandsIconsCarouselWidget> {
-  ProductController _con;
+class _BrandsIconsCarouselWidgetState
+    extends StateMVC<BrandsIconsCarouselWidget> {
+  ProductController _con = ProductController();
 
-  _BrandsIconsCarouselWidgetState() :super(ProductController()){
-    _con = controller;
+  _BrandsIconsCarouselWidgetState() : super(ProductController()) {
+    _con = controller as ProductController;
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.brandsList.isEmpty?BrandsIconsCarouselLoadingWidget()
-        :SizedBox(
-          height: 65,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor.withOpacity(1),
-                      //borderRadius: BorderRadius.only(bottomRight: Radius.circular(60), topRight: Radius.circular(60)),
-                        borderRadius: BorderRadiusDirectional.only(bottomEnd: Radius.circular(60), topEnd: Radius.circular(60))
-
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.brandsList.length,
-                      itemBuilder: (context, index) {
-                        double _marginLeft = 0;
-                        (index == 0) ? _marginLeft = 12 : _marginLeft = 0;
-                        return BrandIconWidget(
-                            heroTag: widget.heroTag+UniqueKey().toString(),
-                            marginLeft: _marginLeft,
-                            brand: widget.brandsList.elementAt(index),
-                            onPressed: (int id) {
-                              setState(() {
-                                _con.selectBrandById(widget.brandsList,id);
-                                widget.onChanged(id);
+    return widget.brandsList.isEmpty
+        ? BrandsIconsCarouselLoadingWidget()
+        : SizedBox(
+            height: 65,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(1),
+                          //borderRadius: BorderRadius.only(bottomRight: Radius.circular(60), topRight: Radius.circular(60)),
+                          borderRadius: BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(60),
+                              topEnd: Radius.circular(60))),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: widget.brandsList.length,
+                        itemBuilder: (context, index) {
+                          double _marginLeft = 0;
+                          (index == 0) ? _marginLeft = 12 : _marginLeft = 0;
+                          return BrandIconWidget(
+                              heroTag: widget.heroTag + UniqueKey().toString(),
+                              marginLeft: _marginLeft,
+                              brand: widget.brandsList.elementAt(index),
+                              onPressed: (int id) {
+                                setState(() {
+                                  _con.selectBrandById(widget.brandsList, id);
+                                  widget.onChanged(id);
+                                });
                               });
-                            });
-                      },
-                      scrollDirection: Axis.horizontal,
-                    )),
-              ),
-              Container(
-                width: 80,
-                margin: EdgeInsets.only(left: 0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor.withOpacity(1),
-                    borderRadius: BorderRadiusDirectional.only(bottomStart: Radius.circular(60), topStart: Radius.circular(60))
+                        },
+                        scrollDirection: Axis.horizontal,
+                      )),
                 ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/Brands');
-                  },
-                  icon: Icon(
-                    UiIcons.settings_2,
-                    size: 28,
-                    color: Theme.of(context).primaryColor,
+                Container(
+                  width: 80,
+                  margin: EdgeInsets.only(left: 0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(1),
+                      borderRadius: BorderRadiusDirectional.only(
+                          bottomStart: Radius.circular(60),
+                          topStart: Radius.circular(60))),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/Brands');
+                    },
+                    icon: Icon(
+                      UiIcons.settings_2,
+                      size: 28,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-    );
+              ],
+            ),
+          );
   }
 }

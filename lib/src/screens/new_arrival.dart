@@ -1,27 +1,16 @@
 import 'package:dmart/DmState.dart';
-import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
-import 'package:dmart/src/controllers/product_controller.dart';
-import 'package:dmart/src/models/filter.dart';
 import 'package:dmart/src/models/product.dart';
-import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
-import 'package:dmart/src/widgets/FilterWidget.dart';
-import 'package:dmart/src/widgets/ProductsGridView.dart';
-import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../buidUI.dart';
 import '../../src/models/route_argument.dart';
-import '../../src/widgets/DrawerWidget.dart';
 import 'abs_product_mvc.dart';
 
 class NewArrivalsScreen extends StatefulWidget {
+  RouteArgument? routeArgument;
 
-  RouteArgument routeArgument;
-
-  NewArrivalsScreen({Key key, RouteArgument argument}) {
+  NewArrivalsScreen({Key? key, RouteArgument? argument}) {
     this.routeArgument = argument;
 //    _category = this.routeArgument.param[0] as Category;
   }
@@ -30,8 +19,7 @@ class NewArrivalsScreen extends StatefulWidget {
   _NewArrivalsScreenState createState() => _NewArrivalsScreenState();
 }
 
-class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
-{
+class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen> {
   _NewArrivalsScreenState() : super(bottomIdx: DmState.bottomBarSelectedIndex);
 
   @override
@@ -50,8 +38,8 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
   }
 
   @override
-  Future<void> onRefresh() async{
-    proCon.newArrivalProducts?.clear();
+  Future<void> onRefresh() async {
+    proCon.newArrivalProducts!.clear();
     proCon.listenForNewArrivals();
     canLoadMore = true;
   }
@@ -77,12 +65,13 @@ class _NewArrivalsScreenState extends ProductStateMVC<NewArrivalsScreen>
 
   @override
   Future<void> loadMore() async {
-    int pre = proCon.newArrivalProducts != null ? proCon.newArrivalProducts.length : 0;
+    int pre = proCon.newArrivalProducts != null
+        ? proCon.newArrivalProducts!.length
+        : 0;
     await proCon.listenForNewArrivals(nextPage: true);
-    canLoadMore = proCon.newArrivalProducts != null
-        && proCon.newArrivalProducts.length > pre;
+    canLoadMore = proCon.newArrivalProducts!.length > pre;
   }
 
   @override
-  List<Product> get lstProducts => proCon.newArrivalProducts;
+  List<Product> get lstProducts => proCon.newArrivalProducts!;
 }

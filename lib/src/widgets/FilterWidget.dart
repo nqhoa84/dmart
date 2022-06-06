@@ -5,35 +5,35 @@ import 'package:dmart/src/models/product.dart';
 import 'package:dmart/utils.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/filter_controller.dart';
-import '../widgets/CircularLoadingWidget.dart';
 import '../models/filter.dart';
 
-class FilterWidget extends StatefulWidget { // ignore: must_be_immutable
-  List<Product> products;
-  final ValueNotifier<FilterCondition> filterNotifier;
+class FilterWidget extends StatefulWidget {
+  // ignore: must_be_immutable
+  List<Product>? products;
+  final ValueNotifier<FilterCondition>? filterNotifier;
 
-  FilterWidget({Key key, this.filterNotifier, this.products}) : super(key: key);
+  FilterWidget({Key? key, required this.filterNotifier, required this.products})
+      : super(key: key);
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
 }
 
 class _FilterWidgetState extends StateMVC<FilterWidget> {
-  FilterController _con;
+  FilterController _con = FilterController();
 
   _FilterWidgetState() : super(FilterController()) {
-    _con = controller;
+    _con = controller as FilterController;
     _cateExpCtrl = ExpandableController(initialExpanded: false);
-    this._cateExpCtrl.expanded = false;
+    this._cateExpCtrl!.expanded = false;
     _brandExpCtrl = ExpandableController(initialExpanded: false);
-    this._brandExpCtrl.expanded = false;
+    this._brandExpCtrl!.expanded = false;
     _countryExpCtrl = ExpandableController(initialExpanded: false);
-    this._countryExpCtrl.expanded = false;
+    this._countryExpCtrl!.expanded = false;
   }
 
   _extractDataFromProducts() {
@@ -42,17 +42,17 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
     this.countries.clear();
     if (widget.products == null) return;
 
-    widget.products.forEach((p) {
+    widget.products!.forEach((p) {
 //      print('${p.category} in list $cates');
       if (p.category != null && !cates.contains(p.category)) {
-        cates.add(p.category);
+        cates.add(p.category!);
       }
 
       if (p.brand != null && !brands.contains(p.brand)) {
-        brands.add(p.brand);
+        brands.add(p.brand!);
       }
-      if (DmUtils.isNotNullEmptyStr(p.country)) {
-        var ct = p.country.trim().toUpperCase();
+      if (DmUtils.isNotNullEmptyStr(p.country!)) {
+        var ct = p.country!.trim().toUpperCase();
         if (!countries.contains(ct)) countries.add(ct);
       }
     });
@@ -64,14 +64,14 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
   List<Category> cates = [];
   List<Brand> brands = [];
   List<String> countries = [];
-  bool isPriceUp;
-  bool isLatest;
+  bool? isPriceUp;
+  bool? isLatest;
 
   FilterCondition filter = FilterCondition();
 
   @override
   void initState() {
-    filter.copyFrom(widget.filterNotifier.value);
+    filter.copyFrom(widget.filterNotifier!.value);
     super.initState();
   }
 
@@ -84,7 +84,8 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
+            padding: const EdgeInsets.symmetric(
+                horizontal: DmConst.masterHorizontalPad),
             child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
@@ -104,9 +105,10 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(S.current.filter),
-                    OutlineButton(
+                    OutlinedButton(
                       onPressed: onPressClearFilter,
-                      child: Text(S.current.clear, style: TextStyle(color: Colors.white)),
+                      child: Text(S.current.clear,
+                          style: TextStyle(color: Colors.white)),
                     )
                   ],
                 ),
@@ -118,34 +120,36 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               createTitleRow(S.current.brands),
               _createBrandExpansion(),
               Divider(thickness: 1),
-              DmUtils.isNotNullEmptyList(this.countries) ? createTitleRow(S.current.country) : SizedBox(),
+              DmUtils.isNotNullEmptyList(this.countries)
+                  ? createTitleRow(S.current.country)
+                  : SizedBox(),
               _createCountryExpansion(),
-              DmUtils.isNotNullEmptyList(this.countries) ? Divider(thickness: 1) : SizedBox(),
+              DmUtils.isNotNullEmptyList(this.countries)
+                  ? Divider(thickness: 1)
+                  : SizedBox(),
               Row(
                 children: [
                   Expanded(
                     child: createCheckbox(
                         label: S.current.promotion,
                         tristate: true,
-                        isChecked: filter.isPromotion,
+                        isChecked: filter.isPromotion!,
                         onChanged: (v) {
                           setState(() {
                             filter.isPromotion = v;
                           });
-                        }
-                    ),
+                        }),
                   ),
                   Expanded(
                     child: createCheckbox(
                         label: S.current.bestSale,
                         tristate: true,
-                        isChecked: filter.isBestSale,
+                        isChecked: filter.isBestSale!,
                         onChanged: (v) {
                           setState(() {
                             filter.isBestSale = v;
                           });
-                        }
-                    ),
+                        }),
                   ),
                 ],
               ),
@@ -155,13 +159,12 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     child: createCheckbox(
                         label: S.current.newArrival,
                         tristate: true,
-                        isChecked: filter.isNewArrival,
+                        isChecked: filter.isNewArrival!,
                         onChanged: (v) {
                           setState(() {
                             filter.isNewArrival = v;
                           });
-                        }
-                    ),
+                        }),
                   ),
                 ],
               ),
@@ -173,25 +176,23 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     child: createCheckbox(
                         label: S.current.priceIncreasing,
                         tristate: true,
-                        isChecked: filter.isPriceUp,
+                        isChecked: filter.isPriceUp!,
                         onChanged: (v) {
                           setState(() {
                             filter.isPriceUp = v;
                           });
-                        }
-                    ),
+                        }),
                   ),
                   Expanded(
                     child: createCheckbox(
                         label: S.current.latestDate,
                         tristate: true,
-                        isChecked: filter.isLatest,
+                        isChecked: filter.isLatest!,
                         onChanged: (v) {
                           setState(() {
                             filter.isLatest = v;
                           });
-                        }
-                    ),
+                        }),
                   ),
                 ],
               ),
@@ -209,7 +210,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
     );
   }
 
-  ExpandableController _cateExpCtrl, _brandExpCtrl, _countryExpCtrl;
+  ExpandableController? _cateExpCtrl, _brandExpCtrl, _countryExpCtrl;
   var expTheme = ExpandableThemeData(
       headerAlignment: ExpandablePanelHeaderAlignment.center,
       tapBodyToExpand: false,
@@ -222,21 +223,29 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
   ///Checkbox displays a dash when its value is null.<br/>
   ///When a tri-state checkbox (tristate is true) is tapped, its onChanged callback will be applied to true if the current value is false, to null if value is true, and to false if value is null (i.e. it cycles through false => true => null => false when tapped).
   ///If tristate is false (the default), value must not be null.
-  Widget createCheckbox({String label, bool isChecked, bool tristate = false, Function(bool) onChanged}) {
+  Widget createCheckbox(
+      {required String label,
+      required bool isChecked,
+      bool tristate = false,
+      void Function(bool?)? onChanged}) {
 //    return OutlineButton.icon(onPressed: null, icon: Checkbox(
 //      value: true,
 //    ), label: Text(label));
 
     return Row(
       children: [
-        Checkbox(value: isChecked,
+        Checkbox(
+            value: isChecked,
             tristate: tristate,
             activeColor: DmConst.accentColor,
             onChanged: onChanged),
-        Expanded(child: Text(label ?? '', style: TextStyle(fontWeight: FontWeight.normal, color: DmConst.accentColor))),
+        Expanded(
+            child: Text(label ?? '',
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: DmConst.accentColor))),
       ],
     );
-
   }
 
   Widget _createCateExpansion() {
@@ -248,14 +257,14 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             label: cates[i].name,
             isChecked: isCateChecked(cates[i]),
             onChanged: (value) {
-              onCheckedCateChanged(value, cates[i]);
+              onCheckedCateChanged(value!, cates[i]);
             }),
         i + 1 < len
             ? createCheckbox(
                 label: cates[i + 1].name,
                 isChecked: isCateChecked(cates[i + 1]),
                 onChanged: (value) {
-                  onCheckedCateChanged(value, cates[i + 1]);
+                  onCheckedCateChanged(value!, cates[i + 1]);
                 })
             : SizedBox(),
       ]));
@@ -283,6 +292,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               scrollOnExpand: true,
               scrollOnCollapse: true,
               child: ExpandablePanel(
+                collapsed: Text('collapsed'),
                 controller: _cateExpCtrl,
                 theme: expTheme,
                 header: Table(
@@ -297,22 +307,26 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
+            padding: const EdgeInsets.symmetric(
+                horizontal: DmConst.masterHorizontalPad),
             child: Row(
               children: [
                 Expanded(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minHeight: 20),
-                    child: OutlineButton(
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                    child: OutlinedButton(
+                      // padding: EdgeInsets.symmetric(vertical: 0),
                       onPressed: () {
                         setState(() {
-                          this._cateExpCtrl.expanded = !this._cateExpCtrl.expanded;
+                          this._cateExpCtrl!.expanded =
+                              !this._cateExpCtrl!.expanded;
                         });
                       },
                       child: Icon(
-                          this._cateExpCtrl.expanded == true ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                          ),
+                        this._cateExpCtrl!.expanded == true
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                      ),
                     ),
                   ),
                 ),
@@ -333,14 +347,14 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             label: brands[i].name,
             isChecked: isBrandChecked(brands[i]),
             onChanged: (value) {
-              onCheckedBrandChanged(value, brands[i]);
+              onCheckedBrandChanged(value!, brands[i]);
             }),
         i + 1 < len
             ? createCheckbox(
                 label: brands[i + 1].name,
                 isChecked: isBrandChecked(brands[i + 1]),
                 onChanged: (value) {
-                  onCheckedBrandChanged(value, brands[i + 1]);
+                  onCheckedBrandChanged(value!, brands[i + 1]);
                 })
             : SizedBox(),
       ]));
@@ -368,6 +382,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               scrollOnExpand: true,
               scrollOnCollapse: true,
               child: ExpandablePanel(
+                collapsed: Text('collapsed'),
                 controller: _brandExpCtrl,
                 theme: this.expTheme,
                 header: Table(
@@ -382,21 +397,25 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
+            padding: const EdgeInsets.symmetric(
+                horizontal: DmConst.masterHorizontalPad),
             child: Row(
               children: [
                 Expanded(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minHeight: 20),
-                    child: OutlineButton(
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                    child: OutlinedButton(
+                      // padding: EdgeInsets.symmetric(vertical: 0),
                       onPressed: () {
                         setState(() {
-                          this._brandExpCtrl.expanded = !this._brandExpCtrl.expanded;
+                          this._brandExpCtrl!.expanded =
+                              !this._brandExpCtrl!.expanded;
                         });
                       },
                       child: Icon(
-                          this._brandExpCtrl.expanded == true ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                          this._brandExpCtrl!.expanded == true
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
                           color: DmConst.accentColor),
                     ),
                   ),
@@ -418,14 +437,14 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             label: countries[i],
             isChecked: isCountryChecked(countries[i]),
             onChanged: (value) {
-              onCheckedCountryChanged(value, countries[i]);
+              onCheckedCountryChanged(value!, countries[i]);
             }),
         i + 1 < len
             ? createCheckbox(
                 label: countries[i + 1],
                 isChecked: isCountryChecked(countries[i + 1]),
                 onChanged: (value) {
-                  onCheckedCountryChanged(value, countries[i]);
+                  onCheckedCountryChanged(value!, countries[i]);
                 })
             : SizedBox(),
       ]));
@@ -453,6 +472,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               scrollOnExpand: true,
               scrollOnCollapse: true,
               child: ExpandablePanel(
+                collapsed: Text('collapsed'),
                 controller: _countryExpCtrl,
                 theme: this.expTheme,
                 header: Table(
@@ -467,21 +487,25 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DmConst.masterHorizontalPad),
+            padding: const EdgeInsets.symmetric(
+                horizontal: DmConst.masterHorizontalPad),
             child: Row(
               children: [
                 Expanded(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minHeight: 20),
-                    child: OutlineButton(
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                    child: OutlinedButton(
+                      // padding: EdgeInsets.symmetric(vertical: 0),
                       onPressed: () {
                         setState(() {
-                          this._countryExpCtrl.expanded = !this._countryExpCtrl.expanded;
+                          this._countryExpCtrl!.expanded =
+                              !this._countryExpCtrl!.expanded;
                         });
                       },
                       child: Icon(
-                          this._countryExpCtrl.expanded == true ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                          this._countryExpCtrl!.expanded == true
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
                           color: DmConst.accentColor),
                     ),
                   ),
@@ -533,17 +557,17 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
 
   bool isCateChecked(Category c) {
     if (filter.cates == null) return false;
-    return filter.cates.contains(c);
+    return filter.cates!.contains(c);
   }
 
   bool isBrandChecked(Brand b) {
     if (filter.brands == null) return false;
-    return filter.brands.contains(b);
+    return filter.brands!.contains(b);
   }
 
   bool isCountryChecked(String c) {
     if (filter.countries == null) return false;
-    return filter.countries.contains(c);
+    return filter.countries!.contains(c);
   }
 
   void onPressClearFilter() {
@@ -558,8 +582,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
 //      widget.filter.copyFrom(this.filter);
 //      print(widget.filter);
 //    });
-    widget.filterNotifier?.value = this.filter;
+    widget.filterNotifier!.value = this.filter;
     Navigator.of(context).pop();
   }
-
 }

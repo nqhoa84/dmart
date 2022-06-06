@@ -12,9 +12,9 @@ Future<Stream<Gallery>> getGalleries(int idBrand) async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}galleries?${_apiToken}search=brand_id:$idBrand';
+      '${GlobalConfiguration().getValue('api_base_url')}galleries?${_apiToken}search=brand_id:$idBrand';
 
-  print ('getGalleries $url');
+  print('getGalleries $url');
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 

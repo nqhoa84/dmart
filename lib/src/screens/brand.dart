@@ -1,5 +1,6 @@
-import 'package:dmart/buidUI.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dmart/buidUI.dart';
 
 import '../../src/models/brand.dart';
 import '../../src/models/route_argument.dart';
@@ -8,38 +9,43 @@ import '../../src/widgets/DrawerWidget.dart';
 import '../../src/widgets/ProductsByBrandWidget.dart';
 
 class BrandWidget extends StatefulWidget {
-  RouteArgument routeArgument;
-  Brand _brand;
+  RouteArgument? routeArgument;
+  Brand? _brand;
 
-  BrandWidget({Key key, this.routeArgument}) {
-    _brand = this.routeArgument.param[0] as Brand;
+  BrandWidget({
+    Key? key,
+    this.routeArgument,
+  }) {
+    _brand = this.routeArgument!.param[0] as Brand;
   }
 
   @override
   _BrandWidgetState createState() => _BrandWidgetState();
 }
 
-class _BrandWidgetState extends State<BrandWidget> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _BrandWidgetState extends State<BrandWidget>
+    with SingleTickerProviderStateMixin {
+  TabController? _tabController;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int _tabIndex = 0;
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, initialIndex: _tabIndex, vsync: this);
-    _tabController.addListener(_handleTabSelection);
+    _tabController =
+        TabController(length: 2, initialIndex: _tabIndex, vsync: this);
+    _tabController!.addListener(_handleTabSelection);
     super.initState();
   }
 
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
   _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
+    if (_tabController!.indexIsChanging) {
       setState(() {
-        _tabIndex = _tabController.index;
+        _tabIndex = _tabController!.index;
       });
     }
   }
@@ -49,8 +55,7 @@ class _BrandWidgetState extends State<BrandWidget> with SingleTickerProviderStat
     return Scaffold(
       key: _scaffoldKey,
       drawer: DrawerWidget(),
-      body:
-      CustomScrollView(slivers: <Widget>[
+      body: CustomScrollView(slivers: <Widget>[
         createSliverTopBar(context),
         createSliverSearch(context),
         SliverList(
@@ -67,7 +72,7 @@ class _BrandWidgetState extends State<BrandWidget> with SingleTickerProviderStat
               offstage: 1 != _tabIndex,
               child: Column(
                 children: <Widget>[
-                  ProductsByBrandWidget(brand: widget._brand)
+                  ProductsByBrandWidget(brand: widget._brand!)
                 ],
               ),
             ),

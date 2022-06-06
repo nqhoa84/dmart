@@ -8,28 +8,31 @@ class OptionItemWidget extends StatefulWidget {
   final VoidCallback onChanged;
 
   OptionItemWidget({
-    Key key,
-    this.option,
-    this.onChanged,
+    Key? key,
+    required this.option,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
   _OptionItemWidgetState createState() => _OptionItemWidgetState();
 }
 
-class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerProviderStateMixin {
-  Animation animation;
-  AnimationController animationController;
-  Animation<double> sizeCheckAnimation;
-  Animation<double> rotateCheckAnimation;
-  Animation<double> opacityAnimation;
-  Animation opacityCheckAnimation;
+class _OptionItemWidgetState extends State<OptionItemWidget>
+    with SingleTickerProviderStateMixin {
+  Animation<double>? animation;
+  AnimationController? animationController;
+  Animation<double>? sizeCheckAnimation;
+  Animation<double>? rotateCheckAnimation;
+  Animation<double>? opacityAnimation;
+  Animation? opacityCheckAnimation;
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: Duration(milliseconds: 350), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeOut);
+    animationController =
+        AnimationController(duration: Duration(milliseconds: 350), vsync: this);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController!, curve: Curves.easeOut);
     animation = Tween(begin: 0.0, end: 60.0).animate(curve)
       ..addListener(() {
         setState(() {});
@@ -55,19 +58,19 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
   @override
   void dispose() {
     super.dispose();
-    animationController.dispose();
+    animationController!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (widget.option.checked) {
-          animationController.reverse();
+        if (widget.option.checked!) {
+          animationController!.reverse();
         } else {
-          animationController.forward();
+          animationController!.forward();
         }
-        widget.option.checked = !widget.option.checked;
+        widget.option.checked = !widget.option.checked!;
         widget.onChanged();
       },
       child: Row(
@@ -81,22 +84,29 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
                 width: 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(60)),
-                  image: DecorationImage(image: NetworkImage(widget.option.image?.thumb), fit: BoxFit.cover),
+                  image: DecorationImage(
+                      image: NetworkImage(widget.option.image!.thumb!),
+                      fit: BoxFit.cover),
                 ),
               ),
               Container(
-                height: animation.value,
-                width: animation.value,
+                height: animation!.value,
+                width: animation!.value,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(60)),
-                  color: Theme.of(context).accentColor.withOpacity(opacityAnimation.value),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .secondary
+                      .withOpacity(opacityAnimation!.value),
                 ),
                 child: Transform.rotate(
-                  angle: rotateCheckAnimation.value,
+                  angle: rotateCheckAnimation!.value,
                   child: Icon(
                     Icons.check,
-                    size: sizeCheckAnimation.value,
-                    color: Theme.of(context).primaryColor.withOpacity(opacityCheckAnimation.value),
+                    size: sizeCheckAnimation!.value,
+                    color: Theme.of(context)
+                        .primaryColor
+                        .withOpacity(opacityCheckAnimation!.value),
                   ),
                 ),
               ),
@@ -112,13 +122,13 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        widget.option?.name,
+                        widget.option.name!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                       Text(
-                        Helper.skipHtml(widget.option.description),
+                        Helper.skipHtml(widget.option.description!),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: Theme.of(context).textTheme.caption,
@@ -127,7 +137,8 @@ class _OptionItemWidgetState extends State<OptionItemWidget> with SingleTickerPr
                   ),
                 ),
                 SizedBox(width: 8),
-                Helper.getPrice(widget.option.price, context, style: Theme.of(context).textTheme.headline4),
+                Helper.getPrice(widget.option.price!, context,
+                    style: Theme.of(context).textTheme.headline4),
               ],
             ),
           )

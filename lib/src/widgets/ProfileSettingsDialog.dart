@@ -3,13 +3,13 @@ import '../../generated/l10n.dart';
 import '../../src/helpers/ui_icons.dart';
 import '../../src/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 
 class ProfileSettingsDialog extends StatefulWidget {
-  User user;
-  VoidCallback onChanged;
+  User? user;
+  VoidCallback? onChanged;
 
-  ProfileSettingsDialog({Key key, this.user, this.onChanged}) : super(key: key);
+  ProfileSettingsDialog({Key? key, required this.user, required this.onChanged})
+      : super(key: key);
 
   @override
   _ProfileSettingsDialogState createState() => _ProfileSettingsDialogState();
@@ -27,7 +27,8 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
             builder: (context) {
               return SimpleDialog(
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                titlePadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 title: Row(
                   children: <Widget>[
                     Icon(UiIcons.user_1),
@@ -46,36 +47,55 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'John Doe', labelText: S.current.fullName,),
-                          initialValue: widget.user.name,
-                          validator: (input) => input.trim().length < 3 ? 'invalidFullName' : null,
-                          onSaved: (input) => widget.user.name = input,
+                          decoration: getInputDecoration(
+                            hintText: 'John Doe',
+                            labelText: S.current.fullName,
+                          ),
+                          initialValue: widget.user!.name,
+                          validator: (input) => input!.trim().length < 3
+                              ? 'invalidFullName'
+                              : null,
+                          onSaved: (input) => widget.user!.name = input!,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.emailAddress,
-                          decoration: getInputDecoration(hintText: 'johndo@gmail.com', labelText: S.current.emailAddress,),
-                          initialValue: widget.user.email,
-                          validator: (input) => !input.contains('@') ? S.current.invalidEmail : null,
-                          onSaved: (input) => widget.user.email = input,
+                          decoration: getInputDecoration(
+                            hintText: 'johndo@gmail.com',
+                            labelText: S.current.emailAddress,
+                          ),
+                          initialValue: widget.user!.email,
+                          validator: (input) => !input!.contains('@')
+                              ? S.current.invalidEmail
+                              : null,
+                          onSaved: (input) => widget.user!.email = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.phone,
-                          decoration: getInputDecoration(hintText: '+0000000000', labelText: S.current.phone,),
-                          initialValue: widget.user.phone,
-                          validator: (input) => !input.contains('+') ? S.current.invalidPhone : null,
-                          onSaved: (input) => widget.user.phone = input,
+                          decoration: getInputDecoration(
+                            hintText: '+0000000000',
+                            labelText: S.current.phone,
+                          ),
+                          initialValue: widget.user!.phone,
+                          validator: (input) => !input!.contains('+')
+                              ? S.current.invalidPhone
+                              : null,
+                          onSaved: (input) => widget.user!.phone = input!,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: 'Street City Stat ', labelText: S.current.address,),
-                          initialValue: widget.user.address,
-                          validator: (input) => input.trim().length < 3 ? S.current.invalidAddress : null,
-                          onSaved: (input) => widget.user.address = input,
+                          decoration: getInputDecoration(
+                            hintText: 'Street City Stat ',
+                            labelText: S.current.address,
+                          ),
+                          initialValue: widget.user!.address,
+                          validator: (input) => input!.trim().length < 3
+                              ? S.current.invalidAddress
+                              : null,
+                          onSaved: (input) => widget.user!.address = input,
                         ),
-
                       ],
                     ),
                   ),
@@ -92,7 +112,8 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         onPressed: _submit,
                         child: Text(
                           S.current.save,
-                          style: TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ),
                     ],
@@ -110,24 +131,28 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
     );
   }
 
-  InputDecoration getInputDecoration({String hintText, String labelText}) {
+  InputDecoration getInputDecoration({String? hintText, String? labelText}) {
     return new InputDecoration(
       hintText: hintText,
       labelText: labelText,
-      hintStyle: Theme.of(context).textTheme.bodyText2.merge(
+      hintStyle: Theme.of(context).textTheme.bodyText2!.merge(
             TextStyle(color: Theme.of(context).focusColor),
           ),
-      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
-      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor)),
-      labelStyle: Theme.of(context).textTheme.bodyText2.merge(
+      enabledBorder: UnderlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
+      focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).hintColor)),
+      labelStyle: Theme.of(context).textTheme.bodyText2!.merge(
             TextStyle(color: Theme.of(context).hintColor),
-          ), floatingLabelBehavior: FloatingLabelBehavior.auto,
+          ),
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
     );
   }
 
   void _submit() {
-    if (_profileSettingsFormKey.currentState.validate()) {
-      _profileSettingsFormKey.currentState.save();
+    if (_profileSettingsFormKey.currentState!.validate()) {
+      _profileSettingsFormKey.currentState!.save();
       Navigator.pop(context);
     }
   }

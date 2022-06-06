@@ -1,13 +1,13 @@
 import 'package:dmart/src/widgets/IconWithText.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../../DmState.dart';
 import '../../constant.dart';
 import '../helpers/ui_icons.dart';
 
 class CartBottomButton extends StatelessWidget {
-  const CartBottomButton({Key key, this.title = '', this.onPressed}) : super(key: key);
+  const CartBottomButton({Key? key, this.title = '', required this.onPressed})
+      : super(key: key);
 
   final String title;
   final Function() onPressed;
@@ -37,7 +37,7 @@ class CartBottomButton extends StatelessWidget {
                         title: '${DmState.amountInCart.value}',
                         icon: UiIcons.shopping_cart,
                         color: Colors.white,
-                        style: Theme.of(context).textTheme.headline6);
+                        style: Theme.of(context).textTheme.headline6!);
                   },
                 ),
                 ValueListenableBuilder(
@@ -47,7 +47,7 @@ class CartBottomButton extends StatelessWidget {
                         title: '${DmState.cartsValue.value.toStringAsFixed(2)}',
                         icon: UiIcons.money,
                         color: Colors.white,
-                        style: Theme.of(context).textTheme.headline6);
+                        style: Theme.of(context).textTheme.headline6!);
                   },
                 ),
               ],
@@ -58,15 +58,19 @@ class CartBottomButton extends StatelessWidget {
           VerticalDivider(thickness: 2, width: 5, color: Colors.white),
           Expanded(
               child: Center(
-                child: InkWell(
-            // padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-            child: Padding(
+            child: InkWell(
+              // padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+              child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-                child: Text(title, style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                child: Text(title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(color: Colors.white)),
+              ),
+              onTap: onPressed,
             ),
-            onTap: onPressed,
-          ),
-              ))
+          ))
 //                FlatButton(child: Text(S.current.processOrder))
         ],
       ),

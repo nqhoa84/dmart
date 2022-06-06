@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class LogoOnlyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isPressLogoToHome;
-  LogoOnlyAppBar({Key key, this.isPressLogoToHome = true})
+  LogoOnlyAppBar({Key? key, this.isPressLogoToHome = true})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
   @override
@@ -17,8 +17,11 @@ class LogoOnlyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: InkWell(
-        onTap: isPressLogoToHome ? () => RouteGenerator.gotoHome(context) : null,
-        child: Image.asset(DmConst.assetImgLogo, width: kToolbarHeight - 10, height: kToolbarHeight - 10,
+        onTap:
+            isPressLogoToHome ? () => RouteGenerator.gotoHome(context) : null,
+        child: Image.asset(DmConst.assetImgLogo,
+            width: kToolbarHeight - 10,
+            height: kToolbarHeight - 10,
             fit: BoxFit.scaleDown),
       ),
       centerTitle: true,

@@ -8,7 +8,6 @@ import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:dmart/src/widgets/ProductsGridView.dart';
 import 'package:dmart/src/widgets/ProductsGridViewLoading.dart';
 import 'package:dmart/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -18,21 +17,21 @@ import '../../src/widgets/DrawerWidget.dart';
 
 abstract class ProductStateMVC<T extends StatefulWidget>
     extends StateMVC<StatefulWidget> with SingleTickerProviderStateMixin {
-  Animation animationOpacity;
-  AnimationController animationController;
+  Animation<double>? animationOpacity;
+  AnimationController? animationController;
 
-  ProductController proCon;
+  ProductController proCon = ProductController();
   final ScrollController _scrollCon = ScrollController();
   bool isLoading = false, canLoadMore = true;
   static const double _endReachedThreshold = 100;
   final int bottomIdx;
-  /// If errMsg is not null, display error msg first.
-  String errMsg;
 
-  ProductStateMVC({
-    @required this.bottomIdx,
-  }) : super(new ProductController()) {
-    proCon = controller;
+  /// If errMsg is not null, display error msg first.
+  String? errMsg;
+
+  ProductStateMVC({this.animationOpacity, required this.bottomIdx, this.errMsg})
+      : super(new ProductController()) {
+    proCon = controller as ProductController;
   }
 
   @override
@@ -42,18 +41,18 @@ abstract class ProductStateMVC<T extends StatefulWidget>
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
     CurvedAnimation curve =
-        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+        CurvedAnimation(parent: animationController!, curve: Curves.easeIn);
     animationOpacity = Tween(begin: 0.0, end: 1.0).animate(curve)
       ..addListener(() {
         setState(() {});
       });
-    animationController.forward();
+    animationController!.forward();
 
     super.initState();
   }
 
   void dispose() {
-    animationController.dispose();
+    animationController!.dispose();
     _scrollCon.dispose();
     super.dispose();
   }
@@ -64,7 +63,7 @@ abstract class ProductStateMVC<T extends StatefulWidget>
         _scrollCon.position.extentAfter < _endReachedThreshold;
     if (thresholdReached) {
       isLoading = true;
-      await loadMore();
+      loadMore();
       isLoading = false;
     }
   }
@@ -84,8 +83,8 @@ abstract class ProductStateMVC<T extends StatefulWidget>
 
 //  Widget buildContent(BuildContext context);
   Widget buildContent(BuildContext context) {
-    if (this.errMsg != null && this.errMsg.trim().isNotEmpty) {
-      return EmptyDataLoginWid(message: this.errMsg);
+    if (this.errMsg!.trim().isNotEmpty) {
+      return EmptyDataLoginWid(message: this.errMsg!);
     }
     if (this.lstProducts == null) {
       return ProductsGridViewLoading(isList: true);
@@ -93,7 +92,7 @@ abstract class ProductStateMVC<T extends StatefulWidget>
       return EmptyDataLoginWid(message: S.current.productListEmpty);
     } else {
       return FadeTransition(
-          opacity: this.animationOpacity,
+          opacity: this.animationOpacity!,
           child: ValueListenableBuilder(
               valueListenable: this.filterNotifier,
               builder: (context, filter, widget) {
@@ -117,22 +116,23 @@ abstract class ProductStateMVC<T extends StatefulWidget>
 
 //  List<Product> get filteredProducts => doFilter(products: lstProducts, conditions: filterNotifier.value);
 
-  List<Product> doFilter({List<Product> products, FilterCondition conditions}) {
+  List<Product> doFilter(
+      {List<Product>? products, FilterCondition? conditions}) {
     List<Product> re = [];
     if (products == null) return re;
     products.forEach((p) {
-      if (p.match(conditions)) {
+      if (p.match(conditions!)) {
         re.add(p);
       }
     });
-    if (conditions.isPriceUp != null) {
-      re.sort(conditions.isPriceUp
+    if (conditions!.isPriceUp != null) {
+      re.sort(conditions.isPriceUp!
           ? Product.priceComparatorUp
           : Product.priceComparatorDown);
     }
 
     if (conditions.isLatest != null) {
-      re.sort(conditions.isLatest
+      re.sort(conditions.isLatest!
           ? Product.dateComparatorDown
           : Product.dateComparatorUp);
     }
@@ -147,7 +147,10 @@ abstract class ProductStateMVC<T extends StatefulWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: bottomIdx),
+      bottomNavigationBar: DmBottomNavigationBar(
+        currentIndex: bottomIdx,
+        onTap: (int i) {},
+      ),
       drawer: DrawerWidget(),
       endDrawer: FilterWidget(
           products: lstProducts, filterNotifier: this.filterNotifier),
@@ -161,7 +164,9 @@ abstract class ProductStateMVC<T extends StatefulWidget>
               createSliverTopBar(context),
               createSliverSearch(context),
               createSilverTopMenu(context,
-                  haveBackIcon: true, haveFilter: true, title: getTitle(context)),
+                  haveBackIcon: true,
+                  haveFilter: true,
+                  title: getTitle(context)),
               SliverList(
                 delegate: SliverChildListDelegate([
                   Container(

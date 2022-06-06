@@ -6,10 +6,8 @@ import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/DrawerWidget.dart';
 import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_datetime_picker/src/datetime_util.dart';
-import 'package:flutter_datetime_picker/src/i18n_model.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../buidUI.dart';
@@ -25,18 +23,18 @@ class ProfileInfoScreen extends StatefulWidget {
 }
 
 class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
-  ProfileInfoController _con;
+  ProfileInfoController _con = ProfileInfoController();
 
-  _ProfileInfoScreenState() : super(ProfileInfoController()) {
-    _con = controller;
+  _ProfileInfoScreenState({this.u}) : super(ProfileInfoController()) {
+    _con = controller as ProfileInfoController;
   }
 
-  User u;
+  User? u;
 
   @override
   void initState() {
     u = currentUser.value;
-    _con.user = u;
+    _con.user = u!;
     super.initState();
 
     _con.getAddrs();
@@ -46,17 +44,21 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
             createSliverTopBar(context),
             createSliverSearch(context),
-            createSilverTopMenu(context, haveBackIcon: true, title: S.current.myAccount),
+            createSilverTopMenu(context,
+                haveBackIcon: true, title: S.current.myAccount),
             SliverList(
               delegate: SliverChildListDelegate([
-                Container(padding: const EdgeInsets.all(DmConst.masterHorizontalPad), child: buildContent(context)),
+                Container(
+                    padding: const EdgeInsets.all(DmConst.masterHorizontalPad),
+                    child: buildContent(context)),
               ]),
             )
           ],
@@ -69,9 +71,9 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     return Column(
       children: [
         ListTile(
-          trailing: CircleAvatar(backgroundImage: NetworkImage(u.avatarUrl)),
+          trailing: CircleAvatar(backgroundImage: NetworkImage(u!.avatarUrl!)),
           title: Text(
-            '${S.current.welcome} ${u.fullNameWithTitle}',
+            '${S.current.welcome} ${u!.fullNameWithTitle}',
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -94,8 +96,11 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
         Container(
           margin: EdgeInsets.only(top: 10),
           decoration: createRoundedBorderBoxDecoration(),
-          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
-              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+          padding: EdgeInsets.fromLTRB(
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad),
 //          width: double.infinity,
           child: Form(
             key: _con.personalDetailFormKey,
@@ -116,14 +121,19 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                           textAlignVertical: TextAlignVertical.center,
                           keyboardType: TextInputType.text,
                           onSaved: (input) {
-                            u.name = input.trim();
+                            u!.name = input!.trim();
                           },
                           onChanged: (value) {
-                            setState(() { _con.isPersonalChange = true;});
+                            setState(() {
+                              _con.isPersonalChange = true;
+                            });
                           },
-                          initialValue: u.name,
-                          validator: (value) => DmUtils.isNullOrEmptyStr(value) ? S.current.invalidFullName : null,
-                          decoration: buildInputDecoration(context, S.current.fullName),
+                          initialValue: u!.name,
+                          validator: (value) => DmUtils.isNullOrEmptyStr(value!)
+                              ? S.current.invalidFullName
+                              : null,
+                          decoration:
+                              buildInputDecoration(context, S.current.fullName),
                         ),
                       ),
                     ),
@@ -146,9 +156,17 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                             textAlignVertical: TextAlignVertical.center,
                             enabled: false,
                             decoration: buildInputDecoration(
-                                context, u.birthday != null ? u.birthday.day.toString() : S.current.day),
+                                context,
+                                u!.birthday != null
+                                    ? u!.birthday!.day.toString()
+                                    : S.current.day),
                           )),
-                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          VerticalDivider(
+                              width: 10,
+                              thickness: 2,
+                              indent: 5,
+                              endIndent: 5,
+                              color: Colors.white),
                           Expanded(
                               child: TextFormField(
                             textAlign: TextAlign.center,
@@ -156,9 +174,17 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                             textAlignVertical: TextAlignVertical.center,
                             enabled: false,
                             decoration: buildInputDecoration(
-                                context, u.birthday != null ? u.birthday.month.toString() : S.current.month),
+                                context,
+                                u!.birthday != null
+                                    ? u!.birthday!.month.toString()
+                                    : S.current.month),
                           )),
-                          VerticalDivider(width: 10, thickness: 2, indent: 5, endIndent: 5, color: Colors.white),
+                          VerticalDivider(
+                              width: 10,
+                              thickness: 2,
+                              indent: 5,
+                              endIndent: 5,
+                              color: Colors.white),
                           Expanded(
                               child: TextFormField(
                             textAlign: TextAlign.center,
@@ -166,7 +192,10 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                             textAlignVertical: TextAlignVertical.center,
                             enabled: false,
                             decoration: buildInputDecoration(
-                                context, u.birthday != null ? u.birthday.year.toString() : S.current.year),
+                                context,
+                                u!.birthday != null
+                                    ? u!.birthday!.year.toString()
+                                    : S.current.year),
                           )),
                         ],
                       ),
@@ -176,26 +205,42 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
                 Text(S.current.dateOfBirthNote, style: txtStyleGrey),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.current.mobilePhoneNumber, style: txtStyleBold),
-                PhoneNoWid(initValue: u.phone, onSaved: (value) => u.phone = value, enable: false),
+                PhoneNoWid(
+                    initValue: u!.phone,
+                    onSaved: (value) => u!.phone = value!,
+                    enable: false),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.current.email, style: txtStyleBold),
-                EmailWid(initValue: u.email,
+                EmailWid(
+                    initValue: u!.email,
                     onSaved: (value) {
-                      u.email = value;
+                      u!.email = value;
                       print('current email value');
                     },
                     onChanged: (value) {
-                      setState(() { _con.isPersonalChange = true;});
+                      setState(() {
+                        _con.isPersonalChange = true;
+                      });
                     }),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Row(
                   children: [
                     Expanded(
                       child: FlatButton(
-                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                        onPressed: _con.loading || _con.isPersonalChange == false ? null : onPressSavePersonDetail,
-                        child: Text(_con.loading == false? S.current.save : S.current.processing,
-                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        onPressed:
+                            _con.loading || _con.isPersonalChange == false
+                                ? null
+                                : onPressSavePersonDetail,
+                        child: Text(
+                            _con.loading == false
+                                ? S.current.save
+                                : S.current.processing,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white)),
                         color: DmConst.accentColor,
                         disabledColor: DmConst.accentColor.withOpacity(0.8),
                         disabledTextColor: Colors.grey,
@@ -214,32 +259,38 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
   }
 
   Stack buildAddressDetailStack(BuildContext context) {
-
     return Stack(
       children: [
         Container(
           margin: EdgeInsets.only(top: 10),
           decoration: createRoundedBorderBoxDecoration(),
-          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
-              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+          padding: EdgeInsets.fromLTRB(
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad),
 //          width: double.infinity,
-          child: AddressInfoWid(address: _con.defaultAddress),
+          child: AddressInfoWid(address: _con.defaultAddress!),
         ),
-        buildTitle(context, title: '${S.current.deliveryAddresses} >>',
-        onPressedOnTitle: _onPressAddressesButton)
+        buildTitle(context,
+            title: '${S.current.deliveryAddresses} >>',
+            onPressedOnTitle: _onPressAddressesButton)
       ],
     );
   }
 
-  String userEnterPass;
+  String? userEnterPass;
   Stack buildChangePassStack(BuildContext context) {
     return Stack(
       children: [
         Container(
           margin: EdgeInsets.only(top: 10),
           decoration: createRoundedBorderBoxDecoration(),
-          padding: EdgeInsets.fromLTRB(DmConst.masterHorizontalPad, DmConst.masterHorizontalPad * 2,
-              DmConst.masterHorizontalPad, DmConst.masterHorizontalPad),
+          padding: EdgeInsets.fromLTRB(
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad * 2,
+              DmConst.masterHorizontalPad,
+              DmConst.masterHorizontalPad),
 //          width: double.infinity,
           child: Form(
             key: _con.changePassFormKey,
@@ -247,25 +298,37 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(S.current.currentPassword, style: txtStyleBold),
-                PasswordWid(initValue: "",onSaved: (value) => _con.currentPass = value),
+                PasswordWid(
+                    initValue: "",
+                    onSaved: (value) => _con.currentPass = value!),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.current.mobilePhoneNumber, style: txtStyleBold),
-                PhoneNoWid(initValue: u.phone, enable: false),
+                PhoneNoWid(initValue: u!.phone, enable: false),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.current.newPassword, style: txtStyleBold),
-                PasswordWid(onSaved: (value) => _con.newPass = value),
+                PasswordWid(onSaved: (value) => _con.newPass = value!),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Text(S.current.confirmNewPass, style: txtStyleBold),
-                PasswordConfirmWid(onValidate: (value) => _con.newPass == value ? null : S.current.passwordNotMatch),
+                PasswordConfirmWid(
+                    onValidate: (value) => _con.newPass == value
+                        ? null
+                        : S.current.passwordNotMatch),
                 SizedBox(height: DmConst.masterHorizontalPad),
                 Row(
                   children: [
                     Expanded(
                       child: FlatButton(
-                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         onPressed: _con.loading ? null : onPressChangePass,
-                        child: Text(_con.loading == false? S.current.save : S.current.processing,
-                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                        child: Text(
+                            _con.loading == false
+                                ? S.current.save
+                                : S.current.processing,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white)),
                         color: DmConst.accentColor,
                         disabledColor: DmConst.accentColor.withOpacity(0.8),
                         disabledTextColor: Colors.grey,
@@ -283,7 +346,8 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
     );
   }
 
-  Align buildTitle(BuildContext context, {String title, Function() onPressedOnTitle}) {
+  Align buildTitle(BuildContext context,
+      {String? title, Function()? onPressedOnTitle}) {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -292,8 +356,11 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
         child: InkWell(
           onTap: onPressedOnTitle,
           child: Text(
-            title??'',
-            style: Theme.of(context).textTheme.headline6.copyWith(color: DmConst.accentColor),
+            title ?? '',
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: DmConst.accentColor),
             textAlign: TextAlign.center,
           ),
         ),
@@ -303,35 +370,40 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
 
   Widget buildGenderDropdown() {
     List<DropdownMenuItem> its = [
-      DropdownMenuItem<Gender>(value: Gender.Others, child: Text('N/A', style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Male, child: Text('Mr', style: this.txtStyleAccent)),
-      DropdownMenuItem<Gender>(value: Gender.Female, child: Text('Mrs', style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(
+          value: Gender.Others, child: Text('N/A', style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(
+          value: Gender.Male, child: Text('Mr', style: this.txtStyleAccent)),
+      DropdownMenuItem<Gender>(
+          value: Gender.Female, child: Text('Mrs', style: this.txtStyleAccent)),
     ];
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      decoration: buildBoxDecorationForTextField(context),
-      child: DropdownButtonFormField(
-        items: its,
-        onChanged: (newValue) {
-          setState(() {
-            u.gender = newValue;
-            _con.isPersonalChange = true;
-          });
-        },
-        value: u.gender,
-        onSaved: (value) => u.gender = value,
-//        validator: (value) => value == null ? S.current.invalidGender : null,
-        decoration: buildInputDecoration(context, S.current.gender),
-      ),
-    );
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        decoration: buildBoxDecorationForTextField(context),
+        child: Container()
+        //! comment by hoang
+        // DropdownButtonFormField(
+        //   items: its,
+        //   onChanged: (newValue) {
+        //     setState(() {
+        //       u!.gender = newValue as dynamic;
+        //       _con.isPersonalChange = true;
+        //     });
+        //   },
+        //   value: u!.gender,
+        //   onSaved: (value) => u!.gender = value as dynamic,
+        //   // validator: (value) => value == null ? S.current.invalidGender : null,
+        //   decoration: buildInputDecoration(context, S.current.gender),
+        // ),
+        );
   }
 
   void onPressSavePersonDetail() async {
     print('onPressSavePersonDetail --');
-    _con.personalDetailFormKey.currentState.save();
-    if (_con.personalDetailFormKey.currentState.validate()) {
+    _con.personalDetailFormKey!.currentState!.save();
+    if (_con.personalDetailFormKey!.currentState!.validate()) {
       bool re = await _con.updatePersonDetail();
-      if(re) {
+      if (re) {
         _con.showMsg(S.current.accountInfoUpdated);
       }
     }
@@ -339,10 +411,10 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
 
   void onPressChangePass() async {
     print('onPressChangePass --');
-    _con.changePassFormKey.currentState.save();
-    if (_con.changePassFormKey.currentState.validate()) {
+    _con.changePassFormKey!.currentState!.save();
+    if (_con.changePassFormKey!.currentState!.validate()) {
       bool re = await _con.changePwd();
-      _con.changePassFormKey.currentState.reset();
+      _con.changePassFormKey!.currentState!.reset();
 //      setState(() {
 //        u.password = '';
 //        _con.newPass = '';
@@ -360,22 +432,27 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
 
   void onTapOnBirthDay() {
     print('tap to select birthday');
-    DatePicker.showPicker(context,
-        pickerModel: BirthdayPicker(currentTime: u.birthday,
-            locale: DmState.isKhmer ? LocaleType.kh: LocaleType.en),
-        showTitleActions: false,
-        // minTime: DateTime(1930, 1, 1),
-        // maxTime: DateTime.now().subtract(Duration(days: 3650)),
-        theme: DatePickerTheme(
-            backgroundColor: DmConst.accentColor,
-            itemStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-            doneStyle: TextStyle(color: Colors.white, fontSize: 16)), onConfirm: (date) {
-          u.birthday = date;
-        }, onChanged: (date) {
-          setState(() {
-            u.birthday = date;
-          });
-        },
+    DatePicker.showPicker(
+      context,
+      pickerModel: BirthdayPicker(
+          currentTime: u!.birthday!,
+          locale: DmState.isKhmer ? LocaleType.kh : LocaleType.en),
+      showTitleActions: false,
+      // minTime: DateTime(1930, 1, 1),
+      // maxTime: DateTime.now().subtract(Duration(days: 3650)),
+      theme: DatePickerTheme(
+          backgroundColor: DmConst.accentColor,
+          itemStyle: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
+      onConfirm: (date) {
+        u!.birthday = date;
+      },
+      onChanged: (date) {
+        setState(() {
+          u!.birthday = date;
+        });
+      },
     );
 //     DatePicker.showDatePicker(context,
 //         locale: LocaleType.kh,
@@ -398,30 +475,30 @@ class _ProfileInfoScreenState extends StateMVC<ProfileInfoScreen> {
 
 //a date picker model
 class BirthdayPicker extends CommonPickerModel {
-  DateTime maxTime;
-  DateTime minTime;
-  int _currentLeftIndex;
-  int _currentMiddleIndex;
-  int _currentRightIndex;
+  DateTime? maxTime;
+  DateTime? minTime;
+  int? _currentLeftIndex;
+  int? _currentMiddleIndex;
+  int? _currentRightIndex;
 
   BirthdayPicker(
-      {DateTime currentTime,
-        DateTime maxTime,
-        DateTime minTime,
-        LocaleType locale})
+      {DateTime? currentTime,
+      DateTime? maxTime,
+      DateTime? minTime,
+      LocaleType? locale})
       : super(locale: locale) {
     this.maxTime = maxTime ?? DateTime(2010, 12, 31);
     this.minTime = minTime ?? DateTime(1930, 1, 1);
 
     currentTime = currentTime ?? DateTime.now();
 
-    if (currentTime.compareTo(this.maxTime) > 0) {
+    if (currentTime.compareTo(this.maxTime!) > 0) {
       currentTime = this.maxTime;
-    } else if (currentTime.compareTo(this.minTime) < 0) {
+    } else if (currentTime.compareTo(this.minTime!) < 0) {
       currentTime = this.minTime;
     }
 
-    this.currentTime = currentTime;
+    this.currentTime = currentTime!;
 
     _fillLeftLists();
     _fillMiddleLists();
@@ -430,11 +507,11 @@ class BirthdayPicker extends CommonPickerModel {
     int minDay = _minDayOfCurrentMonth();
     _currentLeftIndex = this.currentTime.day - minDay;
     _currentMiddleIndex = this.currentTime.month - minMonth;
-    _currentRightIndex = this.currentTime.year - this.minTime.year;
+    _currentRightIndex = this.currentTime.year - this.minTime!.year;
 
-    super.setLeftIndex(_currentLeftIndex);
-    super.setMiddleIndex(_currentMiddleIndex);
-    super.setRightIndex(_currentRightIndex);
+    super.setLeftIndex(_currentLeftIndex!);
+    super.setMiddleIndex(_currentMiddleIndex!);
+    super.setRightIndex(_currentRightIndex!);
 
     // this.setLeftIndex(this.currentTime.day - minDay);
     // this.setMiddleIndex(this.currentTime.month - minMonth);
@@ -442,32 +519,33 @@ class BirthdayPicker extends CommonPickerModel {
   }
 
   void _fillRightLists() {
-    this.rightList = List.generate(maxTime.year - minTime.year + 1, (int index) {
+    this.rightList =
+        List.generate(maxTime!.year - minTime!.year + 1, (int index) {
       // print('LEFT LIST... ${minTime.year + index}${_localeYear()}');
-      return '${minTime.year + index}${_localeYear()}';
+      return '${minTime!.year + index}${_localeYear()}';
     });
   }
 
   int _maxMonthOfCurrentYear() {
-    return currentTime.year == maxTime.year ? maxTime.month : 12;
+    return currentTime.year == maxTime!.year ? maxTime!.month : 12;
   }
 
   int _minMonthOfCurrentYear() {
-    return currentTime.year == minTime.year ? minTime.month : 1;
+    return currentTime.year == minTime!.year ? minTime!.month : 1;
   }
 
   int _maxDayOfCurrentMonth() {
     int dayCount = calcDateCount(currentTime.year, currentTime.month);
-    return currentTime.year == maxTime.year &&
-        currentTime.month == maxTime.month
-        ? maxTime.day
+    return currentTime.year == maxTime!.year &&
+            currentTime.month == maxTime!.month
+        ? maxTime!.day
         : dayCount;
   }
 
   int _minDayOfCurrentMonth() {
-    return currentTime.year == minTime.year &&
-        currentTime.month == minTime.month
-        ? minTime.day
+    return currentTime.year == minTime!.year &&
+            currentTime.month == minTime!.month
+        ? minTime!.day
         : 1;
   }
 
@@ -493,40 +571,40 @@ class BirthdayPicker extends CommonPickerModel {
     super.setRightIndex(index);
     _currentRightIndex = index;
     //adjust middle
-    int destYear = index + minTime.year;
+    int destYear = index + minTime!.year;
     int minMonth = _minMonthOfCurrentYear();
     DateTime newTime;
     //change date time
     if (currentTime.month == 2 && currentTime.day == 29) {
       newTime = currentTime.isUtc
           ? DateTime.utc(
-        destYear,
-        currentTime.month,
-        calcDateCount(destYear, 2),
-      )
+              destYear,
+              currentTime.month,
+              calcDateCount(destYear, 2),
+            )
           : DateTime(
-        destYear,
-        currentTime.month,
-        calcDateCount(destYear, 2),
-      );
+              destYear,
+              currentTime.month,
+              calcDateCount(destYear, 2),
+            );
     } else {
       newTime = currentTime.isUtc
           ? DateTime.utc(
-        destYear,
-        currentTime.month,
-        currentTime.day,
-      )
+              destYear,
+              currentTime.month,
+              currentTime.day,
+            )
           : DateTime(
-        destYear,
-        currentTime.month,
-        currentTime.day,
-      );
+              destYear,
+              currentTime.month,
+              currentTime.day,
+            );
     }
     //min/max check
-    if (newTime.isAfter(maxTime)) {
-      currentTime = maxTime;
-    } else if (newTime.isBefore(minTime)) {
-      currentTime = minTime;
+    if (newTime.isAfter(maxTime!)) {
+      currentTime = maxTime!;
+    } else if (newTime.isBefore(minTime!)) {
+      currentTime = minTime!;
     } else {
       currentTime = newTime;
     }
@@ -551,20 +629,20 @@ class BirthdayPicker extends CommonPickerModel {
     int dayCount = calcDateCount(currentTime.year, destMonth);
     newTime = currentTime.isUtc
         ? DateTime.utc(
-      currentTime.year,
-      destMonth,
-      currentTime.day <= dayCount ? currentTime.day : dayCount,
-    )
+            currentTime.year,
+            destMonth,
+            currentTime.day <= dayCount ? currentTime.day : dayCount,
+          )
         : DateTime(
-      currentTime.year,
-      destMonth,
-      currentTime.day <= dayCount ? currentTime.day : dayCount,
-    );
+            currentTime.year,
+            destMonth,
+            currentTime.day <= dayCount ? currentTime.day : dayCount,
+          );
     //min/max check
-    if (newTime.isAfter(maxTime)) {
-      currentTime = maxTime;
-    } else if (newTime.isBefore(minTime)) {
-      currentTime = minTime;
+    if (newTime.isAfter(maxTime!)) {
+      currentTime = maxTime!;
+    } else if (newTime.isBefore(minTime!)) {
+      currentTime = minTime!;
     } else {
       currentTime = newTime;
     }
@@ -572,7 +650,7 @@ class BirthdayPicker extends CommonPickerModel {
     _fillLeftLists();
     int minDay = _minDayOfCurrentMonth();
     _currentLeftIndex = currentTime.day - minDay;
-    super.setLeftIndex(_currentLeftIndex);
+    super.setLeftIndex(_currentLeftIndex!);
   }
 
   @override
@@ -582,19 +660,19 @@ class BirthdayPicker extends CommonPickerModel {
     int minDay = _minDayOfCurrentMonth();
     currentTime = currentTime.isUtc
         ? DateTime.utc(
-      currentTime.year,
-      currentTime.month,
-      minDay + index,
-    )
+            currentTime.year,
+            currentTime.month,
+            minDay + index,
+          )
         : DateTime(
-      currentTime.year,
-      currentTime.month,
-      minDay + index,
-    );
+            currentTime.year,
+            currentTime.month,
+            minDay + index,
+          );
   }
 
   @override
-  String leftStringAtIndex(int index) {
+  String? leftStringAtIndex(int index) {
     if (index >= 0 && index < leftList.length) {
       return leftList[index];
     } else {
@@ -603,7 +681,7 @@ class BirthdayPicker extends CommonPickerModel {
   }
 
   @override
-  String middleStringAtIndex(int index) {
+  String? middleStringAtIndex(int index) {
     if (index >= 0 && index < middleList.length) {
       return middleList[index];
     } else {
@@ -612,7 +690,7 @@ class BirthdayPicker extends CommonPickerModel {
   }
 
   @override
-  String rightStringAtIndex(int index) {
+  String? rightStringAtIndex(int index) {
     if (index >= 0 && index < rightList.length) {
       return rightList[index];
     } else {

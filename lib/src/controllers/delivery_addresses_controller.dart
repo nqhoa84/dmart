@@ -2,59 +2,55 @@ import 'package:dmart/src/controllers/controller.dart';
 import 'package:dmart/src/models/address.dart';
 import 'package:dmart/src/models/i_name.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
-import '../models/cart.dart';
-import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
 class DeliveryAddressesController extends Controller //    with ChangeNotifier
 {
-  GlobalKey<FormState> formKey;
-  GlobalKey<ScaffoldState> scaffoldKey;
+  late GlobalKey<FormState> formKey;
+  late GlobalKey<ScaffoldState> scaffoldKey;
 
-  List<Address> addresses;
-  Address address;
+  List<Address>? addresses;
+  Address? address;
 
-  static List<Province> PROVINCES;
+  static List<Province>? PROVINCES;
 
   List<Province> get provinces => PROVINCES ?? [];
   static Map<int, List<District>> _mapDistricts = {};
-  List<District> districts = [];
+  List<District>? districts = [];
   static Map<int, List<Ward>> _mapWards = {};
-  List<Ward> wards = [];
+  List<Ward>? wards = [];
 
-  DeliveryAddressesController() {
-    scaffoldKey = new GlobalKey<ScaffoldState>();
-    formKey = GlobalKey<FormState>();
+  DeliveryAddressesController(
+      {this.address, this.addresses, this.wards, this.districts}) {
+    this.scaffoldKey = new GlobalKey<ScaffoldState>();
+    this.formKey = GlobalKey<FormState>();
   }
 
-  void listenForAddresses({String message}) async {
+  void listenForAddresses({String? message}) async {
     if (this.addresses == null) {
       this.addresses = [];
     } else {
-      this.addresses.clear();
+      this.addresses!.clear();
     }
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
       setState(() {
-        addresses.add(_address);
+        addresses!.add(_address);
       });
     }, onError: (a) {
       print(a);
       showErr(S.current.verifyYourInternetConnection);
     }, onDone: () {
-      if (message != null) {
-        showMsg(message);
-      }
+      showMsg(message!);
     });
   }
 
   Future<void> refreshAddresses() async {
-    addresses.clear();
+    addresses!.clear();
     listenForAddresses(message: S.current.addressesRefreshedSuccessfully);
   }
 
@@ -95,7 +91,7 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
   void updateAddress(model.Address address) {
     userRepo.updateAddress(address).then((value) {
       setState(() {});
-      addresses.clear();
+      addresses!.clear();
       listenForAddresses(message: S.current.addressUpdated);
     });
   }
@@ -103,14 +99,14 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
   void removeDeliveryAddress(model.Address address) async {
     userRepo.removeDeliveryAddress(address).then((value) {
       setState(() {
-        this.addresses.remove(address);
+        this.addresses!.remove(address);
       });
       showMsg(S.current.deliveryAddressRemovedSuccessfully);
     });
   }
 
   void getProvinces() async {
-    if (PROVINCES != null) return;
+    return;
     if (loading) return;
     setState(() {
       loading = true;
@@ -166,30 +162,30 @@ class DeliveryAddressesController extends Controller //    with ChangeNotifier
 
     bool re = false;
 
-    this.formKey.currentState.save();
-    if (this.formKey.currentState.validate()) {
+    this.formKey.currentState!.save();
+    if (this.formKey.currentState!.validate()) {
       setLoadingOn();
-      if (this.address.id <= 0) {
-        var apiRe = await userRepo.addAddress(this.address);
-        if (apiRe.isSuccess) {
+      if (this.address!.id <= 0) {
+        var apiRe = await userRepo.addAddress(this.address!);
+        if (apiRe.isSuccess!) {
           setState(() {
             apiRe.data?.sort(IdObj.idComparerDescending);
             this.address = apiRe.data?.first;
-            this.addresses = apiRe.data??[];
+            this.addresses = apiRe.data ?? [];
           });
           showMsg(S.current.newAddressAdded);
         } else {
-          showMsg(apiRe.message);
+          showMsg(apiRe.message!);
         }
-        re = apiRe.isSuccess;
+        re = apiRe.isSuccess!;
       } else {
-        var apiRe = await userRepo.updateAddress(this.address);
-        if (apiRe.isSuccess) {
+        var apiRe = await userRepo.updateAddress(this.address!);
+        if (apiRe.isSuccess!) {
           showMsg(S.current.addressUpdated);
         } else {
-          showMsg(apiRe.message);
+          showMsg(apiRe.message!);
         }
-        re = apiRe.isSuccess;
+        re = apiRe.isSuccess!;
       }
       setLoadingOff();
     }

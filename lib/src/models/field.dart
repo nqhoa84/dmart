@@ -4,11 +4,15 @@ import '../models/media.dart';
 import 'i_name.dart';
 
 class Field extends IdNameObj {
-  String description;
-  Media image;
-  bool selected;
+  String? description = '';
+  Media? image;
+  bool? selected;
 
-  Field();
+  Field(
+    this.description,
+    this.image,
+    this.selected,
+  );
 
   Field.fromJSON(Map<String, dynamic> jsonMap) {
     try {

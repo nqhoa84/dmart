@@ -3,14 +3,11 @@ import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/widgets/DmBottomNavigationBar.dart';
 import 'package:dmart/src/widgets/EmptyDataLoginWid.dart';
-import 'package:dmart/src/widgets/FilterWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/faq_controller.dart';
-import '../widgets/CircularLoadingWidget.dart';
-import '../widgets/DrawerWidget.dart';
 import '../widgets/FaqItem.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -21,10 +18,10 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends StateMVC<HelpScreen> {
-  FaqController _con;
+  FaqController _con = FaqController();
 
   _HelpScreenState() : super(FaqController()) {
-    _con = controller;
+    _con = controller as FaqController;
   }
 
   @override
@@ -36,15 +33,15 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     Widget body;
-    if(_con.faqs == null) {
+    if (_con.faqs == null) {
       body = Center(child: CircularProgressIndicator());
-    } else if(_con.faqs.isEmpty){
+    } else if (_con.faqs!.isEmpty) {
       body = EmptyDataLoginWid(message: S.current.faqEmpty);
     } else {
       body = DefaultTabController(
-        length: _con.faqs.length,
+        length: _con.faqs!.length,
         child: TabBarView(
-          children: List.generate(_con.faqs.length, (index) {
+          children: List.generate(_con.faqs!.length, (index) {
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: Column(
@@ -60,10 +57,11 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
 //                                overflow: TextOverflow.ellipsis,
 //                                style: Theme.of(context).textTheme.headline5),
 //                          ),
-                  createTitleRowWithBack(context, title:S.current.helpAndSupports),
+                  createTitleRowWithBack(context,
+                      title: S.current.helpAndSupports),
                   TabBar(
-                    tabs: List.generate(_con.faqs.length, (index) {
-                      return Tab(text: _con.faqs.elementAt(index).name ?? '');
+                    tabs: List.generate(_con.faqs!.length, (index) {
+                      return Tab(text: _con.faqs!.elementAt(index).name ?? '');
                     }),
                     labelColor: DmConst.accentColor,
                   ),
@@ -72,12 +70,16 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: _con.faqs.elementAt(index).faqs.length,
+                    itemCount: _con.faqs!.elementAt(index).faqs!.length,
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 15);
                     },
                     itemBuilder: (context, indexFaq) {
-                      return FaqItem(faq: _con.faqs.elementAt(index).faqs.elementAt(indexFaq));
+                      return FaqItem(
+                          faq: _con.faqs!
+                              .elementAt(index)
+                              .faqs!
+                              .elementAt(indexFaq));
                     },
                   ),
                 ],
@@ -91,23 +93,23 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
     return Scaffold(
       key: widget.scaffoldKey,
       appBar: createAppBar(context, widget.scaffoldKey),
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       body: body,
     );
-
   }
 
   Widget buildContent(BuildContext context) {
-    if(_con.faqs == null) {
+    if (_con.faqs == null) {
       return Center(child: CircularProgressIndicator());
     }
-    if(_con.faqs.isEmpty) {
+    if (_con.faqs!.isEmpty) {
       return EmptyDataLoginWid(message: S.current.faqEmpty);
     }
     return DefaultTabController(
-      length: _con.faqs.length,
+      length: _con.faqs!.length,
       child: TabBarView(
-        children: List.generate(_con.faqs.length, (index) {
+        children: List.generate(_con.faqs!.length, (index) {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             child: Column(
@@ -123,10 +125,11 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
 //                                overflow: TextOverflow.ellipsis,
 //                                style: Theme.of(context).textTheme.headline5),
 //                          ),
-                createTitleRowWithBack(context, title:S.current.helpAndSupports),
+                createTitleRowWithBack(context,
+                    title: S.current.helpAndSupports),
                 TabBar(
-                  tabs: List.generate(_con.faqs.length, (index) {
-                    return Tab(text: _con.faqs.elementAt(index).name ?? '');
+                  tabs: List.generate(_con.faqs!.length, (index) {
+                    return Tab(text: _con.faqs!.elementAt(index).name ?? '');
                   }),
                   labelColor: Theme.of(context).primaryColor,
                 ),
@@ -135,12 +138,16 @@ class _HelpScreenState extends StateMVC<HelpScreen> {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: _con.faqs.elementAt(index).faqs.length,
+                  itemCount: _con.faqs!.elementAt(index).faqs!.length,
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 15);
                   },
                   itemBuilder: (context, indexFaq) {
-                    return FaqItem(faq: _con.faqs.elementAt(index).faqs.elementAt(indexFaq));
+                    return FaqItem(
+                        faq: _con.faqs!
+                            .elementAt(index)
+                            .faqs!
+                            .elementAt(indexFaq));
                   },
                 ),
               ],

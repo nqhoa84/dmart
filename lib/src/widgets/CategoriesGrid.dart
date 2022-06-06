@@ -1,17 +1,12 @@
 //import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:dmart/constant.dart';
 import 'package:dmart/generated/l10n.dart';
 import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/models/i_name.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../src/controllers/category_controller.dart';
 import '../../src/models/category.dart';
-import '../../src/models/route_argument.dart';
 
 class NameImageItemGridViewLoading extends StatelessWidget {
   @override
@@ -20,18 +15,23 @@ class NameImageItemGridViewLoading extends StatelessWidget {
       primary: false,
       shrinkWrap: true,
       childAspectRatio: 7.0 / 9.0,
-      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      crossAxisCount:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       children: List.generate(4, (index) {
         return Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(width: 1, color: DmConst.accentColor),
               boxShadow: [
-                BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
+                BoxShadow(
+                    color: Theme.of(context).hintColor.withOpacity(0.10),
+                    offset: Offset(0, 4),
+                    blurRadius: 10)
               ]),
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(9)),
-            child: Image.asset('assets/img/loading_categories.gif', fit: BoxFit.cover),
+            child: Image.asset('assets/img/loading_categories.gif',
+                fit: BoxFit.cover),
           ),
         );
       }),
@@ -42,11 +42,12 @@ class NameImageItemGridViewLoading extends StatelessWidget {
 }
 
 class CategoriesGridView extends StatefulWidget {
-  const CategoriesGridView({Key key, this.items}) : super(key: key);
+  const CategoriesGridView({Key? key, required this.items}) : super(key: key);
   final List<NameImageObj> items;
 
   @override
-  _CategoriesGridViewState createState() => _CategoriesGridViewState(items: this.items);
+  _CategoriesGridViewState createState() =>
+      _CategoriesGridViewState(items: this.items);
 }
 
 // class _CategoriesGridViewState extends State<CategoriesGridView> {
@@ -56,13 +57,12 @@ class CategoriesGridView extends StatefulWidget {
 //   }
 // }
 
-
 ///TODO remove promotion gridview and use this grid.
 ///GridView of 2 columns to display NameImageObj (such as Category, Brand, Promotion...).
 class _CategoriesGridViewState extends State<CategoriesGridView> {
   List<NameImageObj> items;
 
-  _CategoriesGridViewState({@required this.items});
+  _CategoriesGridViewState({required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,8 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
       primary: false,
       shrinkWrap: true,
       childAspectRatio: 7.0 / 9.0,
-      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      crossAxisCount:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       children: List.generate(items.length + 1, (index) {
         if (index == 0) {
 //          return Container(color: Colors.grey);
@@ -87,7 +88,9 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
                   border: Border.all(width: 1, color: DmConst.accentColor),
                   boxShadow: [
                     BoxShadow(
-                        color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
+                        color: Theme.of(context).hintColor.withOpacity(0.10),
+                        offset: Offset(0, 4),
+                        blurRadius: 10)
                   ]),
               child: Column(
                 children: <Widget>[
@@ -95,8 +98,10 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
                   Expanded(
                     flex: 7,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(9)),
-                      child: createEmptyContainer(imageUrl: category.image.thumb),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(9)),
+                      child: createEmptyContainer(
+                          imageUrl: category.image!.thumb!),
                     ),
                   ),
                   Divider(thickness: 1, height: 1, color: DmConst.accentColor),
@@ -130,23 +135,23 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
     }
 
     Widget _buildImageForAllWid() {
-      Category cate0 = items[0];
-      Category cate1 = items[1];
+      Category cate0 = items[0] as Category;
+      Category cate1 = items[1] as Category;
       if (len == 2) {
         return Row(
           children: [
             Expanded(
-              child: createEmptyContainer(imageUrl: cate0.image.icon),
+              child: createEmptyContainer(imageUrl: cate0.image!.icon!),
             ),
             Expanded(
-              child: createEmptyContainer(imageUrl: cate1.image.icon),
+              child: createEmptyContainer(imageUrl: cate1.image!.icon!),
             ),
           ],
         );
       } else if (len == 3) {
-        Category cate2 = items[2];
+        Category cate2 = items[2] as Category;
         return Stack(children: [
-          createEmptyContainer(imageUrl: cate0.image.icon),
+          createEmptyContainer(imageUrl: cate0.image!.icon),
           Column(
             children: [
               Expanded(flex: 1, child: Container()),
@@ -157,10 +162,10 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: createEmptyContainer(imageUrl: cate1.image.icon),
+                      child: createEmptyContainer(imageUrl: cate1.image!.icon),
                     ),
                     Expanded(
-                      child: createEmptyContainer(imageUrl: cate2.image.icon),
+                      child: createEmptyContainer(imageUrl: cate2.image!.icon),
                     ),
                   ],
                 ),
@@ -170,18 +175,18 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
           ),
         ]);
       } else if (len == 4) {
-        Category cate2 = items[2];
-        Category cate3 = items[3];
+        Category cate2 = items[2] as Category;
+        Category cate3 = items[3] as Category;
         return Row(
           children: [
             Expanded(
               child: Column(
                 children: [
                   Expanded(
-                    child: createEmptyContainer(imageUrl: cate0.image.icon),
+                    child: createEmptyContainer(imageUrl: cate0.image!.icon),
                   ),
                   Expanded(
-                    child: createEmptyContainer(imageUrl: cate1.image.icon),
+                    child: createEmptyContainer(imageUrl: cate1.image!.icon),
                   ),
                 ],
               ),
@@ -190,10 +195,10 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
               child: Column(
                 children: [
                   Expanded(
-                    child: createEmptyContainer(imageUrl: cate2.image.icon),
+                    child: createEmptyContainer(imageUrl: cate2.image!.icon),
                   ),
                   Expanded(
-                    child: createEmptyContainer(imageUrl: cate3.image.icon),
+                    child: createEmptyContainer(imageUrl: cate3.image!.icon),
                   ),
                 ],
               ),
@@ -201,9 +206,9 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
           ],
         );
       } else {
-        Category cate2 = items[2];
-        Category cate3 = items[3];
-        Category cate4 = items[4];
+        Category cate2 = items[2] as Category;
+        Category cate3 = items[3] as Category;
+        Category cate4 = items[4] as Category;
         return Stack(
           children: [
             Row(
@@ -212,10 +217,12 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: createEmptyContainer(imageUrl: cate0.image.icon),
+                        child:
+                            createEmptyContainer(imageUrl: cate0.image!.icon),
                       ),
                       Expanded(
-                        child: createEmptyContainer(imageUrl: cate1.image.icon),
+                        child:
+                            createEmptyContainer(imageUrl: cate1.image!.icon),
                       ),
                     ],
                   ),
@@ -224,10 +231,12 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: createEmptyContainer(imageUrl: cate2.image.icon),
+                        child:
+                            createEmptyContainer(imageUrl: cate2.image!.icon),
                       ),
                       Expanded(
-                        child: createEmptyContainer(imageUrl: cate3.image.icon),
+                        child:
+                            createEmptyContainer(imageUrl: cate3.image!.icon),
                       ),
                     ],
                   ),
@@ -237,15 +246,13 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                width: kToolbarHeight, height: kToolbarHeight,
+                  width: kToolbarHeight,
+                  height: kToolbarHeight,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                      shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(cate4.image.icon),
-                          fit: BoxFit.cover
-                      )
-                  )
-              ),
+                          image: NetworkImage(cate4.image!.icon!),
+                          fit: BoxFit.cover))),
             )
           ],
         );
@@ -254,7 +261,7 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
 
     return InkWell(
       onTap: () {
-        var cate = Category()..name = S.current.all;
+        var cate = Category(description: '')..name = S.current.all;
         cate.id = 0;
         RouteGenerator.gotoCategoryPage(context, category: cate);
       },
@@ -263,7 +270,10 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(width: 1, color: DmConst.accentColor),
             boxShadow: [
-              BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.10), offset: Offset(0, 4), blurRadius: 10)
+              BoxShadow(
+                  color: Theme.of(context).hintColor.withOpacity(0.10),
+                  offset: Offset(0, 4),
+                  blurRadius: 10)
             ]),
         child: Column(
           children: <Widget>[
@@ -293,7 +303,8 @@ class _CategoriesGridViewState extends State<CategoriesGridView> {
   }
 
   void _onTapOnCate(NameImageObj category) {
-    RouteGenerator.gotoCategoryPage(this.context, category: category);
+    RouteGenerator.gotoCategoryPage(this.context,
+        category: category as Category);
     // Navigator.of(context)
     //     .pushNamed('/Category', arguments: new RouteArgument(id: category.id, param: [category]));
   }

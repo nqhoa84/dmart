@@ -18,14 +18,22 @@ class CartItemWidget extends StatefulWidget {
   VoidCallback onDismissed;
 
   double taxAmount;
-  CartItemWidget({Key key, this.cart,this.taxAmount, this.heroTag, this.increment, this.decrement, this.onDismissed}) : super(key: key);
+  CartItemWidget(
+      {Key? key,
+      required this.cart,
+      required this.taxAmount,
+      required this.heroTag,
+      required this.increment,
+      required this.decrement,
+      required this.onDismissed})
+      : super(key: key);
 
   @override
   _CartItemWidgetState createState() => _CartItemWidgetState();
 }
 
-class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProviderStateMixin{
-
+class _CartItemWidgetState extends State<CartItemWidget>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -49,18 +57,24 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
         });
       },
       child: InkWell(
-        splashColor: Theme.of(context).accentColor,
-        focusColor: Theme.of(context).accentColor,
+        splashColor: Theme.of(context).colorScheme.secondary,
+        focusColor: Theme.of(context).colorScheme.secondary,
         highlightColor: Theme.of(context).primaryColor,
         onTap: () {
-          Navigator.of(context).pushNamed('/Product', arguments: new RouteArgument(id: widget.cart.product.id, param: [widget.cart.product, widget.heroTag]));
+          Navigator.of(context).pushNamed('/Product',
+              arguments: new RouteArgument(
+                  id: widget.cart.product!.id,
+                  param: [widget.cart.product, widget.heroTag]));
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.9),
             boxShadow: [
-              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+              BoxShadow(
+                  color: Theme.of(context).focusColor.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: Offset(0, 2)),
             ],
           ),
           child: Row(
@@ -83,10 +97,12 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
 //                      ),
 //                      errorWidget: (context, url, error) => Icon(Icons.error),
 //                    ),
-                    child: createNetworkImage(url: widget.cart.product.image.thumb, width: 90, height: 90),
+                    child: createNetworkImage(
+                        url: widget.cart.product!.image!.thumb,
+                        width: 90,
+                        height: 90),
                   ),
                 ],
-
               ),
               SizedBox(width: 15),
               Flexible(
@@ -98,39 +114,40 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            widget.cart.product.name,
+                            widget.cart.product!.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Wrap(
-                            children: List.generate(widget.cart.options.length, (index) {
+                            children: List.generate(widget.cart.options!.length,
+                                (index) {
                               return Text(
-                                widget.cart.options.elementAt(index).name + ', ',
+                                widget.cart.options!.elementAt(index).name! +
+                                    ', ',
                                 style: Theme.of(context).textTheme.caption,
                               );
                             }),
                           ),
-                          Helper.getPrice(widget.cart.product.price, context, style: Theme.of(context).textTheme.headline4),
-                          Row(
-                            children:<Widget>[
-                              Text(
-                                S.current.deliveryFee,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              Helper.getPrice(widget.cart.product.store.deliveryFee, context, style: Theme.of(context).textTheme.bodyText2)
-                            ]
-                          ),
-                          Row(
-                              children:<Widget>[
-                                Text(
-                                  '${S.current.tax} (${widget.cart.product.store.defaultTax})%',
-                                   style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                                //Helper.getPrice(widget.taxAmount, context, style: Theme.of(context).textTheme.bodyText2)
-                              ]
-                          ),
-
+                          Helper.getPrice(widget.cart.product!.price!, context,
+                              style: Theme.of(context).textTheme.headline4),
+                          Row(children: <Widget>[
+                            Text(
+                              S.current.deliveryFee,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            Helper.getPrice(
+                                widget.cart.product!.store!.deliveryFee!,
+                                context,
+                                style: Theme.of(context).textTheme.bodyText2)
+                          ]),
+                          Row(children: <Widget>[
+                            Text(
+                              '${S.current.tax} (${widget.cart.product!.store!.defaultTax})%',
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            //Helper.getPrice(widget.taxAmount, context, style: Theme.of(context).textTheme.bodyText2)
+                          ]),
                         ],
                       ),
                     ),
@@ -149,7 +166,8 @@ class _CartItemWidgetState extends State<CartItemWidget> with SingleTickerProvid
                           icon: Icon(Icons.add_circle_outline),
                           color: Theme.of(context).hintColor,
                         ),
-                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
+                        Text(widget.cart.quantity.toString(),
+                            style: Theme.of(context).textTheme.subtitle1),
                         IconButton(
                           onPressed: () {
                             setState(() {

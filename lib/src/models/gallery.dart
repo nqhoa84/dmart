@@ -2,11 +2,11 @@ import '../../utils.dart';
 import '../models/media.dart';
 import 'i_name.dart';
 
-class Gallery extends IdObj{
-  Media image;
-  String description;
+class Gallery extends IdObj {
+  Media? image;
+  String? description;
 
-  Gallery();
+  Gallery({required this.image, required this.description});
 
   Gallery.fromJSON(Map<String, dynamic> jsonMap) {
     try {
@@ -20,7 +20,6 @@ class Gallery extends IdObj{
       image = new Media();
       description = '';
       print('Error parsing data in Gallery $e \n $trace');
-
     }
   }
 }

@@ -1,20 +1,12 @@
-import 'package:dmart/route_generator.dart';
 import 'package:dmart/src/controllers/reset_pass_controller.dart';
-import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/sms_retrieved.dart';
-import 'package:dmart/src/pkg/sms_otp_auto_1.2/src/text_field_pin.dart';
 import 'package:dmart/src/widgets/profile/profile_common.dart';
 import 'package:dmart/src/widgets/toolbars/LogoOnlyAppBar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 import '../../buidUI.dart';
 import '../../constant.dart';
 import '../../generated/l10n.dart';
-import '../../src/helpers/ui_icons.dart';
-import '../../utils.dart';
-import '../controllers/user_controller.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   @override
@@ -22,10 +14,10 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
-  ResetPassController _con;
+  ResetPassController _con = ResetPassController();
 
   _ForgetPasswordScreenState() : super(ResetPassController()) {
-    _con = controller;
+    _con = controller as ResetPassController;
   }
 
   @override
@@ -33,17 +25,19 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
     super.initState();
     _getSignatureCode();
   }
+
   _getSignatureCode() async {
-    String signature = await SmsRetrieved.getAppSignature();
-    print("signature $signature");
+    // String signature = await SmsRetrieved.getAppSignature();
+    // print("signature $signature");
   }
 
   @override
   void dispose() {
 //  SmsRetrieved.stopListening();
 
-  super.dispose();
+    super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +46,8 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            createSilverTopMenu(context, haveBackIcon: true, title: S.current.resetYourPass),
+            createSilverTopMenu(context,
+                haveBackIcon: true, title: S.current.resetYourPass),
             SliverList(
               delegate: SliverChildListDelegate([
                 buildContent(context),
@@ -84,7 +79,10 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
 
                   Text(S.current.resetPassEnterPhoneNumber),
                   SizedBox(height: DmConst.masterHorizontalPad),
-                  PhoneNoWid(onSaved: (value) => _con.user.phone = value),
+                  PhoneNoWid(
+                    onSaved: (value) => _con.user!.phone = value!,
+                    initValue: '',
+                  ),
 
                   SizedBox(height: DmConst.masterHorizontalPad * 2),
 
@@ -92,22 +90,24 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                     children: [
                       Expanded(
                         child: FlatButton(
-                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 12),
                           onPressed: onPressResetPass,
                           child: Text(S.current.resetPassword,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: Colors.white)),
                           color: DmConst.colorFavorite,
 //                    shape: StadiumBorder(),
                         ),
                       ),
                     ],
                   ),
-
                 ],
               ),
             ),
           ),
-
           Offstage(
             offstage: this.haveOtp == false,
             child: Form(
@@ -116,35 +116,46 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(S.current.verifyOtpNote),
-                  TextFieldPin(
-                    filled: true,
-                    filledColor: DmConst.bgrColorSearchBar,
-                    codeLength: 6,
-                    boxSize: 40,
-                    margin: 2,
-                    filledAfterTextChange: false,
-                    textStyle: TextStyle(color: DmConst.accentColor).copyWith(fontSize: 20),
-                    borderStyle: OutlineInputBorder(
-                        borderSide: BorderSide(color: DmConst.accentColor), borderRadius: BorderRadius.circular(5)),
-                    borderStyeAfterTextChange: OutlineInputBorder(
-                        borderSide: BorderSide(color: DmConst.accentColor), borderRadius: BorderRadius.circular(5)),
-                    onOtpCallback: (code, isAutofill) => _onOtpCallBack(code, isAutofill),
-                  ),
+                  //! comment by hoang
+                  // TextFieldPin(
+                  //   // filled: true,
+                  //   // filledColor: DmConst.bgrColorSearchBar,
+                  //   codeLength: 6,
+                  //   // boxSize: 40,
+                  //   margin: 2,
+                  //   // filledAfterTextChange: false,
+                  //   textStyle: TextStyle(color: DmConst.accentColor)
+                  //       .copyWith(fontSize: 20),
+                  //   // borderStyle: OutlineInputBorder(
+                  //   //     borderSide: BorderSide(color: DmConst.accentColor),
+                  //   //     borderRadius: BorderRadius.circular(5)),
+                  //   // borderStyeAfterTextChange: OutlineInputBorder(
+                  //   //     borderSide: BorderSide(color: DmConst.accentColor),
+                  //   //     borderRadius: BorderRadius.circular(5)),
+                  //   // onOtpCallback: (code, isAutofill) =>
+                  //   //     _onOtpCallBack(code, isAutofill),
+                  // ),
                   Text('${_con.otp}'),
                   SizedBox(height: DmConst.masterHorizontalPad),
-
-                  PasswordWid(onSaved: (value) => _con.user.password = value),
+                  PasswordWid(onSaved: (value) => _con.user!.password = value),
                   SizedBox(height: DmConst.masterHorizontalPad),
-                  PasswordConfirmWid(onValidate: (value) => value == _con.user.password ? null : S.current.passwordNotMatch),
+                  PasswordConfirmWid(
+                      onValidate: (value) => value == _con.user!.password
+                          ? null
+                          : S.current.passwordNotMatch),
                   SizedBox(height: DmConst.masterHorizontalPad),
                   Row(
                     children: [
                       Expanded(
                         child: FlatButton(
-                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 12),
                           onPressed: onPressSaveNewPass,
                           child: Text(S.current.resetPassword,
-                              style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: Colors.white)),
                           color: DmConst.colorFavorite,
 //                    shape: StadiumBorder(),
                         ),
@@ -160,7 +171,7 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
     );
   }
 
-  String userEnterOtp;
+  String? userEnterOtp;
   _onOtpCallBack(String otpCode, bool isAutofill) async {
     this.userEnterOtp = otpCode;
   }
@@ -169,13 +180,14 @@ class _ForgetPasswordScreenState extends StateMVC<ForgetPasswordScreen> {
   void onPressResetPass() async {
     print('------onPressResetPass');
     bool re = await _con.sendOtpForgotPass();
-    setState(() {this.haveOtp = re;});
+    setState(() {
+      this.haveOtp = re;
+    });
   }
 
   void onPressSaveNewPass() async {
-    print('------onPressResetPass');
-    bool re = await _con.saveNewPasses(this.userEnterOtp);
-    if(re == true)
-      RouteGenerator.gotoProfileUpdatedScreen(context);
+    // print('------onPressResetPass');
+    // bool re = await _con.saveNewPasses(this.userEnterOtp!);
+    // if (re == true) RouteGenerator.gotoProfileUpdatedScreen(context);
   }
 }

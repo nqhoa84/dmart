@@ -9,9 +9,9 @@ import '../models/review.dart';
 
 // ignore: must_be_immutable
 class ReviewItemWidget extends StatelessWidget {
-  Review review;
+  Review? review;
 
-  ReviewItemWidget({Key key, this.review}) : super(key: key);
+  ReviewItemWidget({Key? key, required this.review}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,8 @@ class ReviewItemWidget extends StatelessWidget {
 //                  ),
 //                  errorWidget: (context, url, error) => Icon(Icons.error),
 //                ),
-                  child: createNetworkImage(url: review.user?.avatarUrl ?? '', width: 65, height: 65),
+                child: createNetworkImage(
+                    url: review!.user?.avatarUrl ?? '', width: 65, height: 65),
               ),
               SizedBox(width: 15),
               Flexible(
@@ -51,12 +52,12 @@ class ReviewItemWidget extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            review.user.name,
+                            review!.user!.name,
                             overflow: TextOverflow.fade,
                             softWrap: false,
                             maxLines: 2,
-                            style:
-                                Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).hintColor)),
+                            style: Theme.of(context).textTheme.headline6!.merge(
+                                TextStyle(color: Theme.of(context).hintColor)),
                           ),
                         ),
                         SizedBox(
@@ -66,11 +67,13 @@ class ReviewItemWidget extends StatelessWidget {
                             label: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(review.rate,
+                                Text(review!.rate!,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .merge(TextStyle(color: Theme.of(context).primaryColor))),
+                                        .bodyText1!
+                                        .merge(TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColor))),
                                 Icon(
                                   Icons.star_border,
                                   color: Theme.of(context).primaryColor,
@@ -78,14 +81,18 @@ class ReviewItemWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.9),
                             shape: StadiumBorder(),
                           ),
                         ),
                       ],
                     ),
                     Text(
-                      review.user.bio.substring(0, min(30, review.user.bio.length)),
+                      review!.user!.bio!
+                          .substring(0, min(30, review!.user!.bio!.length)),
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     )
@@ -95,7 +102,7 @@ class ReviewItemWidget extends StatelessWidget {
             ],
           ),
           Text(
-            Helper.skipHtml(review.review??''),
+            Helper.skipHtml(review!.review ?? ''),
             style: Theme.of(context).textTheme.bodyText2,
             overflow: TextOverflow.ellipsis,
             softWrap: false,

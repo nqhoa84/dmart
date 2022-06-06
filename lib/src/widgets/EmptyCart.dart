@@ -5,13 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../../route_generator.dart';
-import '../helpers/app_config.dart' as config;
-import '../helpers/ui_icons.dart';
 
 class EmptyCartGrid extends StatefulWidget {
-  EmptyCartGrid({
-    Key key
-  }) : super(key: key);
+  EmptyCartGrid({Key? key}) : super(key: key);
 
   @override
   _EmptyCartGridState createState() => _EmptyCartGridState();
@@ -40,12 +36,12 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
             ? SizedBox(
                 height: 3,
                 child: LinearProgressIndicator(
-                  backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
-                )
-              )
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                ))
             : EmptyDataLoginWid(
-          message: S.current.yourCartEmpty,
-        ),
+                message: S.current.yourCartEmpty,
+              ),
       ],
     );
   }
@@ -55,11 +51,11 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
       children: <Widget>[
         loading
             ? SizedBox(
-            height: 3,
-            child: LinearProgressIndicator(
-              backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
-            )
-        )
+                height: 3,
+                child: LinearProgressIndicator(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                ))
             : SizedBox(),
         Container(
           alignment: AlignmentDirectional.center,
@@ -73,25 +69,32 @@ class _EmptyCartGridState extends State<EmptyCartGrid> {
                 child: Text(
                   S.current.yourCartEmpty,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontWeight: FontWeight.w300)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
               ),
               !loading
                   ? FlatButton(
-                onPressed: () {
-                  RouteGenerator.gotoHome(context);
-                },
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-                color: Theme.of(context).accentColor.withOpacity(1),
-                shape: StadiumBorder(),
-                child: Text(
-                  S.current.home,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-                ),
-              )
+                      onPressed: () {
+                        RouteGenerator.gotoHome(context);
+                      },
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(1),
+                      shape: StadiumBorder(),
+                      child: Text(
+                        S.current.home,
+                        style: Theme.of(context).textTheme.headline6!.merge(
+                            TextStyle(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor)),
+                      ),
+                    )
                   : SizedBox(),
             ],
           ),

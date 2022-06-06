@@ -1,29 +1,25 @@
-
 import 'package:dmart/constant.dart';
 import 'package:dmart/src/controllers/search_controller.dart';
 import 'package:dmart/src/screens/serach_result.dart';
 import 'package:dmart/utils.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../helpers/ui_icons.dart';
 import 'package:flutter/material.dart';
-import '../SearchModal.dart';
 import '../../../generated/l10n.dart';
 
 class SearchBar extends StatefulWidget {
-
   @override
   _SearchBarState createState() => _SearchBarState();
 }
 
 class _SearchBarState extends StateMVC<SearchBar> {
-  SearchController _con;
+  SearchController _con = SearchController();
   String textToSearch = '';
 //  final ValueChanged onClickFilter;
 
 //  _SearchBarState({Key key, this.onClickFilter}) : super();
   _SearchBarState() : super(new SearchController()) {
-    _con = controller;
+    _con = controller as SearchController;
   }
 
   @override
@@ -34,22 +30,27 @@ class _SearchBarState extends StateMVC<SearchBar> {
 //      },
 //      child: SearchWid(),
 //    );
-    return SearchWid(onTapOnSearchIcon: _onTapOnSearchIcon, onSubmitted: _onSubmitted,onTextChanged: _onTextChanged,
-        isEditable: true, isAutoFocus: false);
+    return SearchWid(
+      onTapOnSearchIcon: _onTapOnSearchIcon,
+      onSubmitted: _onSubmitted,
+      onTextChanged: _onTextChanged,
+      // isEditable: true,
+      // isAutoFocus: false,
+      hintText: '',
+    );
   }
 
-  _onSubmitted(String v) {
-  }
+  _onSubmitted(String v) {}
 
   _onTextChanged(String v) {
-    textToSearch = v??'';
+    textToSearch = v ?? '';
   }
 
   _onTapOnSearchIcon() {
     print('---_SearchBarState._onTapOnSearchIcon');
-    _con.search(textToSearch, onDone: (){
-      print("_con.products ${_con.products?.length}");
-      if(DmUtils.isNullOrEmptyList(_con.products)) {
+    _con.search(textToSearch, onDone: () {
+      print("_con.products ${_con.products.length}");
+      if (DmUtils.isNullOrEmptyList(_con.products)) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(S.current.searchResultEmpty),
         ));
@@ -67,16 +68,19 @@ class SearchWid extends StatelessWidget {
   final Function(String) onSubmitted;
   final Function(String) onTextChanged;
 
-  final bool isEditable;
+  final bool? isEditable = true;
 
-  final bool isAutoFocus;
+  final bool? isAutoFocus = false;
 
   String hintText;
 
-  SearchWid({
-    Key key, this.isEditable = true, this.isAutoFocus = false, this.onTapOnSearchIcon, this.onSubmitted, this.onTextChanged,
-    this.hintText
-  }) : super(key: key);
+  SearchWid(
+      {Key? key,
+      required this.onTapOnSearchIcon,
+      required this.onSubmitted,
+      required this.onTextChanged,
+      required this.hintText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,33 +106,39 @@ class SearchWid extends StatelessWidget {
             borderRadius: BorderRadius.horizontal(right: Radius.circular(3)),
             child: InkWell(
                 onTap: onTapOnSearchIcon,
-                child: Image.asset('assets/img/S_Search.png', height: DmConst.appBarHeight * 0.7 + 2, fit: BoxFit.scaleDown)),
+                child: Image.asset('assets/img/S_Search.png',
+                    height: DmConst.appBarHeight * 0.7 + 2,
+                    fit: BoxFit.scaleDown)),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTextField (BuildContext context) {
-    if(this.isEditable) {
+  Widget buildTextField(BuildContext context) {
+    if (this.isEditable!) {
       return TextField(
         onSubmitted: this.onSubmitted,
         onChanged: this.onTextChanged,
         autofocus: false,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(12),
-          hintText: hintText??S.current.searchForProducts,
-          hintStyle: Theme.of(context).textTheme.caption.copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
+          hintText: hintText ?? S.current.searchForProducts,
+          hintStyle: Theme.of(context)
+              .textTheme
+              .caption!
+              .copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
         ),
       );
     } else {
       return Text(
         S.current.searchForProducts,
         maxLines: 1,
-        style: Theme.of(context).textTheme.caption.copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
+        style: Theme.of(context)
+            .textTheme
+            .caption!
+            .copyWith(color: DmConst.textColorSearchBar, fontSize: 15),
       );
     }
   }
 }
-
-

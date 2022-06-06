@@ -11,10 +11,10 @@ import '../models/filter.dart';
 import '../repository/field_repository.dart';
 
 class FilterController extends ControllerMVC {
-  GlobalKey<ScaffoldState> scaffoldKey;
-  List<Field> fields = [];
-  Filter filter;
-  Cart cart;
+  GlobalKey<ScaffoldState>? scaffoldKey;
+  List<Field>? fields = [];
+  Filter? filter;
+  Cart? cart;
 
   FilterController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -32,54 +32,53 @@ class FilterController extends ControllerMVC {
 
   Future<void> saveFilter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    filter.fields = this.fields.where((_f) => _f.selected).toList();
-    prefs.setString('filter', json.encode(filter.toMap()));
+    filter!.fields = this.fields!.where((_f) => _f.selected!).toList();
+    prefs.setString('filter', json.encode(filter!.toMap()));
   }
 
-  void listenForFields({String message}) async {
-    fields.add(new Field.fromJSON({'id': '0', 'name': S.current.all, 'selected': true}));
+  void listenForFields({String? message}) async {
+    fields!.add(new Field.fromJSON(
+        {'id': '0', 'name': S.current.all, 'selected': true}));
     final Stream<Field> stream = await getFields();
     stream.listen((Field _field) {
       setState(() {
-        if (filter.fields.contains(_field)) {
+        if (filter!.fields.contains(_field)) {
           _field.selected = true;
-          fields.elementAt(0).selected = false;
+          fields!.elementAt(0).selected = false;
         }
-        fields.add(_field);
+        fields!.add(_field);
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      scaffoldKey!.currentState!.showSnackBar(SnackBar(
         content: Text(S.current.verifyYourInternetConnection),
       ));
     }, onDone: () {
-      if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      scaffoldKey!.currentState!.showSnackBar(SnackBar(
+        content: Text(message!),
+      ));
     });
   }
 
   Future<void> refreshFields() async {
-    fields.clear();
+    fields!.clear();
     listenForFields(message: S.current.addressesRefreshedSuccessfully);
   }
 
   void clearFilter() {
     setState(() {
-      filter.open = false;
-      filter.delivery = false;
+      filter!.open = false;
+      filter!.delivery = false;
       resetFields();
     });
   }
 
   void resetFields() {
-    filter.fields = [];
-    fields.forEach((Field _f) {
+    filter!.fields = [];
+    fields!.forEach((Field _f) {
       _f.selected = false;
     });
-    fields.elementAt(0).selected = true;
+    fields!.elementAt(0).selected = true;
   }
 
   void onChangeFieldsFilter(int index) {
@@ -90,8 +89,8 @@ class FilterController extends ControllerMVC {
       });
     } else {
       setState(() {
-        fields.elementAt(index).selected = !fields.elementAt(index).selected;
-        fields.elementAt(0).selected = false;
+        fields!.elementAt(index).selected = !fields!.elementAt(index).selected!;
+        fields!.elementAt(0).selected = false;
       });
     }
   }

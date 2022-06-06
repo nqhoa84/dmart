@@ -1,7 +1,6 @@
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dmart/buidUI.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../src/controllers/category_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../src/models/category.dart';
@@ -13,27 +12,34 @@ class CategoryIconWidget extends StatefulWidget {
   double marginLeft;
   ValueChanged<int> onPressed;
 
-  CategoryIconWidget({Key key, this.category, this.heroTag, this.marginLeft, this.onPressed}) : super(key: key);
+  CategoryIconWidget(
+      {Key? key,
+      required this.category,
+      required this.heroTag,
+      required this.marginLeft,
+      required this.onPressed})
+      : super(key: key);
 
   @override
   _CategoryIconWidgetState createState() => _CategoryIconWidgetState();
 }
 
-class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget> with SingleTickerProviderStateMixin {
-
+class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0),
-      margin: EdgeInsetsDirectional.only(start: widget.marginLeft, top: 10, bottom: 10),
+      margin: EdgeInsetsDirectional.only(
+          start: widget.marginLeft, top: 10, bottom: 10),
       child: buildSelectedCategory(context),
     );
   }
 
   InkWell buildSelectedCategory(BuildContext context) {
     return InkWell(
-      splashColor: Theme.of(context).accentColor,
-      highlightColor: Theme.of(context).accentColor,
+      splashColor: Theme.of(context).colorScheme.secondary,
+      highlightColor: Theme.of(context).colorScheme.secondary,
       onTap: () {
         setState(() {
           widget.onPressed(widget.category.id);
@@ -44,20 +50,24 @@ class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget> with SingleT
         curve: Curves.easeInOut,
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: widget.category.selected ? Theme.of(context).primaryColor : Colors.transparent,
+          color: widget.category.selected!
+              ? Theme.of(context).primaryColor
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Row(
           children: <Widget>[
             Hero(
               tag: widget.heroTag + '${widget.category.id}',
-              child: widget.category.image.url.toLowerCase().endsWith('.svg')
+              child: widget.category.image!.url!.toLowerCase().endsWith('.svg')
                   ? Container(
                       height: 32,
                       width: 32,
                       child: SvgPicture.network(
-                        widget.category.image.url,
-                        color: widget.category.selected?Theme.of(context).accentColor:Theme.of(context).primaryColor,
+                        widget.category.image!.url!,
+                        color: widget.category.selected!
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).primaryColor,
                       ),
                     )
                   : ClipRRect(
@@ -75,7 +85,10 @@ class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget> with SingleT
 //                        ),
 //                        errorWidget: (context, url, error) => Icon(Icons.error),
 //                      ),
-                        child: createNetworkImage(url: widget.category.image.thumb, width: 32, height: 32),
+                      child: createNetworkImage(
+                          url: widget.category.image!.thumb!,
+                          width: 32,
+                          height: 32),
                     ),
             ),
             SizedBox(width: 10),
@@ -84,8 +97,10 @@ class _CategoryIconWidgetState extends StateMVC<CategoryIconWidget> with SingleT
               curve: Curves.easeInOut,
               vsync: this,
               child: Text(
-                widget.category.selected ? widget.category.name : '',
-                style: TextStyle(fontSize: 14, color: Theme.of(context).accentColor),
+                widget.category.selected! ? widget.category.name : '',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.secondary),
               ),
             )
           ],

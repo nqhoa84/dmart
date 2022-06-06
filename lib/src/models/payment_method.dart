@@ -1,20 +1,24 @@
-import '../../generated/l10n.dart';
-
 class PaymentMethod {
-  int id;
-  String name;
-  String description;
-  String logo;
-  String route;
-  bool isDefault;
+  int? id;
+  String? name;
+  String? description;
+  String? logo;
+  String? route;
+  bool? isDefault;
 
-  PaymentMethod(this.id, this.name, this.description, this.route, this.logo, {this.isDefault = false});
+  PaymentMethod(
+      {this.id,
+      this.name,
+      this.description,
+      this.route,
+      this.logo,
+      this.isDefault = false});
 }
 
 class PaymentMethodList {
-  List<PaymentMethod> _paymentsList;
-  List<PaymentMethod> _cashList;
-  List<PaymentMethod> _pickupList;
+  List<PaymentMethod>? _paymentsList = [];
+  List<PaymentMethod>? _cashList = [];
+  List<PaymentMethod>? _pickupList = [];
 
   PaymentMethodList() {
     this._paymentsList = [
@@ -33,7 +37,7 @@ class PaymentMethodList {
     ];
   }
 
-  List<PaymentMethod> get paymentsList => _paymentsList;
-  List<PaymentMethod> get cashList => _cashList;
-  List<PaymentMethod> get pickupList => _pickupList;
+  List<PaymentMethod>? get paymentsList => _paymentsList;
+  List<PaymentMethod>? get cashList => _cashList;
+  List<PaymentMethod>? get pickupList => _pickupList;
 }

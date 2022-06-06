@@ -7,8 +7,6 @@ import 'package:dmart/src/widgets/TitleDivider.dart';
 import 'package:flutter/material.dart';
 
 import '../../buidUI.dart';
-import '../../src/models/category.dart';
-import '../../src/models/route_argument.dart';
 import '../../src/widgets/DrawerWidget.dart';
 import '../../utils.dart';
 
@@ -29,7 +27,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: createAppBar(context, _scaffoldKey),
-      bottomNavigationBar: DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
+      bottomNavigationBar:
+          DmBottomNavigationBar(currentIndex: DmState.bottomBarSelectedIndex),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,7 +41,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 //              createTitleRow(context, title: S.current.hotline),
               TitleDivider(
                   title: S.current.hotline,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
               Card(
@@ -54,14 +53,17 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       onTap: () => _makeCall(s.phoneSmart),
                       title: Text(s.phoneSmart),
                       leading: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
-                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 8),
+                        child: Image.asset('assets/img/C_Phone_sign.png',
+                            fit: BoxFit.scaleDown),
                       ),
                       trailing: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.asset('assets/img/C_Smart_Mobile.png', fit: BoxFit.scaleDown)),
+                            child: Image.asset('assets/img/C_Smart_Mobile.png',
+                                fit: BoxFit.scaleDown)),
                       ),
                     ),
                     Divider(thickness: 1.5, color: Colors.white, height: 2),
@@ -69,14 +71,18 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       onTap: () => _makeCall(s.phoneCellcard),
                       title: Text(s.phoneCellcard),
                       leading: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
-                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 8),
+                        child: Image.asset('assets/img/C_Phone_sign.png',
+                            fit: BoxFit.scaleDown),
                       ),
                       trailing: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.asset('assets/img/C_Cellcard_Mobile.png', fit: BoxFit.scaleDown)),
+                            child: Image.asset(
+                                'assets/img/C_Cellcard_Mobile.png',
+                                fit: BoxFit.scaleDown)),
                       ),
                     ),
                     Divider(thickness: 1.5, color: Colors.white, height: 2),
@@ -84,14 +90,18 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       onTap: () => _makeCall(s.phoneMetfone),
                       title: Text(s.phoneMetfone),
                       leading: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
-                        child: Image.asset('assets/img/C_Phone_sign.png', fit: BoxFit.scaleDown),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 8),
+                        child: Image.asset('assets/img/C_Phone_sign.png',
+                            fit: BoxFit.scaleDown),
                       ),
                       trailing: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.asset('assets/img/C_Metfone_Mobile.png', fit: BoxFit.scaleDown)),
+                            child: Image.asset(
+                                'assets/img/C_Metfone_Mobile.png',
+                                fit: BoxFit.scaleDown)),
                       ),
                     )
                   ],
@@ -101,7 +111,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 //              createTitleRow(context, title: S.current.socialNetwork),
               TitleDivider(
                   title: S.current.socialNetwork,
-                  titleTextColor: Theme.of(context).accentColor,
+                  titleTextColor: Theme.of(context).colorScheme.secondary,
                   dividerColor: Colors.grey.shade400,
                   dividerThickness: 2),
               _createSocial(context)
@@ -120,7 +130,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       width: w,
       height: h,
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage('assets/img/C_Contact_Dmart2.png'), fit: BoxFit.cover),
+        image: DecorationImage(
+            image: AssetImage('assets/img/C_Contact_Dmart2.png'),
+            fit: BoxFit.cover),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: h * (44.0 + 20) / 720),
@@ -134,11 +146,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 children: [
                   InkWell(
                     onTap: _onTapWhatapp,
-                    child: Image.asset('assets/img/C_Whatup.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Whatup.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   ),
                   InkWell(
                     onTap: _onTapWechat,
-                    child: Image.asset('assets/img/C_Wechat.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Wechat.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   )
                 ],
               ),
@@ -150,11 +164,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 children: [
                   InkWell(
                     onTap: _onTapViber,
-                    child: Image.asset('assets/img/C_Viber.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Viber.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   ),
                   InkWell(
                     onTap: _onTapInstagram,
-                    child: Image.asset('assets/img/C_Instagram.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Instagram.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   )
                 ],
               ),
@@ -166,11 +182,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 children: [
                   InkWell(
                     onTap: _onTapTelegram,
-                    child: Image.asset('assets/img/C_telegram.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_telegram.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   ),
                   InkWell(
                     onTap: _onTapFb,
-                    child: Image.asset('assets/img/C_Facebook.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Facebook.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   )
                 ],
               ),
@@ -182,11 +200,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 children: [
                   InkWell(
                     onTap: _onTapFbMess,
-                    child: Image.asset('assets/img/C_Messenger.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Messenger.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   ),
                   InkWell(
                     onTap: _onTapLine,
-                    child: Image.asset('assets/img/C_Line.png', width: btnSize, fit: BoxFit.scaleDown),
+                    child: Image.asset('assets/img/C_Line.png',
+                        width: btnSize, fit: BoxFit.scaleDown),
                   )
                 ],
               ),
@@ -203,10 +223,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     String deepIos = deepAn;
     String web = deepIos;
     print(deepIos);
-    _launchFull(
-        webUrl: web,
-        deepLinkAn: deepAn,
-        deepLinkIos: deepIos);
+    _launchFull(webUrl: web, deepLinkAn: deepAn, deepLinkIos: deepIos);
   }
 
   void _onTapWhatapp() {
@@ -275,7 +292,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     String deepAn = 'fb://page/${s.socialFb}';
     String deepIos = 'fb://profile/${s.socialFb}';
     String web = 'https://www.facebook.com/${s.socialFb}';
-    _launchFull(webUrl: web, deepLinkAn: deepAn, deepLinkIos: deepIos,
+    _launchFull(
+        webUrl: web,
+        deepLinkAn: deepAn,
+        deepLinkIos: deepIos,
         errMsg: S.current.errorOpenFb);
   }
 
@@ -304,12 +324,18 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         errMsg: S.current.errorOpenLine);
   }
 
-  void _launchFull({@required String webUrl, String deepLinkAn, String deepLinkIos, String errMsg}) async {
-    if (await DmUtils.launchUrl(webUrl: webUrl, deepLinkAn: deepLinkAn, deepLinkIos: deepLinkIos)) {
+  void _launchFull(
+      {required String webUrl,
+      String? deepLinkAn,
+      String? deepLinkIos,
+      String? errMsg}) async {
+    if (await DmUtils.launchUrl(
+        webUrl: webUrl, deepLinkAn: deepLinkAn, deepLinkIos: deepLinkIos)) {
       print('Launch OK');
     } else {
-      if(DmUtils.isNotNullEmptyStr(errMsg)){
-        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(errMsg)));
+      if (DmUtils.isNotNullEmptyStr(errMsg!)) {
+        _scaffoldKey.currentState!
+            .showSnackBar(SnackBar(content: Text(errMsg)));
       }
 //      UIUtils.showErrorSnack(errorMsg: errMsg, key: this._scaffoldKey);
     }

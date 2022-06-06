@@ -6,21 +6,20 @@ import '../../generated/l10n.dart';
 import '../repository/notification_repository.dart';
 
 class NotificationController extends ControllerMVC {
-  List<Noti> notifications;
-  Noti notification;
-  GlobalKey<ScaffoldState> scaffoldKey;
+  List<Noti>? notifications;
+  Noti? notification;
+  GlobalKey<ScaffoldState>? scaffoldKey;
 
-  NotificationController() {
+  NotificationController({this.notifications, this.notification}) {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForNotifications();
   }
 
-  void listenForNotifications({String message, Function() onDone}) async {
+  void listenForNotifications({String? message, Function()? onDone}) async {
     var notis = await loadNoties();
     setState(() {
       this.notifications = notis;
     });
-
 
     // final Stream<model.Notification> stream = await getNotifications();
     // stream.listen((model.Notification _notification) {
@@ -38,29 +37,28 @@ class NotificationController extends ControllerMVC {
     //     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
     //   }
     // });
-
-      }
+  }
 
   Future<void> refreshNotifications() async {
-    notifications.clear();
-    listenForNotifications(message: S.current.notificationsRefreshedSuccessfully);
+    notifications!.clear();
+    listenForNotifications(
+        message: S.current.notificationsRefreshedSuccessfully);
   }
 
   void removeFromNotification(Noti _notification) async {
-  //   removeNotification(_notification).then((value) {
-  //     setState(() {
-  //       this.notification = new model.Notification();
-  //     });
-  //     scaffoldKey.currentState.showSnackBar(SnackBar(
-  //       content: Text('This notification was removed '),
-  //     ));
-  //   });
-  // }
+    //   removeNotification(_notification).then((value) {
+    //     setState(() {
+    //       this.notification = new model.Notification();
+    //     });
+    //     scaffoldKey.currentState.showSnackBar(SnackBar(
+    //       content: Text('This notification was removed '),
+    //     ));
+    //   });
+    // }
     await removeNoti(_notification);
 
     setState(() {
-      if(this.notifications != null)
-        this.notifications.remove(_notification);
+      this.notifications!.remove(_notification);
     });
 //    removeNotification(_notification).then((value) {
 //      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(S.current.this_notification_was_removed)));

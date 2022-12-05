@@ -22,7 +22,7 @@ class Media extends IdNameObj{
       nameEn = toStringVal(jsonMap['name']);
       this.nameKh = nameEn;
       url = toStringVal(jsonMap['url']);
-      url = url.replaceFirst('http:', 'https:');
+      // url = url.replaceFirst('http:', 'https:');
       thumb = toStringVal(jsonMap['thumb']);
       icon = toStringVal(jsonMap['icon']);
       size = toStringVal(jsonMap['formated_size']);
